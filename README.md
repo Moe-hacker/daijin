@@ -1,3 +1,3 @@
-<center>Do Great Things</center>          
+<p align="center">Do Great Things</p>         
 
 --------
