@@ -1,7 +1,7 @@
 <p align="center">Do Great Things</p>         
 
 --------
-## 教程:    
+# 教程:    
 ### ①安装必须软件
 ```sh
 pkg install wget tsu
