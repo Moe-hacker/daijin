@@ -4,7 +4,7 @@
 # 教程:    
 ### ①安装必须软件
 ```sh
-pkg install wget tsu
+pkg install wget tsu git
 ```  
 ### ②在/data下创建容器目录      
 ```shell
