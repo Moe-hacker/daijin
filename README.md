@@ -17,6 +17,7 @@ sudo mkdir /data/example
 ### ③下载系统rootfs,推荐使用lxc镜像，链接:     
 https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
 找到你想使用的发行版→你想使用的版本→arm64目录→default目录→日期最新的一个目录，然后复制rootfs.tar.xz的链接      
+注：推荐新手使用Ubuntu      
 ```shell
 wget 你刚复制的链接
 ```
