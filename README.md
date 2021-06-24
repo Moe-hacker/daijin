@@ -16,10 +16,10 @@ https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images
 ```shell
 wget 你刚复制的链接
 ```
-③解压系统rootfs      
+### ③解压系统rootfs      
 ```shell
 sudo tar -xvf rootfs.tar.xz -C /data/你的容器目录
-④安装并配置此脚本      
+### ④安装并配置此脚本      
 --------
 
 ## 安装:
