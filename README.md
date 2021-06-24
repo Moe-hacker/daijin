@@ -39,7 +39,8 @@ cd ..
 rm -rf termux-container
 ```
 ## 配置:
-配置文件位于/data/data/com.termux/files/usr/etc/container.conf      
+配置文件位于      
+/data/data/com.termux/files/usr/etc/container.conf      
 CHROOT_DIR=容器的绝对路径      
 SELINUX=[on/off] 是否关闭SELinux       
 HOSTNAME=你的主机名      
