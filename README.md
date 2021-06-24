@@ -1,8 +1,20 @@
 <p align="center">Do Great Things</p>         
 
 --------
+## 教程:      
+①在/data下创建容器目录      
+```shell
+sudo mkdir /data/你的容器目录
+```
+例如：容器目录为example，则      
+```shell
+sudo mkdir /data/example
+```
+②③④
+--------
+
 ## 安装:
-```sh
+```shell
 pkg install tsu
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
