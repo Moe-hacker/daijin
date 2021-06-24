@@ -39,6 +39,7 @@ cd ..
 rm -rf termux-container
 ```
 ## 配置:
+```sh
 配置文件位于      
 /data/data/com.termux/files/usr/etc/container.conf      
 内容：      
@@ -55,10 +56,13 @@ CHROOT_DIR=/data/example SELINUX=on HOSTNAME=Moe-hacker OUTPUT=on SLEEP=on
 主机名为Moe-hacker       
 启用脚本输出       
 启用停顿        
+```
 ## 用法:
+```sh
 sudo container :运行Chroot容器      
 sudo container umount :解除系统挂载      
-container help :显示帮助信息      
+container help :显示帮助信息    
+```  
 # FAQ      
 #### ①为什么要关闭SELinux      
 由于Android的访问限制，普通用户无法读写/proc下的大部分内容，所以若是在容器中使用普通用户会出现一些bug，此时可通过关闭SELinux解决      
