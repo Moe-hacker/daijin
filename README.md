@@ -1,7 +1,7 @@
 <p align="center">Do Great Things</p>         
 
 --------
-##安装:
+## 安装:
 ```sh
 pkg install tsu
 git clone https://github.com/Moe-hacker/termux-container
