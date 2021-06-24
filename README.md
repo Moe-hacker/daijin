@@ -2,7 +2,7 @@
 
 --------
 ## 教程:      
-①在/data下创建容器目录      
+### ①在/data下创建容器目录      
 ```shell
 sudo mkdir /data/你的容器目录
 ```
@@ -10,7 +10,16 @@ sudo mkdir /data/你的容器目录
 ```shell
 sudo mkdir /data/example
 ```
-②③④
+### ②下载系统rootfs,推荐使用lxc镜像，链接:     
+https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
+找到你想使用的发行版→你想使用的版本→arm64目录→default目录→日期最新的一个目录，然后复制rootfs.tar.xz的链接      
+```shell
+wget 你刚复制的链接
+```
+③解压系统rootfs      
+```shell
+sudo tar -xvf rootfs.tar.xz -C /data/你的容器目录
+④安装并配置此脚本      
 --------
 
 ## 安装:
@@ -32,13 +41,13 @@ HOSTNAME=你的主机名
 OUTPUT=[on/off] 是否启用脚本输出      
 SLEEP=[on/off] 是否启用停顿        
 示例：      
-CHROOT_DIR=/example      
+CHROOT_DIR=/data/example      
 SELINUX=on       
 HOSTNAME=Moe-hacker       
 OUTPUT=on        
 SLEEP=on      
 上述配置即：    
-容器目录为/example       
+容器目录为/data/example       
 启用SELinux       
 主机名为Moe-hacker       
 启用脚本输出       
