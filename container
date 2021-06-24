@@ -1,0 +1,193 @@
+#!/data/data/com.termux/files/usr/bin/bash
+###### Github@Moe-hacker ######
+#我萌故我在！👻
+#•.,¸,.•*¯`•.,¸,.•.... ╭━━━━╮
+#`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::::/\:__:/\
+#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::::(｡ ●ω●｡)
+#`•.,¸,.•*¯`•.,¸,.•*  ╰し---し---Ｊ･ﾟ
+#编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了😎
+#借鉴了一部分andrax启动脚本(https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2/arm/start_andrax)，采用相同的许可证。
+#变量名设置🤔：
+#${CHROOT_DIR}:chroot容器绝对路径
+#${SELINUX}:[on/off], 是否关闭selinux
+#${HOSTNAME}:设置主机名
+#${OUTPUT}:[on/off]是否启用输出
+#${SLEEP}:[on/off]是否启用停顿
+###### E-mail: shichengniu2@gmail.com ######
+umount_system(){
+    if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
+            echo -e '\033[31m[ERR]\033[35mPlease run the script with sudo.\033[0m'
+            exit
+    else
+        export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[33m[i]\033[34mUmounting system\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mUmounting \033[35m/dev\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mUmounting \033[35m/sys\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mUmounting \033[35m/proc\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mUmounting \033[35mchroot_dir\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
+        if [[ $SELINUX = "off" ]];then #判断SELinux是否为关闭状态
+            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mEnabling \033[35mSELinux\033[0m'
+            [[ ${SLEEP} = "off" ]] || sleep 0.3s
+            setenforce 1  >/dev/null 2>&1 #重启SELinux
+        fi
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[33m[i]\033[34mAll done!\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    fi
+}
+show_help(){
+    echo -e '                                 \033[30m ████████████████████████\n                              ████                        ██\n                        ██████                              ████\n                    ████                                        ████\n                ████                                                ██\n          ██████                            ██                        ██\n              ██              ████    ████  ██                          ██\n            ██              ██  ██████    ██  ██                ████      ██\n            ██      ██  ████    ██          ██  ████            ██  ████    ██\n          ██        ████                           ████         ██      ██  ██\n          ██        ██      ██            ██          ██        ██  ██████████\n        ██        ██      ██                ██          ██      ██████████  ██\n        ████    ██      ██                    ████      ██      ████████      ██\n      ████  ██  ██  ████                                ██      ████████      ██\n            ██  ██                                        ██    ██████        ██\n            ██  ██  ██████████                ██████████  ██      ██          ██\n            ██  ████          ██            ██          ████      ██          ██\n            ██  ██    ██████                    ██████    ██      ██          ██\n            ██  ██  ██\033[31m██████\033[30m██                ██\033[31m██████\033[30m██  ██      ██          ██\n          ██    ██  ██\033[31m██\033[30m██\033[31m██\033[30m██                ██\033[31m██\033[30m██\033[31m██\033[30m██  ██      ██          ██\n          ██    ██  ██\033[31m██████\033[30m██                ██\033[31m██████\033[30m██  ██      ██            ██\n          ██    ██  ██\033[31m██████\033[30m██                ██\033[31m██████\033[30m██  ██      ██            ██\n        ██      ██    ██████                    ██████    ██      ██            ██\n      ██  ██  ██                                          ██      ██            ██\n    ██  ██    ██                                          ██      ██            ██\n  ██      ██  ██      ██          ██                      ██      ██            ██\n  ██      ██    ██  ██  ██      ██  ██      ████          ██      ██              ██\n  ██    ████      ████    ████████    ████████  ██  ████  ██      ██              ██\n██████████████  ██████      ██████  ██████████    ████  ██        ██                ██\n██████████████  ██████████████████████████████████████████                          ██\n██████████████    ████████████████████████████████████                              ██\n  ██        ██      ██████  ██████████████████████████          ████                  ██\n  ██          ██    ████      ████    ████    ████  ██          ██                    ██\n  ██            ██████                              ██          ██                    ██\n    ██              ██                            ██            ██                    ██\n      ██          ██                              ██          ████                  ██\n        ██        ██                              ██          ████                ██\n          ██      ██                                ██████████  ██                ██\n            ██████                                              ██                ██\n                ██                                              ██                ██\033[0m'
+    echo -e '\033[34m脚本配置：\033[0m'
+    echo -e '  \033[34m配置文件位于\033[35m/data/data/com.termux/files/usr/etc/container.conf\033[0m'
+    echo -e '  \033[32mCHROOT_DIR\033[35m=\033[34m容器的绝对路径\033[0m'
+    echo -e '  \033[32mSELINUX\033[35m=\033[33m[on/off] \033[34m是否关闭\033[35mSELinux\033[34m，不建议关闭，会使手机变得不安全，但是由于安卓系统的读取 限制，在容器中普通用户可能无法正常使用，此时可通过关闭\033[35mSELinux\033[34m(临时关闭，重启还原)解决\033[0m'
+    echo -e '  \033[32mHOSTNAME\033[35m=\033[34m你的主机名\033[0m'
+    echo -e '  \033[32mOUTPUT\033[35m=\033[33m[on/off] \033[34m是否启用脚本 输出\033[0m'
+    echo -e '  \033[32mSLEEP\033[35m=\033[33m[on/off] \033[34m是否启用停顿，如果你嫌运行太快，可以开启此选项，每条输出后停顿0.3秒\033[0m'
+    echo -e '  \033[34m示例：\033[0m'
+    echo -e '  \033[32mCHROOT_DIR\033[35m=\033[33m/example \033[32mSELINUX\033[35m=\033[33mon \033[32mHOSTNAME\033[35m=\033[33mMoe-hacker \033[32mOUTPUT\033[35m=\033[33mon\033[0m \033[32mSLEEP\033[35m=\033[33mon\033[0m'
+    echo -e '  \033[34m上述配置即：容器目录为\033[35m/example \033[34m启用\033[35mSELinux \033[34m主机名为\033[35mMoe-hacker \033[34m启用脚本输出\033[0m \033[34m启用停顿\033[0m'
+    echo -e '\033[34m脚本用法:\033[0m'
+    echo -e '  \033[33mcontainer\033[34m:运行\033[35mChroot\033[34m容器\033[0m'
+    echo -e '  \033[33mcontainer umount\033[34m:解除系统挂载\033[0m'
+}
+run_chroot(){
+    #加载设置等
+    if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
+        echo -e '\033[31m[ERR]\033[35m/data/data/com.termux/files/usr/etc/container.conf does not exists. See \033[33m container help \033[0m'
+        exit
+    else
+        export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置
+    fi
+    if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
+            echo -e '\033[31m[ERR]\033[35mPlease run the script with sudo.\033[0m'
+            exit
+    else
+       [[ ${OUTPUT} = "off" ]] || echo -e '\033[33m[i]\033[34mDevice is rooted.\033[0m'
+       [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    fi
+    if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
+            echo -e '\033[31m[ERR]\033[35mCHROOT_DIR does not exists. \033[0m'
+            exit
+    fi
+    if [[ ${SELINUX} = "off" ]];then #判断是否需要关闭selinux
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mDisabling \033[35mSELinux.\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        setenforce 0 #关闭SELinux [!]危险操作
+    fi
+    if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
+        if [[ ! $(hostname) = ${HOSTNAME} ]];then
+            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mSetting \033[35mhostname\033[0m'
+            [[ ${SLEEP} = "off" ]] || sleep 0.3s
+            hostname ${HOSTNAME} #设置主机名
+        fi
+    fi
+    #####下面一段借鉴了andrax的启动脚本#####
+    #创建一些由于android和普通linux之间的差异而不存在的文件
+    if [[ ! -e /dev/fd ]];then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mLinking\033[35m/proc/self/fd \033[34mto \033[35m/dev/fd\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        ln -s /proc/self/fd /dev/ >/dev/null 2>&1
+    fi
+    if [[ ! -e /dev/stdin ]];then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mLinking\033[35m/proc/self/fd/0 \033[34mto \033[35m/dev/stdin\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        ln -s /proc/self/fd/0 /dev/stdin  >/dev/null 2>&1
+    fi
+    if [[ ! -e /dev/stdout ]];then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mLinking\033[35m/proc/self/fd/1 \033[34mto \033[35m/dev/stdout\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        ln -s /proc/self/fd/1 /dev/stdout >/dev/null 2>&1
+    fi
+    if [[ ! -e /dev/stderr ]] ;then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mLinking\033[35m/proc/self/fd/2 \033[34mto \033[35m/dev/stderr\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        ln -s /proc/self/fd/2 /dev/stderr >/dev/null 2>&1
+    fi
+    if [[ ! -e /dev/tty0 ]];then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mLinking \033[35m/dev/null \033[34mto \033[35m/dev/tty0\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        ln -s /dev/null /dev/tty0 >/dev/null 2>&1
+    fi
+    if [[ ! -e /dev/net/tun ]];then
+        if [[ ! -d /dev/net ]];then
+            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mCreating directory \033[35m/dev/net\033[0m'
+            [[ ${SLEEP} = "off" ]] || sleep 0.3s
+            mkdir -p /dev/net >/dev/null 2>&1
+        fi
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mCreating virtual device file \033[35m/dev/net/tun\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mknod /dev/net/tun c 10 200  >/dev/null 2>&1
+    fi
+    #挂载系统
+    if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mmounting \033[35mchroot_dir\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mount --bind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mremounting \033[35muserdata\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        ####此处需要测试####
+        mount -o remount,rw,seclabel,suid /dev/block/by-name/userdata  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo无法使用问题
+    fi
+    if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mmounting \033[35m/proc\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mount --bind /proc ${CHROOT_DIR}/proc/ >/dev/null 2>&1
+    fi
+    if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mmounting \033[35m/dev\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mount --bind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
+    fi
+    if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mmounting \033[35m/sys\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mount --bind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
+    fi
+    #挂载一些文件到系统，我也不知道为啥，原项目就这样写的
+    if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mCreating directory \033[35m/dev/shm\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #创建/dev/shm
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35mtmpfs\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >/dev/null 2>&1 #挂载tmpfs
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/dev/shm\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
+    fi
+    #奇葩逻辑，由于不会判断/dev/null权限，直接加到/dev/pts的判断里面，反正在umount前只执行一次
+    if  [[ ! -e ${CHROOT_DIR}/dev/pts ]];then
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/dev/pts\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mkdir ${CHROOT_DIR}/dev/pts
+        mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mChanging mode of \033[35m/dev/null \033[34mto \033[32m666\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        chmod 666 /dev/null >/dev/null 2>&1
+    fi
+    #####以上一段借鉴了andrax的启动脚本#######
+    [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mUnsetting \033[35menvironment variables.\033[0m'
+    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "off" ]] || echo -e '\033[33m[i]\033[34mRunning chroot\033[0m'
+    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除环境 变量
+    /bin/chroot ${CHROOT_DIR} /bin/su - root
+}
+if [[ $1 = "umount" ]];then
+    umount_system
+    exit
+elif [[ $1 = "help" ]];then
+    show_help
+    exit
+else
+    run_chroot
+fi
