@@ -1,8 +1,12 @@
 <p align="center">Do Great Things</p>         
 
 --------
-## 教程:      
-### ①在/data下创建容器目录      
+## 教程:    
+### ①安装必须软件
+```sh
+pkg install wget tsu
+```  
+### ②在/data下创建容器目录      
 ```shell
 sudo mkdir /data/你的容器目录
 ```
@@ -10,22 +14,21 @@ sudo mkdir /data/你的容器目录
 ```shell
 sudo mkdir /data/example
 ```
-### ②下载系统rootfs,推荐使用lxc镜像，链接:     
+### ③下载系统rootfs,推荐使用lxc镜像，链接:     
 https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
 找到你想使用的发行版→你想使用的版本→arm64目录→default目录→日期最新的一个目录，然后复制rootfs.tar.xz的链接      
 ```shell
 wget 你刚复制的链接
 ```
-### ③解压系统rootfs      
+### ④解压系统rootfs      
 ```shell
 sudo tar -xvf rootfs.tar.xz -C /data/你的容器目录
 ```
-### ④安装并配置此脚本      
+### ⑤安装并配置此脚本      
 --------
 
 ## 安装:
 ```shell
-pkg install tsu
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
 mv container /data/data/com.termux/files/usr/bin
