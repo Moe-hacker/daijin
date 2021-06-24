@@ -1,2 +1,2 @@
-- Do Great Things
+<center>Do Great Things</center>   
 --------
