@@ -25,7 +25,7 @@ SELINUX=on
 HOSTNAME=Moe-hacker       
 OUTPUT=on        
 SLEEP=on      
-上述配置即：
+上述配置即：    
 容器目录为/example       
 启用SELinux       
 主机名为Moe-hacker       
