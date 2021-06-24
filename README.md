@@ -45,11 +45,7 @@ HOSTNAME=你的主机名
 OUTPUT=[on/off] 是否启用脚本输出      
 SLEEP=[on/off] 是否启用停顿        
 示例：      
-CHROOT_DIR=/data/example      
-SELINUX=on       
-HOSTNAME=Moe-hacker       
-OUTPUT=on        
-SLEEP=on      
+CHROOT_DIR=/data/example SELINUX=on HOSTNAME=Moe-hacker OUTPUT=on SLEEP=on      
 上述配置即：    
 容器目录为/data/example       
 启用SELinux       
