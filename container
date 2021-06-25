@@ -91,6 +91,8 @@ run_chroot(){
         fi
     fi
     #####下面一段借鉴了andrax的启动脚本#####
+    #####加入一些判断，修复了sudo无法使用，修复了pacman无法分析挂载点######
+    #####加入没啥用的输出和停顿######
     #创建一些由于android和普通linux之间的差异而不存在的文件
     if [[ ! -e /dev/fd ]];then
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mLinking\033[35m/proc/self/fd \033[34mto \033[35m/dev/fd\033[0m'
@@ -152,7 +154,7 @@ run_chroot(){
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
         mount --bind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
     fi
-    #挂载一些文件到系统，我也不知道为啥，原项目就这样写的
+    #挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
     if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mCreating directory \033[35m/dev/shm\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
@@ -164,7 +166,7 @@ run_chroot(){
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
         mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
     fi
-    #奇葩逻辑，由于不会判断/dev/null权限，直接加到/dev/pts的判断里面，反正在umount前只执行一次
+    #奇葩逻辑，由于本人不会判断/dev/null权限，直接加到/dev/pts的判断里面，反正在umount前只执行一次
     if  [[ ! -e ${CHROOT_DIR}/dev/pts ]];then
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/dev/pts\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
@@ -179,7 +181,7 @@ run_chroot(){
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
     [[ ${OUTPUT} = "off" ]] || echo -e '\033[33m[i]\033[34mRunning chroot\033[0m'
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
-    unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除环境 变量
+    unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
     /bin/chroot ${CHROOT_DIR} /bin/su - root
 }
 if [[ $1 = "umount" ]];then
