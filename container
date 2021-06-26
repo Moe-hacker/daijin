@@ -96,7 +96,7 @@ run_chroot(){
         fi
     fi
 #####下面一段借鉴了andrax的启动脚本#####
-#####加入一些判断，修复了sudo无法使用，修复了pacman无法分析挂载点######
+#####加入一些判断，修复了sudo无法使用(未完全解决)，修复了pacman无法分析挂载点######
 #####加入没啥用的输出和停顿######
     #创建一些由于android和普通linux之间的差异而不存在的文件
     if [[ ! -e /dev/fd ]];then
@@ -141,7 +141,7 @@ run_chroot(){
         mount --bind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mremounting \033[35m/data\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
-        mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题
+        mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题(解决了，但没完全解决，对于采用vab分区的手机可能无效)
     fi
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mmounting \033[35m/proc\033[0m'
