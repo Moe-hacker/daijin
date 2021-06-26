@@ -64,12 +64,12 @@ sudo container umount :解除系统挂载
 container help :显示帮助信息    
 ```  
 # FAQ      
-#### ①为什么无法运行：
-运行chroot需要root权限，只有root用户才能执行chroot。华为，vivo等手机要么某宝，要么出门左拐是proot谢谢😒     
+#### ①如果无法运行：
+运行chroot需要root权限，只有root用户才能执行chroot。华为，vivo等手机要么某宝，要么出门左拐是proot谢谢     
 #### ②为什么要关闭SELinux：      
 由于Android的访问限制，普通用户无法读写/proc下的大部分内容，所以若是在容器中使用普通用户会出现一些bug，此时可通过关闭SELinux解决      
 #### ③为什么要将文件夹建在/data：      
-我的新手机还没root，没法测试😭以后可能会加入在外置内存卡或.img镜像中安装容器的选项      
+E=mc²了解一下，Error=(More Code)²(狗头保命)      
 # 说明:      
 作者只是个小萌新，借鉴andrax的启动脚本创作了此脚本。      
 andrax项目链接：      
