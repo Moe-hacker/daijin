@@ -141,7 +141,6 @@ run_chroot(){
         mount --bind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mremounting \033[35muserdata\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
-        ####此处需要测试####
         mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题
     fi
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
