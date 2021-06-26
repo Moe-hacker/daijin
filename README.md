@@ -69,7 +69,7 @@ container help :显示帮助信息
 #### ②为什么要关闭SELinux：      
 由于Android的访问限制，普通用户无法读写/proc下的大部分内容，所以若是在容器中使用普通用户会出现一些bug，此时可通过关闭SELinux解决      
 #### ③为什么要将文件夹建在/data：      
-E=mc²了解一下，Error=(More Code)²(狗头保命)      
+E=mc²了解一下，Error=(More Code)²  狗头保命，(逃………        
 # 说明:      
 作者只是个小萌新，借鉴andrax的启动脚本创作了此脚本。      
 andrax项目链接：      
