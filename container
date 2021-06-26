@@ -91,6 +91,9 @@ run_chroot(){
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             hostname ${HOSTNAME} #设置主机名
         fi
+        if [[ $(cat ${CHROOT_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
+            echo 127.0.0.1 ${HOSTNAME} >> ${CHROOT_DIR}/etc/hosts
+        fi
     fi
 #####下面一段借鉴了andrax的启动脚本#####
 #####加入一些判断，修复了sudo无法使用，修复了pacman无法分析挂载点######
