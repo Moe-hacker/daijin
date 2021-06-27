@@ -65,11 +65,12 @@ container help :显示帮助信息
 ```  
 # FAQ      
 #### ①如果无法运行：
-运行chroot需要root权限，只有root用户才能执行chroot。华为，vivo等手机要么某宝，要么出门左拐是proot谢谢     
+运行chroot需要root权限，华为，vivo等无法root的手机要么某宝，要么出门左拐是proot谢谢     
 #### ②为什么要关闭SELinux：      
 由于Android的访问限制，普通用户无法读写/proc下的大部分内容，所以若是在容器中使用普通用户会出现一些bug，此时可通过关闭SELinux解决      
-#### ③为什么要将文件夹建在/data：      
-E=mc²了解一下，Error=(More Code)²  狗头保命，(逃………        
+#### ③sudo无法使用      
+通过重新挂载/data分区为suid，理论上可以解决，但是在我的k40pro上测试，并不起作用      
+我将会研究如何讲系统安装在镜像文件中，以此解决这个问题            
 # 说明:      
 作者只是个小萌新，借鉴andrax的启动脚本创作了此脚本。      
 andrax项目链接：      
