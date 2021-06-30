@@ -150,11 +150,11 @@ else
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题(解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区)
         else
-            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting image file as virtual device \033[35m/dev/loop233\033[0m'
+            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting image file \033[0m'
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
-            mknod  /dev/loop233 b 7 233  >/dev/null 2>&1
-            losetup /dev/loop233 ${CHROOT_IMG}  >/dev/null 2>&1
-            mount  /dev/loop233 ${CHROOT_DIR}  >/dev/null 2>&1
+            loop=$(losetup -f)
+            losetup  ${loop} ${CHROOT_IMG}  >/dev/null 2>&1
+            mount  ${loop} ${CHROOT_DIR}  >/dev/null 2>&1
         fi
     fi
     #创建rootfs中可能不存在的文件,暂时不加输出
