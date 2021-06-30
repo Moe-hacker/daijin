@@ -191,7 +191,7 @@ else
         mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
     fi
     #由于本人技术太菜不会判断/dev/null权限，直接加到/dev/pts的判断里面，反正在umount前只执行一次
-    if  [[ ! -e ${CHROOT_DIR}/dev/pts ]];then
+    if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/dev/pts\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
         mkdir ${CHROOT_DIR}/dev/pts
