@@ -96,13 +96,11 @@ else
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             hostname ${HOSTNAME} >/dev/null 2>&1 #设置主机名
         fi
-        if [[ $(cat ${CHROOT_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
-            echo 127.0.0.1 ${HOSTNAME} >> ${CHROOT_DIR}/etc/hosts #修复sudo报错无法解析主机
-        fi
     fi
 #####下面这段借鉴了andrax的启动脚本#####
 #####加入把系统安装在.img镜像文件的选项#####
 #####加入一些判断，修复了sudo无法使用(未完全解决)，修复了pacman无法分析挂载点######
+#####修复未设置dns######
 #####加入没啥用的输出和停顿######
     #创建一些由于android和普通linux之间的差异而不存在的文件
     if [[ ! -e /dev/fd ]];then
@@ -163,6 +161,14 @@ else
 		[[ -e ${CHROOT_DIR}/proc ]] || mkdir ${CHROOT_DIR}/proc
 		[[ -e ${CHROOT_DIR}/sys ]] || mkdir ${CHROOT_DIR}/sys 
 	fi
+    if [[ $(cat ${CHROOT_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
+        echo 127.0.0.1 ${HOSTNAME} >> ${CHROOT_DIR}/etc/hosts #修复sudo报错无法解析主机
+    fi
+    if [[ -L ${CHROOT_DIR}/etc/resolv.conf ]];then
+        rm ${CHROOT_DIR}/etc/resolv.conf
+        echo nameserver 114.114.114.114
+    fi
+    #挂载系统文件
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/proc\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
@@ -194,7 +200,7 @@ else
     if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/dev/pts\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
-        mkdir ${CHROOT_DIR}/dev/pts
+        mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
         mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mChanging mode of \033[35m/dev/null \033[34mto \033[32m666\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
