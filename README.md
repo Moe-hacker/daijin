@@ -69,10 +69,10 @@ container help :显示帮助信息
 #### ②为什么要关闭SELinux：      
 由于Android的访问限制，普通用户无法读写/proc下的大部分内容，所以若是在容器中使用普通用户会出现一些bug，此时可通过关闭SELinux解决      
 #### ③sudo无法使用      
-通过重新挂载/data分区为suid，理论上可以解决，但是在我的k40pro上测试，并不起作用      
+通过重新挂载/data分区为suid，理论上可以解决，但是在我的k40pro上测试，并不起作用，可能由于vab分区。      
 我将会研究如何讲系统安装在镜像文件中，以此解决这个问题            
 # 说明:      
-作者只是个小萌新，借鉴andrax的启动脚本创作了此脚本。      
+我借鉴andrax的启动脚本创作了此脚本。      
 andrax项目链接：      
 https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
 借鉴的文件：      
