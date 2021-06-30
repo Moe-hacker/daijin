@@ -17,7 +17,7 @@
 ###### E-mail: shichengniu2@gmail.com ######
 if [[ $1 = "umount" ]];then
     if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
-            echo -e '\033[31m[ERR]\033[35mPlease run the script with sudo.\033[0m'
+            echo -e '\033[31m[ERR] \033[35mPlease run the script with sudo\033[0m'
             exit
     else
         export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置
@@ -62,7 +62,7 @@ elif [[ $1 = "help" ]];then
     echo -e '  \033[33mcontainer umount\033[34m:解除系统挂载\033[0m'
 else
     if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
-        echo -e '\033[31m[ERR]\033[35mPlease run the script with sudo.\033[0m'
+        echo -e '\033[31m[ERR] \033[35mPlease run the script with sudo\033[0m'
         exit
     else
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[33m[i]\033[34mDevice is rooted\033[0m'
@@ -150,11 +150,11 @@ else
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题(解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区)
         else
-            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting image file as virtual device \033[35m/dev/block/loop233\033[0m'
+            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting image file as virtual device \033[35m/dev/loop233\033[0m'
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
-            mknod  /dev/block/loop233 b 7 233  >/dev/null 2>&1
-            losetup /dev/block/loop233 ${CHROOT_IMG}  >/dev/null 2>&1
-            mount -o rw,suid /dev/block/loop233 ${CHROOT_DIR}  >/dev/null 2>&1
+            mknod  /dev/loop233 b 7 233  >/dev/null 2>&1
+            losetup /dev/loop233 ${CHROOT_IMG}  >/dev/null 2>&1
+            mount  /dev/loop233 ${CHROOT_DIR}  >/dev/null 2>&1
         fi
     fi
     #创建rootfs中可能不存在的文件,暂时不加输出
