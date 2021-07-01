@@ -166,7 +166,7 @@ else
     fi
     if [[ -L ${CHROOT_DIR}/etc/resolv.conf ]];then
         rm ${CHROOT_DIR}/etc/resolv.conf
-        echo nameserver 114.114.114.114
+        echo nameserver 114.114.114.114 >> ${CHROOT_DIR}/etc/resolv.conf
     fi
     #挂载系统文件
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
