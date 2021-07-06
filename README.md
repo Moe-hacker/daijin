@@ -1,4 +1,4 @@
-<p align="center">Do Great Things</p>         
+<p align="center">＂它在我的设备上可以很好运行！＂</p>         
 
 --------
 # 使用教程:    
