@@ -6,7 +6,7 @@
 #`•.,¸,.•*¯`•.,¸,.•* <|:::::::::::(｡ ●ω●｡)
 #`•.,¸,.•*¯`•.,¸,.•*  ╰し---し---Ｊ･ﾟ
 #编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了😎
-#借鉴了一部分andrax启动脚本(https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2/arm/start_andrax)，采用相同的许可证。
+#借鉴了一部分andrax启动脚本，采用相同的许可证。
 #变量名设置🧐：
 #${CHROOT_IMG}:容器镜像文件
 #${CHROOT_DIR}:chroot容器绝对路径或挂载点
@@ -172,9 +172,9 @@ else
     if [[ $(cat ${CHROOT_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
         echo 127.0.0.1 ${HOSTNAME} >> ${CHROOT_DIR}/etc/hosts #修复sudo报错无法解析主机
     fi
-    if [[ -L ${CHROOT_DIR}/etc/resolv.conf ]];then
-        rm ${CHROOT_DIR}/etc/resolv.conf
-        echo nameserver 114.114.114.114 >> ${CHROOT_DIR}/etc/resolv.conf
+    if [[ -L ${CHROOT_DIR}/etc/resolv.conf || ! -e ${CHROOT_DIR}/etc/resolv.conf ]];then
+        rm -f ${CHROOT_DIR}/etc/resolv.conf >/dev/null 2>&1
+        echo nameserver 114.114.114.114 >> ${CHROOT_DIR}/etc/resolv.conf #解决未设置dns导致无法联网
     fi
     #挂载系统文件
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
