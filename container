@@ -148,6 +148,9 @@ else
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题(解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区)
         else
+            [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mRunning \033[35mfsck\033[0m'
+            [[ ${SLEEP} = "off" ]] || sleep 0.3s
+            fsck.ext4 -a ${CHROOT_IMG} >/dev/null 2>&1
             [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting image file \033[0m'
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             loop=$(losetup -f)
