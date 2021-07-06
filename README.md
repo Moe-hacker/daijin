@@ -4,7 +4,7 @@
 # 使用教程:    
 ### 安装必须软件
 ```sh
-pkg install wget tsu git
+pkg install wget tsu git e2fsprogs
 ```  
 ### 在/data下创建容器目录(或挂载点)      
 ```shell
@@ -75,6 +75,18 @@ container help :显示帮助信息
 #### sudo无法使用      
 通过重新挂载/data分区为suid，理论上可以解决，但是在我的k40pro上测试，并不起作用，可能由于vab分区比较特殊。      
 推荐将系统安装在镜像文件中            
+#### 镜像文件结构需要清理      
+使用     
+```sh
+fsck.ext4 镜像文件       
+```
+修复      
+#### 时间不正确     
+使用      
+```sh
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime     
+```
+设置时区
 # 说明:      
 我借鉴andrax的启动脚本创作了此脚本。      
 andrax项目链接：      
