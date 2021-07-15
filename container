@@ -50,7 +50,7 @@ elif [[ $1 = "help" ]];then
     echo -e '  \033[34m配置文件位于\033[35m/data/data/com.termux/files/usr/etc/container.conf\033[0m'
     echo -e '  \033[32mCHROOT_IMG\033[35m=\033[34m容器镜像的绝对路径，如果不使用镜像文件可不填\033[0m'
     echo -e '  \033[32mCHROOT_DIR\033[35m=\033[34m容器的绝对路径(或挂载点)\033[0m'
-    echo -e '  \033[32mSELINUX\033[35m=\033[33m[on/off] \033[34m是否关闭\033[35mSELinux\033[34m，不建议关闭，会使手机变得不安全，但是由于安卓系统的读取 限制，在容器中普通用户可能无法正常使用，此时可通过关闭\033[35mSELinux\033[34m(临时关闭，重启还原)解决\033[0m'
+    echo -e '  \033[32mSELINUX\033[35m=\033[33m[on/off] \033[34m是否关闭\033[35mSELinux\033[34m，不建议关闭，会使手机变得不安全，但是由于安卓系统的读取限制，在容器中普通用户可能无法正常使用，此时可通过关闭\033[35mSELinux\033[34m(临时关闭，重启还原)解决\033[0m'
     echo -e '  \033[32mHOSTNAME\033[35m=\033[34m你的主机名\033[0m'
     echo -e '  \033[32mOUTPUT\033[35m=\033[33m[on/off] \033[34m是否启用脚本 输出\033[0m'
     echo -e '  \033[32mSLEEP\033[35m=\033[33m[on/off] \033[34m是否启用停顿，如果你嫌运行太快，可以开启此选项，每条输出后停顿0.3秒\033[0m'
@@ -175,6 +175,13 @@ else
     if [[ -L ${CHROOT_DIR}/etc/resolv.conf || ! -e ${CHROOT_DIR}/etc/resolv.conf ]];then
         rm -f ${CHROOT_DIR}/etc/resolv.conf >/dev/null 2>&1
         echo nameserver 114.114.114.114 >> ${CHROOT_DIR}/etc/resolv.conf #解决未设置dns导致无法联网
+    fi
+    #挂载内置存储
+    if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
+        [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/sdacrd\033[0m'
+        [[ ${SLEEP} = "off" ]] || sleep 0.3s
+        mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
+        mount --bind /sdacrd ${CHROOT_DIR}/sdacrd/ >/dev/null 2>&1
     fi
     #挂载系统文件
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
