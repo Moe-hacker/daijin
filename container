@@ -181,7 +181,7 @@ else
         [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting \033[35m/sdacrd\033[0m'
         [[ ${SLEEP} = "off" ]] || sleep 0.3s
         mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
-        mount --bind /sdacrd ${CHROOT_DIR}/sdacrd/ >/dev/null 2>&1
+        mount --bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
     fi
     #挂载系统文件
     if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
