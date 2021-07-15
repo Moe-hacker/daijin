@@ -15,7 +15,7 @@
 #${OUTPUT}:[on/off]是否启用输出
 #${SLEEP}:[on/off]是否启用停顿
 ###### E-mail: shichengniu2@gmail.com ######
-if [[ $1 = "umount" ]];then
+if [[ $1 = "unmount" ]];then
     if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
             echo -e '\033[31m[ERR] \033[35mPlease run the script with sudo\033[0m'
             exit
@@ -58,8 +58,38 @@ elif [[ $1 = "help" ]];then
     echo -e '  \033[32mCHROOT_IMG\033[35m=\033[33m/data/example.img \033[32mCHROOT_DIR\033[35m=\033[33m/data/example \033[32mSELINUX\033[35m=\033[33mon \033[32mHOSTNAME\033[35m=\033[33mMoe-hacker \033[32mOUTPUT\033[35m=\033[33mon\033[0m \033[32mSLEEP\033[35m=\033[33mon\033[0m'
     echo -e '  \033[34m上述配置即：容器镜像为\033[35m/data/example.img 容器目录为\033[35m/data/example \033[34m启用\033[35mSELinux \033[34m主机名为\033[35mMoe-hacker \033[34m启用脚本输出\033[0m \033[34m启用停顿\033[0m'
     echo -e '\033[34m脚本用法:\033[0m'
+    echo -e '  \033[33mcontainer configure\033[34m:配置\033[35mChroot\033[34m容器\033[0m'
     echo -e '  \033[33mcontainer\033[34m:运行\033[35mChroot\033[34m容器\033[0m'
-    echo -e '  \033[33mcontainer umount\033[34m:解除系统挂载\033[0m'
+    echo -e '  \033[33mcontainer unmount\033[34m:解除系统挂载\033[0m'
+elif [[ $1 = "configure" ]];then #安装并配置容器(有点简陋)
+  read -p "请输入容器的绝对路径(或挂载点):" CHROOT_DIR
+  read -p "请输入镜像文件绝对路径(一般为/data/xxx.img或/sdcard/xxx.img)，如果不使用镜像文件请留空:" CHROOT_IMG
+  read -p "请输入镜像文件大小(纯数字，单位为Gb)，如果不使用镜像文件请留空:" SIZE
+  read -p "请输入rootfs的下载链接:" URL
+  read -p "是否关闭SELinux?[on启用/off关闭]:" SELINUX
+  read -p "请输入主机名(hostname):" HOSTNAME
+  read -p "是否启用输出?[on启用/off关闭]:" OUTPUT
+  read -p "每条输出后是否停顿?[on启用/off关闭]:" SLEEP
+  echo -e '正在安装基本软件…………………………………'
+  pkg install wget tsu git e2fsprogs
+  echo -e '正在下载rootfs………………………………'
+  cd ~
+  wget ${URL}
+  sudo mkdir ${CHROOT_DIR}
+  if [[ ! ${CHROOT_IMG} = "" ]];then
+    echo -e "正在创建镜像文件………………………………"
+    sudo dd if=/dev/zero of=${CHROOT_IMG} bs=1G count=${SIZE}
+    sudo mkfs.ext4 ${CHROOT_IMG}
+    echo -e "正在挂载镜像………………………………"
+    sudo losetup  $(sudo losetup -f) ${CHROOT_IMG}  >/dev/null 2>&1
+    sudo mount ${CHROOT_IMG} ${CHROOT_DIR}  >/dev/null 2>&1
+  fi
+  echo -e "正在解压rootfs………………………………"
+  sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
+  echo -e "正在写入配置………………………………"
+  echo CHROOT_DIR=${CHROOT_DIR} CHROOT_IMG=${CHROOT_IMG} SELinux=${SELinux} OUTPUT=${OUTPUT} SLEEP=${SLEEP} HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+  echo -e "正在删除已下载的rootfs………………………………"
+  rm ~/rootfs.tar.xz
 else
     if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
         echo -e '\033[31m[ERR] \033[35mPlease run the script with sudo\033[0m'
@@ -99,7 +129,7 @@ else
     fi
 ############################################
 #####  下面这段借鉴了andrax的启动脚本  #####
-#####加入把系统安装在.img镜像文件的选项#####
+#####加入把系统安装在 img镜像文件的选项#####
 #####    修复了镜像文件结构需要清理    #####
 #####           加入一些判断           #####
 #####  修复了sudo无法使用(未完全解决)  #####
