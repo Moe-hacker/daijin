@@ -188,7 +188,7 @@ else
         else
             [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mRunning \033[35mfsck\033[0m'
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
-            fsck.ext4 -a -f  ${CHROOT_IMG} >/dev/null 2>&1 #修复结构需要清理
+            fsck.ext4 -a -f  ${CHROOT_IMG} #修复结构需要清理报错，我承认这影响观感，但是有效
             [[ ${OUTPUT} = "off" ]] || echo -e '\033[32m[*]\033[34mMounting image file \033[0m'
             [[ ${SLEEP} = "off" ]] || sleep 0.3s
             loop=$(losetup -f) #查找未使用的loop文件
