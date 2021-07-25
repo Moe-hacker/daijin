@@ -19,7 +19,6 @@ git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
 mv container /data/data/com.termux/files/usr/bin
 chmod +x /data/data/com.termux/files/usr/bin/container
-touch /data/data/com.termux/files/usr/etc/container.conf
 cd ..
 rm -rf termux-container
 ```
