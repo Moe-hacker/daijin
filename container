@@ -59,8 +59,8 @@ elif [[ $1 = "help" ]];then
     echo -e '  \033[34m上述配置即：容器镜像为\033[35m/data/example.img 容器目录为\033[35m/data/example \033[34m启用\033[35mSELinux \033[34m主机名为\033[35mMoe-hacker \033[34m启用脚本输出\033[0m \033[34m启用停顿\033[0m'
     echo -e '\033[34m脚本用法:\033[0m'
     echo -e '  \033[33mcontainer configure\033[34m:配置\033[35mChroot\033[34m容器\033[0m'
-    echo -e '  \033[33mcontainer\033[34m:运行\033[35mChroot\033[34m容器\033[0m'
-    echo -e '  \033[33mcontainer unmount\033[34m:解除系统挂载\033[0m'
+    echo -e '  \033[33msudo container\033[34m:运行\033[35mChroot\033[34m容器\033[0m'
+    echo -e '  \033[33msudo container unmount\033[34m:解除系统挂载\033[0m'
 elif [[ $1 = "configure" ]];then #安装并配置容器(有点简陋)
   read -p "请输入容器的绝对路径(或挂载点):" CHROOT_DIR
   read -p "请输入镜像文件绝对路径(一般为/data/xxx.img或/sdcard/xxx.img)，如果不使用镜像文件请留空:" CHROOT_IMG
@@ -81,9 +81,9 @@ elif [[ $1 = "configure" ]];then #安装并配置容器(有点简陋)
     sudo dd if=/dev/zero of=${CHROOT_IMG} bs=1G count=${SIZE}
     sudo mkfs.ext4 ${CHROOT_IMG}
     echo -e "正在挂载镜像………………………………"
-    loop = $(sudo losetup -f)
-    sudo losetup  ${loop} ${CHROOT_IMG}  >/dev/null 2>&1
-    sudo mount ${loop} ${CHROOT_DIR}  >/dev/null 2>&1
+    LOOP=$(sudo losetup -f)
+    sudo losetup  ${LOOP} ${CHROOT_IMG}  >/dev/null 2>&1
+    sudo mount ${LOOP} ${CHROOT_DIR}  >/dev/null 2>&1
   fi
   echo -e "正在解压rootfs………………………………"
   sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
