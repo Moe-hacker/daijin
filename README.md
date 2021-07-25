@@ -28,6 +28,8 @@ rm -rf termux-container
 container configure
 ```
 # 说明:      
+此脚本用于在termux中运行chroot系统      
+chroot系统限制更少，速度更快，但由于没有文件隔离并不安全      
 作者是萌新，借鉴andrax的启动脚本写了这个脚本      
 andrax项目链接：      
 https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
