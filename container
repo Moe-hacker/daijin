@@ -88,7 +88,7 @@ elif [[ $1 = "configure" ]];then #安装并配置容器(有点简陋)
   echo -e "正在解压rootfs………………………………"
   sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
   echo -e "正在写入配置………………………………"
-  echo CHROOT_DIR=${CHROOT_DIR} CHROOT_IMG=${CHROOT_IMG} SELinux=${SELinux} OUTPUT=${OUTPUT} SLEEP=${SLEEP} HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+  echo CHROOT_DIR=${CHROOT_DIR} CHROOT_IMG=${CHROOT_IMG} SELinux=${SELINUX} OUTPUT=${OUTPUT} SLEEP=${SLEEP} HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
   echo -e "正在删除已下载的rootfs………………………………"
   rm ~/rootfs.tar.xz
 else
