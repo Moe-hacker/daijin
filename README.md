@@ -2,7 +2,10 @@
 <p align="center">全ては筋書き通りだって</p>      
 
 ----------      
-#交个官方作业：      
+# 截图    
+![image](https://github.com/Moe-hacker/termux-container/raw/main/Screenshot_2021-08-02-18-31-23-788_com.termux.jpg)
+![image](https://github.com/Moe-hacker/termux-container/raw/main/Screenshot_2021-08-02-18-31-55-299_com.termux.jpg)
+# 交个官方作业：      
 ![avatar](https://github.com/Moe-hacker/termux-container/raw/main/screenshot.jpg)
 系统ubuntu，计划等着精简下，清一下垃圾传度盘      
 # 使用教程:    
