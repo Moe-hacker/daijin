@@ -272,10 +272,10 @@ else
     mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
     mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[done]  \033[34mMount \033[35m/dev/pts\033[0m"
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[start] \033[34mchange mode of \033[35m/dev/null\033[0m"
+    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[start] \033[34mChange mode of \033[35m/dev/null\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
     chmod 666 /dev/null >/dev/null 2>&1
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[done]  \033[34mchange mode of \033[35m/dev/null\033[0m"
+    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[done]  \033[34mChange mode of \033[35m/dev/null\033[0m"
   fi
   [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[start] \033[34mRun chroot\033[0m"
   [[ ${SLEEP} = "off" ]] || sleep 0.3s
