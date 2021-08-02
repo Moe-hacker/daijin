@@ -2,6 +2,8 @@
 <p align="center">全ては筋書き通りだって</p>      
 
 ----------      
+此脚本用于在termux中运行chroot系统
+chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux      
 # 截图    
 ![image](https://github.com/Moe-hacker/termux-container/raw/main/Screenshot_2021-08-02-18-31-23-788_com.termux.jpg)
 ![image](https://github.com/Moe-hacker/termux-container/raw/main/Screenshot_2021-08-02-18-31-55-299_com.termux.jpg)
@@ -37,9 +39,7 @@ container help
 ```
 注：建议安装后配合这位大佬的脚本食用，更适合小白
 https://gitee.com/mo2/linux
-# 说明:      
-此脚本用于在termux中运行chroot系统      
-chroot系统限制更少，速度更快，但由于没有文件隔离并不安全      
+# 说明:            
 作者是萌新，借鉴andrax的启动脚本写了这个脚本，出bug请见谅      
 andrax项目链接：      
 https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
