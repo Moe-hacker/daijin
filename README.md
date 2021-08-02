@@ -31,6 +31,10 @@ rm -rf termux-container
 ```sh
 container configure
 ```
+更多帮助文档请使用
+```sh
+container help
+```
 注：建议安装后配合这位大佬的脚本食用，更适合小白
 https://gitee.com/mo2/linux
 # 说明:      
