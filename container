@@ -44,7 +44,7 @@ if [[ $1 = "unmount" ]];then
       setenforce 1  >/dev/null 2>&1 #重启SELinux
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mEnable \033[35mSELinux\033[0m"
     fi
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[info]  \033[34mAll done!\033[0m"
+    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Info]  \033[34mAll done!\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
   fi
 elif [[ $1 = "help" ]];then
