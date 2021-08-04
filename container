@@ -98,7 +98,7 @@ else
     echo -e "\033[31m[ERR!]  \033[35mPlease run the script with sudo\033[0m"
     exit
   else
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[check] \033[34mDevice is rooted\033[0m"
+    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Check] \033[34mDevice is rooted\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
   fi
   #加载配置文件
