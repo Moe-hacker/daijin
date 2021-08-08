@@ -16,8 +16,8 @@ chroot系统限制更少，速度更快，但由于没有像docker一样的运�
 
 ## 复制rootfs下载链接,推荐使用lxc镜像，链接:     
 https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
-找到你想使用的发行版→你想使用的版本→arm64目录→default目录→日期最新的一个目录，然后复制rootfs.tar.xz的链接
-一定要是rootfs.tar.xz，否则无法解压，后续可能会支持gz版本
+找到你想使用的发行版→你想使用的版本→arm64目录→default目录→日期最新的一个目录，然后复制rootfs.tar.xz的链接        
+一定要是rootfs.tar.xz，否则无法解压，后续可能会支持gz版本        
 注：推荐新手使用Ubuntu       
 ## 安装并配置此脚本            
 ### 安装:
