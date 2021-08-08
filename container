@@ -190,14 +190,14 @@ else
   #挂载系统
   if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
     if [[ ${CHROOT_IMG} = "" ]];then
+      [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mReMount \033[35m/data\033[0m"
+      [[ ${SLEEP} = "off" ]] || sleep 0.3s
+      mount -o remount,suid /data  >/dev/null 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题( 解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
+      [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done] \033[34mReMount \033[35m/data\033[0m"
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
       [[ ${SLEEP} = "off" ]] || sleep 0.3s
       mount --bind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
-      [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mReMount \033[35m/data\033[0m"
-      [[ ${SLEEP} = "off" ]] || sleep 0.3s
-      mount -o remount,suid /data  >/dev/null 2>&1 #将data分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题(解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
-      [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mReMount \033[35m/data\033[0m"
     else
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mRun \033[35mfsck\033[0m"
       [[ ${SLEEP} = "off" ]] || sleep 0.3s
