@@ -33,6 +33,10 @@ if [[ $1 = "unmount" ]];then
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
     umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/proc\033[0m"
+    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/sdcard\033[0m"
+    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    umount -lvf ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
+    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/sdcard\033[0m"
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m${CHROOT_DIR}\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
     umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
