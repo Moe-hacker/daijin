@@ -240,19 +240,19 @@ else
   if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/proc\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
-    mount --bind /proc ${CHROOT_DIR}/proc/ >/dev/null 2>&1
+    mount -t proc proc  ${CHROOT_DIR}/proc/ >/dev/null 2>&1
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/proc\033[0m"
   fi
   if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
-    mount --bind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
+    mount --rbind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev\033[0m"
   fi
   if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被挂载
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sys\033[0m"
     [[ ${SLEEP} = "off" ]] || sleep 0.3s
-    mount --bind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
+    mount --rbind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
     [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sys\033[0m"
   fi
   #挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
