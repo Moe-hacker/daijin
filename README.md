@@ -11,7 +11,9 @@ chroot系统限制更少，速度更快，但由于没有像docker一样的运�
 ----------      
 # 交个官方作业：      
 ![avatar](https://github.com/Moe-hacker/termux-container/raw/main/screenshot.jpg)
-系统ubuntu，链接https://share.weiyun.com/6sSwpBW8，解压后为16G镜像文件，配置自己写去吧     
+系统ubuntu，链接      
+https://share.weiyun.com/6sSwpBW8      
+解压后为16G镜像文件，配置自己写去吧     
 ----------      
 # 使用教程:    
 
