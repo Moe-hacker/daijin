@@ -200,7 +200,7 @@ else
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done] \033[34mReMount \033[35m/data\033[0m"
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
       [[ ${SLEEP} = "off" ]] || sleep 0.3s
-      mount --bind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
+      mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
     else
       [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mRun \033[35mfsck\033[0m"
