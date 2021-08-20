@@ -2,14 +2,23 @@
 #########容器主程序#########
 if [[ $1 = "unmount" ]];then
   bash /data/data/com.termux/files/usr/share/termux-container/container-unmount
-elif [[ $1 = "help" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-help
-elif [[ $1 = "configure" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-configure
-elif [[ $1 = "update" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-update
-elif [[ $1 = "mount" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-mount
-else
-  bash /data/data/com.termux/files/usr/share/termux-container/container-run
+  exit
 fi
+if [[ $1 = "help" ]];then
+  bash /data/data/com.termux/files/usr/share/termux-container/container-help
+  exit
+fi
+if [[ $1 = "configure" ]];then
+  bash /data/data/com.termux/files/usr/share/termux-container/container-configure
+  exit
+fi
+if [[ $1 = "update" ]];then
+  bash /data/data/com.termux/files/usr/share/termux-container/container-update
+  exit
+fi
+if [[ $1 = "mount" ]];then
+  bash /data/data/com.termux/files/usr/share/termux-container/container-mount
+  exit
+fi
+bash /data/data/com.termux/files/usr/share/termux-container/container-run
+
