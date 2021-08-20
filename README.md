@@ -6,11 +6,11 @@
 此脚本用于在termux中运行chroot系统     
 chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux      
 # 截图    
-![image](https://github.com/Moe-hacker/termux-container/raw/main/Screenshot_2021-08-02-18-31-23-788_com.termux.jpg)
-![image](https://github.com/Moe-hacker/termux-container/raw/main/Screenshot_2021-08-02-18-31-55-299_com.termux.jpg)
+![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_2021-08-02-18-31-23-788_com.termux.jpg)
+![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_2021-08-02-18-31-55-299_com.termux.jpg)
 ----------      
 # 交个官方作业：      
-![avatar](https://github.com/Moe-hacker/termux-container/raw/main/screenshot.jpg)
+![avatar](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot.jpg)
 系统ubuntu，链接      
 https://share.weiyun.com/6sSwpBW8      
 解压后为16G镜像文件     
