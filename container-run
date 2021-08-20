@@ -113,7 +113,7 @@ if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂�
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mReMount \033[35m/data\033[0m"
     [[ ${SLEEP} = "n" ]] || sleep 0.3s
     mount -o remount,suid /data  >/dev/null 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题( 解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done] \033[34mReMount \033[35m/data\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mReMount \033[35m/data\033[0m"
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
     [[ ${SLEEP} = "n" ]] || sleep 0.3s
     mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
