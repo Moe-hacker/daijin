@@ -5,3 +5,4 @@ mkdir -p /data/data/com.termux/files/usr/share/termux-container
 git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container
 cd /data/data/com.termux/files/usr/share/termux-container
 cp container /data/data/com.termux/files/usr/bin/
+echo -e "\033[34mPlease run \033[33mcontainer configure\033[0m"
