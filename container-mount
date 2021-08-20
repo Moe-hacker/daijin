@@ -1,5 +1,5 @@
-######用于只挂载镜像到指定挂载点而不运行chroot######
 #!/data/data/com.termux/files/usr/bin/bash
+######用于只挂载镜像到指定挂载点而不运行chroot######
 if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
     echo -e "\033[31m[ERR!] \033[35mcontainer.conf \033[31mdoes not exist. Please run \033[33m container configure \033[0m"
     exit

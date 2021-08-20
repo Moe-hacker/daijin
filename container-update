@@ -1,5 +1,5 @@
-#########用于更新此脚本#########
 #!/data/data/com.termux/files/usr/bin/bash
+#########用于更新此脚本#########
 cd /data/data/com.termux/files/usr/share/termux-container
 git reset --hard
 git pull

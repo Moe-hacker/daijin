@@ -1,5 +1,5 @@
-#########用于解除系统文件挂载#########
 #!/data/data/com.termux/files/usr/bin/bash
+#########用于解除系统文件挂载#########
 if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
   echo -e "\033[31m[ERR!]  \033[35mPlease run the script with sudo\033[0m"
   exit

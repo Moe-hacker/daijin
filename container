@@ -1,5 +1,5 @@
-#########容器主程序#########
 #!/data/data/com.termux/files/usr/bin/bash
+#########容器主程序#########
 if [[ $1 = "unmount" ]];then
   bash /data/data/com.termux/files/usr/share/termux-container/container-unmount
 elif [[ $1 = "help" ]];then
