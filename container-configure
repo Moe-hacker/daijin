@@ -1,0 +1,34 @@
+#########用于容器安装#########
+#!/data/data/com.termux/files/usr/bin/bash
+read -p "请输入容器的绝对路径(或挂载点):" CHROOT_DIR
+read -p "请输入镜像文件绝对路径(一般为/data/xxx.img或/sdcard/xxx.img)，如果不使用镜像文件请留空:" CHROOT_IMG
+read -p "请输入镜像文件大小(纯数字，单位为Gb)，如果不使用镜像文件请留空:" SIZE
+read -p "请输入rootfs的下载链接:" URL
+read -p "是否关闭SELinux?[on启用/off关闭]:" SELINUX
+read -p "请输入主机名(hostname):" HOSTNAME
+read -p "是否启用输出?[on启用/off关闭]:" OUTPUT
+read -p "每条输出后是否停顿?[on启用/off关闭]:" SLEEP
+echo -e "正在下载rootfs………………………………"
+sleep 1s
+cd ~
+wget ${URL}
+sudo mkdir ${CHROOT_DIR}
+if [[ ! ${CHROOT_IMG} = "" ]];then
+  echo -e "正在创建镜像文件………………………………"
+  sudo dd if=/dev/zero of=${CHROOT_IMG} bs=1G count=${SIZE}
+  sudo mkfs.ext4 ${CHROOT_IMG}
+  echo -e "正在挂载镜像………………………………"
+  sleep 1s
+  LOOP=$(sudo losetup -f)
+  sudo losetup  ${LOOP} ${CHROOT_IMG}  >/dev/null 2>&1
+  sudo mount ${LOOP} ${CHROOT_DIR}  >/dev/null 2>&1
+fi
+echo -e "正在解压rootfs………………………………"
+sleep 1s
+sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
+echo -e "正在写入配置………………………………"
+sleep 1s
+echo CHROOT_DIR=${CHROOT_DIR} CHROOT_IMG=${CHROOT_IMG} SELinux=${SELINUX} OUTPUT=${OUTPUT} SLEEP=${SLEEP} HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+echo -e "正在删除已下载的rootfs………………………………"
+sleep 1s
+rm ~/rootfs.tar.xz
