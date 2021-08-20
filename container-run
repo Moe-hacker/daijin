@@ -20,8 +20,8 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错�
   echo -e "\033[31m[ERR!]  \033[35mPlease run the script with sudo\033[0m"
   exit
 else
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Check] \033[34mDevice is rooted\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Check] \033[34mDevice is rooted\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
 fi
 #加载配置文件
 if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
@@ -38,20 +38,20 @@ if [[ !${CHROOT_IMG} = "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用容�
   echo -e "\033[31m[ERR!] \033[35mImage file does not exist \033[0m"
   exit
 fi
-if [[ ${SELINUX} = "off" ]];then #判断是否需要关闭selinux
+if [[ ${SELINUX} = "n" ]];then #判断是否需要关闭selinux
   if [[ ! $(getenforce) = "Permissive" ]];then
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mDisable \033[35mSELinux\033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mDisable \033[35mSELinux\033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     setenforce 0 >/dev/null 2>&1 #关闭SELinux [!]危险操作
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mDisable \033[35mSELinux\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mDisable \033[35mSELinux\033[0m"
   fi
 fi
 if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
   if [[ ! $(hostname) = ${HOSTNAME} ]];then
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mSet \033[35mhostname\033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mSet \033[35mhostname\033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     hostname ${HOSTNAME} >/dev/null 2>&1 #设置主机名
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mSet \033[35mhostname\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mSet \033[35mhostname\033[0m"
   fi
 fi
 ############################################
@@ -66,69 +66,69 @@ fi
 ############################################
 #创建一些由于android和普通linux之间的差异而不存在的文件
 if [[ ! -e /dev/fd ]];then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/fd\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/fd\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd /dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/fd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/fd\033[0m"
 fi
 if [[ ! -e /dev/stdin ]];then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/stdin\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/stdin\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/0 /dev/stdin  >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/stdin\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/stdin\033[0m"
 fi
 if [[ ! -e /dev/stdout ]];then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/stdout\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/stdout\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/1 /dev/stdout >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/stdout \033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/stdout \033[0m"
 fi
 if [[ ! -e /dev/stderr ]] ;then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/stderr\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/stderr\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/2 /dev/stderr >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/stderr\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/stderr\033[0m"
 fi
 if [[ ! -e /dev/tty0 ]];then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/tty0\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/tty0\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   ln -s /dev/null /dev/tty0 >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat  \033[35m/dev/tty0\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat  \033[35m/dev/tty0\033[0m"
 fi
 if [[ ! -e /dev/net/tun ]];then
   if [[ ! -d /dev/net ]];then
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/net\033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/net\033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     mkdir -p /dev/net >/dev/null 2>&1
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/net\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/net\033[0m"
    fi
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/net/tun\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat \033[35m/dev/net/tun\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mknod /dev/net/tun c 10 200  >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/net/tun\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat \033[35m/dev/net/tun\033[0m"
 fi
 #挂载系统
 if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
   if [[ ${CHROOT_IMG} = "" ]];then
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mReMount \033[35m/data\033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mReMount \033[35m/data\033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     mount -o remount,suid /data  >/dev/null 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题( 解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done] \033[34mReMount \033[35m/data\033[0m"
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done] \033[34mReMount \033[35m/data\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m${CHROOT_DIR} \033[0m"
   else
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mRun \033[35mfsck\033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mRun \033[35mfsck\033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     fsck.ext4 -a -f  ${CHROOT_IMG} >/dev/null 2>&1 #修复结构需要清理报错，有一定效果
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mRun \033[35mfsck\033[0m"
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_IMG} \033[0m"
-    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mRun \033[35mfsck\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m${CHROOT_IMG} \033[0m"
+    [[ ${SLEEP} = "n" ]] || sleep 0.3s
     loop=$(losetup -f) #查找未使用的loop文件
     losetup  ${loop} ${CHROOT_IMG}  >/dev/null 2>&1
     mount  ${loop} ${CHROOT_DIR}  >/dev/null 2>&1
-    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m${CHROOT_IMG} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m${CHROOT_IMG} \033[0m"
   fi
 fi
 #创建rootfs中可能不存在的文件,暂时不加输出
@@ -147,58 +147,58 @@ if [[ -L ${CHROOT_DIR}/etc/resolv.conf || ! -e ${CHROOT_DIR}/etc/resolv.conf ]];
 fi
 #挂载内置存储，由于解除挂载会导致宿主机/sdcard无法访问，此处弃坑
 #  if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
-#    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sdacrd\033[0m"
-#    [[ ${SLEEP} = "off" ]] || sleep 0.3s
+#    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sdacrd\033[0m"
+#    [[ ${SLEEP} = "n" ]] || sleep 0.3s
 #    mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
 #    mount --bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
-#    [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sdacrd\033[0m"
+#    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sdacrd\033[0m"
 #  fi
 #挂载系统文件
 if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/proc\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/proc\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mount -t proc proc  ${CHROOT_DIR}/proc/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/proc\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/proc\033[0m"
 fi
 if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mount --rbind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev\033[0m"
 fi
 if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被挂载
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sys\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sys\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mount --rbind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sys\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sys\033[0m"
 fi
 #挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
 if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mCreat directory \033[35m/dev/shm\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mCreat directory \033[35m/dev/shm\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #创建/dev/shm
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mCreat directory \033[35m/dev/shm\033[0m"
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35mtmpfs\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mCreat directory \033[35m/dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35mtmpfs\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >/dev/null 2>&1 #挂载tmpfs
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35mtmpfs\033[0m"
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev/shm\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35mtmpfs\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev/shm\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev/shm\033[0m"
 fi
 if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev/pts\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/dev/pts\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
   mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev/pts\033[0m"
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mChange mode of \033[35m/dev/null\033[0m"
-  [[ ${SLEEP} = "off" ]] || sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/dev/pts\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mChange mode of \033[35m/dev/null\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
   chmod 666 /dev/null >/dev/null 2>&1
-  [[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Done]  \033[34mChange mode of \033[35m/dev/null\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mChange mode of \033[35m/dev/null\033[0m"
 fi
-[[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Start] \033[34mRun chroot\033[0m"
-[[ ${SLEEP} = "off" ]] || sleep 0.3s
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mRun chroot\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root

@@ -4,10 +4,10 @@ read -p "请输入容器的绝对路径(或挂载点):" CHROOT_DIR
 read -p "请输入镜像文件绝对路径(一般为/data/xxx.img或/sdcard/xxx.img)，如果不使用镜像文件请留空:" CHROOT_IMG
 read -p "请输入镜像文件大小(纯数字，单位为Gb)，如果不使用镜像文件请留空:" SIZE
 read -p "请输入rootfs的下载链接:" URL
-read -p "是否关闭SELinux?[on启用/off关闭]:" SELINUX
+read -p "是否关闭SELinux?[y/n]:" SELINUX
 read -p "请输入主机名(hostname):" HOSTNAME
-read -p "是否启用输出?[on启用/off关闭]:" OUTPUT
-read -p "每条输出后是否停顿?[on启用/off关闭]:" SLEEP
+read -p "是否启用输出?[y/n]:" OUTPUT
+read -p "每条输出后是否停顿?[y/n]:" SLEEP
 echo -e "正在下载rootfs………………………………"
 sleep 1s
 cd ~
