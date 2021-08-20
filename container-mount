@@ -8,5 +8,5 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置�
 loop=$(sudo losetup -f)
 sudo losetup $loop ${CHROOT_IMG}
 sudo mount $loop ${CHROOT_DIR}
-[[ ${OUTPUT} = "off" ]] || echo -e "\033[32m[Info]  \033[34mDone!\033[0m"
 echo -e "\033[32m[Info] \033[35m${CHROOT_IMG} \033[34mMounted on \033[35m${CHROOT_DIR} \033[0m"
+echo -e "\033[32m[Info]  \033[34mDone!\033[0m"
