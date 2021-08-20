@@ -146,13 +146,13 @@ if [[ -L ${CHROOT_DIR}/etc/resolv.conf || ! -e ${CHROOT_DIR}/etc/resolv.conf ]];
   echo nameserver 114.114.114.114 >> ${CHROOT_DIR}/etc/resolv.conf #解决未设置dns导致无法联网
 fi
 #挂载内置存储，由于解除挂载会导致宿主机/sdcard无法访问，此处弃坑
-#  if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
-#    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sdacrd\033[0m"
-#    [[ ${SLEEP} = "n" ]] || sleep 0.3s
-#    mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
-#    mount --bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
-#    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sdacrd\033[0m"
-#  fi
+if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/sdacrd\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
+  mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
+  mount -o ro,bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mMount \033[35m/sdacrd\033[0m"
+fi
 #挂载系统文件
 if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mMount \033[35m/proc\033[0m"
