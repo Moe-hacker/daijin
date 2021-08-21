@@ -4,7 +4,7 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错�
   echo -e "\033[31m[ERR!]  To run the script,you need to root your Device\033[0m"
   exit
 else
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Check] \033[34mRunning as root\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Check] Running as root\033[0m"
   [[ ${SLEEP} = "n" ]] || sleep 0.3s
 fi
 if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
@@ -23,5 +23,5 @@ fi
 loop=$(sudo losetup -f)
 sudo losetup $loop ${CHROOT_IMG}
 sudo mount $loop ${CHROOT_DIR}
-echo -e "\033[31m[Info] ${CHROOT_IMG} \033[34mMounted on ${CHROOT_DIR} \033[0m"
-echo -e "\033[31m[Info]  \033[34mDone!\033[0m"
+echo -e "\033[31m[Info] ${CHROOT_IMG} Mounted on ${CHROOT_DIR} \033[0m"
+echo -e "\033[31m[Info]  Done!\033[0m"
