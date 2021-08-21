@@ -18,9 +18,6 @@ curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/insta
 ```sh
 container help
 ```
-### 截图    
-![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_2021-08-02-18-31-23-788_com.termux.jpg)
-![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_2021-08-02-18-31-55-299_com.termux.jpg)
 ### 交个官方作业：      
 ![avatar](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot.jpg)
 系统ubuntu，链接      
