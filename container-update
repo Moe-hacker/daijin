@@ -3,7 +3,7 @@
 echo -e "\033[31m UPDATING"
 cd /data/data/com.termux/files/usr/share/termux-container
 git reset --hard
-git pull
+echo -e "\033[31m$(git pull)"
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
 chmod 777 /data/data/com.termux/files/usr/bin/container
