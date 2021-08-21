@@ -28,7 +28,12 @@ sleep 1s
 sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
 echo -e "正在写入配置………………………………"
 sleep 1s
-echo CHROOT_DIR=${CHROOT_DIR} CHROOT_IMG=${CHROOT_IMG} SELinux=${SELINUX} OUTPUT=${OUTPUT} SLEEP=${SLEEP} HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf
+echo CHROOT_IMG=${CHROOT_IMG} >> /data/data/com.termux/files/usr/etc/container.conf
+echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+echo SLEEP=${SLEEP} >> /data/data/com.termux/files/usr/etc/container.conf
+echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
 echo -e "正在删除已下载的rootfs………………………………"
 sleep 1s
 rm ~/rootfs.tar.xz
