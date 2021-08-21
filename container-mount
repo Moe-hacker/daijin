@@ -1,10 +1,24 @@
 #!/data/data/com.termux/files/usr/bin/bash
 ######用于只挂载镜像到指定挂载点而不运行chroot######
+if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
+  echo -e "\033[31m[ERR!]  \033[35mTo run the script,you need to root your Device\033[0m"
+  exit
+else
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Check] \033[34mRunning as root\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
+fi
 if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
-    echo -e "\033[31m[ERR!] \033[35mcontainer.conf \033[31mdoes not exist. Please run \033[33m container configure \033[0m"
+    echo -e "\033[31m[ERR!] \033[35mcontainer.conf \033[31mdoes not exist\033[0m"
     exit
 fi
 export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
+if [[ ${CHROOT_IMG} = "" ]];then
+  echo -e "\033[31m[ERR!] \033[35m Not useing image file\033[0m"
+fi
+if [[ ! -e ${CHROOT_IMG} ]];then
+  echo -e "\033[31m[ERR!] \033[35mImage file does not exist \033[0m"
+  exit
+fi
 loop=$(sudo losetup -f)
 sudo losetup $loop ${CHROOT_IMG}
 sudo mount $loop ${CHROOT_DIR}

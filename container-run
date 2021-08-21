@@ -11,16 +11,16 @@
 #变量名设置🧐：
 #${CHROOT_IMG}:容器镜像文件
 #${CHROOT_DIR}:chroot容器绝对路径或挂载点
-#${SELINUX}:[on/off], 是否关闭SELinux
+#${SELINUX}:[y/n], 是否关闭SELinux
 #${HOSTNAME}:设置主机名
-#${OUTPUT}:[on/off]是否启用输出
-#${SLEEP}:[on/off]是否启用停顿
+#${OUTPUT}:[y/n]是否启用输出
+#${SLEEP}:[y/n]是否启用停顿
 ###### E-mail: moe-hacker@outlook.com ######
-if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
-  echo -e "\033[31m[ERR!]  \033[35mPlease run the script with sudo\033[0m"
+if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭，此处无root证明设备未获得root权限
+  echo -e "\033[31m[ERR!]  \033[35mTo run the script,you need to root your Device\033[0m"
   exit
 else
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Check] \033[34mDevice is rooted\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Check] \033[34mRunning as root\033[0m"
   [[ ${SLEEP} = "n" ]] || sleep 0.3s
 fi
 #加载配置文件

@@ -1,37 +1,40 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于解除系统文件挂载#########
 if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
-  echo -e "\033[31m[ERR!]  \033[35mPlease run the script with sudo\033[0m"
+  echo -e "\033[31m[ERR!]  \033[35mTo run the script,you need to root your Device\033[0m"
   exit
 else
-  export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/dev\033[0m"
-  [[ ${SLEEP} = "n" ]] || sleep 0.3s
-  umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/dev\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/sys\033[0m"
-  [[ ${SLEEP} = "n" ]] || sleep 0.3s
-  umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/sys\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/proc\033[0m"
-  [[ ${SLEEP} = "n" ]] || sleep 0.3s
-  umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/proc\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/sdcard\033[0m"
-  [[ ${SLEEP} = "n" ]] || sleep 0.3s
-  umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/sdcard\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m${CHROOT_DIR}\033[0m"
-  [[ ${SLEEP} = "n" ]] || sleep 0.3s
-  umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
-  losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m${CHROOT_DIR}\033[0m"
-  if [[ $SELINUX = "n" ]];then #判断SELinux是否为关闭状态
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mEnable \033[35mSELinux\033[0m"
-    [[ ${SLEEP} = "n" ]] || sleep 0.3s
-    setenforce 1  >/dev/null 2>&1 #重启SELinux
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mEnable \033[35mSELinux\033[0m"
-  fi
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Info]  \033[34mAll done!\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Check] \033[34mRunning as root\033[0m"
   [[ ${SLEEP} = "n" ]] || sleep 0.3s
 fi
+export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/dev\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
+umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/dev\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/sys\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
+umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/sys\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/proc\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
+umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/proc\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m/sdcard\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
+umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m/sdcard\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mUnmount \033[35m${CHROOT_DIR}\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
+umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
+losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m${CHROOT_DIR}\033[0m"
+if [[ $SELINUX = "n" ]];then #判断SELinux是否为关闭状态
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mEnable \033[35mSELinux\033[0m"
+  [[ ${SLEEP} = "n" ]] || sleep 0.3s
+  setenforce 1  >/dev/null 2>&1 #重启SELinux
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mEnable \033[35mSELinux\033[0m"
+fi
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Info]  \033[34mAll done!\033[0m"
+[[ ${SLEEP} = "n" ]] || sleep 0.3s
+
