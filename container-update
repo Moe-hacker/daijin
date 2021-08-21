@@ -7,4 +7,4 @@ git pull
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
 chmod 777 /data/data/com.termux/files/usr/bin/container
-echo -e "DONE\033[0m"
+echo -e "\033[31mDONE\033[0m"
