@@ -29,7 +29,7 @@ umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
 umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
 losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Done]  \033[34mUnmount \033[35m${CHROOT_DIR}\033[0m"
-if [[ $SELINUX = "n" ]];then #判断SELinux是否为关闭状态
+if [[ $SELINUX = "y" ]];then #判断SELinux是否为关闭状态
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mEnable \033[35mSELinux\033[0m"
   [[ ${SLEEP} = "n" ]] || sleep 0.3s
   setenforce 1  >/dev/null 2>&1 #重启SELinux

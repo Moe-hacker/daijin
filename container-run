@@ -22,7 +22,7 @@ if [[ !${CHROOT_IMG} = "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用容�
   echo -e "\033[31m[ERR!] \033[35mImage file does not exist \033[0m"
   exit
 fi
-if [[ ${SELINUX} = "n" ]];then #判断是否需要关闭selinux
+if [[ ${SELINUX} = "y" ]];then #判断是否需要关闭selinux
   if [[ ! $(getenforce) = "Permissive" ]];then
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[32m[Start] \033[34mDisable \033[35mSELinux\033[0m"
     [[ ${SLEEP} = "n" ]] || sleep 0.3s
