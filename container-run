@@ -12,9 +12,10 @@ fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mTERMUX-CONTAINER\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mBY MOE-HACKER\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mGPL-V3 LICENSE\033[0m"
-[[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[41;37mLOADING...                            \033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || sleep 0.3s
