@@ -5,3 +5,4 @@ git reset --hard
 git pull
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
+chmod 777 /data/data/com.termux/files/usr/bin/container
