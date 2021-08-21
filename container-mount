@@ -14,6 +14,7 @@ fi
 export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
 if [[ ${CHROOT_IMG} = "" ]];then
   echo -e "\033[31m[ERR!] \033[35m Not using image file\033[0m"
+  exit
 fi
 if [[ ! -e ${CHROOT_IMG} ]];then
   echo -e "\033[31m[ERR!] \033[35mImage file does not exist \033[0m"
