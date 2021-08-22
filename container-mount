@@ -1,6 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
 ######用于只挂载镜像到指定挂载点而不运行chroot######
-clear
 if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
     echo -e "\033[31m[ERR!] container.conf \033[31mdoes not exist\033[0m"
     exit
@@ -14,6 +13,56 @@ if [[ ! -e ${CHROOT_IMG} ]];then
   echo -e "\033[31m[ERR!] Image file does not exist \033[0m"
   exit
 fi
+[[ ${OUTPUT} = "n" ]] || clear
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mTERMUX-CONTAINER\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mBY MOE-HACKER\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mGPL-V3 LICENSE\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[41;37mMOUNTING...                                    \033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || sleep 0.3s
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNO WARRANTY\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
+[[ ${OUTPUT} = "n" ]] || sleep 1s
+[[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m                o            o\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m                 o          o\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m                 +hydNNNNdyh+\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m               +mMMMMMMMMMMMMm+\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m              dMM::NMMMMMMN::MMd \033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m             hMMMMMMMMMMMMMMMMMMh\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m        ╔═║  ╔═   ╔═   ╔═║  ╔═║  ║  ╔═"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m        ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m        ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1001011 1100101 1100101 1110000 1100111 0100000\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101101 1101111 1100101 1011000 1101011 1000011\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100101 1100101 1110000 1000000 1100011 1101110\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101111 1101111 1101100 1011000 1101011 1101011\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100101 1100101 1110000 1000000 1101000 1100110\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100001 1100011 1101011 1101000 1101110 1000000\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100111 1011001 1101011 1100101 1100101 1100110\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1110000 1000001 1100110 1101001 1111001 1000010\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101001 1101110 1100111 1011100 0001010 1101011\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1011011 1011011 1011010 1011010 1010100 1101110\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100001 1101100 1101011 1000000 1101001 1000000\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1110011 1000000 1100011 1101000 1100101 1011001\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100001 1110000 1011000 1110011 1101000 1101011\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101111 1110111 1000000 1101101 1100101 1100101\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1000001 1110100 1101000 1100101 0100000 1100110\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100011 1101111 1100100 1100101 0101110 1011000\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101001 1101110 1100111 1011100 0001010 1000000\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100001 1100011 1101011 1101000 1101110 1011000\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNEVER SETTLE\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
+[[ ${OUTPUT} = "n" ]] || sleep 2s
 loop=$(sudo losetup -f)
 sudo losetup $loop ${CHROOT_IMG}
 sudo mount $loop ${CHROOT_DIR}
