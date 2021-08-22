@@ -20,24 +20,11 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
   sudo container $1
   exit
 fi
-if [[ $1 = "unmount" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-unmount
-  exit
-fi
-if [[ $1 = "help" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-help
-  exit
-fi
-if [[ $1 = "configure" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-configure
-  exit
-fi
-if [[ $1 = "update" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-update
-  exit
-fi
-if [[ $1 = "mount" ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/container-mount
-  exit
-fi
-bash /data/data/com.termux/files/usr/share/termux-container/container-run
+case $1 in
+        unmount) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
+        help)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
+        configure) bash /data/data/com.termux/files/usr/share/termux-container/container-configure;;
+        update) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
+        mount) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
+        *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
+esac
