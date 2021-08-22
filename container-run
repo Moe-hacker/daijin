@@ -22,6 +22,7 @@ fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mCONTAINER WITH CHROOT\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNO WARRANTY\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m TIME $(date|awk '{print $4}')\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 1s
 [[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m            o            o\033[0m"
