@@ -13,7 +13,7 @@ echo -e "  \033[31mOUTPUT\033[31m=\033[31m[y/n] \033[31m是否启用脚本 输�
 echo -e "  \033[31mSLEEP\033[31m=\033[31m[y/n] \033[31m是否启用停顿，如果你嫌运行太快，可以开启此选项，每条输出后停顿0.3秒\033[0m"
 echo -e "  \033[31m示例：\033[0m"
 echo -e "  \033[31mCHROOT_IMG\033[31m=\033[31m/data/example.img \033[31mCHROOT_DIR\033[31m=\033[31m/data/example \033[31mSELINUX\033[31m=\033[31my \033[31mHOSTNAME\033[31m=\033[31mMoe-hacker \033[31mOUTPUT\033[31m=\033[31my\033[0m \033[31mSLEEP\033[31m=\033[31my\033[0m"
-echo -e "  \033[31m上述配置即：容器镜像为\033[31m/data/example.img 容器目录为\033[31m/data/example \033[31m启用\033[31mSELinux \033[31m主机名为\033[31mMoe-hacker \033[31m启用脚本输出\033[0m \033[31m启用停顿\033[0m"
+echo -e "  \033[31m上述配置即：容器镜像为\033[31m/data/example.img 容器目录为\033[31m/data/example \033[31m关闭\033[31mSELinux \033[31m主机名为\033[31mMoe-hacker \033[31m启用脚本输出\033[0m \033[31m启用停顿\033[0m"
 echo -e "\033[31m脚本用法:\033[0m"
 echo -e "  \033[31mcontainer\033[31m:运行\033[31mchroot\033[31m容器\033[0m"
 echo -e "  \033[31mcontainer configure\033[31m:配置\033[31mchroot\033[31m容器\033[0m"
