@@ -11,8 +11,8 @@ https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images
 注：推荐新手使用Ubuntu       
 ### 安装并配置此脚本            
 #### 安装:
-```shell
-curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh|bash
+```sh
+bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
 ```
 更多帮助文档请查看
 ```sh
