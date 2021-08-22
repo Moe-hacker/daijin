@@ -51,32 +51,32 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置�
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNEVER SETTLE\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 2s
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Unmount /dev\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT /dev\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Done]  Unmount /dev\033[0m"
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Unmount /sys\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] UNMOUNT /dev\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT /sys\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Done]  Unmount /sys\033[0m"
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Unmount /proc\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] UNMOUNT /sys\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT /proc\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Done]  Unmount /proc\033[0m"
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Unmount /sdcard\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] UNMOUNT /proc\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT /sdcard\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Done]  Unmount /sdcard\033[0m"
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Unmount ${CHROOT_DIR}\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] UNMOUNT /sdcard\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT ${CHROOT_DIR}\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
 losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Done]  Unmount ${CHROOT_DIR}\033[0m"
-if [[ $SELINUX = "y" ]];then #判断SELinux是否为关闭状态
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Enable SELinux\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] UNMOUNT ${CHROOT_DIR}\033[0m"
+if [[ $SELINUX = "y" ]];then #判断SELINUX是否为关闭状态
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] ENABLE SELINUX\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
-  setenforce 1  >/dev/null 2>&1 #重启SELinux
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Done]  Enable SELinux\033[0m"
+  setenforce 1  >/dev/null 2>&1 #重启SELINUX
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] ENABLE SELINUX\033[0m"
 fi
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Info]  All done!\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[INFO]  DONE\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s

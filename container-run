@@ -72,7 +72,7 @@ if [[ ${SELINUX} = "y" ]];then #判断是否需要关闭selinux
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] DISABLE SELINUX\033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     setenforce 0 >/dev/null 2>&1 #关闭SELINUX [!]危险操作
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  DISABLE SELINUX\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] DISABLE SELINUX\033[0m"
   fi
 fi
 if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
@@ -80,7 +80,7 @@ if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] SET HOSTNAME\033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     hostname ${HOSTNAME} >/dev/null 2>&1 #设置主机名
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  SET HOSTNAME\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] SET HOSTNAME\033[0m"
   fi
 fi
 ############################################
@@ -98,43 +98,43 @@ if [[ ! -e /dev/fd ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/fd\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd /dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT /dev/fd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT /dev/fd\033[0m"
 fi
 if [[ ! -e /dev/stdin ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/stdin\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/0 /dev/stdin  >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT /dev/stdin\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT /dev/stdin\033[0m"
 fi
 if [[ ! -e /dev/stdout ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/stdout\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/1 /dev/stdout >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT /dev/stdout \033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT /dev/stdout \033[0m"
 fi
 if [[ ! -e /dev/stderr ]] ;then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/stderr\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/2 /dev/stderr >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT /dev/stderr\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT /dev/stderr\033[0m"
 fi
 if [[ ! -e /dev/tty0 ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/tty0\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /dev/null /dev/tty0 >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT  /dev/tty0\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT  /dev/tty0\033[0m"
 fi
 if [[ ! -e /dev/net/tun ]];then
   if [[ ! -d /dev/net ]];then
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/net\033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     mkdir -p /dev/net >/dev/null 2>&1
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT /dev/net\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT /dev/net\033[0m"
    fi
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT /dev/net/tun\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mknod /dev/net/tun c 10 200  >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT /dev/net/tun\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT /dev/net/tun\033[0m"
 fi
 #挂载系统
 if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
@@ -142,22 +142,22 @@ if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂�
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] REMOUNT /data\033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     mount -o remount,suid /data  >/dev/null 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题( 解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  REMOUNT /data\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] REMOUNT /data\033[0m"
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT ${CHROOT_DIR} \033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT ${CHROOT_DIR} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT ${CHROOT_DIR} \033[0m"
   else
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] RUN FSCK\033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     fsck.ext4 -a -f  ${CHROOT_IMG} >/dev/null 2>&1 #修复结构需要清理报错，有一定效果
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  RUN FSCK\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] RUN FSCK\033[0m"
     [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT ${CHROOT_IMG} \033[0m"
     [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
     loop=$(losetup -f) #查找未使用的loop文件
     losetup  ${loop} ${CHROOT_IMG}  >/dev/null 2>&1
     mount  ${loop} ${CHROOT_DIR}  >/dev/null 2>&1
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT ${CHROOT_IMG} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT ${CHROOT_IMG} \033[0m"
   fi
 fi
 #创建rootfs中可能不存在的文件,暂时不加输出
@@ -180,52 +180,52 @@ if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
   mount -o ro,bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT /sdacrd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT /sdacrd\033[0m"
 fi
 #挂载系统文件
 if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT /proc\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mount -t proc proc  ${CHROOT_DIR}/proc/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT /proc\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT /proc\033[0m"
 fi
 if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT /dev\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --rbind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT /dev\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT /dev\033[0m"
 fi
 if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被挂载
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT /sys\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --rbind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT /sys\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT /sys\033[0m"
 fi
 #挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
 if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CREAT DIRECTORY /dev/shm\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #创建/dev/shm
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CREAT DIRECTORY /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CREAT DIRECTORY /dev/shm\033[0m"
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT tmpfs\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >/dev/null 2>&1 #挂载tmpfs
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT tmpfs\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT tmpfs\033[0m"
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT /dev/shm\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT /dev/shm\033[0m"
 fi
 if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] MOUNT /dev/pts\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
   mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  MOUNT /dev/pts\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] MOUNT /dev/pts\033[0m"
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] CHANGE MODE OF /dev/null\033[0m"
   [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
   chmod 666 /dev/null >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ]  CHANGE MODE OF /dev/null\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] CHANGE MODE OF /dev/null\033[0m"
 fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] RUN CHROOT\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s

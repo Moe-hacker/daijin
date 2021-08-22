@@ -66,5 +66,5 @@ fi
 loop=$(sudo losetup -f)
 sudo losetup $loop ${CHROOT_IMG}
 sudo mount $loop ${CHROOT_DIR}
-echo -e "\033[31m[Info] ${CHROOT_IMG} Mounted on ${CHROOT_DIR} \033[0m"
-echo -e "\033[31m[Info]  Done!\033[0m"
+echo -e "\033[31m[INFO] ${CHROOT_IMG} MOUNTED ON ${CHROOT_DIR} \033[0m"
+echo -e "\033[31m[INFO]  DONE\033[0m"
