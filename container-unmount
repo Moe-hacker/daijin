@@ -1,13 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于解除系统文件挂载#########
+clear
 export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
-if [[ ! $(whoami) = "root" ]];then #判断用户，如果不是root直接报错关闭
-  echo -e "\033[31m[ERR!]  To run the script,you need to root your Device\033[0m"
-  exit
-else
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Check] Running as root\033[0m"
-  [[ ${SLEEP} = "n" ]] || sleep 0.3s
-fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[Start] Unmount /dev\033[0m"
 [[ ${SLEEP} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载

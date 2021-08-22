@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于容器安装#########
+clear
 echo -e "\033[31m CONFIGURE "
 read -p "请输入容器的绝对路径(或挂载点):" CHROOT_DIR
 read -p "请输入镜像文件绝对路径(一般为/data/xxx.img或/sdcard/xxx.img)，如果不使用镜像文件请留空:" CHROOT_IMG
@@ -27,7 +28,7 @@ fi
 echo -e "正在解压rootfs………………………………"
 sleep 1s
 sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
-echo -e "正在写入配置………………………………"
+echo -e "正在写入配置………………………………\033[0m"
 sleep 1s
 echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf
 echo CHROOT_IMG=${CHROOT_IMG} >> /data/data/com.termux/files/usr/etc/container.conf
@@ -35,6 +36,6 @@ echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
 echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
 echo SLEEP=${SLEEP} >> /data/data/com.termux/files/usr/etc/container.conf
 echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
-echo -e "正在删除已下载的rootfs………………………………"
+echo -e "\033[31m正在删除已下载的rootfs………………………………\033[0m"
 sleep 1s
 rm ~/rootfs.tar.xz

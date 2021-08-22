@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于更新此脚本#########
+clear
 echo -e "\033[31m UPDATING"
 cd /data/data/com.termux/files/usr/share/termux-container
 git reset --hard
