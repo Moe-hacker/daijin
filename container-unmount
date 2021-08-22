@@ -78,5 +78,5 @@ if [[ $SELINUX = "y" ]];then #判断SELINUX是否为关闭状态
   setenforce 1  >/dev/null 2>&1 #重启SELINUX
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[DONE ] ENABLE SELINUX\033[0m"
 fi
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[INFO]  DONE\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[INFO ] DONE\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
