@@ -52,7 +52,7 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) >/dev/null 2>&1
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 3s
 cd /data/data/com.termux/files/usr/share/termux-container
-git reset --hard
+echo -e "\033[31m$(git reset --hard)"
 echo -e "\033[31m$(git pull)"
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
