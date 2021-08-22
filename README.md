@@ -25,7 +25,7 @@ container help
 https://share.weiyun.com/6sSwpBW8      
 解压后为16G镜像文件     
 # 说明:            
-作者是萌新，借鉴andrax的启动脚本写了这个脚本的container-run部分      
+作者借鉴andrax的启动脚本写了这个脚本的container-run部分      
 andrax项目链接：      
 https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
 ## 背景
