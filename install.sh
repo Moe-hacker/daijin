@@ -5,7 +5,6 @@ echo -e "\033[31mTERMUX-CONTAINER BY MOE-HACKER\033[0m"
 echo -e "\033[31m         NO WARRANTY          \033[0m"
 echo -e "\033[31m   PRESS ENTER TO CONTINUE    \033[0m"
 read
-clear
 echo -e "\033[31mTERMUX-CONTAINER\033[0m"
 echo -e "\033[31mBY MOE-HACKER\033[0m"
 echo -e "\033[31mGPL-V3 LICENSE\033[0m"
