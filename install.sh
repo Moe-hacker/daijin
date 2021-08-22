@@ -14,7 +14,7 @@ echo -e "\033[41;37mINSTALLING...                                    \033[0m"
 echo -e ""
 echo -e "\033[31m//\033[0m"
 echo -e ""
-sleep 0.3s
+sleep 1s
 echo -e "\033[31mNO WARRANTY\033[0m"
 echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
 echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
@@ -31,6 +31,7 @@ echo -e "\033[31m        ╔═║  ╔═   ╔═   ╔═║  ╔═║  ║ 
 echo -e "\033[31m        ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║"
 echo -e "\033[31m        ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══"
 echo -e ""
+sleep 1s
 echo -e "\033[31m1001011 1100101 1100101 1110000 1100111 0100000\033[0m"
 echo -e "\033[31m1101101 1101111 1100101 1011000 1101011 1000011\033[0m"
 echo -e "\033[31m1100101 1100101 1110000 1000000 1100011 1101110\033[0m"
@@ -50,9 +51,11 @@ echo -e "\033[31m1100011 1101111 1100100 1100101 0101110 1011000\033[0m"
 echo -e "\033[31m1101001 1101110 1100111 1011100 0001010 1000000\033[0m"
 echo -e "\033[31m1100001 1100011 1101011 1101000 1101110 1011000\033[0m"
 echo -e ""
+sleep 1s
 echo -e "\033[31m//\033[0m"
 echo -e "\033[31mNEVER SETTLE\033[0m"
 echo -e "\033[31m//"
+sleep 1s
 pkg install git wget tsu curl e2fsprogs neofetch
 mkdir -p /data/data/com.termux/files/usr/share/termux-container
 git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container

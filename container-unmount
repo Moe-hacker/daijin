@@ -11,7 +11,7 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置�
 [[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e ""
-[[ ${OUTPUT} = "n" ]] || sleep 0.3s
+[[ ${OUTPUT} = "n" ]] || sleep 1s
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNO WARRANTY\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
@@ -28,6 +28,7 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置�
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m        ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m        ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══"
 [[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || sleep 1s
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1001011 1100101 1100101 1110000 1100111 0100000\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101101 1101111 1100101 1011000 1101011 1000011\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100101 1100101 1110000 1000000 1100011 1101110\033[0m"
@@ -47,10 +48,11 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置�
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1101001 1101110 1100111 1011100 0001010 1000000\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m1100001 1100011 1101011 1101000 1101110 1011000\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e ""
+[[ ${OUTPUT} = "n" ]] || sleep 1s
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNEVER SETTLE\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
-[[ ${OUTPUT} = "n" ]] || sleep 2s
+[[ ${OUTPUT} = "n" ]] || sleep 1s
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT /dev\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
