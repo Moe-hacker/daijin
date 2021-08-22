@@ -24,12 +24,28 @@ container help
 系统ubuntu，链接      
 https://share.weiyun.com/6sSwpBW8      
 解压后为16G镜像文件     
+# 脚本结构      
+```sh
+termux-container
+├── container #主脚本，安装时被复制存放在/data/data/com.termux/files/usr/bin中，调用termux-container中的子脚本，执行时会自动获取root权限
+├── container-configure #用于配置此脚本并解压rootfs
+├── container-help #帮助信息
+├── container-mount #用于挂载镜像但不运行chroot
+├── container-run #用于挂载系统并运行chroot
+├── container-unmount #用于解除系统挂载
+├── container-update #用于更新此项目
+├── install.sh #用于此项目安装
+├── LICENSE #许可证
+├── old #存放之前的老版本
+│   └── container #老版本的脚本，多合一，输出为彩色而非全红，没有赛博朋克特效
+└── README.md #github的readme文档
+```
 # 说明:            
 作者借鉴andrax的启动脚本写了这个脚本的container-run部分      
 andrax项目链接：      
 https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
 ## 背景
-虽然已经有大佬写过支持chroot运行linux的脚本了，但是我感觉不太符合我自己的要求，也不能自由配置容器目录，主机名，使用img镜像等，这个脚本主要是想使得配置更加自由，符合每个人的要求，但可惜bug太多了。
+虽然已经有大佬写过支持chroot运行linux的脚本了，但是我感觉不太符合我自己的要求，也不能自由配置容器目录，主机名，使用img镜像等，这个脚本主要是想使得配置更加自由，符合个人的要求，之前在ut群水的时候偶然间发现群友发的andrax的启动脚本的一张截图，就想到了基于那个脚本写一个chroot脚本，，然后找了半天，终于在gitlab上找到了，于是就有了container
 # 免责申明：        
 此项目采用GPL V3协议开源          
 使用此项目，您默认同意以下几点：          
