@@ -7,7 +7,7 @@ echo -e "\033[31m*********\033[31m        NO WARRANTY          \033[31m*********
 echo -e "\033[31m*********\033[31m   Press Enter to continue   \033[31m*********\033[0m"
 echo -e "\033[31m***********************************************"
 read
-pkg install git wget tsu curl e2fsprogs
+pkg install git wget tsu curl e2fsprogs neofetch
 mkdir -p /data/data/com.termux/files/usr/share/termux-container
 git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container
 cd /data/data/com.termux/files/usr/share/termux-container

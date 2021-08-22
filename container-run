@@ -23,6 +23,7 @@ fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNO WARRANTY\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 1s
 [[ ${OUTPUT} = "n" ]] || echo -e ""
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m                o            o\033[0m"
@@ -57,7 +58,7 @@ fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31mNEVER SETTLE\033[0m"
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m//\033[0m"
-[[ ${OUTPUT} = "n" ]] || sleep 2s
+[[ ${OUTPUT} = "n" ]] || sleep 3s
 [[ ${OUTPUT} = "n" ]] || clear
 if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
   echo -e "\033[31m[ERR!] Container directory does not exist\033[0m"
