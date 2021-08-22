@@ -1,7 +1,7 @@
 <p align="center">Dream with me.</p>         
 <p align="center">如果结果不如你所愿，就在尘埃落定前奋力一搏</p>        
 
-此脚本用于在termux中运行chroot系统     
+此脚本用于在termux中运行chroot系统，赛博朋克风格灵感来自一加赛博朋克联名开机动画     
 chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux      
 ### 使用教程:    
 
