@@ -18,7 +18,6 @@ sleep 1s
 echo -e "\033[31mNO WARRANTY\033[0m"
 echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
 echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
-echo -e "\033[31mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
 sleep 1s
 echo -e ""
 echo -e "\033[31m                o            o\033[0m"
