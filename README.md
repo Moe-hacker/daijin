@@ -1,6 +1,6 @@
-<p align="center">Dream with me.</p>         
-<p align="center">如果结果不如你所愿，</p>
-<p align="center">就在尘埃落定前奋力一搏。</p>        
+<p align="center">Dream with me</p>         
+<p align="center">如果结果不如你所愿</p>
+<p align="center">就在尘埃落定前奋力一搏</p>        
 
 -----------      
 年轻人的第一个开源项目(我总不能把自我介绍开源了吧)。      
