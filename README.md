@@ -28,10 +28,10 @@ container help
 系统ubuntu，链接：      
 https://share.weiyun.com/6sSwpBW8      
 解压后为16G镜像文件，建议先执行fsck.ext4一下。     
-# BUGS：      
+### BUGS：      
 &emsp;&emsp;目前已知可能有些设备ping无法使用，不过据说影响不大。      
 &emsp;&emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错。      
-# 脚本结构：      
+### 脚本结构：      
 ```sh
 termux-container
 ├── container #主脚本，安装时被复制存放在/data/data/com.termux/files/usr/bin中，调用termux-container目录中的子脚本，执行时会自动获取root权限
@@ -47,12 +47,12 @@ termux-container
 │   └── container #老版本的脚本，多合一，输出为彩色而非全红，没有赛博朋克特效
 └── README.md #github的readme文档
 ```
-# 说明:            
+### 说明:            
 &emsp;&emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：      
 https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
-## 背景：
+### 背景：
 &emsp;&emsp;虽然已经有大佬写过支持chroot运行linux的脚本了，但是我感觉不太符合我自己的要求，也不能自由配置容器目录，主机名，使用img镜像等，这个脚本主要是想使得配置更加自由，符合个人的要求，之前在ut群水的时候偶然间发现群友发的andrax的启动脚本的一张截图，就想到了基于那个脚本写一个chroot脚本，然后找了半天，终于在gitlab上找到了，于是就有了container(太草了)。
-# 免责申明：        
+## 免责申明：        
 此程序"无任何担保"。       
 此程序作者"无义务维护此项目"。(要不是开学了没空)   
 此项目采用GPL V3协议开源          
