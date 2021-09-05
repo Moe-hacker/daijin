@@ -21,7 +21,7 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
   exit
 fi
 TODO=$1
-if[[ -e /data/data/com.termux/files/usr/etc/container.conf ]];then
+if [[ -e /data/data/com.termux/files/usr/etc/container.conf ]];then
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
 else
   OUTPUT=y
