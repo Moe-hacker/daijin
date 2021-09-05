@@ -20,6 +20,8 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
   sudo container $1
   exit
 fi
+TODO=$1
+bash /data/data/com.termux/files/usr/share/termux-container/container-echo
 case $1 in
         unmount) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
         help)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
