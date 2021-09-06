@@ -25,7 +25,7 @@ if [[ -e /data/data/com.termux/files/usr/etc/container.conf ]];then
 else
   OUTPUT=y
 fi
-if [[ $OUTPUT=y ]] && [[ $1 != help ]];then
+if [[ $OUTPUT = "y" ]] && [[ $1 != help ]];then
   TODO=$1 bash /data/data/com.termux/files/usr/share/termux-container/container-echo
 fi
 case $1 in
