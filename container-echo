@@ -1,4 +1,30 @@
-echo_all(){
+#!/data/data/com.termux/files/usr/bin/bash
+#########用于没用的开头输出#########
+UNMOUNT(){
+echo -e "\033[41;30m              ║ ║  ╔═   ╔╔   ╔═║  ║ ║  ╔═   ═╔╝  ╝  ╔═   ╔═╝                \033[0m"
+echo -e "\033[41;30m              ║ ║  ║ ║  ║║║  ║ ║  ║ ║  ║ ║   ║   ║  ║ ║  ║ ║                \033[0m"
+echo -e "\033[41;30m              ══╝  ╝ ╝  ╝╝╝  ══╝  ══╝  ╝ ╝   ╝   ╝  ╝ ╝  ══╝                \033[0m"
+}
+CONFIGURE(){
+echo -e "\033[41;30m                 ╔═╝  ╔═║  ╔═   ╔═╝  ╝  ╔═╝  ║ ║  ╔═║  ╔═╝                  \033[0m"
+echo -e "\033[41;30m                 ║    ║ ║  ║ ║  ╔═╝  ║  ║ ║  ║ ║  ╔╔╝  ╔═╝                  \033[0m"
+echo -e "\033[41;30m                 ══╝  ══╝  ╝ ╝  ╝    ╝  ══╝  ══╝  ╝ ╝  ══╝                  \033[0m"
+}
+UPDATE(){
+echo -e "\033[41;30m                   ║ ║  ╔═║  ╔═   ╔═║  ═╔╝  ╝  ╔═   ╔═╝                     \033[0m"
+echo -e "\033[41;30m                   ║ ║  ╔═╝  ║ ║  ╔═║   ║   ║  ║ ║  ║ ║                     \033[0m"
+echo -e "\033[41;30m                   ══╝  ╝    ══   ╝ ╝   ╝   ╝  ╝ ╝  ══╝                     \033[0m"
+}
+MOUNT(){
+echo -e "\033[41;30m                   ╔╔   ╔═║  ║ ║  ╔═   ═╔╝  ╝  ╔═   ╔═╝                     \033[0m"
+echo -e "\033[41;30m                   ║║║  ║ ║  ║ ║  ║ ║   ║   ║  ║ ║  ║ ║                     \033[0m"
+echo -e "\033[41;30m                   ╝╝╝  ══╝  ══╝  ╝ ╝   ╝   ╝  ╝ ╝  ══╝                     \033[0m"
+}
+CONTAINER(){
+echo -e "\033[41;30m                 ╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║                  \033[0m"
+echo -e "\033[41;30m                 ║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝                  \033[0m"
+echo -e "\033[41;30m                 ══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝                  \033[0m"
+}
 echo -e "\033[31mTERMUX-CONTAINER\033[0m"
 sleep 0.1s
 sleep 0.1s
@@ -8,13 +34,15 @@ echo -e ""
 echo -e "\033[31m//\033[0m"
 echo -e ""
 sleep 0.1s
+echo -e "\033[41;30m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\033[0m"
 case $TODO in
-        unmount)  echo -e "\033[41;37mUNMOUNTING                                                              \033[0m";;
-        configure)echo -e "\033[41;37mCONFIGURE                                                               \033[0m";;
-        update)   echo -e "\033[41;37mUPDATING                                                               \033[0m";;
-        mount)    echo -e "\033[41;37mMOUNTING                                                              \033[0m";;
-        *)        echo -e "\033[41;37mLOADING                                                          \033[0m";;
+        unmount)  UNMOUNT;;
+        configure)CONFIGURE;;
+        update)   UPDATE;;
+        mount)    MOUNT;;
+        *)        CONTAINER;;
 esac
+echo -e "\033[41;30m>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
 echo -e ""
 sleep 0.1s
 echo -e "\033[31m//\033[0m"
@@ -94,6 +122,6 @@ echo -e "\033[31mNEVER SETTLE\033[0m"
 echo -e ""
 sleep 0.1s
 echo -e "\033[31m//"
+echo -e ""
 sleep 0.s
-}
-echo_all
+
