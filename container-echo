@@ -61,21 +61,6 @@ sleep 0.1s
 echo -e "\033[31mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
 echo -e ""
 sleep 0.1s
-echo -e "\033[31m                            o            o\033[0m"
-echo -e "\033[31m                             o          o\033[0m"
-sleep 0.1s
-echo -e "\033[31m                             +hydNNNNdyh+\033[0m"
-echo -e "\033[31m                           +mMMMMMMMMMMMMm+\033[0m"
-sleep 0.1s
-echo -e "\033[31m                          dMM::NMMMMMMN::MMd \033[0m"
-sleep 0.1s
-echo -e "\033[31m                         hMMMMMMMMMMMMMMMMMMh\033[0m"
-sleep 0.1s
-echo -e "\033[31m                    ╔═║  ╔═   ╔═   ╔═║  ╔═║  ║  ╔═"
-sleep 0.1s
-echo -e "\033[31m                    ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║"
-sleep 0.1s
-echo -e "\033[31m                    ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══"
 echo -e ""
 sleep 0.1s
 echo -e "\033[31m10011011 11011000 11000101 10100101 11010101 11010000 11010111 0100000\033[0m"
