@@ -3,16 +3,16 @@
 <p align="center">就在尘埃落定前奋力一搏</p>        
 
 -----------      
-&emsp;年轻人的第一个开源项目。
+&emsp;年轻人的第一个开源项目。      
 &emsp;此脚本用于在termux中运行chroot系统，赛博朋克风格灵感来自一加赛博朋克联名开机动画。     
 &emsp;chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux。      
 ### 使用教程:    
 
-#### 复制rootfs下载链接,推荐使用lxc镜像，链接:     
-https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
-找到你想使用的发行版目录，然后顺着目录找到arm64版的rootfs.tar.xz的链接。        
-一定要是rootfs.tar.xz，gz懒得写了，自行解压写配置文件去也行╮( •́ω•̀ )╭        
-注：推荐新手使用ubuntu，网上有关信息可能多些 : )      
+#### 复制rootfs下载链接      
+&emsp;推荐使用lxc镜像，链接:https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
+&emsp;找到你想使用的发行版目录，然后顺着目录找到arm64版的rootfs.tar.xz的链接。        
+&emsp;一定要是rootfs.tar.xz，gz懒得写了，自行解压写配置文件去也行╮( •́ω•̀ )╭        
+&emsp;注：推荐新手使用ubuntu，网上有关信息可能多些 : )      
 ### 安装并配置此脚本            
 #### 安装:
 ```sh
