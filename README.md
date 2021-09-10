@@ -6,8 +6,6 @@
 &emsp;&emsp;年轻人的第一个开源项目(我总不能把自我介绍开源了吧)。      
 &emsp;&emsp;此脚本用于在termux中运行chroot系统，赛博朋克风格灵感来自一加赛博朋克联名开机动画。     
 &emsp;&emsp;chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux。      
-&emsp;&emsp;qemu:你在教我做事啊？      
-&emsp;&emsp;火龙888：看不起我？      
 ### 使用教程:    
 
 #### 复制rootfs下载链接,推荐使用lxc镜像，链接:     
@@ -38,6 +36,7 @@ https://share.weiyun.com/6sSwpBW8
 termux-container
 ├── container #主脚本，安装时被复制存放在/data/data/com.termux/files/usr/bin中，调用termux-container目录中的子脚本，执行时会自动获取root权限
 ├── container-configure #用于配置此脚本并解压rootfs
+├── container-echo #没用的输出
 ├── container-help #帮助信息
 ├── container-mount #用于挂载镜像但不运行chroot
 ├── container-run #用于挂载系统并运行chroot
