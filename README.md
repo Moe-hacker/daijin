@@ -49,8 +49,7 @@ termux-container
 └── README.md #github的readme文档
 ```
 ### 说明:            
-&emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：      
-https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
+&emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
 ### 背景：
 &emsp;虽然已经有大佬写过支持chroot运行linux的脚本了，但是我感觉不太符合我自己的要求，也不能自由配置容器目录，主机名，使用img镜像等，这个脚本主要是想使得配置更加自由，符合个人的要求，之前在ut群水的时候偶然间发现群友发的andrax的启动脚本的一张截图，就想到了基于那个脚本写一个chroot脚本，然后找了半天，终于在gitlab上找到了，于是就有了container(太草了)。
 ## 免责申明：        
