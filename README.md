@@ -9,22 +9,20 @@
 ### 使用教程:    
 
 #### 复制rootfs下载链接      
-&emsp;推荐使用lxc镜像，链接:https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images      
+&emsp;推荐使用lxc镜像，链接:[lxc-images](https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images)      
 &emsp;找到你想使用的发行版目录，然后顺着目录找到arm64版的rootfs.tar.xz的链接。        
-&emsp;一定要是rootfs.tar.xz，gz懒得写了，自行解压写配置文件去也行╮( •́ω•̀ )╭        
-&emsp;注：推荐新手使用ubuntu，网上有关信息可能多些 : )      
+&emsp;一定要是rootfs.tar.xz，如果你是大佬，自己解压然后看wiki写配置文件也可以        
+&emsp;注：推荐新手使用ubuntu，网上有关信息可能多些 :-)      
 ### 安装并配置此脚本            
 #### 安装:
 ```sh
 bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
 container configure
 ```
-更多帮助文档请查看：
-```sh
-container help
-```
+更多帮助文档请查看wiki：      
+### [termux-container wiki](https://github.com/Moe-hacker/termux-container/wiki)
 ### 交个官方作业：      
-![avatar](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot.jpg)
+![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot.jpg)
 系统ubuntu，链接：      
 https://share.weiyun.com/6sSwpBW8      
 解压后为16G镜像文件，建议先执行fsck.ext4一下。     
@@ -49,7 +47,7 @@ termux-container
 └── README.md #github的readme文档
 ```
 ### 说明:            
-&emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2      
+&emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：[andrax-hackers-platform-v5-2](https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2)      
 ### 背景：
 &emsp;虽然已经有大佬写过支持chroot运行linux的脚本了，但是我感觉不太符合我自己的要求，也不能自由配置容器目录，主机名，使用img镜像等，这个脚本主要是想使得配置更加自由，符合个人的要求，之前在ut群水的时候偶然间发现群友发的andrax的启动脚本的一张截图，就想到了基于那个脚本写一个chroot脚本，然后找了半天，终于在gitlab上找到了，于是就有了container(太草了)。
 ## 免责申明：        
