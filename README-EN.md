@@ -26,9 +26,9 @@ container configure
 ```
 Enjoy it!
 ### Bugs      
-&emsp;If you are using Archlinux,maybe fakeroot is unavailable.
+&emsp;If you are using Archlinux,maybe fakeroot is unavailable.      
 &emsp;On some devices,ping may be unavailable.      
-I'll try to fix them.       
+&emsp;I'll try to fix them.       
 &emsp;Any bugs,please report at [ISSUES](https://github.com/Moe-hacker/termux-container/issues)
 ### About:      
 &emsp;I used some of the source code in [andrax](https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2) to finish this script,so I choosed the same license to publish it.      
