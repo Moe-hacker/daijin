@@ -6,8 +6,8 @@
 &emsp;In the chroot environment,you can do more things than Android,because it is a real Linux system.You can run a desktop and connect it with Realvnc Viewer,or you can just use the shell for programming or hacking.(But DO NOT against the laws!)
 ### Notes:      
 > Chroot is faster than proot with less limits.But it can only be run with root privileges,and it is dangerous.If you do not want to run programs that must be able to read/wright the files in /proc but using a common user,please do not disable SELinux.      
-### Screenshots:
-
+### Screenshot:
+![screenshot](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/aeedad8dd302fbd4bd0eb6a147f2d31e.jpg)
 ### Preparation:      
 &emsp;To run it,you need：      
 - A phone with root       
