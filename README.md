@@ -20,7 +20,7 @@ container configure
 更多帮助文档请查看wiki：      
 ### [termux-container wiki](https://github.com/Moe-hacker/termux-container/wiki)
 ### 交个官方作业：      
-![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot.jpg)
+![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot-ubuntu.jpg)
 系统ubuntu，链接：      
 https://share.weiyun.com/6sSwpBW8      
 解压后为16G镜像文件，建议先执行fsck.ext4一下。     
