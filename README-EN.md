@@ -12,7 +12,7 @@
 &emsp;To run it,you need：      
 - A phone with root       
 - Enough spare space      
-- Termux       
+- [Termux](https://termux.org)       
 - Some knowledge of Linux      
 ### Installation:
 &emsp;Copy the link to download the rootfs.I advice you to use the mirror of [lxc-images](https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images) . The architecture of rootfs must be the same as your device.   
