@@ -33,7 +33,7 @@ sleep 0.1s
   echo -e "\033[31m//\033[0m"
   echo -e ""
   sleep 0.1s
-  echo -e "\033[41;30mUPDATING                                                               \033[0m"
+  echo -e "\033[41;30mUPDATING                                                              \033[0m"
   sleep 0.1s
   echo -e ""
   echo -e "\033[31m//\033[0m"
