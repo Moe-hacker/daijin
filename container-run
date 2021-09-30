@@ -1,12 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于挂载系统并运行chroot#########
-#加载配置文件
-if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then # 判断配置文件是否存在
-  echo -e "\033[31m[ERR!]  container.conf DOES NOT EXIST. PLEASE RUN  container configure \033[0m"
-  exit
-else
-  export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置
-fi
 if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
   echo -e "\033[31m[ERR!] CONTAINER DIRECTORY DOES NOT EXIST\033[0m"
   exit
@@ -35,7 +28,7 @@ fi
 #####  下面这段借鉴了andrax的启动脚本  #####
 #####加入把系统安装在 img镜像文件的选项#####
 #####    修复了镜像文件结构需要清理    #####
-#####           加入一些判断           #####
+#####        mount前加入一些判断       #####
 #####  修复了sudo无法使用(未完全解决)  #####
 #####    修复了pacman无法分析挂载点    #####
 #####    修复未设置dns导致无法联网     #####

@@ -2,25 +2,18 @@
 #########容器主程序#########
 ###### Github@Moe-hacker ######
 #❀我萌故我在❀
-#•.,¸,.•*¯`•.,¸,.•....╭━━━━━━╮
-#`•.,¸,.•*¯`•.,¸,.•*¯.|:::::::::::/\:__:/\
-#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::::(｡ ●ω●｡)
-#`•.,¸,.•*¯`•.,¸,.•*  ╰し---し---Ｊ･ﾟ
+#•.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
+#`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
+#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::(｡ ●ω●｡)
+#`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
 #编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了。
 #借鉴了一部分andrax启动脚本，故采用相同的许可证。
-#变量名设置：
-#${CHROOT_IMG}:容器镜像文件
-#${CHROOT_DIR}:chroot容器绝对路径或挂载点
-#${SELINUX}:[y/n], 是否关闭SELinux
-#${HOSTNAME}:设置主机名
-#${OUTPUT}:[y/n]是否启用输出
-#${SLEEP}:[y/n]是否启用停顿
 ###### E-mail: moe-hacker@outlook.com ######
 if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
   sudo container $1
   exit
 fi
-if [[ -e /data/data/com.termux/files/usr/etc/container.conf ]];then
+if [[ $1 != configure ]];then
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
 else
   OUTPUT=y
@@ -29,10 +22,10 @@ if [[ $OUTPUT = "y" ]] && [[ $1 != help ]];then
   TODO=$1 bash /data/data/com.termux/files/usr/share/termux-container/container-echo
 fi
 case $1 in
-        unmount) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
-        help)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
-        configure) bash /data/data/com.termux/files/usr/share/termux-container/container-configure;;
-        update) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
-        mount) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
-        *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
+  unmount) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
+  help)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
+  configure) bash /data/data/com.termux/files/usr/share/termux-container/container-configure;;
+  update) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
+  mount) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
+  *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
 esac

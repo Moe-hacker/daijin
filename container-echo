@@ -2,131 +2,159 @@
 #########用于没用的开头输出#########
 clear
 UNMOUNT(){
-echo -e "\033[41;30m            ║ ║  ╔═   ╔╔   ╔═║  ║ ║  ╔═   ═╔╝  ╝  ╔═   ╔═╝            \033[0m"
-echo -e "\033[41;30m            ║ ║  ║ ║  ║║║  ║ ║  ║ ║  ║ ║   ║   ║  ║ ║  ║ ║            \033[0m"
-echo -e "\033[41;30m            ══╝  ╝ ╝  ╝╝╝  ══╝  ══╝  ╝ ╝   ╝   ╝  ╝ ╝  ══╝            \033[0m"
+  sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[41;30mUNMOUNTING                                                            \033[0m"
+  sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
 }
 CONFIGURE(){
-echo -e "\033[41;30m               ╔═╝  ╔═║  ╔═   ╔═╝  ╝  ╔═╝  ║ ║  ╔═║  ╔═╝              \033[0m"
-echo -e "\033[41;30m               ║    ║ ║  ║ ║  ╔═╝  ║  ║ ║  ║ ║  ╔╔╝  ╔═╝              \033[0m"
-echo -e "\033[41;30m               ══╝  ══╝  ╝ ╝  ╝    ╝  ══╝  ══╝  ╝ ╝  ══╝              \033[0m"
+sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[41;30mCONFIGURE                                                             \033[0m"
+  sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
 }
 UPDATE(){
-echo -e "\033[41;30m                 ║ ║  ╔═║  ╔═   ╔═║  ═╔╝  ╝  ╔═   ╔═╝                 \033[0m"
-echo -e "\033[41;30m                 ║ ║  ╔═╝  ║ ║  ╔═║   ║   ║  ║ ║  ║ ║                 \033[0m"
-echo -e "\033[41;30m                 ══╝  ╝    ══   ╝ ╝   ╝   ╝  ╝ ╝  ══╝                 \033[0m"
+sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[41;30mUPDATING                                                                   \033[0m"
+  sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
 }
 MOUNT(){
-echo -e "\033[41;30m                 ╔╔   ╔═║  ║ ║  ╔═   ═╔╝  ╝  ╔═   ╔═╝                 \033[0m"
-echo -e "\033[41;30m                 ║║║  ║ ║  ║ ║  ║ ║   ║   ║  ║ ║  ║ ║                 \033[0m"
-echo -e "\033[41;30m                 ╝╝╝  ══╝  ══╝  ╝ ╝   ╝   ╝  ╝ ╝  ══╝                 \033[0m"
+sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[41;30mMOUNTING                                                              \033[0m"
+  sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
 }
 CONTAINER(){
-echo -e "\033[41;30m               ╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║              \033[0m"
-echo -e "\033[41;30m               ║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝              \033[0m"
-echo -e "\033[41;30m               ══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝              \033[0m"
+  echo -e "\033[31mLOADING"
+  echo -e "\033[31m[                                                                    ]\033[0m"
+  for i in {2..69};do
+    echo -e "\033[31m\033[2H\033[${i}G#\033[0m"
+    sleep 0.03s
+  done
+  echo -e "\033[31mTERMUX-CONTAINER\033[0m"
+  sleep 0.1s
+  echo -e "\033[31mGPL-V3 LICENSE\033[0m"
+  sleep 0.1s
+  echo -e "\033[31mNO WARRANTY\033[0m"
+  sleep 0.1s
+  echo -e ""
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[41;30m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\033[0m"
+  echo -e "\033[41;30m               ╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║              \033[0m"
+  echo -e "\033[41;30m               ║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝              \033[0m"
+  echo -e "\033[41;30m               ══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝              \033[0m"
+  echo -e "\033[41;30m>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
+  sleep 0.1s
+  echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
+  sleep 0.1s
+  echo -e "\033[31mHOST $(hostname)\033[0m"
+  sleep 0.3s
+  echo -e "\033[31mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
+  echo -e ""
+  echo -e "\033[31m         ┌─────────────────────────┐\033[0m"
+  echo -e "\033[31m         │[]                 o o o│  \033[0m"
+  echo -e "\033[31m         │─────────────────────────│  \033[0m"
+  echo -e "\033[31m         │CONTAINER                │  \033[0m"
+  echo -e "\033[31m         │~# echo helloword        │  \033[0m"
+  echo -e "\033[31m         │helloword ┌────────────────────────────────┐\033[0m"
+  echo -e "\033[31m         │~#        │[]                        o o o│──┐\033[0m"
+  echo -e "\033[31m         │          │────────────────────────────────│ o│  \033[0m"
+  echo -e "\033[31m         │          │         o            o         │──│  \033[0m"
+  echo -e "\033[31m         │          │          o          o          │  │  \033[0m"
+  echo -e "\033[31m         └──────────│          +hydNNNNdyh+          │  │  \033[0m"
+  echo -e "\033[31m                    │        +mMMMMMMMMMMMMm+        │  │  \033[0m"
+  echo -e "\033[31m                    │       dMM::NMMMMMMN::MMd       │  │  \033[0m"
+  echo -e "\033[31m                    │      hMMMMMMMMMMMMMMMMMMh      │  │  \033[0m"
+  echo -e "\033[31m                    │  ..  yyyyyyyyyyyyyyyyyyyy  ..  │  │  \033[0m"
+  echo -e "\033[31m                    │.mMMm MMMMMMMMMMMMMMMMMMMM mMMm.│  │  \033[0m"
+  echo -e "\033[31m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │  \033[0m"
+  echo -e "\033[31m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │  \033[0m"
+  echo -e "\033[31m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │  \033[0m"
+  echo -e "\033[31m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │  \033[0m"
+  echo -e "\033[31m                    │-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-│  │  \033[0m"
+  echo -e "\033[31m                    │ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+ │  │  \033[0m"
+  echo -e "\033[31m                    │      mMMMMMMMMMMMMMMMMMMm      │  │  \033[0m"
+  echo -e "\033[31m                    │       /++MMMMh++hMMMM++/       │  │  \033[0m"
+  echo -e "\033[31m                    │          MMMMo  oMMMM          │  │  \033[0m"
+  echo -e "\033[31m                    │          MMMMo  oMMMM          │  │  \033[0m"
+  echo -e "\033[31m                    │          oNMm-  -mMNs          │  │  \033[0m"
+  echo -e "\033[31m                    │ ╔═║  ╔═   ╔═   ╔═║  ╔═║  ╝  ╔═ │  │  \033[0m"
+  echo -e "\033[31m                    │ ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║│  │  \033[0m"
+  echo -e "\033[31m                    │ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ │  │  \033[0m"
+  echo -e "\033[31m                    └────────────────────────────────┘  │  \033[0m"
+  echo -e "\033[31m                      │                                 │  \033[0m"
+  echo -e "\033[31m                      └─────────────────────────────────┘\033[0m"
+  sleep 0.3s
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[31m44 72 65 61 6d 2f 77 69 74 68 2f 6d 65 00 00 00 00 00 00 00 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m4b 65 65 70 2f 6d 6f 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m4b 65 65 70 2f 63 6f 6f 6c 00 00 00 00 00 00 00 00 00 00 00 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m4b 65 65 70 2f 68 61 63 6b 69 6e 67 00 00 00 00 00 00 00 00 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m54 61 6c 6b 2f 69 73 2f 63 68 65 61 70 00 00 00 00 00 00 00 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m53 68 6f 77 2f 6d 65 2f 74 68 65 2f 63 6f 64 65 00 00 00 00 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m54 6f 2f 62 65 2f 79 6f 75 2f 77 61 6e 74 2f 74 6f 2f 62 65 00 00 00\033[0m"
+  sleep 0.1s
+  echo -e "\033[31m54 72 79 2f 65 76 65 72 79 74 68 69 6e 67 00 00 00 00 00 00 00 00 00\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[31m//\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[31mNEVER SETTLE\033[0m"
+  echo -e ""
+  sleep 0.1s
+  echo -e "\033[31m//"
+  echo -e ""
+  sleep 0.s
 }
-echo -e "\033[31mLOADING"
-echo -e "\033[40;31m◤                                                                    ◢"
-for i in {2..69};do
-echo -e "\033[2H\033[${i}G\033[40;31m/"
-sleep 0.1s
-done
-echo -e "\033[31mTERMUX-CONTAINER\033[0m"
-sleep 0.1s
-sleep 0.1s
-echo -e "\033[31mGPL-V3 LICENSE\033[0m"
-sleep 0.1s
-echo -e ""
-echo -e "\033[31m//\033[0m"
-echo -e ""
-sleep 0.1s
-echo -e "\033[41;30m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\033[0m"
 case $TODO in
-        unmount)  UNMOUNT;;
-        configure)CONFIGURE;;
-        update)   UPDATE;;
-        mount)    MOUNT;;
-        *)        CONTAINER;;
+  unmount)    UNMOUNT;;
+  configure)CONFIGURE;;
+  update)      UPDATE;;
+  mount)        MOUNT;;
+  *)        CONTAINER;;
 esac
-echo -e "\033[41;30m>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
-echo -e ""
-sleep 0.1s
-echo -e "\033[31m//\033[0m"
-echo -e ""
-sleep 0.1s
-echo -e "\033[31mCONTAINER WITH CHROOT\033[0m"
-sleep 0.1s
-echo -e "\033[31mNO WARRANTY\033[0m"
-sleep 0.1s
-echo -e "\033[31mKERNEL $(uname --kernel-release)\033[0m"
-sleep 0.1s
-echo -e "\033[31mTIME $(date|awk '{print $4}')\033[0m"
-sleep 0.1s
-echo -e "\033[31mHOST $(hostname)\033[0m"
-sleep 0.3s
-echo -e "\033[31mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
-echo -e ""
-echo -e "\033[31m         ╓═════════════════════════╖\033[0m"
-echo -e "\033[31m         ║CHROOT              o o o║\033[0m"
-echo -e "\033[31m         ║═════════════════════════║\033[0m"
-echo -e "\033[31m         ║CONTAINER                ║\033[0m"
-echo -e "\033[31m         ║~# echo helloword        ║\033[0m"
-echo -e "\033[31m         ║helloword ╓════════════════════════════════╖\033[0m"
-echo -e "\033[31m         ║~#        ║HOST                       o o o║══╖\033[0m"
-echo -e "\033[31m         ║          ║════════════════════════════════║ o║\033[0m"
-echo -e "\033[31m         ║          ║         o            o         ║══║\033[0m"
-echo -e "\033[31m         ║          ║          o          o          ║  ║\033[0m"
-echo -e "\033[31m         ╙══════════║          +hydNNNNdyh+          ║  ║\033[0m"
-echo -e "\033[31m                    ║        +mMMMMMMMMMMMMm+        ║  ║\033[0m"
-echo -e "\033[31m                    ║       dMM::NMMMMMMN::MMd       ║  ║\033[0m"
-echo -e "\033[31m                    ║      hMMMMMMMMMMMMMMMMMMh      ║  ║\033[0m"
-echo -e "\033[31m                    ║  ..  yyyyyyyyyyyyyyyyyyyy  ..  ║  ║\033[0m"
-echo -e "\033[31m                    ║.mMMm MMMMMMMMMMMMMMMMMMMM mMMm.║  ║\033[0m"
-echo -e "\033[31m                    ║:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:║  ║\033[0m"
-echo -e "\033[31m                    ║:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:║  ║\033[0m"
-echo -e "\033[31m                    ║:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:║  ║\033[0m"
-echo -e "\033[31m                    ║:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:║  ║\033[0m"
-echo -e "\033[31m                    ║-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-║  ║\033[0m"
-echo -e "\033[31m                    ║ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+ ║  ║\033[0m"
-echo -e "\033[31m                    ║      mMMMMMMMMMMMMMMMMMMm      ║  ║\033[0m"
-echo -e "\033[31m                    ║       /++MMMMh++hMMMM++/       ║  ║\033[0m"
-echo -e "\033[31m                    ║          MMMMo  oMMMM          ║  ║\033[0m"
-echo -e "\033[31m                    ║          MMMMo  oMMMM          ║  ║\033[0m"
-echo -e "\033[31m                    ║          oNMm-  -mMNs          ║  ║\033[0m"
-echo -e "\033[31m                    ║ ╔═║  ╔═   ╔═   ╔═║  ╔═║  ║  ╔═ ║  ║\033[0m"
-echo -e "\033[31m                    ║ ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║║  ║\033[0m"
-echo -e "\033[31m                    ║ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ ║  ║\033[0m"
-echo -e "\033[31m                    ╙════════════════════════════════╛  ║\033[0m"
-echo -e "\033[31m                      ║                                 ║\033[0m"
-echo -e "\033[31m                      ╙═════════════════════════════════╛\033[0m"
-sleep 0.3s
-echo -e ""
-sleep 0.1s
-echo -e "\033[31m44 72 65 61 6d 2f 77 69 74 68 2f 6d 65 00 00 00 00 00 00 00 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m4b 65 65 70 2f 6d 6f 65 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m4b 65 65 70 2f 63 6f 6f 6c 00 00 00 00 00 00 00 00 00 00 00 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m4b 65 65 70 2f 68 61 63 6b 69 6e 67 00 00 00 00 00 00 00 00 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m54 61 6c 6b 2f 69 73 2f 63 68 65 61 70 00 00 00 00 00 00 00 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m53 68 6f 77 2f 6d 65 2f 74 68 65 2f 63 6f 64 65 00 00 00 00 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m54 6f 2f 62 65 2f 79 6f 75 2f 77 61 6e 74 2f 74 6f 2f 62 65 00 00 00\033[0m"
-sleep 0.1s
-echo -e "\033[31m54 72 79 2f 65 76 65 72 79 74 68 69 6e 67 00 00 00 00 00 00 00 00 00\033[0m"
-echo -e ""
-sleep 0.1s
-echo -e "\033[31m//\033[0m"
-echo -e ""
-sleep 0.1s
-echo -e "\033[31mNEVER SETTLE\033[0m"
-echo -e ""
-sleep 0.1s
-echo -e "\033[31m//"
-echo -e ""
-sleep 0.s
-

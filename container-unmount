@@ -1,6 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于解除系统文件挂载#########
-export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[31m[START] UNMOUNT /dev\033[0m"
 [[ ${SLEEP} = "n" && ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
