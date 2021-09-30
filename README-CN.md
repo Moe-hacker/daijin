@@ -41,5 +41,4 @@ https://share.weiyun.com/6sSwpBW8
 > &emsp;(建议你在运行前阅读此项目代码，我应该都写注释了)            
 
 -------     
-<p align="center">そよ風になびく君の髪、</p>       
-<p align="center">  想いよ 君へ届け。</p>    
+<p align="center">Try everything.</p>       
