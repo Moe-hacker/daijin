@@ -7,7 +7,6 @@ read -p "请输入rootfs的下载链接:" URL
 read -p "是否关闭SELinux?[y/n]:" SELINUX
 read -p "请输入主机名(hostname):" HOSTNAME
 read -p "是否启用输出?[y/n]:" OUTPUT
-read -p "每条输出后是否停顿?[y/n]:" SLEEP
 echo -e "正在下载rootfs………………………………"
 sleep 1s
 cd ~
@@ -32,7 +31,6 @@ echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.c
 echo CHROOT_IMG=${CHROOT_IMG} >> /data/data/com.termux/files/usr/etc/container.conf
 echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
 echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
-echo SLEEP=${SLEEP} >> /data/data/com.termux/files/usr/etc/container.conf
 echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
 echo -e "\033[31m正在删除已下载的rootfs………………………………\033[0m"
 sleep 1s
