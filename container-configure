@@ -1,7 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于容器安装#########
-###光标，多配置
-# ${CONTAINER}未定义
 clear
 echo -e ""
 echo -e "\033[38;5;123m//\033[0m"
@@ -13,9 +11,9 @@ echo -e ""
 echo -e "\033[38;5;123m//\033[0m"
 echo -e ""
 sleep 0.1s
-for i in {1..10};do
-  if [[ ! -e /data/data/com.termux/files/usr/etc/container.d/container-${i}.conf ]];then
-    CONTAINER=$i
+for i1 in {1..10};do
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
+    CONTAINER=$i1
     break
   fi
 done
