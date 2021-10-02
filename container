@@ -19,10 +19,10 @@ else
   OUTPUT=y
 fi
 case $1 in
-  unmount|*un) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
-  help|*h)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
-  configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure;;
-  update|*up) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
-  mount|*m) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
+  *unmount|*un) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
+  *help|*h)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
+  *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure;;
+  *update|*up) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
+  *mount|*m) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
   *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
 esac
