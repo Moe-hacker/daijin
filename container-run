@@ -74,6 +74,7 @@ FORIN(){
 [[ ${OUTPUT} = "n" ]] ||sleep 0.3s
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m436f6d652077697468206d6520616e6420796f75276c6c2062655c5c5c5c5c5c5c5c5c\033[0m"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.2s
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
