@@ -39,7 +39,8 @@ esac
 <<EOF
 echo -e "DOWNLOADING ROOTFS"
 sleep 1s
-cd ~
+mkdir -p /data/data/com.termux/files/usr/tmp/container
+cd /data/data/com.termux/files/usr/tmp/container
 wget ${URL}
 sudo mkdir ${CHROOT_DIR}
 if [[ ! ${CHROOT_IMG_NAME} = "" ]];then
