@@ -1,10 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于更新此脚本#########
-export $(cat /data/data/com.termux/files/usr/etc/container.conf) >/dev/null 2>&1
 cd /data/data/com.termux/files/usr/share/termux-container
-echo -e "\033[31m$(git reset --hard)"
-echo -e "\033[31m$(git pull)"
+echo -e "\033[38;5;123m$(git reset --hard)"
+echo -e "\033[38;5;123m$(git pull)"
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
 chmod 777 /data/data/com.termux/files/usr/bin/container
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[31mDONE\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123mDONE\033[0m"
