@@ -13,8 +13,7 @@
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 cd /data/data/com.termux/files/usr/share/termux-container
 echo -e "\033[38;5;123m$(git reset --hard)"
-echo -e "\033[38;5;123m$(git pull)"||echo -e "\033[38;5;123mFAILED\033[0m"&&exit
+echo -e "\033[38;5;123m$(git pull)"
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
 chmod 777 /data/data/com.termux/files/usr/bin/container
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123mDONE\033[0m"
