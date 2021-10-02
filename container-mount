@@ -1,6 +1,16 @@
 #!/data/data/com.termux/files/usr/bin/bash
 ######用于只挂载镜像到指定挂载点而不运行chroot######
-export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
+[[ ${OUTPUT} = "n" ]] ||clear
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mMOUNTING                                                              \033[0m"
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 if [[ ${CHROOT_IMG} = "" ]];then
   echo -e "\033[38;5;123m[ERR!]  Not using image file\033[0m"
   exit

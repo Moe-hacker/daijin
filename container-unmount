@@ -1,5 +1,16 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于解除系统文件挂载#########
+[[ ${OUTPUT} = "n" ]] ||clear
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mUNMOUNTING                                                            \033[0m"
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] UNMOUNT /dev\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 0.3s
 umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载

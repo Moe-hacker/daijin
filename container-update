@@ -1,5 +1,16 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于更新此脚本#########
+[[ ${OUTPUT} = "n" ]] ||clear
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mUPDATING                                                              \033[0m"
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 cd /data/data/com.termux/files/usr/share/termux-container
 echo -e "\033[38;5;123m$(git reset --hard)"
 echo -e "\033[38;5;123m$(git pull)"
