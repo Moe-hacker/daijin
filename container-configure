@@ -36,13 +36,13 @@ case ${CUSOR} in
   2) CUSOR=underline;;
   3) CUSOR=block;;
 esac
-<<EOF
 echo -e "DOWNLOADING ROOTFS"
 sleep 1s
 mkdir -p /data/data/com.termux/files/usr/tmp/container
 cd /data/data/com.termux/files/usr/tmp/container
 wget ${URL}
-sudo mkdir ${CHROOT_DIR}
+sudo mkdir -p ${CHROOT_DIR}
+sudo mkdir -p ${CHROOT_IMG_PATH}
 if [[ ! ${CHROOT_IMG_NAME} = "" ]];then
   echo -e "CREATING IMAGE FILE"
   cd ${CHROOT_IMG_PATH}
@@ -56,26 +56,19 @@ if [[ ! ${CHROOT_IMG_NAME} = "" ]];then
 fi
 echo -e "EXTRACTING ROOTFS"
 sleep 2s
-ROOTFS=$(ls /data/data/com.termux/files/usr/tmp/container)
+ROOTFS=$(ls /data/data/com.termux/files/usr/tmp/container/)
 case $ROOTFS in
-        *gz|*tgz)
-                total=`gzip -l $ROOTFS | grep tar | awk '{printf $CHROOT_DIR}'`
-                ;;
-        *xz|*txz)
-                total=`xz --robot -l $ROOTFS | grep 'totals' | awk '{print $5}'`
-                ;;
-        *)
-                echo 'UNKNOW FILE FORMAT';exit 255
-                ;;
+  *tar.gz|*tgz|*tar) tar -xzvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+  *tar.xz|*txz) tar -xvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+  *) echo 'UNKNOW FILE FORMAT';exit 0;;
 esac
-block=`expr $(expr $total / 51200) + 1`
-tar --blocking-factor=$block --checkpoint=1 --checkpoint-action='exec=printf "$(expr $TAR_CHECKPOINT - 1)  \r\n"' -xpf $ROOTFS -C $CHROOT_DIR | dialog --title UNPACKING --gauge "UNPACKING ROOTFS" 0 0
-echo -e "WRITING CONFIGURE FILE\033[0m"
+echo -e ""
+echo -e "\033[38;5;123mWRITING CONFIGURE FILE"
 sleep 1s
 echo NAME=${NAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
 echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
 echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
-echo CHROOT_IMG=${CHROOT_IMG_PATH}${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo CHROOT_IMG=${CHROOT_IMG_PATH}/${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
 echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
 echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
 echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
@@ -83,4 +76,4 @@ rm -f /data/data/com.termux/files/usr/etc/container.conf
 echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
 echo -e "REMOVING DOWNLOADED ROOTFS\033[0m"
 sleep 1s
-rm ~/rootfs.tar.xz
+rm -rf /data/data/com.termux/files/usr/tmp/container
