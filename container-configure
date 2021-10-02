@@ -11,6 +11,7 @@ echo -e ""
 echo -e "\033[38;5;123m//\033[0m"
 echo -e ""
 sleep 0.1s
+CONFIGURE(){
 for i1 in {1..10};do
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
     CONTAINER=$i1
@@ -75,3 +76,16 @@ echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.con
 echo -e "REMOVING DOWNLOADED ROOTFS\033[0m"
 sleep 1s
 rm -rf /data/data/com.termux/files/usr/tmp/container
+}
+SET(){
+cd /data/data/com.termux/files/usr/etc/container.conf.d
+for i in {1..10};do
+if [[ -e container-${1}.conf ]];then
+echo -e "\033[38;5;123m[$i]"
+fi
+done
+}
+case $1 in
+set) SET;;
+*)CONFIGURE;;
+esac
