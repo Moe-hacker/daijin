@@ -252,3 +252,9 @@ fi
 [[ ${OUTPUT} = "n" ]] || sleep 0.3s
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
+[[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||/bin/echo -e ""
+[[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[46;37mEXIT                                                                  \033[0m" 
+[[ ${OUTPUT} = "n" ]] ||/bin/echo -e ""
+[[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[\033[38;5;123m//\033[0m"
+
