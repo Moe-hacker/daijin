@@ -71,11 +71,15 @@ FORIN(){
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ │  │\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    └────────────────────────────────┘  │\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                      └─────────────────────────────────┘\033[0m"
-[[ ${OUTPUT} = "n" ]] ||sleep 0.3s
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mNEVER SETTLE\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||sleep 0.s
 if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
   echo -e "\033[38;5;123m[ERR!] CONTAINER DIRECTORY DOES NOT EXIST\033[0m"
   exit
