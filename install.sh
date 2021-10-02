@@ -1,5 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-#########用于安装此项目脚本#########
+#########用于安装此项目脚本########
 clear
 for a1 in {1..70};do
   echo -e "\033[38;5;123m\033[1H\033[${a1}G=\033[0m"

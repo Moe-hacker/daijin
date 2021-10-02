@@ -13,8 +13,12 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
   sudo container $1
   exit
 fi
+if [[ ! -e /data/data/com.termux/files/usr/share/termux-container/.updated ]];then
+  bash /data/data/com.termux/files/usr/share/termux-container/update.sh
+fi
 if [[ $1 != configure ]];then
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) #加载配置文件
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
 else
   OUTPUT=y
 fi

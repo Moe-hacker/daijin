@@ -1,5 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于容器安装#########
+###光标，多配置
+# ${CONTAINER}未定义
 clear
 echo -e ""
 echo -e "\033[38;5;123m//\033[0m"
@@ -11,39 +13,73 @@ echo -e ""
 echo -e "\033[38;5;123m//\033[0m"
 echo -e ""
 sleep 0.1s
-printf  "\033[31m"
-read -p "请输入容器的绝对路径(或挂载点):" CHROOT_DIR
-read -p "请输入镜像文件绝对路径(一般为/data/xxx.img或/sdcard/xxx.img)，如果不使用镜像文件请留空:" CHROOT_IMG
-read -p "请输入镜像文件大小(纯数字，单位为Gb)，如果不使用镜像文件请留空:" SIZE
-read -p "请输入rootfs的下载链接:" URL
-read -p "是否关闭SELinux?[y/n]:" SELINUX
-read -p "请输入主机名(hostname):" HOSTNAME
-read -p "是否启用输出?[y/n]:" OUTPUT
-echo -e "正在下载rootfs………………………………"
+for i in {1..10};do
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.d/container-${i}.conf ]];then
+    CONTAINER=$i
+    break
+  fi
+done
+printf  "\033[38;5;123m"
+read -p "ENTER THE NAME OF THIS CONTAINER: " NAME
+read -p "ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CHROOT_DIR
+read -p "ENTER THE ABSOLUTE PATH OF IMAGE FILE: " CHROOT_IMG_PATH
+read -p "ENTER THE NAME OF IMAGE FILE: " CHROOT_IMG_NAME
+read -p "ENTER THE SIZE OF IMAGE FILE(UNIT IS GB): " SIZE
+read -p "ENTER THE ROOTFS DOWNLOAD LINK: " URL
+read -p "DISABLE SELinux?[y/n]: " SELINUX
+read -p "ENTER YOUR HOSTNAME: " HOSTNAME
+read -p "ENABLE OUTPUT?[y/n]: " OUTPUT
+echo -e "CHOOSE YOUR CUSOR: "
+read -p '[1]: $|   [2]: $▂   [3]: $█ ' CUSOR
+case ${CUSOR} in
+  1) CUSOR=bar;;
+  2) CUSOR=underline;;
+  3) CUSOR=block;;
+esac
+<<EOF
+echo -e "DOWNLOADING ROOTFS"
 sleep 1s
 cd ~
 wget ${URL}
 sudo mkdir ${CHROOT_DIR}
-if [[ ! ${CHROOT_IMG} = "" ]];then
-  echo -e "正在创建镜像文件………………………………"
-  sudo dd if=/dev/zero of=${CHROOT_IMG} bs=1G count=${SIZE}
-  sudo mkfs.ext4 ${CHROOT_IMG}
-  echo -e "正在挂载镜像………………………………"
+if [[ ! ${CHROOT_IMG_NAME} = "" ]];then
+  echo -e "CREATING IMAGE FILE"
+  cd ${CHROOT_IMG_PATH}
+  sudo dd if=/dev/zero of=${CHROOT_IMG_NAME}.img bs=1G count=${SIZE}
+  sudo mkfs.ext4 ${CHROOT_IMG_NAME}.img
+  echo -e "MOUNTING IMAGE FILE"
   sleep 1s
   LOOP=$(sudo losetup -f)
-  sudo losetup  ${LOOP} ${CHROOT_IMG}  >/dev/null 2>&1
+  sudo losetup  ${LOOP} ${CHROOT_IMG_NAME}.img  >/dev/null 2>&1
   sudo mount ${LOOP} ${CHROOT_DIR}  >/dev/null 2>&1
 fi
-echo -e "正在解压rootfs………………………………"
+echo -e "EXTRACTING ROOTFS"
+sleep 2s
+ROOTFS=$(ls /data/data/com.termux/files/usr/tmp/container)
+case $ROOTFS in
+        *gz|*tgz)
+                total=`gzip -l $ROOTFS | grep tar | awk '{printf $CHROOT_DIR}'`
+                ;;
+        *xz|*txz)
+                total=`xz --robot -l $ROOTFS | grep 'totals' | awk '{print $5}'`
+                ;;
+        *)
+                echo 'UNKNOW FILE FORMAT';exit 255
+                ;;
+esac
+block=`expr $(expr $total / 51200) + 1`
+tar --blocking-factor=$block --checkpoint=1 --checkpoint-action='exec=printf "$(expr $TAR_CHECKPOINT - 1)  \r\n"' -xpf $ROOTFS -C $CHROOT_DIR | dialog --title UNPACKING --gauge "UNPACKING ROOTFS" 0 0
+echo -e "WRITING CONFIGURE FILE\033[0m"
 sleep 1s
-sudo tar -xvf rootfs.tar.xz -C ${CHROOT_DIR}
-echo -e "正在写入配置………………………………\033[0m"
-sleep 1s
-echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf
-echo CHROOT_IMG=${CHROOT_IMG} >> /data/data/com.termux/files/usr/etc/container.conf
-echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
-echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
-echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
-echo -e "\033[31m正在删除已下载的rootfs………………………………\033[0m"
+echo NAME=${NAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo CHROOT_IMG=${CHROOT_IMG_PATH}${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+rm -f /data/data/com.termux/files/usr/etc/container.conf
+echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
+echo -e "REMOVING DOWNLOADED ROOTFS\033[0m"
 sleep 1s
 rm ~/rootfs.tar.xz

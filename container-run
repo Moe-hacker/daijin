@@ -250,6 +250,11 @@ if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
 fi
 [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] RUN CHROOT\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+case $CUSOR in #更换光标
+  block)     printf '\e[2 q';;
+  bar)       printf '\e[6 q';;
+  underline) printf '\e[4 q';;
+esac
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
 [[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[\033[38;5;123m//\033[0m"
@@ -257,4 +262,4 @@ unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环�
 [[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[46;37mEXIT                                                                  \033[0m" 
 [[ ${OUTPUT} = "n" ]] ||/bin/echo -e ""
 [[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[\033[38;5;123m//\033[0m"
-
+printf '\e[2 q'
