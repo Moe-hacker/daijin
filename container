@@ -16,8 +16,6 @@ fi
 if [[ ! -e /data/data/com.termux/files/usr/share/termux-container/.updated ]];then
   bash /data/data/com.termux/files/usr/share/termux-container/update.sh
 fi
-export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
-export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
 case $1 in
   *unmount|*un) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
   *help|*h)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;

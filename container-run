@@ -1,5 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于挂载系统并运行chroot#########
+export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
 FORIN(){
   i2=7
   for i1 in {117,123,116,159,158,122} {122,158,159,116,123,117} {117,123,116,159,158,122} {122,158,159,116,123,117} {117,123,116,159,158,122} {122,158,159,116,123,117} {117,123,116,159,158,122} {122,158,159,116,123,117} {117,123,116,159,158,122} {122,158,159,116,123,117} {117,123};do

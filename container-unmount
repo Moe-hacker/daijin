@@ -1,5 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于解除系统文件挂载#########
+export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
 [[ ${OUTPUT} = "n" ]] ||clear
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
