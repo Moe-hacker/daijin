@@ -10,6 +10,7 @@
 > Chroot is faster than proot with less limits.But it can only be run with root privileges,and it is dangerous.If you do not want to run programs that must be able to read/write the files in /proc but using a common user,please do not disable SELinux.      
 ### Screenshot:
 ![screenshot](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot-container.jpg)
+![screenshot](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot-container-conf.jpg)
 ### Preparation:      
 &emsp;To run it,you need：      
 - A phone with root       
