@@ -17,8 +17,24 @@
 bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
 container configure
 ```
-更多帮助文档请查看wiki：      
-### [termux-container wiki](https://github.com/Moe-hacker/termux-container/wiki)
+# 脚本结构：      
+```shell
+termux-container
+├── container #主脚本，安装时被复制存放在/data/data/com.termux/files/usr/bin中，调用termux-container目录中的子脚本，执行时会自动获取root权限
+├── container-configure #用于配置此脚本并解压rootfs
+├── container-help #帮助信息
+├── container-mount #用于挂载镜像但不运行chroot
+├── container-run #用于挂载系统并运行chroot
+├── container-unmount #用于解除系统挂载
+├── container-update #用于更新此项目
+├── install.sh #用于此项目安装
+├── update.sh #用于无缝更新
+├── LICENSE #许可证
+├── old #存放之前的老版本
+│   └── container #老版本的脚本，多合一，输出为彩色而非蓝色，没有赛博朋克特效，但核心部分相同
+├── README-ZH.md #中文文档
+└── README.md #github的readme文档(英文)
+```
 ### 交个官方作业：      
 ![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot-ubuntu.jpg)
 系统ubuntu，链接：      
