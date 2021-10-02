@@ -51,7 +51,7 @@ for a3 in {1..70};do
 done
 sleep 2s
 clear
-y1=20
+y1=25
 for i5 in {I,N,S,T,A,L,L,I,N,G,"",P,A,C,K,A,G,E,S};do
   y1=$(($y1+1))
   echo -e "\033[38;5;123m\033[1H\033[${y1}G$i5"
@@ -59,7 +59,7 @@ for i5 in {I,N,S,T,A,L,L,I,N,G,"",P,A,C,K,A,G,E,S};do
 done
 pkg install git wget tsu curl e2fsprogs neofetch
 clear
-y2=20
+y2=25
 for i6 in {C,L,O,N,I,I,N,G,"",R,E,P,O,S,I,T,O,R,Y};do
   y2=$(($y2+1))
   echo -e "\033[38;5;123m\033[1H\033[${y2}G$i6"
