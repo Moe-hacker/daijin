@@ -10,7 +10,7 @@
 #借鉴了一部分andrax启动脚本，故采用相同的许可证。
 ###### E-mail: moe-hacker@outlook.com ######
 if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
-  sudo container $1
+  sudo container $1 $2
   exit
 fi
 if [[ ! -e /data/data/com.termux/files/usr/share/termux-container/.updated ]];then
@@ -19,7 +19,7 @@ fi
 case $1 in
   *unmount|*un) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
   *help|*h)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
-  *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure;;
+  *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure $2;;
   *update|*up) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
   *mount|*m) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
   *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;

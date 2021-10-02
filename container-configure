@@ -85,7 +85,7 @@ export $(cat container-${i}.conf)
 echo -e "\033[38;5;123m[$i] $NAME"
 fi
 done
-read -p "SELECT A CONTAINER" CONTAINER
+read -p "SELECT A CONTAINER: " CONTAINER
 rm -f /data/data/com.termux/files/usr/etc/container.conf
 echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
 }
