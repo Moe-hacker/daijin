@@ -18,9 +18,6 @@ if [[ $1 != configure ]];then
 else
   OUTPUT=y
 fi
-if [[ $OUTPUT = "y" ]] && [[ $1 != help ]];then
-  TODO=$1 bash /data/data/com.termux/files/usr/share/termux-container/container-echo
-fi
 case $1 in
   unmount) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
   help)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
