@@ -80,8 +80,9 @@ rm -rf /data/data/com.termux/files/usr/tmp/container
 SET(){
 cd /data/data/com.termux/files/usr/etc/container.conf.d
 for i in {1..10};do
-if [[ -e container-${1}.conf ]];then
-echo -e "\033[38;5;123m[$i]"
+if [[ -e container-${i}.conf ]];then
+export $(cat container-${i}.conf)
+echo -e "\033[38;5;123m[$i] $NAME"
 fi
 done
 }
