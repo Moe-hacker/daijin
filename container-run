@@ -33,6 +33,7 @@ FORIN(){
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mCONTAINER ${NAME}\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mKERNEL $(uname --kernel-release)\033[0m"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mTIME $(date|awk '{print $4}')\033[0m"
