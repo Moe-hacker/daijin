@@ -22,6 +22,6 @@ case $1 in
   *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure $2;;
   *update|*up) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
   *mount|*m) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
-  *r|*rm|*remove) bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
+  *r|*remove) bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
   *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
 esac
