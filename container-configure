@@ -12,7 +12,7 @@ echo -e "\033[38;5;123m//\033[0m"
 echo -e ""
 sleep 0.1s
 CONFIGURE(){
-for i1 in {1..10};do
+for i1 in {1..100};do
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
     CONTAINER=$i1
     break
@@ -79,7 +79,7 @@ rm -rf /data/data/com.termux/files/usr/tmp/container
 }
 SET(){
 cd /data/data/com.termux/files/usr/etc/container.conf.d
-for i in {1..10};do
+for i in {1..100};do
 if [[ -e container-${i}.conf ]];then
 export $(cat container-${i}.conf)
 echo -e "\033[38;5;123m[$i] $NAME"
