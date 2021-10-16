@@ -27,8 +27,8 @@ pkg install curl
 bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
 container configure
 ```
-Enjoy it!
-###Usage:
+Enjoy it!     
+### Usage:
 ```shell
  container        #Run container
  container -c     #Creat a new container
