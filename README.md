@@ -4,7 +4,7 @@
 > &emsp;  [[简体中文]](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)           
 
 &emsp;Run Linux with chroot command on your Android phone!      
-&emsp;This is a script that runs a Linux system on your phone.It has a cool output,but if you do not like,you can disable it.In fact,you are free to define this script and make it to be you want to be.      
+&emsp;This is a script that runs a Linux system on your phone.You are free to define this script and make it to be you want.      
 &emsp;In the chroot environment,you can do more things than Android,because it is a real Linux system.You can run a desktop and connect it with Realvnc Viewer,or you can just use the shell for programming or hacking.(But DO NOT against the laws!)
 ### Notes:      
 > Chroot is faster than proot with less limits.But it can only be run with root privileges,and it is dangerous.If you do not want to run programs that must be able to read/write the files in /proc but using a common user,please do not disable SELinux.      
