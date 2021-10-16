@@ -28,6 +28,17 @@ bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container
 container configure
 ```
 Enjoy it!
+###Usage:
+```shell
+ container        #Run container
+ container -c     #Creat a new container
+ container -c set #Select a container
+ container -r     #Remove a container
+ container -m     #Mount the image file without running container
+ container -un    #Unmount container
+ container -up    #Update this script
+ container -h     #Show helps
+```
 ### Bugs      
 &emsp;If you are using Archlinux,maybe fakeroot is unavailable.      
 &emsp;On some devices,ping may be unavailable.      
