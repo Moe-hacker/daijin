@@ -8,8 +8,7 @@
 
 #### 复制rootfs下载链接      
 &emsp;推荐使用lxc镜像，链接:[lxc-images](https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images)      
-&emsp;找到你想使用的发行版目录，然后顺着目录找到arm64版的rootfs.tar.xz的链接。        
-&emsp;一定要是rootfs.tar.xz，如果你是大佬，自己解压然后看wiki写配置文件也可以        
+&emsp;找到你想使用的发行版目录，然后顺着目录找到arm64版的rootfs.tar.xz的链接。              
 &emsp;注：推荐新手使用ubuntu，网上有关信息可能多些 :-)      
 ### 安装并配置此脚本            
 #### 安装:
@@ -17,6 +16,17 @@
 pkg install curl
 bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
 container configure
+```
+# 用法：
+```shell
+ container        #运行容器
+ container -c     #创建新容器
+ container -c set #选择已创建的容器
+ container -r     #删除容器
+ container -m     #挂载镜像文件但不运行容器
+ container -un    #解除容器挂载
+ container -up    #更新此脚本
+ container -h     #显示帮助信息
 ```
 # 脚本结构：      
 ```shell
