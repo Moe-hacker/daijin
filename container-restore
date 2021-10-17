@@ -1,0 +1,20 @@
+#!/data/data/com.termux/files/usr/bin/bash
+#########用于还原容器#########
+printf "\033[38;5;123m"
+read -p "ENTER THE PATH OF YOUR BACKUP FILE" BACKUP_FILE
+case $BACKUP_FILE in
+  *tar.gz|*tgz|*tar) tar -xzvf $BACKUP_FILE -C /;;
+  *tar.xz|*txz) tar -xvf $BACKUP_FILE -C /;;
+  *) echo 'UNKNOW FILE FORMAT';exit 0;;
+esac
+cd /data/data/com.termux/files/usr/tmp/termux-container
+for i1 in {1..100};do
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
+    CONTAINER=$i1
+    break
+  fi
+done
+mv container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf
+rm /data/data/com.termux/files/usr/etc/container.conf
+printf "\033[0m"
+echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf

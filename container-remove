@@ -12,9 +12,8 @@ read -p "SELECT A CONTAINER TO DELEATE: " CONTAINER
 echo -e "[WARNING!!!] ALL YOUR FILES IN THIS CONTAINER WILL BE DELEATED"
 echo -e "PRESS ENTER TO CONTINUE OR PRESS CTRL-C TO EXIT"
 read
-export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
-export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
-#删除旧容器
+export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
+#解除挂载
 clear
 echo -e "UNMOUNTING"
 echo -e "[START] UNMOUNT /dev"
@@ -35,6 +34,7 @@ losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关�
 echo -e "[DONE ] UNMOUNT ${CHROOT_DIR}"
 echo -e "REMOVING CONTAINER"
 sleep 2s
+#删除旧容器
 if [[ ${CHROOT_DIR} != "" ]];then
   rm -rfv ${CHROOT_DIR}
 fi
