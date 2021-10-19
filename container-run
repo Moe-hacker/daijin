@@ -13,7 +13,7 @@ FORIN(){
   done
 }
 [[ ${OUTPUT} = "n" ]] ||clear
-[[ ${OUTPUT} = "n" ]] ||printf '\e[6 q'
+[[ ${OUTPUT} = "n" ]] ||printf '\033[?25l'
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mLOADING"
 [[ ${OUTPUT} = "n" ]] ||FORIN
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mTERMUX-CONTAINER\033[0m"
@@ -262,6 +262,7 @@ case $CUSOR in #更换光标
   bar)       printf '\e[6 q';;
   underline) printf '\e[4 q';;
 esac
+[[ ${OUTPUT} = "n" ]] || printf "\033[?25h"
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
 [[ ${OUTPUT} = "n" ]] ||/bin/echo -e "\033[\033[38;5;123m//\033[0m"
