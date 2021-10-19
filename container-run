@@ -13,6 +13,7 @@ PROGRESS(){
 while (( $i2<=$i1 ));do
 i2=$(($i2+1))
 echo -e "\033[38;5;123m\033[1H\033[${i2}G/"
+sleep 0.05s
 done
 }
 [[ ${OUTPUT} = "n" ]] ||PROGRESS
@@ -42,7 +43,6 @@ _PROGRESS_(){
 while (( $i2<=$i1 ));do
 i2=$(($i2+1))
 echo -e "\033[38;5;123m\033[12H\033[${i2}G>"
-sleep 0.01s
 done
 }
 [[ ${OUTPUT} = "n" ]] ||_PROGRESS_
