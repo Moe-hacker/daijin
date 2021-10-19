@@ -278,9 +278,10 @@ case $CUSOR in #更换光标
   underline) printf '\e[4 q';;
 esac
 [[ ${OUTPUT} = "n" ]] || printf "\033[?25h"
+export PATH_BK=$PATH
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
-[[ ${OUTPUT} = "n" ]] ||login
+[[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1-4))
