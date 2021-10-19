@@ -2,20 +2,14 @@
 #########用于挂载系统并运行chroot#########
 export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
 export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
-FORIN(){
-  i1=$(($(stty size|awk '{print $2}')))
-  i2=7
-  let i1=$i1
-  while (( i2<=i1 ));do
-      i2=$(($i2+1))
-      echo -e "\033[38;5;123m\033[1H\033[${i2}G/"
-      sleep 0.03s
-  done
-}
+[[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
+[[ ${OUTPUT} = "n" ]] ||let i1=$i1
+[[ ${OUTPUT} = "n" ]] ||i4=$(($i1/2-24))
 [[ ${OUTPUT} = "n" ]] ||clear
 [[ ${OUTPUT} = "n" ]] ||printf '\033[?25l'
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mLOADING"
-[[ ${OUTPUT} = "n" ]] ||FORIN
+[[ ${OUTPUT} = "n" ]] ||i2=7
+[[ ${OUTPUT} = "n" ]] ||while (( $i2<=$i1 ));do;i2=$(($i2+1));echo -e "\033[38;5;123m\033[1H\033[${i2}G/";sleep 0.01s;done
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mTERMUX-CONTAINER\033[0m"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mGPL-V3 LICENSE\033[0m"
@@ -26,11 +20,13 @@ FORIN(){
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m               ╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║              \033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m               ║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝              \033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m               ══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝              \033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+[[ ${OUTPUT} = "n" ]] ||i2=0
+[[ ${OUTPUT} = "n" ]] ||while (( $i2<=$i1 ));do;i2=$(($i2+1));echo -e "\033[38;5;123m\033[8H\033[${i2}G<";sleep 0.01s;done
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝\033[0m"
+[[ ${OUTPUT} = "n" ]] ||i2=0
+[[ ${OUTPUT} = "n" ]] ||while (( $i2<=$i1 ));do;i2=$(($i2+1));echo -e "\033[38;5;123m\033[12H\033[${i2}G>";sleep 0.01s;done
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
@@ -46,38 +42,38 @@ FORIN(){
 [[ ${OUTPUT} = "n" ]] ||sleep 0.3s
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         ┌─────────────────────────┐\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │LINUX               o o o│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │─────────────────────────│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │CONTAINER                │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │~# echo Hello-Word       │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │Hello-Word┌────────────────────────────────┐\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │~#        │ANDROID                    o o o│──┐\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │          │────────────────────────────────│ o│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │          │         o            o         │──│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         │          │          o          o          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m         └──────────│          +hydNNNNdyh+          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │        +mMMMMMMMMMMMMm+        │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │       dMM::NMMMMMMN::MMd       │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │      hMMMMMMMMMMMMMMMMMMh      │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │  ..  yyyyyyyyyyyyyyyyyyyy  ..  │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │.mMMm MMMMMMMMMMMMMMMMMMMM mMMm.│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+ │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │      mMMMMMMMMMMMMMMMMMMm      │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │       /++MMMMh++hMMMM++/       │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │          MMMMo  oMMMM          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │          MMMMo  oMMMM          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │          oNMm-  -mMNs          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │ ╔═║  ╔═   ╔═   ╔═║  ╔═║  ╝  ╔═ │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │ ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    │ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                    └────────────────────────────────┘  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m                      └─────────────────────────────────┘\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m┌─────────────────────────┐\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│LINUX               o o o│\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│─────────────────────────│\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│CONTAINER                │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│~# echo Hello-Word       │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│Hello-Word┌────────────────────────────────┐\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│~#        │ANDROID                    o o o│──┐\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│          │────────────────────────────────│ o│\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│          │         o            o         │──│\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m│          │          o          o          │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m└──────────│          +hydNNNNdyh+          │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │        +mMMMMMMMMMMMMm+        │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │       dMM::NMMMMMMN::MMd       │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │      hMMMMMMMMMMMMMMMMMMh      │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │  ..  yyyyyyyyyyyyyyyyyyyy  ..  │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │.mMMm MMMMMMMMMMMMMMMMMMMM mMMm.│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+ │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │      mMMMMMMMMMMMMMMMMMMm      │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │       /++MMMMh++hMMMM++/       │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │          MMMMo  oMMMM          │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │          MMMMo  oMMMM          │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │          oNMm-  -mMNs          │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │ ╔═║  ╔═   ╔═   ╔═║  ╔═║  ╝  ╔═ │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │ ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║│  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           │ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ │  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m           └────────────────────────────────┘  │\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m             └─────────────────────────────────┘\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
