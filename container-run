@@ -4,7 +4,7 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
 export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
 [[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
 [[ ${OUTPUT} = "n" ]] ||let i1=$i1
-[[ ${OUTPUT} = "n" ]] ||i4=$(($i1/2-24))
+[[ ${OUTPUT} = "n" ]] ||i4=$(($i1/2-20))
 [[ ${OUTPUT} = "n" ]] ||clear
 [[ ${OUTPUT} = "n" ]] ||printf '\033[?25l'
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mLOADING"
