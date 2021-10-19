@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于还原容器#########
 printf "\033[38;5;123m"
-read -p "ENTER THE PATH OF YOUR BACKUP FILE" BACKUP_FILE
+read -p "ENTER THE PATH OF YOUR BACKUP FILE: " BACKUP_FILE
 case $BACKUP_FILE in
   *tar.gz|*tgz|*tar) tar -xzvf $BACKUP_FILE -C /;;
   *tar.xz|*txz) tar -xvf $BACKUP_FILE -C /;;

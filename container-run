@@ -119,46 +119,46 @@ fi
 ############################################
 #创建一些由于android和普通linux之间的差异而不存在的文件
 if [[ ! -e /dev/fd ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/fd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/fd\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd /dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT /dev/fd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/fd\033[0m"
 fi
 if [[ ! -e /dev/stdin ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/stdin\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/stdin\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/0 /dev/stdin  >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT /dev/stdin\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/stdin\033[0m"
 fi
 if [[ ! -e /dev/stdout ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/stdout\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/stdout\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/1 /dev/stdout >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT /dev/stdout \033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/stdout \033[0m"
 fi
 if [[ ! -e /dev/stderr ]] ;then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/stderr\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/stderr\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/2 /dev/stderr >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT /dev/stderr\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/stderr\033[0m"
 fi
 if [[ ! -e /dev/tty0 ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/tty0\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/tty0\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /dev/null /dev/tty0 >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT  /dev/tty0\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE  /dev/tty0\033[0m"
 fi
 if [[ ! -e /dev/net/tun ]];then
   if [[ ! -d /dev/net ]];then
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/net\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/net\033[0m"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     mkdir -p /dev/net >/dev/null 2>&1
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT /dev/net\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/net\033[0m"
    fi
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT /dev/net/tun\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/net/tun\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mknod /dev/net/tun c 10 200  >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT /dev/net/tun\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/net/tun\033[0m"
 fi
 #挂载系统
 if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
@@ -227,14 +227,14 @@ if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被�
 fi
 #挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
 if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREAT DIRECTORY /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE DIRECTORY /dev/shm\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #创建/dev/shm
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREAT DIRECTORY /dev/shm\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT tmpfs\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE DIRECTORY /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE tmpfs\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >/dev/null 2>&1 #挂载tmpfs
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT tmpfs\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE tmpfs\033[0m"
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /dev/shm\033[0m"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
@@ -251,7 +251,7 @@ if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
   chmod 666 /dev/null >/dev/null 2>&1
   [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CHANGE MODE OF /dev/null\033[0m"
 fi
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] RUN CHROOT\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] RUN CONTAINER\033[0m"
 [[ ${OUTPUT} = "n" ]] || sleep 0.3s
 case $CUSOR in #更换光标
   block)     printf '\e[2 q';;
