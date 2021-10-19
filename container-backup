@@ -1,6 +1,16 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于备份容器#########
-printf "\033[38;5;123m"
+clear
+echo -e ""
+echo -e "\033[38;5;123m//"
+echo -e ""
+i1=$(($(stty size|awk '{print $2}')))
+let i1=$(($i1))
+i1=$(($i1-6))
+echo -e "\033[46;37mBACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+echo -e ""
+echo -e "\033[38;5;123m//"
+echo -e ""
 cd /data/data/com.termux/files/usr/etc/container.conf.d
 for i in {1..100};do
   if [[ -e container-${i}.conf ]];then
@@ -34,7 +44,7 @@ cp container-${CONTAINER}.conf /data/data/com.termux/files/usr/tmp/termux-contai
 clear
 #选择格式
 echo -e "CHOOSE THE FILE FORMAT: "
-read -p "[1]tar.gz [2]tar.xz" FORMAT
+read -p "[1]tar.gz [2]tar.xz " FORMAT
 #判断备份文件是否存在
 if [[ -e /sdcard/container-${NAME}.tar.gz ]];then
   mv /sdcard/container-${NAME}.tar.gz /sdcard/container-${NAME}-bk.tar.gz
@@ -42,13 +52,13 @@ fi
 #备份
 if [[ ${CHROOT_IMG} != "" ]];then
   case ${FORMAT} in
-   1) tar -zcvf /sdcard/container-${NAME}.tar.gz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
-   2) tar -Jcvf /sdcard/container-${NAME}.tar.xz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+   1) tar -zcvPf /sdcard/container-${NAME}.tar.gz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+   2) tar -JcvPf /sdcard/container-${NAME}.tar.xz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
   esac
 else
   case ${FORMAT} in
-    1) tar -zcvf /sdcard/container-${NAME}.tar.gz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
-    2) tar -Jcvf /sdcard/container-${NAME}.tar.xz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+    1) tar -zcvPf /sdcard/container-${NAME}.tar.gz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+    2) tar -JcvPf /sdcard/container-${NAME}.tar.xz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
   esac
 fi
 

@@ -1,10 +1,21 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于还原容器#########
+clear
+echo -e ""
+echo -e "\033[38;5;123m//"
+echo -e ""
+i1=$(($(stty size|awk '{print $2}')))
+let i1=$(($i1))
+i1=$(($i1-7))
+echo -e "\033[46;37mRESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+echo -e ""
+echo -e "\033[38;5;123m//"
+echo -e ""
 printf "\033[38;5;123m"
 read -p "ENTER THE PATH OF YOUR BACKUP FILE: " BACKUP_FILE
 case $BACKUP_FILE in
-  *tar.gz|*tgz|*tar) tar -xzvf $BACKUP_FILE -C /;;
-  *tar.xz|*txz) tar -xvf $BACKUP_FILE -C /;;
+  *tar.gz) tar -xzvPf $BACKUP_FILE -C /;;
+  *tar.xz) tar -xvPf $BACKUP_FILE -C /;;
   *) echo 'UNKNOW FILE FORMAT';exit 0;;
 esac
 cd /data/data/com.termux/files/usr/tmp/termux-container
