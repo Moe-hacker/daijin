@@ -1,7 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于容器安装#########
 clear
-clear
 echo -e ""
 echo -e "\033[38;5;123m//"
 echo -e ""
@@ -14,6 +13,9 @@ echo -e "\033[38;5;123m//"
 echo -e ""
 sleep 0.1s
 CONFIGURE(){
+if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
+mkdir -p /data/data/com.termux/files/usr/etc/container.conf.d
+fi
 for i1 in {1..100};do
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
     CONTAINER=$i1
