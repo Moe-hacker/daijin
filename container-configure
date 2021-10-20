@@ -14,7 +14,7 @@ echo -e ""
 sleep 0.1s
 CONFIGURE(){
 if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
-mkdir -p /data/data/com.termux/files/usr/etc/container.conf.d
+  mkdir -p /data/data/com.termux/files/usr/etc/container.conf.d
 fi
 for i1 in {1..100};do
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
