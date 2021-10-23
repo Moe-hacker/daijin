@@ -26,9 +26,12 @@ CONFIGURE(){
   printf  "\033[38;5;123m"
   read -p "ENTER THE NAME OF THIS CONTAINER: " NAME
   read -p "ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CHROOT_DIR
-  read -p "ENTER THE ABSOLUTE PATH OF IMAGE FILE: " CHROOT_IMG_PATH
-  read -p "ENTER THE NAME OF IMAGE FILE: " CHROOT_IMG_NAME
-  read -p "ENTER THE SIZE OF IMAGE FILE(UNIT IS GB): " SIZE
+  read -p "DO YOU WANT TO INSTALL THIS CONTAINER IN AN IMAGE FILE [y/n]?" USE_IMAGE
+  if [[ ${USE_IMAGE} = "y" ]];then
+    read -p "ENTER THE ABSOLUTE PATH OF IMAGE FILE: " CHROOT_IMG_PATH
+    read -p "ENTER THE NAME OF IMAGE FILE: " CHROOT_IMG_NAME
+    read -p "ENTER THE SIZE OF IMAGE FILE(UNIT IS GB): " SIZE
+  fi
   read -p "ENTER THE ROOTFS DOWNLOAD LINK: " URL
   read -p "DISABLE SELinux?[y/n]: " SELINUX
   read -p "ENTER YOUR HOSTNAME: " HOSTNAME
@@ -49,9 +52,9 @@ CONFIGURE(){
   #下载rootfs
   wget ${URL}
   sudo mkdir -p ${CHROOT_DIR}
-  sudo mkdir -p ${CHROOT_IMG_PATH}
   if [[ ! ${CHROOT_IMG_NAME} = "" ]];then  #创建img镜像并挂载
     echo -e "CREATING IMAGE FILE"
+    sudo mkdir -p ${CHROOT_IMG_PATH}
     cd ${CHROOT_IMG_PATH}
     sudo dd if=/dev/zero of=${CHROOT_IMG_NAME}.img bs=1G count=${SIZE}
     sudo mkfs.ext4 ${CHROOT_IMG_NAME}.img
