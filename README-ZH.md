@@ -13,7 +13,7 @@
 ### 安装并配置此脚本            
 #### 安装:
 ```sh
-pkg install curl
+pkg install curl pv
 bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
 container configure
 ```
