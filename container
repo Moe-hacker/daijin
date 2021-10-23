@@ -49,16 +49,18 @@ CHECKOUT(){
       read -p "SELECT A CONTAINER: " CONTAINER
       echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
     else
-      echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"
+      echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"&&exit
     fi
   fi
 }
 case $1 in
-  *unmount|*un)  bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
+  *unmount|*un)  CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
   *help|*h)      bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
   *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure $2;;
   *update|*up)   bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
   *mount|*m)     CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
-  *r|*remove)    CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
+  *remove|*r)    CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
+  *restore|*rs)  bash /data/data/com.termux/files/usr/share/termux-container/container-restore $2;;
+  *backup|*bk)   bash /data/data/com.termux/files/usr/share/termux-container/container-backup;;
   *)             CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
 esac
