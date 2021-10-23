@@ -41,7 +41,7 @@ Enjoy it!
 ```
 ### Bugs      
 &emsp;If you are using Archlinux,maybe fakeroot is unavailable.      
-&emsp;On some devices,ping may be unavailable.      
+&emsp;On some devices,ping may be unavailable. [(Solution)]()     
 &emsp;I'll try to fix them.       
 &emsp;Any bugs,please report at [ISSUES](https://github.com/Moe-hacker/termux-container/issues)
 ### About:      
