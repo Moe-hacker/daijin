@@ -247,7 +247,7 @@ if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
   mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
   [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /dev/shm"
 fi
-if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
+if  [[ ! -e ${CHROOT_DIR}/dev/pts/2 ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /dev/pts"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
