@@ -48,9 +48,9 @@ CHECKOUT(){
       done
       read -p "SELECT A CONTAINER: " CONTAINER
       echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
+    else
+      echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"
     fi
-  else
-    echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"
   fi
 }
 case $1 in
