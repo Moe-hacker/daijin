@@ -265,7 +265,7 @@ case $CUSOR in #更换光标
   bar)       printf '\e[6 q';;
   underline) printf '\e[4 q';;
 esac
-[[ ${OUTPUT} = "n" ]] || printf "\033[?25h"
+[[ ${OUTPUT} = "n" ]] || printf "\033[?25h\033[0m"
 export PATH_BK=$PATH
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
@@ -276,4 +276,4 @@ unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环�
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mEXIT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m"
 [[ ${OUTPUT} = "n" ]] ||echo -e "//"
-printf '\e[2 q'
+printf '\e[2 q\033[0m'

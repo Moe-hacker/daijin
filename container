@@ -9,22 +9,6 @@
 #编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了。
 #借鉴了一部分andrax启动脚本，故采用相同的许可证。
 ###### E-mail: moe-hacker@outlook.com ######
-if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
-  sudo container $1 $2
-  exit
-fi
-if [[ ! -e /data/data/com.termux/files/usr/share/termux-container/.updated ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/update.sh
-fi
-case $1 in
-  *unmount|*un) bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
-  *help|*h)     bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
-  *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure $2;;
-  *update|*up) bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
-  *mount|*m) bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
-  *r|*remove) bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
-  *)     bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
-esac
 #                   _ooOoo_
 #                  o8888888o
 #                  88" . "88
@@ -45,3 +29,36 @@ esac
 #                   `=---='
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #           佛祖保佑        永无BUG
+if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
+  sudo container $1 $2
+  exit
+fi
+if [[ ! -e /data/data/com.termux/files/usr/share/termux-container/.updated ]];then
+  bash /data/data/com.termux/files/usr/share/termux-container/update.sh
+fi
+CHECKOUT(){
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then
+    if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
+      cd /data/data/com.termux/files/usr/etc/container.conf.d
+      for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then
+          export $(cat container-${i}.conf)
+          echo -e "\033[38;5;123m[$i] $NAME"
+        fi
+      done
+      read -p "SELECT A CONTAINER: " CONTAINER
+      echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
+    fi
+  else
+    echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"
+  fi
+}
+case $1 in
+  *unmount|*un)  bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
+  *help|*h)      bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
+  *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure $2;;
+  *update|*up)   bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
+  *mount|*m)     CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
+  *r|*remove)    CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
+  *)             CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
+esac
