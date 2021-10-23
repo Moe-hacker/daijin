@@ -80,7 +80,11 @@ CONFIGURE(){
   echo NAME=${NAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
   echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
   echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
-  echo CHROOT_IMG=${CHROOT_IMG_PATH}/${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  if [[ ${CHROOT_IMG_NAME} != "" ]];then
+    echo CHROOT_IMG=${CHROOT_IMG_PATH}/${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  else
+    echo CHROOT_IMG= >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  fi
   echo SELinux=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
   echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
   echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
