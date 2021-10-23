@@ -1,17 +1,20 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #########用于备份容器#########
+#${CONTAINER}是配置文件编号
 clear
-echo -e ""
-echo -e "\033[38;5;123m//"
+#没用的输出
+echo -e "\033[38;5;123m"
+echo -e "//"
 echo -e ""
 i1=$(($(stty size|awk '{print $2}')))
 let i1=$(($i1))
 i1=$(($i1-6))
 echo -e "\033[46;37mBACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-echo -e ""
-echo -e "\033[38;5;123m//"
+echo -e "\033[38;5;123m"
+echo -e "//"
 echo -e ""
 cd /data/data/com.termux/files/usr/etc/container.conf.d
+#遍历查找配置文件
 for i in {1..100};do
   if [[ -e container-${i}.conf ]];then
     export $(cat container-${i}.conf)
@@ -39,6 +42,7 @@ echo -e "[START] UNMOUNT ${CHROOT_DIR}"
 umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
 losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
 echo -e "[DONE ] UNMOUNT ${CHROOT_DIR}"
+#移动配置文件，不直接备份防止还原时覆盖其他容器配置
 mkdir -p /data/data/com.termux/files/usr/tmp/termux-container
 cp container-${CONTAINER}.conf /data/data/com.termux/files/usr/tmp/termux-container/container.conf
 clear
@@ -49,7 +53,7 @@ read -p "[1]tar.gz [2]tar.xz " FORMAT
 if [[ -e /sdcard/container-${NAME}.tar.gz ]];then
   mv /sdcard/container-${NAME}.tar.gz /sdcard/container-${NAME}-bk.tar.gz
 fi
-#备份
+#备份,使用tar
 if [[ ${CHROOT_IMG} != "" ]];then
   case ${FORMAT} in
    1) tar -zcvPf /sdcard/container-${NAME}.tar.gz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;

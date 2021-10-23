@@ -6,112 +6,112 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CO
 [[ ${OUTPUT} = "n" ]] ||let i1=$i1
 [[ ${OUTPUT} = "n" ]] ||i4=$(($i1/2-20))
 [[ ${OUTPUT} = "n" ]] ||clear
-[[ ${OUTPUT} = "n" ]] ||printf '\033[?25l'
+[[ ${OUTPUT} = "n" ]] ||printf '\033[38;5;123m\033[?25l'
 [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1))
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mLOADING"
+[[ ${OUTPUT} = "n" ]] ||echo -e "LOADING"
 PROGRESS(){
 while (( $i2<=$i1 ));do
 i2=$(($i2+1))
-echo -e "\033[38;5;123m\033[1H\033[${i2}G/"
+echo -e "\033[1H\033[${i2}G/"
 sleep 0.01s
 done
 }
 [[ ${OUTPUT} = "n" ]] ||i2=8
 [[ ${OUTPUT} = "n" ]] ||PROGRESS
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mTERMUX-CONTAINER\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "TERMUX-CONTAINER"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mGPL-V3 LICENSE\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "GPL-V3 LICENSE"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mNO WARRANTY\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "NO WARRANTY"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m$(yes "<"|sed $i1'q'|tr -d '\n')\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "$(yes "<"|sed $i1'q'|tr -d '\n')"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝"
 [[ ${OUTPUT} = "n" ]] ||i2=0
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m$(yes ">"|sed $i1'q'|tr -d '\n')\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "$(yes ">"|sed $i1'q'|tr -d '\n')"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mCONTAINER ${NAME}\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mARCH $(uname -m)\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mKERNEL $(uname --kernel-release)\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "CONTAINER ${NAME}"
+[[ ${OUTPUT} = "n" ]] ||echo -e "ARCH $(uname -m)"
+[[ ${OUTPUT} = "n" ]] ||echo -e "KERNEL $(uname --kernel-release)"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mTIME $(date|awk '{print $4}')\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "TIME $(date|awk '{print $4}')"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mHOST $(hostname)\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "HOST $(hostname)"
 [[ ${OUTPUT} = "n" ]] ||sleep 0.3s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mANDROID $(neofetch |grep Android|awk '{print $3}')\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "ANDROID $(neofetch |grep Android|awk '{print $3}')"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G┌─────────────────────────┐\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│LINUX               o o o│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│─────────────────────────│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│CONTAINER                │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│~# echo Hello-Word       │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│Hello-Word┌────────────────────────────────┐\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│~#        │ANDROID                    o o o│──┐\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│          │────────────────────────────────│ o│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│          │         o            o         │──│\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G│          │          o          o          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G└──────────│          +hydNNNNdyh+          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │        +mMMMMMMMMMMMMm+        │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │       dMM::NMMMMMMN::MMd       │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │      hMMMMMMMMMMMMMMMMMMh      │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │  ..  yyyyyyyyyyyyyyyyyyyy  ..  │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │.mMMm MMMMMMMMMMMMMMMMMMMM mMMm.│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+ │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │      mMMMMMMMMMMMMMMMMMMm      │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │       /++MMMMh++hMMMM++/       │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │          MMMMo  oMMMM          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │          MMMMo  oMMMM          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │          oNMm-  -mMNs          │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │ ╔═║  ╔═   ╔═   ╔═║  ╔═║  ╝  ╔═ │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │ ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║│  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           │ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ │  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G           └────────────────────────────────┘  │\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m\033[${i4}G             └─────────────────────────────────┘\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G┌─────────────────────────┐"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│LINUX               o o o│"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│─────────────────────────│"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│CONTAINER                │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│~# echo Hello-Word       │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│Hello-Word┌────────────────────────────────┐"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│~#        │ANDROID                    o o o│──┐"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│          │────────────────────────────────│ o│"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│          │         o            o         │──│"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G│          │          o          o          │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G└──────────│          +hydNNNNdyh+          │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │        +mMMMMMMMMMMMMm+        │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │       dMM::NMMMMMMN::MMd       │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │      hMMMMMMMMMMMMMMMMMMh      │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │  ..  yyyyyyyyyyyyyyyyyyyy  ..  │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │.mMMm MMMMMMMMMMMMMMMMMMMM mMMm.│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+ │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │      mMMMMMMMMMMMMMMMMMMm      │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │       /++MMMMh++hMMMM++/       │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │          MMMMo  oMMMM          │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │          MMMMo  oMMMM          │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │          oNMm-  -mMNs          │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │ ╔═║  ╔═   ╔═   ╔═║  ╔═║  ╝  ╔═ │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │ ╔═║  ║ ║  ║ ║  ╔╔╝  ║ ║  ║  ║ ║│  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           │ ╝ ╝  ╝ ╝  ══   ╝ ╝  ══╝  ╝  ══ │  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G           └────────────────────────────────┘  │"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G             └─────────────────────────────────┘"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123mNEVER SETTLE\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//"
+[[ ${OUTPUT} = "n" ]] ||echo -e "NEVER SETTLE"
+[[ ${OUTPUT} = "n" ]] ||echo -e ""
+[[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+[[ ${OUTPUT} = "n" ]] ||echo -e "//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
-  echo -e "\033[38;5;123m[ERR!] CONTAINER DIRECTORY DOES NOT EXIST\033[0m"
+  echo -e "[ERR!] CONTAINER DIRECTORY DOES NOT EXIST"&&printf "\033[?25h"
   exit
 fi
 if [[ !${CHROOT_IMG} = "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用容器镜像，判断其是否存在
-  echo -e "\033[38;5;123m[ERR!] IMAGE FILE DOES NOT EXIST \033[0m"
+  echo -e "[ERR!] IMAGE FILE DOES NOT EXIST "&&printf "\033[?25h"
   exit
 fi
 if [[ ${SELINUX} = "y" ]];then #判断是否需要关闭selinux
   if [[ ! $(getenforce) = "Permissive" ]];then
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] DISABLE SELINUX\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] DISABLE SELINUX"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     setenforce 0 >/dev/null 2>&1 #关闭SELINUX [!]危险操作
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] DISABLE SELINUX\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] DISABLE SELINUX"
   fi
 fi
 if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
   if [[ ! $(hostname) = ${HOSTNAME} ]];then
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] SET HOSTNAME\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] SET HOSTNAME"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     hostname ${HOSTNAME} >/dev/null 2>&1 #设置主机名
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] SET HOSTNAME\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] SET HOSTNAME"
   fi
 fi
 ############################################
@@ -126,69 +126,69 @@ fi
 ############################################
 #创建一些由于android和普通linux之间的差异而不存在的文件
 if [[ ! -e /dev/fd ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/fd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/fd"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd /dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/fd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/fd"
 fi
 if [[ ! -e /dev/stdin ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/stdin\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/stdin"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/0 /dev/stdin  >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/stdin\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/stdin"
 fi
 if [[ ! -e /dev/stdout ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/stdout\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/stdout"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/1 /dev/stdout >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/stdout \033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/stdout "
 fi
 if [[ ! -e /dev/stderr ]] ;then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/stderr\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/stderr"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /proc/self/fd/2 /dev/stderr >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/stderr\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/stderr"
 fi
 if [[ ! -e /dev/tty0 ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/tty0\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/tty0"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   ln -s /dev/null /dev/tty0 >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE  /dev/tty0\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE  /dev/tty0"
 fi
 if [[ ! -e /dev/net/tun ]];then
   if [[ ! -d /dev/net ]];then
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/net\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/net"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     mkdir -p /dev/net >/dev/null 2>&1
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/net\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/net"
    fi
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE /dev/net/tun\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/net/tun"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mknod /dev/net/tun c 10 200  >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE /dev/net/tun\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/net/tun"
 fi
 #挂载系统
 if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
   if [[ ${CHROOT_IMG} = "" ]];then
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] REMOUNT /data\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] REMOUNT /data"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     mount -o remount,suid /data  >/dev/null 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题( 解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] REMOUNT /data\033[0m"
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT ${CHROOT_DIR} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] REMOUNT /data"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT ${CHROOT_DIR} "
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将容器目录挂载到自身，解决pacman无法使用
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT ${CHROOT_DIR} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT ${CHROOT_DIR} "
   else
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] RUN FSCK\033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] RUN FSCK"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     fsck.ext4 -a -f  ${CHROOT_IMG} >/dev/null 2>&1 #修复结构需要清理报错，有一定效果
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] RUN FSCK\033[0m"
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT ${CHROOT_IMG} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] RUN FSCK"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT ${CHROOT_IMG} "
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     loop=$(losetup -f) #查找未使用的loop文件
     losetup  ${loop} ${CHROOT_IMG}  >/dev/null 2>&1
     mount  ${loop} ${CHROOT_DIR}  >/dev/null 2>&1
-    [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT ${CHROOT_IMG} \033[0m"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT ${CHROOT_IMG} "
   fi
 fi
 #创建rootfs中可能不存在的文件,暂时不加输出
@@ -207,58 +207,58 @@ if [[ -L ${CHROOT_DIR}/etc/resolv.conf || ! -e ${CHROOT_DIR}/etc/resolv.conf ]];
 fi
 #挂载内置存储，由于解除挂载会导致宿主机/sdcard无法访问，此处弃坑
 if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /sdacrd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /sdacrd"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
   mount -o ro,bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT /sdacrd\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /sdacrd"
 fi
 #挂载系统文件
 if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /proc\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /proc"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount -t proc proc  ${CHROOT_DIR}/proc/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT /proc\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /proc"
 fi
 if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /dev\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /dev"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --rbind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT /dev\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /dev"
 fi
 if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /sys\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /sys"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --rbind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT /sys\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /sys"
 fi
 #挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
 if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE DIRECTORY /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE DIRECTORY /dev/shm"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #创建/dev/shm
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE DIRECTORY /dev/shm\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CREATE tmpfs\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE DIRECTORY /dev/shm"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE tmpfs"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >/dev/null 2>&1 #挂载tmpfs
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CREATE tmpfs\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE tmpfs"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /dev/shm"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT /dev/shm\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /dev/shm"
 fi
 if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] MOUNT /dev/pts\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] MOUNT /dev/pts"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
   mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] MOUNT /dev/pts\033[0m"
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] CHANGE MODE OF /dev/null\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /dev/pts"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[START] CHANGE MODE OF /dev/null"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   chmod 666 /dev/null >/dev/null 2>&1
-  [[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[DONE ] CHANGE MODE OF /dev/null\033[0m"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CHANGE MODE OF /dev/null"
 fi
-[[ ${OUTPUT} = "n" ]] || echo -e "\033[38;5;123m[START] RUN CONTAINER\033[0m"
+[[ ${OUTPUT} = "n" ]] || echo -e "[START] RUN CONTAINER"
 [[ ${OUTPUT} = "n" ]] || sleep 0.3s
 case $CUSOR in #更换光标
   block)     printf '\e[2 q';;
@@ -271,9 +271,9 @@ unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环�
 /bin/chroot ${CHROOT_DIR} /bin/su - root
 [[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK
 [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1-4))
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mEXIT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-[[ ${OUTPUT} = "n" ]] ||echo -e ""
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[\033[38;5;123m//\033[0m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mEXIT$(yes " "|sed $i1'q'|tr -d '\n')"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m"
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[//"
 printf '\e[2 q'

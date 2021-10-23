@@ -14,8 +14,10 @@ echo -e ""
 echo -e "\033[38;5;123m//"
 echo -e ""
 cd /data/data/com.termux/files/usr/share/termux-container
+#使用git更新目录
 echo -e "\033[38;5;123m$(git reset --hard)"
 echo -e "\033[38;5;123m$(git pull)"
+#更新主程序
 rm /data/data/com.termux/files/usr/bin/container
 cp ./container /data/data/com.termux/files/usr/bin/
 chmod 777 /data/data/com.termux/files/usr/bin/container
