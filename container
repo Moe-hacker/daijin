@@ -69,3 +69,8 @@ case $1 in
   *backup|*bk)   CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-backup;;
   *)             CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
 esac
+#   │  │
+# ── ── ── ╔═╝╔═║╔═╝
+#   │  │   ╔═╝║ ║╔═╝
+# ── ── ── ══╝══╝╝
+#   │  │
