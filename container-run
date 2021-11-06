@@ -268,9 +268,9 @@ esac
 export PATH_BK=$PATH
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
+[[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK
 [[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
 [[ ${OUTPUT} = "n" ]] ||let i1=$i1
-[[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK
 [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1-4))
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
