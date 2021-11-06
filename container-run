@@ -7,7 +7,6 @@ export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CO
 [[ ${OUTPUT} = "n" ]] ||i4=$(($i1/2-20))
 [[ ${OUTPUT} = "n" ]] ||clear
 [[ ${OUTPUT} = "n" ]] ||printf '\033[38;5;123m\033[?25l'
-[[ ${OUTPUT} = "n" ]] ||let i1=$(($i1))
 [[ ${OUTPUT} = "n" ]] ||echo -e "LOADING"
 PROGRESS(){
 while (( $i2<=$i1 ));do
@@ -269,6 +268,8 @@ esac
 export PATH_BK=$PATH
 unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
 /bin/chroot ${CHROOT_DIR} /bin/su - root
+[[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
+[[ ${OUTPUT} = "n" ]] ||let i1=$i1
 [[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK
 [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1-4))
 [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//"
