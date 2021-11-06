@@ -33,9 +33,6 @@ if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
   sudo container $1 $2
   exit
 fi
-if [[ ! -e /data/data/com.termux/files/usr/share/termux-container/.updated ]];then
-  bash /data/data/com.termux/files/usr/share/termux-container/update.sh
-fi
 CHECKOUT(){
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then
     if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
@@ -52,6 +49,14 @@ CHECKOUT(){
       echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"&&exit
     fi
   fi
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
+    mkdir /data/data/com.termux/files/usr/etc/container.conf.d
+    echo NAME=Default >> /data/data/com.termux/files/usr/etc/container.conf
+    echo CUSOR=block >> /data/data/com.termux/files/usr/etc/container.conf
+    mv /data/data/com.termux/files/usr/etc/container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-1.conf
+    echo CONTAINER=1 >>/data/data/com.termux/files/usr/etc/container.conf
+    touch /data/data/com.termux/files/usr/share/termux-container/.updated
+  fi
 }
 case $1 in
   *unmount|*un)  CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
@@ -61,6 +66,6 @@ case $1 in
   *mount|*m)     CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
   *remove|*r)    CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
   *restore|*rs)  bash /data/data/com.termux/files/usr/share/termux-container/container-restore $2;;
-  *backup|*bk)   bash /data/data/com.termux/files/usr/share/termux-container/container-backup;;
+  *backup|*bk)   CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-backup;;
   *)             CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
 esac
