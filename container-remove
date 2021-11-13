@@ -8,7 +8,7 @@ echo -e ""
 i1=$(($(stty size|awk '{print $2}')))
 let i1=$(($i1)) #i1转化为数值
 i1=$(($i1-6)) #用于输出一行带颜色的空格
-echo -e "\033[46;37mREMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m" #只是没用的输出
+echo -e "\033[46;37mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m" #只是没用的输出
 echo -e ""
 echo -e "\033[38;5;123m//"
 echo -e ""
