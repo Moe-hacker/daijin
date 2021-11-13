@@ -25,7 +25,7 @@ while (( $i2<=$i1 ));do
     sleep 0.01s
 done
 i5=$(($i4+9))
-echo -e "\033[${i5}G\033[38;5;123m      BY MOE-HACKER"|pv -qL 20
+echo -e "\033[${i5}G\033[38;5;123m    BY MOE-HACKER 2021"|pv -qL 20
 echo -e "\033[${i5}G\033[38;5;123m    KEEP MOE KEEP COOL"|pv -qL 20
 echo -e "\033[${i5}G\033[38;5;123m       NO WARRANTY"|pv -qL 20
 echo -e "\033[${i5}G\033[38;5;123m        NOT EVIL"|pv -qL 20
@@ -52,7 +52,7 @@ done
 sleep 2s
 clear
 echo -e "\033[${i5}G\033[38;5;123mINSTALLING PACKAGES"|pv -qL 20
-pkg install git wget tsu curl e2fsprogs neofetch
+pkg install git wget tsu curl e2fsprogs neofetch nano
 clear
 echo -e "\033[${i5}G\033[38;5;123mCLONING REPOSITORY"|pv -qL 20
 mkdir -p /data/data/com.termux/files/usr/share/termux-container
@@ -60,6 +60,24 @@ git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/f
 cd /data/data/com.termux/files/usr/share/termux-container
 cp container /data/data/com.termux/files/usr/bin/
 clear
-y3=20
-i4=$(($i4-5))
-echo -e "\033[${i5}G\033[38;5;123mPLEASE RUN container -c"|pv -qL 20
+echo -e "\033[${i5}G\033[38;5;123mCONTAINER_SETTINGS"|pv -qL 20
+read -p "DISABLE SELinux?[y/n]: " SELINUX
+read -p "ENTER YOUR HOSTNAME: " HOSTNAME
+read -p "ENABLE OUTPUT?[y/n]: " OUTPUT
+echo -e "CHOOSE YOUR CUSOR: "
+read -p '[1]: $|   [2]: $▂   [3]: $█ ' CUSOR
+case ${CUSOR} in
+  1) CUSOR=bar;;
+  2) CUSOR=underline;;
+  3) CUSOR=block;;
+esac
+printf '\e[2 q\033[0m'
+echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf
+#   │  │   ╔══╝╔══║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ╔══╝║  ║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ═══╝═══╝╝

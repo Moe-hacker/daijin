@@ -27,12 +27,10 @@ done
 [[ ${OUTPUT} = "n" ]] ||echo -e "//"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-[[ ${OUTPUT} = "n" ]] ||echo -e "$(yes "<"|sed $i1'q'|tr -d '\n')"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G╔═╝  ╔═║  ╔═   ═╔╝  ╔═║  ╝  ╔═   ╔═╝  ╔═║"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G║    ║ ║  ║ ║   ║   ╔═║  ║  ║ ║  ╔═╝  ╔╔╝"
-[[ ${OUTPUT} = "n" ]] ||echo -e "\033[${i4}G══╝  ══╝  ╝ ╝   ╝   ╝ ╝  ╝  ╝ ╝  ══╝  ╝ ╝"
-[[ ${OUTPUT} = "n" ]] ||i2=0
-[[ ${OUTPUT} = "n" ]] ||echo -e "$(yes ">"|sed $i1'q'|tr -d '\n')"
+[[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
+[[ ${OUTPUT} = "n" ]] ||let i1=$(($i1))
+[[ ${OUTPUT} = "n" ]] ||i1=$(($i1-13))
+[[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
 [[ ${OUTPUT} = "n" ]] ||echo -e ""
 [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
 [[ ${OUTPUT} = "n" ]] ||echo -e "//"
@@ -160,7 +158,7 @@ if [[ ! -e /dev/net/tun ]];then
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
     mkdir -p /dev/net >/dev/null 2>&1
     [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] CREATE /dev/net"
-   fi
+    fi
   [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE /dev/net/tun"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   mknod /dev/net/tun c 10 200  >/dev/null 2>&1
@@ -231,7 +229,7 @@ if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被�
   mount --rbind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
   [[ ${OUTPUT} = "n" ]] || echo -e "[DONE ] MOUNT /sys"
 fi
-#挂载一些文件到系统，我也不知道为啥，貌似原项目就这样写的
+#挂载/dev下一些文件到系统，我也不知道为啥，貌似原项目就这样写的
 if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
   [[ ${OUTPUT} = "n" ]] || echo -e "[START] CREATE DIRECTORY /dev/shm"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s

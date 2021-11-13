@@ -1,0 +1,40 @@
+#!/data/data/com.termux/files/usr/bin/bash
+#########用于容器设置#########
+clear
+echo -e ""
+echo -e "\033[38;5;123m//"
+echo -e ""
+i1=$(($(stty size|awk '{print $2}')))
+let i1=$(($i1))
+i1=$(($i1-18))
+echo -e "\033[46;37mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+echo -e ""
+echo -e "\033[38;5;123m//"
+echo -e ""
+export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+if [[ ${SELINUX} == "" ]];then
+    cd /data/data/com.termux/files/usr/etc/container.conf.d
+    for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then
+        export $(cat container-${i}.conf)
+        break
+    fi
+    echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf
+fi
+export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+echo -e "[*] ENABLEOUTPUT:${OUTPUT}"
+echo -e "[*] HOSTNAME:${HOSTNAME}"
+echo -e "[*] CUSOR:${CUSOR}"
+echo -e "[*] DISABLE_SELINUX:${SELINUX}"
+echo -e "[*] CONTAINER:${CONTAINER}"
+echo -e "PRESS ENTER TO EDIT THE CONFIG FILE OR PRESS CTRL-C TO EXIT"
+read
+nano /data/data/com.termux/files/usr/etc/container.conf
+#   │  │   ╔══╝╔══║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ╔══╝║  ║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ═══╝═══╝╝

@@ -35,13 +35,13 @@ echo -e "[DONE ] UNMOUNT /dev"
 echo -e "[START] UNMOUNT /sys"
 umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
 echo -e "[DONE ] UNMOUNT /sys"
-echo -e "[START] UNMOUNT /proc" 
+echo -e "[START] UNMOUNT /proc"
 umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
 echo -e "[DONE ] UNMOUNT /proc"
-echo -e "[START] UNMOUNT /sdcard" 
+echo -e "[START] UNMOUNT /sdcard"
 umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
 echo -e "[DONE ] UNMOUNT /sdcard"
-echo -e "[START] UNMOUNT ${CHROOT_DIR}" 
+echo -e "[START] UNMOUNT ${CHROOT_DIR}"
 umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
 losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
 echo -e "[DONE ] UNMOUNT ${CHROOT_DIR}"
@@ -55,7 +55,6 @@ if [[ ${CHROOT_IMG} != "" ]];then
   rm -rfv ${CHROOT_IMG}
 fi
 rm /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
-rm /data/data/com.termux/files/usr/etc/container.conf
 #选择新容器
 unset CONTAINER
 if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
@@ -66,8 +65,14 @@ if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
       echo -e "\033[38;5;123m[$i] $NAME"
     fi
   done
-  read -p "SELECT A NEW CONTAINER: " CONTAINER
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  read -p "SELECT A CONTAINER: " CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
   echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
+else
+  bash /data/data/com.termux/files/usr/share/termux-container/container-creat
 fi
 printf "\033[0m"
 #   │  │   ╔══╝╔══║╔══╝

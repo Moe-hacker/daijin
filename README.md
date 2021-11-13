@@ -30,14 +30,17 @@ container configure
 Enjoy it!     
 ### Usage:
 ```shell
- container        #Run container
- container -c     #Creat a new container
- container -c set #Select a container
- container -r     #Remove a container
- container -m     #Mount the image file without running container
- container -un    #Unmount container
- container -up    #Update this script
- container -h     #Show helps
+ container                   #Run container
+ container -c                #Creat a new container
+ container -S                #Select a container
+ container -s                #Settings
+ container -r                #Remove a container
+ container -m                #Mount image file
+ container -un               #Unmount container
+ container -bk               #Backup container
+ container -R [backup file]  #Restore container
+ container -up               #Update this script
+ container -h                #Show helps
 ```
 ### Bugs      
 &emsp;If you are using Archlinux,maybe fakeroot is unavailable.      

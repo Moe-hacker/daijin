@@ -29,12 +29,45 @@
 #                   `=---='
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #           佛祖保佑        永无BUG
-if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则重新启动
+if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则调用sudo重新启动
   sudo container $1 $2
   exit
 fi
+SETTINGS(){
+  read -p "DISABLE SELinux?[y/n]: " SELINUX
+  read -p "ENTER YOUR HOSTNAME: " HOSTNAME
+  read -p "ENABLE OUTPUT?[y/n]: " OUTPUT
+  echo -e "CHOOSE YOUR CUSOR: "
+  read -p '[1]: $|   [2]: $▂   [3]: $█ ' CUSOR
+  case ${CUSOR} in
+    1) CUSOR=bar;;
+    2) CUSOR=underline;;
+    3) CUSOR=block;;
+  esac
+  echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+  echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+  echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+  echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf
+}
 CHECKOUT(){
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf ]];then
+    SETTINGS
+  else
+    export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  fi
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
+    mkdir /data/data/com.termux/files/usr/etc/container.conf.d
+    echo NAME=Default >> /data/data/com.termux/files/usr/etc/container.conf
+    echo CUSOR=block >> /data/data/com.termux/files/usr/etc/container.conf
+    mv /data/data/com.termux/files/usr/etc/container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-1.conf
+    echo CONTAINER=1 >>/data/data/com.termux/files/usr/etc/container.conf
+    export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-1.conf)
+    echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf
+  fi
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf ]];then
     if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
       cd /data/data/com.termux/files/usr/etc/container.conf.d
       for i in {1..100};do
@@ -46,28 +79,22 @@ CHECKOUT(){
       read -p "SELECT A CONTAINER: " CONTAINER
       echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
     else
-      echo -e "\033[33m[ERROR!] NO CONFIG FILE FOUND"&&exit
+      bash /data/data/com.termux/files/usr/share/termux-container/container-creat
     fi
-  fi
-  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
-    mkdir /data/data/com.termux/files/usr/etc/container.conf.d
-    echo NAME=Default >> /data/data/com.termux/files/usr/etc/container.conf
-    echo CUSOR=block >> /data/data/com.termux/files/usr/etc/container.conf
-    mv /data/data/com.termux/files/usr/etc/container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-1.conf
-    echo CONTAINER=1 >>/data/data/com.termux/files/usr/etc/container.conf
-    touch /data/data/com.termux/files/usr/share/termux-container/.updated
   fi
 }
 case $1 in
   *unmount|*un)  CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-unmount;;
   *help|*h)      bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
-  *configure|*c) bash /data/data/com.termux/files/usr/share/termux-container/container-configure $2;;
+  *settings|*s)  bash /data/data/com.termux/files/usr/share/termux-container/container-settings;;
+  *creat|*c)     bash /data/data/com.termux/files/usr/share/termux-container/container-creat;;
   *update|*up)   bash /data/data/com.termux/files/usr/share/termux-container/container-update;;
   *mount|*m)     CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-mount;;
   *remove|*r)    CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
-  *restore|*rs)  bash /data/data/com.termux/files/usr/share/termux-container/container-restore $2;;
+  *restore|*R)   bash /data/data/com.termux/files/usr/share/termux-container/container-restore $2;;
   *backup|*bk)   CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-backup;;
-  "")            CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
+  *select|*S)    bash /data/data/com.termux/files/usr/share/termux-container/container-select;;
+  *run|"")       CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
   *)             bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
 esac
 #   │  │   ╔══╝╔══║╔══╝

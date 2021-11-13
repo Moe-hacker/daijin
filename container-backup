@@ -56,8 +56,8 @@ fi
 #备份,使用tar
 if [[ ${CHROOT_IMG} != "" ]];then
   case ${FORMAT} in
-   1) tar -zcvPf /sdcard/container-${NAME}.tar.gz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
-   2) tar -JcvPf /sdcard/container-${NAME}.tar.xz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+    1) tar -zcvPf /sdcard/container-${NAME}.tar.gz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+    2) tar -JcvPf /sdcard/container-${NAME}.tar.xz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
   esac
 else
   case ${FORMAT} in

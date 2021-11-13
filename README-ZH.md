@@ -19,32 +19,18 @@ container configure
 ```
 # 用法：
 ```shell
- container        #运行容器
- container -c     #创建新容器
- container -c set #选择已创建的容器
- container -r     #删除容器
- container -m     #挂载镜像文件但不运行容器
- container -un    #解除容器挂载
- container -up    #更新此脚本
- container -h     #显示帮助信息
-```
-# 脚本结构：      
-```shell
-termux-container
-├── container #主脚本，安装时被复制存放在/data/data/com.termux/files/usr/bin中，调用termux-container目录中的子脚本，执行时会自动获取root权限
-├── container-configure #用于配置此脚本并解压rootfs
-├── container-help #帮助信息
-├── container-mount #用于挂载镜像但不运行chroot
-├── container-run #用于挂载系统并运行chroot
-├── container-unmount #用于解除系统挂载
-├── container-update #用于更新此项目
-├── install.sh #用于此项目安装
-├── update.sh #用于无缝更新
-├── LICENSE #许可证
-├── old #存放之前的老版本
-│   └── container #老版本的脚本，多合一，输出为彩色而非蓝色，没有赛博朋克特效，但核心部分相同
-├── README-ZH.md #中文文档
-└── README.md #github的readme文档(英文)
+ container                   #运行容器
+ container -c                #新建容器
+ container -S                #选择已有容器
+ container -s                #设置
+ container -r                #删除容器
+ container -m                #挂载容器镜像
+ container -un               #解除容器挂在
+ container -bk               #备份容器
+ container -R [backup file]  #还原容器
+ container -up               #更新此脚本
+ container -h                #显示帮助信息
+
 ```
 ### 交个官方作业：      
 ![image](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot-ubuntu.jpg)
@@ -65,7 +51,6 @@ https://share.weiyun.com/6sSwpBW8
 > &emsp;① 由此程序带来的任何形式的损失，开发者概不负责。      
 > &emsp;② 不建议您恶意利用此程序，如使用此程序运行kali系统进行恶意攻击等，此程序给您带来的任何法律责任，开发者概不负责。      
 > &emsp;③ 开发者并未在此程序中写入恶意代码，此程序所执行的一切命令系您自愿。      
-> &emsp;(建议你在运行前阅读此项目代码，我应该都写注释了)            
 
 -------     
 <p align="center">Try everything.</p>       
