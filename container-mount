@@ -26,8 +26,8 @@ sudo losetup $loop ${CHROOT_IMG}
 sudo mount $loop ${CHROOT_DIR}
 echo -e "\033[38;5;123m[INFO] ${CHROOT_IMG} MOUNTED ON ${CHROOT_DIR} \033[0m"
 echo -e "\033[38;5;123m[INFO]  DONE\033[0m"
-#   │  │
-# ── ── ── ╔═╝╔═║╔═╝
-#   │  │   ╔═╝║ ║╔═╝
-# ── ── ── ══╝══╝╝
-#   │  │
+#   │  │   ╔══╝╔══║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ╔══╝║  ║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ═══╝═══╝╝

@@ -70,8 +70,8 @@ if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
   echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
 fi
 printf "\033[0m"
-#   │  │
-# ── ── ── ╔═╝╔═║╔═╝
-#   │  │   ╔═╝║ ║╔═╝
-# ── ── ── ══╝══╝╝
-#   │  │
+#   │  │   ╔══╝╔══║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ╔══╝║  ║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ═══╝═══╝╝
