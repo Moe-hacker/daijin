@@ -16,9 +16,10 @@ if [[ ${SELINUX} == "" ]];then
     cd /data/data/com.termux/files/usr/etc/container.conf.d
     for i in {1..100};do
         if [[ -e container-${i}.conf ]];then
-        export $(cat container-${i}.conf)
-        break
-    fi
+            export $(cat container-${i}.conf)
+            break
+        fi
+    done
     echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
     echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
     echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
