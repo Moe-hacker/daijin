@@ -8,7 +8,7 @@ echo -e "//"
 echo -e ""
 i1=$(($(stty size|awk '{print $2}')))
 let i1=$(($i1))
-i1=$(($i1-19))
+i1=$(($i1-18))
 echo -e "\033[46;37mCONTAINER_UNMOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
 echo -e "\033[38;5;123m"
 echo -e "//"
