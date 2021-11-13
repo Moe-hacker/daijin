@@ -67,10 +67,11 @@ case $1 in
   *remove|*r)    CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-remove;;
   *restore|*rs)  bash /data/data/com.termux/files/usr/share/termux-container/container-restore $2;;
   *backup|*bk)   CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-backup;;
-  *)             CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
+  "")            CHECKOUT&&bash /data/data/com.termux/files/usr/share/termux-container/container-run;;
+  *)             bash /data/data/com.termux/files/usr/share/termux-container/container-help;;
 esac
-#   │  │
-# ── ── ── ╔═╝╔═║╔═╝
-#   │  │   ╔═╝║ ║╔═╝
-# ── ── ── ══╝══╝╝
-#   │  │
+#   │  │   ╔══╝╔══║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ╔══╝║  ║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ═══╝═══╝╝
