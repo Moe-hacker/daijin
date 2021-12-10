@@ -1,4 +1,4 @@
-<p align="center">Dream with me.</p>         
+<p align="center">Dream With Me</p>         
 
 -----------      
 &emsp;年轻人的第一个开源项目。      
@@ -53,4 +53,4 @@ https://share.weiyun.com/6sSwpBW8
 > &emsp;③ 开发者并未在此程序中写入恶意代码，此程序所执行的一切命令系您自愿。      
 
 -------     
-<p align="center">Try everything.</p>       
+<p align="center">Do Great Things</p>       

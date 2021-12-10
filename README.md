@@ -1,4 +1,4 @@
-<p align="center">May the force be with you.</p>         
+<p align="center">May The Force Be With You.</p>         
 
 -----------     
 > &emsp;  [[简体中文]](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)           
@@ -53,4 +53,4 @@ Enjoy it!
 &emsp;This is my first repository on Github and this is the start of my dream of being a geek.If you like it,please give me a star,thanks!       
 
 --------
-<p align="center">Try everything.</p>         
+<p align="center">Try Everything.</p>         
