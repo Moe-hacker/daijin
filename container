@@ -25,35 +25,35 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo -e "\033[${i4}G              \033[32m└────\033[33m│ │\033[32m────┘  \033[33m│ │"
   echo -e "\033[${i4}G                   \033[33m│ └───────┘ │"
   echo -e "\033[${i4}G                   \033[33m└───────────┘"
-  echo -e "\033[${i4}G\033[34m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "\033[${i4}G\033[36m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
   echo -e "\033[${i4}G ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
   echo -e "\033[${i4}G ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
   i2=0
   while (( $i2<=$i1 ));do
       i2=$(($i2+1))
-      echo -e "\033[38;5;123m\033[13H\033[${i2}G="
+      echo -e "\033[36m\033[13H\033[${i2}G="
       sleep 0.01s
   done
   i5=$(($i4+9))
-  echo -e "\033[${i5}G\033[38;5;123m    BY MOE-HACKER 2021"|pv -qL 20
-  echo -e "\033[${i5}G\033[38;5;123m    KEEP MOE KEEP COOL"|pv -qL 20
-  echo -e "\033[${i5}G\033[38;5;123m       NO WARRANTY"|pv -qL 20
-  echo -e "\033[${i5}G\033[38;5;123m        NOT EVIL"|pv -qL 20
-  echo -e "\033[${i5}G\033[38;5;123mPRESS ENTER TO CONTINUE"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    BY MOE-HACKER 2021"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    KEEP MOE KEEP COOL"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m       NO WARRANTY"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m        NOT EVIL"|pv -qL 20
+  echo -e "\033[${i5}G\033[36mPRESS ENTER TO CONTINUE"|pv -qL 20
   i2=0
   printf '\033[?25h'
   read
   clear
-  echo -e "\033[${i5}G\033[38;5;123mINSTALLING PACKAGES"|pv -qL 20
+  echo -e "\033[${i5}G\033[36mINSTALLING PACKAGES"|pv -qL 20
   pkg install git wget tsu curl e2fsprogs neofetch nano
   clear
-  echo -e "\033[${i5}G\033[38;5;123mCLONING REPOSITORY"|pv -qL 20
+  echo -e "\033[${i5}G\033[36mCLONING REPOSITORY"|pv -qL 20
   mkdir -p /data/data/com.termux/files/usr/share/termux-container
   git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container
   cd /data/data/com.termux/files/usr/share/termux-container
   cp container /data/data/com.termux/files/usr/bin/
   clear
-  echo -e "\033[${i5}G\033[38;5;123mCONTAINER_SETTINGS"|pv -qL 20
+  echo -e "\033[${i5}G\033[36mCONTAINER_SETTINGS"|pv -qL 20
   read -p "[!]DISABLE SELinux(Hazard settings)?[y/n]: " SELINUX
   read -p "[*]ENTER YOUR HOSTNAME: " HOSTNAME
   read -p "[*]ENABLE OUTPUT?[y/n]: " OUTPUT
@@ -114,7 +114,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
       for i in {1..100};do
         if [[ -e container-${i}.conf ]];then
           export $(cat container-${i}.conf)
-          echo -e "\033[38;5;123m[$i] $NAME"
+          echo -e "\033[36m[$i] $NAME"
         fi
       done
       export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
@@ -129,14 +129,14 @@ CONTAINER_BACKUP(){  #用于备份容器
   #${CONTAINER}是配置文件编号
   clear
   #没用的输出
-  echo -e "\033[38;5;123m"
+  echo -e "\033[36m"
   echo -e "//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
   echo -e "\033[46;37mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  echo -e "\033[38;5;123m"
+  echo -e "\033[36m"
   echo -e "//"
   echo -e ""
   cd /data/data/com.termux/files/usr/etc/container.conf.d
@@ -191,16 +191,16 @@ CONTAINER_BACKUP(){  #用于备份容器
 CONTAINER_RESTORE(){  #用于还原容器
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-17))
   echo -e "\033[46;37mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
-  printf "\033[38;5;123m"
+  printf "\033[36m"
   #直接还原到根目录
   case $2 in
     *tar.gz) tar -xzvPf $2 -C /;;
@@ -224,20 +224,20 @@ CONTAINER_RESTORE(){  #用于还原容器
 CONTAINER_CREATE(){  #用于容器创建
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
   echo -e "\033[46;37mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   sleep 0.1s
   if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
     mkdir -p /data/data/com.termux/files/usr/etc/container.conf.d
   fi
-  printf  "\033[38;5;123m"
+  printf  "\033[36m"
   read -p "[*]ENTER THE NAME OF THIS CONTAINER: " NAME
   read -p "[*]ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CHROOT_DIR
   read -p "[*]DO YOU WANT TO INSTALL THIS CONTAINER IN AN IMAGE FILE [y/n]?" USE_IMAGE
@@ -277,7 +277,7 @@ CONTAINER_CREATE(){  #用于容器创建
     *) echo 'UNKNOW FILE FORMAT';exit 0;;
   esac
   echo -e ""
-  echo -e "\033[38;5;123m[*]WRITING CONFIGURE FILE"
+  echo -e "\033[36m[*]WRITING CONFIGURE FILE"
   sleep 1s
   #写入配置
   for i1 in {1..100};do #遍历获取未使用的配置文件
@@ -313,10 +313,10 @@ CONTAINER_HELP(){  #输出帮助信息
   echo -e "              \033[32m└────\033[33m│ │\033[32m────┘  \033[33m│ │"
   echo -e "                   \033[33m│ └───────┘ │"
   echo -e "                   \033[33m└───────────┘"
-  echo -e "\033[34m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "\033[36m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
   echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
   echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
-  echo -e "\033[38;5;123mUsage:"
+  echo -e "\033[36mUsage:"
   echo -e " container                   #Run container"
   echo -e " container -c                #Creat a new container"
   echo -e " container -S                #Select a container"
@@ -334,42 +334,42 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-15))
   echo -e "\033[46;37mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   if [[ ${CHROOT_IMG} = "" ]];then
-    echo -e "\033[38;5;123m[ERR!]  Not using image file\033[0m"
+    echo -e "\033[36m[ERR!]  Not using image file\033[0m"
     exit
   fi
   if [[ ! -e ${CHROOT_IMG} ]];then
-    echo -e "\033[38;5;123m[ERR!] Image file does not exist \033[0m"
+    echo -e "\033[36m[ERR!] Image file does not exist \033[0m"
     exit
   fi
   loop=$(sudo losetup -f)
   sudo losetup $loop ${CHROOT_IMG}
   sudo mount $loop ${CHROOT_DIR}
-  echo -e "\033[38;5;123m[INFO] ${CHROOT_IMG} MOUNTED ON ${CHROOT_DIR} \033[0m"
-  echo -e "\033[38;5;123m[INFO]  DONE\033[0m"
+  echo -e "\033[36m[INFO] ${CHROOT_IMG} MOUNTED ON ${CHROOT_DIR} \033[0m"
+  echo -e "\033[36m[INFO]  DONE\033[0m"
 }
 CONTAINER_REMOVE(){  #用于删除容器
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1)) #i1转化为数值
   i1=$(($i1-16)) #用于输出一行带颜色的空格
   echo -e "\033[46;37mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m" #只是没用的输出
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
-  printf "\033[38;5;123m"
+  printf "\033[36m"
   cd /data/data/com.termux/files/usr/etc/container.conf.d
   #遍历查找配置文件
   for i in {1..100};do
@@ -422,7 +422,7 @@ CONTAINER_REMOVE(){  #用于删除容器
     for i in {1..100};do
       if [[ -e container-${i}.conf ]];then
         export $(cat container-${i}.conf)
-        echo -e "\033[38;5;123m[$i] $NAME"
+        echo -e "\033[36m[$i] $NAME"
       fi
     done
     export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
@@ -438,7 +438,7 @@ CONTAINER_RUN(){ #用于运行容器
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
   [[ ${OUTPUT} = "n" ]] ||clear
-  [[ ${OUTPUT} = "n" ]] ||printf '\033[38;5;123m\033[?25l'
+  [[ ${OUTPUT} = "n" ]] ||printf '\033[36m\033[?25l'
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
@@ -447,7 +447,7 @@ CONTAINER_RUN(){ #用于运行容器
   [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1))
   [[ ${OUTPUT} = "n" ]] ||i1=$(($i1-13))
   [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
@@ -659,31 +659,31 @@ CONTAINER_RUN(){ #用于运行容器
   [[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
   [[ ${OUTPUT} = "n" ]] ||let i1=$i1
   [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1-4))
-  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m//"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mEXIT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[38;5;123m"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m"
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   printf '\e[2 q\033[0m'
 }
 CONTAINER_SELECT(){ #用于多容器切换
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
   echo -e "\033[46;37mCONTAINER_SELECT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   sleep 0.1s
   cd /data/data/com.termux/files/usr/etc/container.conf.d
   for i in {1..100};do
     if [[ -e container-${i}.conf ]];then
       export $(cat container-${i}.conf)
-      echo -e "\033[38;5;123m[$i] $NAME"
+      echo -e "\033[36m[$i] $NAME"
     fi
   done
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
@@ -695,14 +695,14 @@ CONTAINER_SELECT(){ #用于多容器切换
 CONTAINER_SETTINGS(){ #用于设置容器
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-18))
   echo -e "\033[46;37mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
   if [[ ${SELINUX} == "" ]];then
@@ -732,14 +732,14 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
   clear
-  echo -e "\033[38;5;123m"
+  echo -e "\033[36m"
   echo -e "//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-18))
   echo -e "\033[46;37mCONTAINER_UNMOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  echo -e "\033[38;5;123m"
+  echo -e "\033[36m"
   echo -e "//"
   echo -e ""
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
@@ -779,19 +779,19 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
   clear
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
   echo -e "\033[46;37mCONTAINER_UPDATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
-  echo -e "\033[38;5;123m//"
+  echo -e "\033[36m//"
   echo -e ""
   cd /data/data/com.termux/files/usr/share/termux-container
   #使用git更新目录
-  echo -e "\033[38;5;123m$(git reset --hard||exit)"
-  echo -e "\033[38;5;123m$(git pull||exit)"
+  echo -e "\033[36m$(git reset --hard||exit)"
+  echo -e "\033[36m$(git pull||exit)"
   #更新主程序
   rm /data/data/com.termux/files/usr/bin/container
   cp ./container /data/data/com.termux/files/usr/bin/
