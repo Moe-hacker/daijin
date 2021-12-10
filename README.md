@@ -24,7 +24,7 @@
 &emsp;Then,
 ```sh
 pkg install curl pv
-bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/install.sh)"
+bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/container)"
 container configure
 ```
 Enjoy it!     
