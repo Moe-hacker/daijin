@@ -467,6 +467,7 @@ CONTAINER_RUN(){ #用于运行容器
   [[ ${OUTPUT} = "n" ]] ||echo -e "HOST $(hostname)"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.3s
   [[ ${OUTPUT} = "n" ]] ||echo -e "ANDROID $(neofetch |grep Android|awk '{print $3}')"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
@@ -807,7 +808,7 @@ case $1 in  #根据$1调用函数
   *R)      CONTAINER_RESTORE;;
   *bk)     CHECKOUT&&CONTAINER_BACKUP;;
   *S)      CONTAINER_SELECT;;
-  *run|"") CHECKOUT&&37mCONTAINER_RUN;;
+  *run|"") CHECKOUT&&CONTAINER_RUN;;
   *)       CONTAINER_HELP;;
 esac
 #                   _ooOoo_
