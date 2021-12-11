@@ -44,6 +44,12 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   printf '\033[?25h'
   read
   clear
+  echo -e "\033[36m[*] Your warranty is now void."
+  echo -e "\033[36m[*] I'm not responsible for anything that may happen to your phone by using this script."
+  echo -e "\033[36m[*]You do it at your own risk and take the responsibility upon yourself and you are not to blame me or Github and its respected dfevelopers."
+  echo -e "Press enter to accept this or press ctrl-c to exit"
+  read
+  clear
   echo -e "\033[${i5}G\033[36mINSTALLING PACKAGES"|pv -qL 20
   pkg install git wget tsu curl e2fsprogs neofetch nano
   clear
