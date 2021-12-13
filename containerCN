@@ -9,6 +9,7 @@
 #编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了。
 #借鉴了一部分andrax启动脚本，故采用相同的许可证。
 ###### E-mail: moe-hacker@outlook.com ######
+###### E-mail: 2096779623@qq.com ######
 if [[ ! -e /data/data/com.termux/files/usr/bin/containerCN ]];then #安装程序
   clear
   printf '\e[6 q'
