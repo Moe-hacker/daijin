@@ -1,7 +1,8 @@
 <p align="center">Dream With Me</p>         
 
 -----------      
-&emsp;年轻人的第一个开源项目。      
+&emsp;年轻人的第一个开源项目。    
+&emsp;汉化 BY [2096779623](https://github.com/2096779623)
 &emsp;此脚本用于在termux中运行chroot系统，赛博朋克风格灵感来自一加赛博朋克联名开机动画。     
 > &emsp;chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux。      
 ### 使用教程:    
@@ -14,7 +15,7 @@
 #### 安装:
 ```sh
 pkg install curl pv
-bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/container)"
+bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/containerCN)"
 container configure
 ```
 # 用法：
