@@ -9,7 +9,7 @@
 #编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了。
 #借鉴了一部分andrax启动脚本，故采用相同的许可证。
 ###### E-mail: moe-hacker@outlook.com ######
-if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
+if [[ ! -e /data/data/com.termux/files/usr/bin/containerCN ]];then #安装程序
   clear
   printf '\e[6 q'
   printf '\033[?25l'
@@ -40,7 +40,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo -e "\033[${i5}G\033[36m    保持MOE 保持COOL"|pv -qL 20
   echo -e "\033[${i5}G\033[36m       没有保修"|pv -qL 20
   echo -e "\033[${i5}G\033[36m        不邪恶"|pv -qL 20
-  echo -e "\033[${i5}G\033[36m    按回车键继续"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m      按回车键继续"|pv -qL 20
   i2=0
   printf '\033[?25h'
   read
@@ -58,18 +58,18 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   #新建文件夹
   mkdir -p /data/data/com.termux/files/usr/share/termux-container
   #克隆存储库
-  git clone https://hub.fastgit.org/Moe-hacker/termux-container $PREFIX/share/termux-container
+  git clone https://hub.fastgit.org/2096779623/termux-container $PREFIX/share/termux-container
   #进入目录
   cd $PREFIX/share/termux-container
   #复制到PATH
-  cp container $PREFIX/bin/
+  cp containerCN $PREFIX/bin/
   #赋予权限
-  chmod 777 /data/data/com.termux/files/usr/bin/container
+  chmod 777 /data/data/com.termux/files/usr/bin/containerCN
   #清屏
   clear
   echo -e "\033[${i5}G\033[36mCONTAINER_设置"|pv -qL 20
   read -p "[!]禁用SELinux（危险设置）?[y/n]: " SELINUX
-  read -p "[*]输入主机名 " HOSTNAME
+  read -p "[*]输入主机名：" HOSTNAME
   read -p "[*]启用输出?[y/n]: " OUTPUT
   echo -e "[*]选择你的配色: "
   read -p '[1]: $|   [2]: $▂   [3]: $█ ' CUSOR
@@ -85,10 +85,10 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo HOSTNAME=${HOSTNAME} >> $PREFIX/etc/container.conf
   echo CUSOR=${CUSOR} >> $PREFIX/etc/container.conf
  #输出帮助
- container -h&&exit
+ containerCN -h&&exit
 fi
 if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则调用sudo重新启动
-  sudo container $1 $2
+  sudo containerCN $1 $2
   exit
 fi
 SETTINGS(){  #此函数在checkout中被调用
@@ -137,7 +137,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
       export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
       export CONTAINER_BK=${CONTAINER}
       unset CONTAINER
-      read -p "SELECT A CONTAINER: " CONTAINER
+      read -p "选择一个CONTAINER: " CONTAINER
       sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
     fi
   fi
