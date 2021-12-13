@@ -14,22 +14,22 @@
 #### 安装:
 ```sh
 pkg install curl pv
-bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/container)"
+bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/containerCN)"
 container configure
 ```
 # 用法：
 ```shell
- container                   #运行容器
- container -c                #新建容器
- container -S                #选择已有容器
- container -s                #设置
- container -r                #删除容器
- container -m                #挂载容器镜像
- container -un               #解除容器挂在
- container -bk               #备份容器
- container -R [backup file]  #还原容器
- container -up               #更新此脚本
- container -h                #显示帮助信息
+ containerCN                   #运行容器
+ containerCN -c                #新建容器
+ containerCN -S                #选择已有容器
+ containerCN -s                #设置
+ containerCN -r                #删除容器
+ containerCN -m                #挂载容器镜像
+ containerCN -un               #解除容器挂在
+ containerCN -bk               #备份容器
+ containerCN -R [备份文件]      #还原容器
+ containerCN -up               #更新此脚本
+ containerCN -h                #显示帮助信息
 
 ```
 ### 交个官方作业：      
@@ -40,6 +40,7 @@ https://share.weiyun.com/6sSwpBW8
 ### BUGS：      
 &emsp;目前已知可能有些设备ping无法使用，不过据说影响不大。      
 &emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错。      
+&emsp;sed报错
 ### 说明:            
 &emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：[andrax](https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2)      
 ### 背景：
