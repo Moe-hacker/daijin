@@ -9,7 +9,7 @@
 ### Notes:      
 > Chroot is faster than proot with less limits.But it can only be run with root privileges,and it is dangerous.If you do not want to run programs that must be able to read/write the files in /proc but using a common user,please do not disable SELinux.      
 ### Screenshot:
-![screenshot](https://github.com/2096779623/termux-container/raw/CN/.Screenshots/Screenshot-install.png)
+![screenshot](https://hub.fastgit.org/2096779623/termux-container/raw/CN/.Screenshots/Screenshot-install.png)
 ![screenshot](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/screenshot-run.jpg)
 ### Preparation:      
 &emsp;To run it,you need：      
