@@ -239,7 +239,7 @@ CONTAINER_RESTORE(){  #用于还原container
   mv container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf
   sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
 }
-CONTAINER_创建(){  #用于container创建
+CONTAINER_CREATE(){  #用于container创建
   clear
   echo -e ""
   echo -e "\033[36m//"
