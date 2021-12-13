@@ -1,0 +1,880 @@
+#!/data/data/com.termux/files/usr/bin/bash
+#########container主程序#########
+###### Github@Moe-hacker ######
+#❀我萌故我在❀
+#•.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
+#`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
+#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::(｡ ●ω●｡)
+#`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
+#编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了。
+#借鉴了一部分andrax启动脚本，故采用相同的许可证。
+###### E-mail: moe-hacker@outlook.com ######
+if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
+  clear
+  printf '\e[6 q'
+  printf '\033[?25l'
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$i1
+  i4=$(($i1/2-22))
+  echo -e "\033[${i4}G              \033[32m┌───────────┐"
+  echo -e "\033[${i4}G              │ ┌───────┐ │"
+  echo -e "\033[${i4}G              │ │  \033[33m┌───────────┐"
+  echo -e "\033[${i4}G              \033[32m│ │  \033[33m│ ┌───────┐ │"
+  echo -e "\033[${i4}G              \033[32m│ │  \033[33m│ │  \033[32m│ │  \033[33m│ │"
+  echo -e "\033[${i4}G              \033[32m│ └──\033[33m│ │\033[32m──┘ │  \033[33m│ │"
+  echo -e "\033[${i4}G              \033[32m└────\033[33m│ │\033[32m────┘  \033[33m│ │"
+  echo -e "\033[${i4}G                   \033[33m│ └───────┘ │"
+  echo -e "\033[${i4}G                   \033[33m└───────────┘"
+  echo -e "\033[${i4}G\033[36m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "\033[${i4}G ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e "\033[${i4}G ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  i2=0
+  while (( $i2<=$i1 ));do
+      i2=$(($i2+1))
+      echo -e "\033[36m\033[13H\033[${i2}G="
+      sleep 0.01s
+  done
+  i5=$(($i4+9))
+  echo -e "\033[${i5}G\033[36m    BY MOE-HACKER 2021"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    CN BY 2096779623 2021"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    保持MOE 保持COOL"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m       没有保修"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m        不邪恶"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m按回车键继续"|pv -qL 20
+  i2=0
+  printf '\033[?25h'
+  read
+  clear
+  echo -e "\033[36m[*] 您的保修现在无效。"
+  echo -e "\033[36m[*] 我对使用此脚本可能发生在您手机上的任何事情概不负责。"
+  echo -e "\033[36m[*] 您自行承担风险，并自行承担责任，您不能责怪我或Github及其受人尊敬的开发人员。"
+  echo -e "按回车健同意，按ctrl+c键退出"
+  read
+  clear
+  echo -e "\033[${i5}G\033[36m安装软件包..."|pv -qL 20
+  pkg i git wget tsu curl e2fsprogs neofetch nano -y
+  clear
+  echo -e "\033[${i5}G\033[36m克隆存储库..."|pv -qL 20
+  #新建文件夹
+  mkdir -p /data/data/com.termux/files/usr/share/termux-container
+  #克隆存储库
+  git clone https://hub.fastgit.org/Moe-hacker/termux-container $PREFIX/share/termux-container
+  #进入目录
+  cd $PREFIX/share/termux-container
+  #复制到PATH
+  cp container $PREFIX/bin/
+  #赋予权限
+  chmod 777 /data/data/com.termux/files/usr/bin/container
+  #清屏
+  clear
+  echo -e "\033[${i5}G\033[36mCONTAINER_设置"|pv -qL 20
+  read -p "[!]禁用SELinux（危险设置）?[y/n]: " SELINUX
+  read -p "[*]输入主机名 " HOSTNAME
+  read -p "[*]启用输出?[y/n]: " OUTPUT
+  echo -e "[*]选择你的配色: "
+  read -p '[1]: $|   [2]: $▂   [3]: $█ ' CUSOR
+  case ${CUSOR} in
+    1) CUSOR=bar;;
+    2) CUSOR=underline;;
+    3) CUSOR=block;;
+  esac
+  printf '\e[2 q\033[0m'
+  #设置配置文件
+  echo SELINUX=${SELINUX} >> $PREFIX/etc/container.conf
+  echo OUTPUT=${OUTPUT} >> $PREFIX/etc/container.conf
+  echo HOSTNAME=${HOSTNAME} >> $PREFIX/etc/container.conf
+  echo CUSOR=${CUSOR} >> $PREFIX/etc/container.conf
+ #输出帮助
+ container -h&&exit
+fi
+if [[ ! $(whoami) = "root" ]];then #判断用户，若不是root则调用sudo重新启动
+  sudo container $1 $2
+  exit
+fi
+SETTINGS(){  #此函数在checkout中被调用
+  read -p "[!]禁用SELinux（危险设置）?[y/n]: " SELINUX
+  read -p "[*]输入主机名: " HOSTNAME
+  read -p "[*]启用输出?[y/n]: " OUTPUT
+  echo -e "[*]选择一个配色: "
+  read -p '[1]: $|   [2]: $▂   [3]: $█ ' CUSOR
+  case ${CUSOR} in
+    1) CUSOR=bar;;
+    2) CUSOR=underline;;
+    3) CUSOR=block;;
+  esac
+  echo SELINUX=${SELINUX} >> $PREFIX/etc/container.conf
+  echo OUTPUT=${OUTPUT} >> $PREFIX/etc/container.conf
+  echo HOSTNAME=${HOSTNAME} >> $PREFIX/etc/container.conf
+  echo CUSOR=${CUSOR} >> $PREFIX/etc/container.conf
+}
+CHECKOUT(){ #配置兼容性检查和空配置检查
+  if [[ ! -e $PREFIX/etc/container.conf ]];then
+    SETTINGS
+  else
+    export $(cat $PREFIX/etc/container.conf) >> /dev/null
+  fi
+  if [[ ! -e $PREFIX/etc/container.conf.d ]];then
+    mkdir /data/data/com.termux/files/usr/etc/container.conf.d
+    echo NAME=Default >> /data/data/com.termux/files/usr/etc/container.conf
+    echo CUSOR=block >> /data/data/com.termux/files/usr/etc/container.conf
+    mv /data/data/com.termux/files/usr/etc/container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-1.conf
+    echo CONTAINER=1 >>/data/data/com.termux/files/usr/etc/container.conf
+    export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-1.conf)
+    echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+    echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf
+  fi
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf ]];then
+    if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
+      cd /data/data/com.termux/files/usr/etc/container.conf.d
+      for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then
+          export $(cat container-${i}.conf)
+          echo -e "\033[36m[$i] $NAME"
+        fi
+      done
+      export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+      export CONTAINER_BK=${CONTAINER}
+      unset CONTAINER
+      read -p "SELECT A CONTAINER: " CONTAINER
+      sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
+    fi
+  fi
+}
+CONTAINER_BACKUP(){  #用于备份container
+  #${CONTAINER}是配置文件编号
+  clear
+  #没用的输出
+  echo -e "\033[36m"
+  echo -e "//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-16))
+  echo -e "\033[46;37mCONTAINER_备份$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[36m"
+  echo -e "//"
+  echo -e ""
+  cd /data/data/com.termux/files/usr/etc/container.conf.d
+  #遍历查找配置文件
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      export $(cat container-${i}.conf)
+      echo -e "[$i] $NAME"
+      sleep 0.3s
+    fi
+  done
+  read -p "选择一个要备份的containercontainer: " CONTAINER
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
+  #开始解除挂载
+  echo -e "UNMOUNTING"
+  echo -e "[开始] UNMOUNT /dev"
+  umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
+  echo -e "[完成 ] UNMOUNT /dev"
+  echo -e "[开始] UNMOUNT /sys"
+  umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
+  echo -e "[完成 ] UNMOUNT /sys"
+  echo -e "[开始] UNMOUNT /proc"
+  umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
+  echo -e "[完成 ] UNMOUNT /proc"
+  echo -e "[开始] UNMOUNT /sdcard"
+  umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
+  echo -e "[完成 ] UNMOUNT /sdcard"
+  echo -e "[开始] UNMOUNT ${CHROOT_DIR}"
+  umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
+  losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
+  echo -e "[完成 ] UNMOUNT ${CHROOT_DIR}"
+  #移动配置文件，不直接备份防止还原时覆盖其他container配置
+  mkdir -p /data/data/com.termux/files/usr/tmp/termux-container
+  cp container-${CONTAINER}.conf /data/data/com.termux/files/usr/tmp/termux-container/container.conf
+  clear
+  #选择格式
+  echo -e "选择备份文件格式: "
+  read -p "[1]tar.gz [2]tar.xz " FORMAT
+  #备份,使用tar
+  if [[ ${CHROOT_IMG} != "" ]];then
+    case ${FORMAT} in
+      1) tar -zcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.gz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+      2) tar -JcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.xz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+    esac
+  else
+   case ${FORMAT} in
+      1) tar -zcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.gz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+      2) tar -JcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.xz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
+    esac
+  fi
+}
+CONTAINER_RESTORE(){  #用于还原container
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-17))
+  echo -e "\033[46;37mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  printf "\033[36m"
+  #直接还原到根目录
+  case $2 in
+    *tar.gz) tar -xzvPf $2 -C /;;
+    *tar.xz) tar -xvPf $2 -C /;;
+    *) echo 'UNKNOW FILE FORMAT';exit 0;;
+  esac
+  cd /data/data/com.termux/files/usr/tmp/termux-container
+  printf "\033[0m"
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  for i1 in {1..100};do
+    if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
+      CONTAINER=$i1
+      break
+    fi
+  done
+  mv container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
+}
+CONTAINER_创建(){  #用于container创建
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-16))
+  echo -e "\033[46;37mCONTAINER_创建$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  sleep 0.1s
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d ]];then
+    mkdir -p /data/data/com.termux/files/usr/etc/container.conf.d
+  fi
+  printf  "\033[36m"
+  #读取container信息
+  read -p "[*]请给这个container定义一个名称: " NAME
+  read -p "[*]请输入这个container的绝对路径: " CHROOT_DIR
+  read -p "[*]  你想把这个container安装到镜像文件中吗 [y/n]?" USE_IMAGE
+  if [[ ${USE_IMAGE} = "y" ]];then #判断是否使用镜像
+    read -p "[*]请输入这个镜像文件的绝对路径: " CHROOT_IMG_PATH
+    read -p "[*]请给这个镜像定义一个名称: " CHROOT_IMG_NAME
+    read -p "[*]输入这个镜像文件的大小(单位：GB): " SIZE
+  fi
+  read -p "[*]请输入rootfs的下载链接: " URL
+  echo -e "下载ROOTFS..."
+  sleep 1s
+  rm -rf /data/data/com.termux/files/usr/tmp/container >/dev/null 2>&1
+  mkdir -p /data/data/com.termux/files/usr/tmp/container >/dev/null 2>&1
+  cd /data/data/com.termux/files/usr/tmp/container >/dev/null 2>&1
+  #下载rootfs
+  wget ${URL}
+  sudo mkdir -p ${CHROOT_DIR}
+  if [[ ! ${CHROOT_IMG_NAME} = "" ]];then  #创建img镜像并挂载
+    echo -e "[*]创建镜像文件..."
+    sudo mkdir -p ${CHROOT_IMG_PATH}
+    cd ${CHROOT_IMG_PATH}
+    sudo dd if=/dev/zero of=${CHROOT_IMG_NAME}.img bs=1G count=${SIZE}
+    sudo mkfs.ext4 ${CHROOT_IMG_NAME}.img
+    echo -e "挂载镜像文件..."
+    sleep 1s
+    LOOP=$(sudo losetup -f)
+    sudo losetup  ${LOOP} ${CHROOT_IMG_NAME}.img  >/dev/null 2>&1
+    sudo mount ${LOOP} ${CHROOT_DIR}  >/dev/null 2>&1
+  fi
+  echo -e "[*]解压ROOTFS..."
+  sleep 2s
+  #解压rootfs
+  ROOTFS=$(ls /data/data/com.termux/files/usr/tmp/container/)
+  case $ROOTFS in
+    *tar.gz|*tgz|*tar) tar -xzvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+    *tar.xz|*txz) tar -xvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+    *) echo '未知文件格式！';exit 0;;
+  esac
+  echo -e ""
+  echo -e "\033[36m[*]写入container文件..."
+  sleep 1s
+  for i1 in {1..100};do #遍历获取未使用的配置文件
+    if [[ ! -e /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf ]];then
+      CONTAINER=$i1
+      break
+    fi
+  done
+  #写入配置
+  echo NAME=${NAME} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  if [[ ${CHROOT_IMG_NAME} != "" ]];then
+    echo CHROOT_IMG=${CHROOT_IMG_PATH}/${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  else
+    echo CHROOT_IMG= >> /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  fi
+  export NEW_CONTAINER=${CONTAINER}
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
+  echo -e "[*]移除下载的rootfs...\033[0m"
+  sleep 1s
+  #清空tmp
+  rm -rf /data/data/com.termux/files/usr/tmp/container
+}
+CONTAINER_HELP(){  #输出帮助信息
+  echo -e "              \033[32m┌───────────┐"
+  echo -e "              │ ┌───────┐ │"
+  echo -e "              │ │  \033[33m┌───────────┐"
+  echo -e "              \033[32m│ │  \033[33m│ ┌───────┐ │"
+  echo -e "              \033[32m│ │  \033[33m│ │  \033[32m│ │  \033[33m│ │"
+  echo -e "              \033[32m│ └──\033[33m│ │\033[32m──┘ │  \033[33m│ │"
+  echo -e "              \033[32m└────\033[33m│ │\033[32m────┘  \033[33m│ │"
+  echo -e "                   \033[33m│ └───────┘ │"
+  echo -e "                   \033[33m└───────────┘"
+  echo -e "\033[36m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  echo -e "\033[36mUsage:"
+  echo -e " container                   #运行container"
+  echo -e " container -c                #创建一个新container"
+  echo -e " container -S                #选择一个container"
+  echo -e " container -s                #设置"
+  echo -e " container -r                #移除一个container"
+  echo -e " container -m                #挂载镜像文件"
+  echo -e " container -un               #取消挂载container"
+  echo -e " container -bk               #备份container"
+  echo -e " container -R [backup file]  #恢复container"
+  echo -e " container -up               #升级container"
+  echo -e " container -h                #查看帮助\033[0m"
+}
+CONTAINER_MOUNT(){ #用于挂载镜像
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-15))
+  echo -e "\033[46;37mCONTAINER_挂载$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  if [[ ${CHROOT_IMG} = "" ]];then
+    echo -e "\033[36m[错误！] 没有使用镜像文件！\033[0m"
+    exit
+  fi
+  if [[ ! -e ${CHROOT_IMG} ]];then
+    echo -e "\033[36m[错误！] 镜像文件不存在！ \033[0m"
+    exit
+  fi
+  loop=$(sudo losetup -f)
+  sudo losetup $loop ${CHROOT_IMG}
+  sudo mount $loop ${CHROOT_DIR}
+  echo -e "\033[36m[信息] ${CHROOT_IMG} 挂载在 ${CHROOT_DIR} \033[0m"
+  echo -e "\033[36m[信息] 完成！\033[0m"
+}
+CONTAINER_REMOVE(){  #用于删除container
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1)) #i1转化为数值
+  i1=$(($i1-16))
+  echo -e "\033[46;37mCONTAINER_移除$(yes " "|sed $i1'q'|tr -d '\n')\033[0m" #只是没用的输出 ？？？？？
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  printf "\033[36m"
+  cd /data/data/com.termux/files/usr/etc/container.conf.d
+  #遍历查找配置文件
+  for i in {1..100};do
+  if [[ -e container-${i}.conf ]];then
+      export $(cat container-${i}.conf)
+      echo -e "[$i] $NAME"
+    fi
+  done
+  read -p "选择一个你要删除的Container: " CONTAINER
+  if [[ ${CONTAINER} = "" ]];then
+    exit
+  fi
+  echo -e "[警告!!!] 此Container中的所有文件都将被删除"
+  echo -e "按ENTER键继续，或按CTRL-C键退出"
+  read
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
+  #解除挂载,防止误删系统文件
+  clear
+  if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
+    exit
+  fi
+  echo -e "取消挂载..."
+  echo -e "[开始] UNMOUNT /dev"
+  umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
+  echo -e "[完成 ] UNMOUNT /dev"
+  echo -e "[开始] UNMOUNT /sys"
+  umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
+  echo -e "[完成 ] UNMOUNT /sys"
+  echo -e "[开始] UNMOUNT /proc"
+  umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
+  echo -e "[完成 ] UNMOUNT /proc"
+  echo -e "[开始] UNMOUNT /sdcard"
+  umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
+  echo -e "[完成 ] UNMOUNT /sdcard"
+  echo -e "[开始] UNMOUNT ${CHROOT_DIR}"
+  umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
+  losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
+  echo -e "[完成 ] UNMOUNT ${CHROOT_DIR}"
+  echo -e "移除CONTAINER..."
+  sleep 2s
+  #删除旧container,同时防止执行rm -rf
+  if [[ ${CHROOT_DIR} != "" ]];then
+    rm -rfv ${CHROOT_DIR}
+  fi
+  if [[ ${CHROOT_IMG} != "" ]];then
+    rm -rfv ${CHROOT_IMG}
+  fi
+  rm /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf
+  #选择新container
+  unset CONTAINER
+  if [[ $( ls /data/data/com.termux/files/usr/etc/container.conf.d ) != "" ]];then
+    cd /data/data/com.termux/files/usr/etc/container.conf.d
+    for i in {1..100};do
+      if [[ -e container-${i}.conf ]];then
+        export $(cat container-${i}.conf)
+        echo -e "\033[36m[$i] $NAME"
+      fi
+    done
+    export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+    export CONTAINER_BK=${CONTAINER}
+    unset CONTAINER
+    read -p "选择一个CONTAINER: " CONTAINER
+    sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
+    echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
+  fi
+  printf "\033[0m"
+}
+CONTAINER_RUN(){ #用于运行container
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
+  [[ ${OUTPUT} = "n" ]] ||clear
+  [[ ${OUTPUT} = "n" ]] ||printf '\033[36m\033[?25l'
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||echo -e "//"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1))
+  [[ ${OUTPUT} = "n" ]] ||i1=$(($i1-13))
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mCONTAINER_运行$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "//"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||echo -e "TERMUX-CONTAINER"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "GPL-V3 LICENSE"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "没有保修"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "CONTAINER ${NAME}"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "架构 $(uname -m)"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "内核 $(uname --kernel-release)"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "时间 $(date|awk '{print $4}')"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "主机名 $(hostname)"
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.3s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "安卓版本 $(neofetch |grep Android|awk '{print $3}')"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||echo -e "//"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "定义你自己"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] ||echo -e "//"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  if [[ ! -e ${CHROOT_DIR} ]];then #判断container是否存在
+    echo -e "[错误！] CONTAINER目录不存在！"&&printf "\033[?25h"
+    exit
+  fi
+  if [[ !${CHROOT_IMG} = "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用container镜像，判断其是否存在
+    echo -e "[错误！] 镜像文件不存在！ "&&printf "\033[?25h"
+    exit
+  fi
+  if [[ ${SELINUX} = "y" ]];then #判断是否需要关闭selinux
+    if [[ ! $(getenforce) = "Permissive" ]];then
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 禁用 SELINUX"
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      setenforce 0 >/dev/null 2>&1 #关闭SELINUX [!]危险操作
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 禁用 SELINUX"
+    fi
+  fi
+  if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
+    if [[ ! $(hostname) = ${HOSTNAME} ]];then
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 设置主机名"
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      hostname ${HOSTNAME} >/dev/null 2>&1 #设置主机名
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 设置主机名"
+    fi
+  fi
+  ############################################
+  #####  下面这段借鉴了andrax的启动脚本  #####
+  #####加入把系统安装在 img镜像文件的选项#####
+  #####    修复了镜像文件结构需要清理    #####
+  #####        mount前加入一些判断      #####
+  #####  修复了sudo无法使用(未完全解决)  #####
+  #####    修复了pacman无法分析挂载点    #####
+  #####    修复未设置dns导致无法联网     #####
+  #####      加入没啥用的输出和停顿      #####   （没啥用加他干啥）
+  ############################################
+  #创建一些由于android和普通linux之间的差异而不存在的文件
+  if [[ ! -e /dev/fd ]];then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/fd"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    ln -s /proc/self/fd /dev/ >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 /dev/fd"
+  fi
+  if [[ ! -e /dev/stdin ]];then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/stdin"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    ln -s /proc/self/fd/0 /dev/stdin  >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 /dev/stdin"
+  fi
+  if [[ ! -e /dev/stdout ]];then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/stdout"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    ln -s /proc/self/fd/1 /dev/stdout >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 /dev/stdout "
+  fi
+  if [[ ! -e /dev/stderr ]] ;then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/stderr"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    ln -s /proc/self/fd/2 /dev/stderr >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 /dev/stderr"
+  fi
+  if [[ ! -e /dev/tty0 ]];then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/tty0"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    ln -s /dev/null /dev/tty0 >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建  /dev/tty0"
+  fi
+  if [[ ! -e /dev/net/tun ]];then
+    if [[ ! -d /dev/net ]];then
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/net"
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      mkdir -p /dev/net >/dev/null 2>&1
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 /dev/net"
+      fi
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 /dev/net/tun"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mknod /dev/net/tun c 10 200  >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 /dev/net/tun"
+  fi
+  #挂载系统
+  if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断container自身是否被挂载，由于container自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
+    if [[ ${CHROOT_IMG} = "" ]];then
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 重新挂载 /data"
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      mount -o remount,suid /data  >/dev/null 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题( 解决了，但没完全解决，对于一些采用vab分区的手机可能无效，比如我的k40pro就是vab分区，所以无效)
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 重新挂载 /data"
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 ${CHROOT_DIR} "
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >/dev/null 2>&1 #将container目录挂载到自身，解决pacman无法使用
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 ${CHROOT_DIR} "
+    else
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 运行FSCK"
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      fsck.ext4 -a -f  ${CHROOT_IMG} >/dev/null 2>&1 #修复结构需要清理报错，有一定效果
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 运行FSCK"
+      [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 ${CHROOT_IMG} "
+      [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+      loop=$(losetup -f) #查找未使用的loop文件
+      losetup  ${loop} ${CHROOT_IMG}  >/dev/null 2>&1
+      mount  ${loop} ${CHROOT_DIR}  >/dev/null 2>&1
+      [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 ${CHROOT_IMG} "
+    fi
+  fi
+  #创建rootfs中可能不存在的文件,暂时不加输出
+  if [[ ! -e ${CHROOT_DIR}/dev || ! -e ${CHROOT_DIR}/proc || ! -e ${CHROOT_DIR}/sys ]]; then
+    [[ -e ${CHROOT_DIR}/dev ]] || mkdir ${CHROOT_DIR}/dev
+    [[ -e ${CHROOT_DIR}/proc ]] || mkdir ${CHROOT_DIR}/proc
+    [[ -e ${CHROOT_DIR}/sys ]] || mkdir ${CHROOT_DIR}/sys
+  fi
+  #修复网络问题
+  if [[ $(cat ${CHROOT_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
+    echo 127.0.0.1 ${HOSTNAME} >> ${CHROOT_DIR}/etc/hosts #修复sudo报错无法解析主机
+  fi
+  if [[ -L ${CHROOT_DIR}/etc/resolv.conf || ! -e ${CHROOT_DIR}/etc/resolv.conf ]];then
+    rm -f ${CHROOT_DIR}/etc/resolv.conf >/dev/null 2>&1
+    echo nameserver 8.8.8.8 >> ${CHROOT_DIR}/etc/resolv.conf #解决未设置dns导致无法联网             #垃圾114  谷歌YYDS！！！
+    echo nameserver 8.8.4.4 >> ${CHROOT_DIR}/etc/resolv.conf
+  fi
+  #挂载内置存储
+  if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /sdacrd"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mkdir ${CHROOT_DIR}/sdcard >/dev/null 2>&1
+    mount -o ro,bind /sdcard ${CHROOT_DIR}/sdcard/ >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 /sdacrd"
+  fi
+  #挂载系统运行所需文件
+  if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是 否被挂载
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /proc"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mount -t proc proc  ${CHROOT_DIR}/proc/ >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 /proc"
+  fi
+  if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /dev"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mount --rbind /dev ${CHROOT_DIR}/dev/ >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 /dev"
+  fi
+  if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否 被挂载
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /sys"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mount --rbind /sys ${CHROOT_DIR}/sys/ >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 /sys"
+  fi
+  #挂载/dev下一些文件到系统，我也不知道为啥，貌似原项目就这样写的
+  if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 目录 /dev/shm"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #创建/dev/shm
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 目录 /dev/shm"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 创建 tmpfs"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >/dev/null 2>&1 #挂载tmpfs
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 创建 tmpfs"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /dev/shm"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >/dev/null 2>&1 #挂载/dev/shm
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 /dev/shm"
+  fi
+  if  [[ ! -e ${CHROOT_DIR}/dev/pts/2 ]];then
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /dev/pts"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    mkdir ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
+    mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 挂载 /dev/pts"
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 修改权限 /dev/null"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    chmod 666 /dev/null >/dev/null 2>&1
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 修改权限 /dev/null"
+  fi
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 运行CONTAINER"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+  case $CUSOR in #更换光标
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  [[ ${OUTPUT} = "n" ]] || printf "\033[?25h\033[0m"
+  export PATH_BK=$PATH #备份$PATH
+  export TZ=Aisa/Shanghai #设置时区
+  unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
+  /bin/chroot ${CHROOT_DIR} /bin/su - root #使用绝对路径是因为$PATH已被删除
+  [[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK #还原$PATH
+  [[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${OUTPUT} = "n" ]] ||let i1=$i1
+  [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1-4))
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m//"
+  [[ ${OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37m退出$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "//"
+  printf '\e[2 q\033[0m'
+}
+CONTAINER_SELECT(){ #用于多container切换
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-16))
+  echo -e "\033[46;37mCONTAINER_选择$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  sleep 0.1s
+  cd /data/data/com.termux/files/usr/etc/container.conf.d
+  #列举已创建container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      export $(cat container-${i}.conf)
+      echo -e "\033[36m[$i] $NAME"
+    fi
+  done
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  read -p "选择一个CONTAINER: " CONTAINER
+  if [[ ${CONTAINER} != "" ]];then
+    sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
+  fi
+}
+CONTAINER_SETTINGS(){ #用于设置container
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-18))
+  echo -e "\033[46;37mCONTAINER_设置$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  if [[ ${SELINUX} == "" ]];then #此段用于配置兼容性检查
+      cd /data/data/com.termux/files/usr/etc/container.conf.d
+      for i in {1..100};do
+          if [[ -e container-${i}.conf ]];then
+              export $(cat container-${i}.conf)
+              break
+          fi
+      done
+      echo SELINUX=${SELINUX} >> /data/data/com.termux/files/usr/etc/container.conf
+      echo OUTPUT=${OUTPUT} >> /data/data/com.termux/files/usr/etc/container.conf
+      echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container.conf
+      echo CUSOR=${CUSOR} >> /data/data/com.termux/files/usr/etc/container.conf
+  fi
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  #输出当前配置信息
+  echo -e "[*] 启用输出:${OUTPUT}"
+  echo -e "[*] 主机名:${HOSTNAME}"
+  echo -e "[*] 配色:${CUSOR}"
+  echo -e "[*] 禁用_SELINUX:${SELINUX}"
+  echo -e "[*] CONTAINER:${CONTAINER}"
+  echo -e "按ENTER键编辑配置文件，或按CTRL-C键退出"
+  read
+  nano /data/data/com.termux/files/usr/etc/container.conf
+}
+CONTAINER_UNMOUNT(){  #用于解除container挂载
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
+  clear
+  echo -e "\033[36m"
+  echo -e "//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-18))
+  echo -e "\033[46;37mCONTAINER_取消挂载$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[36m"
+  echo -e "//"
+  echo -e ""
+  if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
+    exit
+  fi
+  [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /dev"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+  umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /dev"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /sys"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+  umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /sys"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /proc"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+  umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /proc"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /sdcard"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+  umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /sdcard"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 ${CHROOT_DIR}"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+  umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
+  losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 ${CHROOT_DIR}"
+  if [[ $SELINUX = "y" ]];then #判断SELINUX是否为关闭状态
+    [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 启用SELINUX"
+    [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+    setenforce 1  >/dev/null 2>&1 #重启SELINUX
+    [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 启用SELINUX"
+  fi
+  hostname localhost  >/dev/null 2>&1
+  [[ ${OUTPUT} = "n" ]] || echo -e "[信息 ] 完成"
+  [[ ${OUTPUT} = "n" ]] || sleep 0.3s
+}
+CONTAINER_UPDATE(){  #用于更新本脚本
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf) >> /dev/null
+  clear
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$(($i1))
+  i1=$(($i1-16))
+  echo -e "\033[46;37mCONTAINER_升级$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e ""
+  echo -e "\033[36m//"
+  echo -e ""
+  cd /data/data/com.termux/files/usr/share/termux-container
+  #使用git更新目录
+  echo -e "\033[36m$(git reset --hard||exit)"
+  echo -e "\033[36m$(git pull||exit)"
+  #更新主程序
+  rm /data/data/com.termux/files/usr/bin/container
+  cp ./container /data/data/com.termux/files/usr/bin/
+  chmod 777 /data/data/com.termux/files/usr/bin/container
+}
+case $1 in  #根据$1调用函数
+  *un)     CHECKOUT&&CONTAINER_UNMOUNT;;
+  *h)      CONTAINER_HELP;;
+  *s)      CONTAINER_SETTINGS;;
+  *c)      CONTAINER_CREATE;;
+  *up)     CONTAINER_UPDATE;;
+  *m)      CHECKOUT&&CONTAINER_MOUNT;;
+  *r)      CHECKOUT&&CONTAINER_REMOVE;;
+  *R)      CONTAINER_RESTORE;;
+  *bk)     CHECKOUT&&CONTAINER_BACKUP;;
+  *S)      CONTAINER_SELECT;;
+  *run|"") CHECKOUT&&CONTAINER_RUN;;
+  *)       CONTAINER_HELP;;
+esac
+#                   _ooOoo_
+#                  o8888888o
+#                  88" . "88
+#                  (| -_- |)
+#                  O\  =  /O
+#               ____/`---'\____
+#             .'  \\|     |//  `.
+#            /  \\|||  :  |||//  \
+#           /  _||||| -:- |||||-  \
+#           |   | \\\  -  /// |   |
+#           | \_|  ''\---/''  |   |
+#           \  .-\__  `-`  ___/-. /
+#         ___`. .'  /--.--\  `. . __
+#      ."" '<  `.___\_<|>_/___.'  >'"".
+#     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+#     \  \ `-.   \_ __\ /__ _/   .-` /  /
+#======`-.____`-.___\_____/___.-`____.-'======
+#                   `=---='
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#           佛祖保佑        永无BUG
+#
+#没人比我更懂水注释
+#   │  │   ╔══╝╔══║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ╔══╝║  ║╔══╝
+# ── ── ── ║   ║  ║║
+#   │  │   ═══╝═══╝╝
+#我也来水个注释                            2096779623
+#
+#  /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$$$ /$$$$$$$$ /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$ 
+# /$$__  $$ /$$$_  $$ /$$__  $$ /$$__  $$|_____ $$/|_____ $$//$$__  $$ /$$__  $$ /$$__  $$ /$$__  $$
+#|__/  \ $$| $$$$\ $$| $$  \ $$| $$  \__/     /$$/      /$$/| $$  \ $$| $$  \__/|__/  \ $$|__/  \ $$
+#  /$$$$$$/| $$ $$ $$|  $$$$$$$| $$$$$$$     /$$/      /$$/ |  $$$$$$$| $$$$$$$   /$$$$$$/   /$$$$$/
+# /$$____/ | $$\ $$$$ \____  $$| $$__  $$   /$$/      /$$/   \____  $$| $$__  $$ /$$____/   |___  $$
+#| $$      | $$ \ $$$ /$$  \ $$| $$  \ $$  /$$/      /$$/    /$$  \ $$| $$  \ $$| $$       /$$  \ $$
+#| $$$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$/ /$$/      /$$/    |  $$$$$$/|  $$$$$$/| $$$$$$$$|  $$$$$$/
+#|________/ \______/  \______/  \______/ |__/      |__/      \______/  \______/ |________/ \______/ 
