@@ -40,7 +40,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo -e "\033[${i5}G\033[36m    保持MOE 保持COOL"|pv -qL 20
   echo -e "\033[${i5}G\033[36m       没有保修"|pv -qL 20
   echo -e "\033[${i5}G\033[36m        不邪恶"|pv -qL 20
-  echo -e "\033[${i5}G\033[36m按回车键继续"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    按回车键继续"|pv -qL 20
   i2=0
   printf '\033[?25h'
   read
