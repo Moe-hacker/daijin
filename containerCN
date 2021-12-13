@@ -166,7 +166,7 @@ CONTAINER_BACKUP(){  #用于备份container
       sleep 0.3s
     fi
   done
-  read -p "选择一个要备份的containercontainer: " CONTAINER
+  read -p "选择一个要备份的container: " CONTAINER
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
   #开始解除挂载
   echo -e "UNMOUNTING"
@@ -239,7 +239,7 @@ CONTAINER_RESTORE(){  #用于还原container
   mv container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf
   sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
 }
-CONTAINER_CREATE(){  #用于container创建
+CONTAINER_创建(){  #用于container创建
   clear
   echo -e ""
   echo -e "\033[36m//"
@@ -335,18 +335,18 @@ CONTAINER_HELP(){  #输出帮助信息
   echo -e "\033[36m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
   echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
   echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
-  echo -e "\033[36mUsage:"
-  echo -e " container                   #运行container"
-  echo -e " container -c                #创建一个新container"
-  echo -e " container -S                #选择一个container"
-  echo -e " container -s                #设置"
-  echo -e " container -r                #移除一个container"
-  echo -e " container -m                #挂载镜像文件"
-  echo -e " container -un               #取消挂载container"
-  echo -e " container -bk               #备份container"
-  echo -e " container -R [backup file]  #恢复container"
-  echo -e " container -up               #升级container"
-  echo -e " container -h                #查看帮助\033[0m"
+  echo -e "\033[36m用法:"
+  echo -e " containerCN                   #运行container"
+  echo -e " containerCN -c                #创建一个新container"
+  echo -e " containerCN -S                #选择一个container"
+  echo -e " containerCN -s                #设置"
+  echo -e " containerCN -r                #移除一个container"
+  echo -e " containerCN -m                #挂载镜像文件"
+  echo -e " containerCN -un               #取消挂载container"
+  echo -e " containerCN -bk               #备份container"
+  echo -e " containerCN -R [备份文件]  #恢复container"
+  echo -e " containerCN -up               #升级container"
+  echo -e " containerCN -h                #查看帮助\033[0m"
 }
 CONTAINER_MOUNT(){ #用于挂载镜像
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
