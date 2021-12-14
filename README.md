@@ -1,7 +1,7 @@
 <p align="center">May The Force Be With You.</p>         
 
 -----------     
-> &emsp;  [[简体中文]](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)           
+> &emsp;  [[简体中文]](https://github.com/2096779623/termux-container/blob/CN/README-ZH.md)           
 
 &emsp;Run Linux with chroot command on your Android phone!      
 &emsp;This is a script that runs a Linux system on your phone.You are free to define this script and make it to be you want.      
