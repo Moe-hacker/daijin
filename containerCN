@@ -36,9 +36,9 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/containerCN ]];then #安装程序
       sleep 0.01s
   done
   i5=$(($i4+9))
-  echo -e "\033[${i5}G\033[36m    BY MOE-HACKER 2021"|pv -qL 20
-  echo -e "\033[${i5}G\033[36m    CN BY 2096779623 2021"|pv -qL 20
-  echo -e "\033[${i5}G\033[36m    保持MOE 保持COOL"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    原作者:MOE-HACKER 2021"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    汉化作者:2096779623 2021"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m    KEEP MOE KEEP COOL"|pv -qL 20
   echo -e "\033[${i5}G\033[36m       没有保修"|pv -qL 20
   echo -e "\033[${i5}G\033[36m        不邪恶"|pv -qL 20
   echo -e "\033[${i5}G\033[36m      按回车键继续"|pv -qL 20
@@ -53,7 +53,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/containerCN ]];then #安装程序
   read
   clear
   echo -e "\033[${i5}G\033[36m安装软件包..."|pv -qL 20
-  pkg i git wget tsu curl e2fsprogs neofetch nano -y
+  pkg i git wget tsu tar curl e2fsprogs neofetch nano -y
   clear
   echo -e "\033[${i5}G\033[36m克隆存储库..."|pv -qL 20
   #新建文件夹
@@ -68,7 +68,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/containerCN ]];then #安装程序
   chmod 777 /data/data/com.termux/files/usr/bin/containerCN
   #清屏
   clear
-  echo -e "\033[${i5}G\033[36mCONTAINER_设置"|pv -qL 20
+  echo -e "\033[${i5}G\033[36m容器设置"|pv -qL 20
   read -p "[!]禁用SELinux（危险设置）?[y/n]: " SELINUX
   read -p "[*]输入主机名：" HOSTNAME
   read -p "[*]启用输出?[y/n]: " OUTPUT
@@ -153,7 +153,7 @@ CONTAINER_BACKUP(){  #用于备份container
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
-  echo -e "\033[46;37mCONTAINER_备份$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m容器备份$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e "\033[36m"
   echo -e "//"
   echo -e ""
@@ -166,26 +166,26 @@ CONTAINER_BACKUP(){  #用于备份container
       sleep 0.3s
     fi
   done
-  read -p "选择一个要备份的container: " CONTAINER
+  read -p "选择一个要备份的容器: " CONTAINER
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
   #开始解除挂载
-  echo -e "UNMOUNTING"
-  echo -e "[开始] UNMOUNT /dev"
+  echo -e "解除挂载"
+  echo -e "[开始] 解除/dev挂载"
   umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
-  echo -e "[完成 ] UNMOUNT /dev"
-  echo -e "[开始] UNMOUNT /sys"
+  echo -e "[完成 ] 解除/dev挂载"
+  echo -e "[开始] 解除/sys挂载"
   umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
-  echo -e "[完成 ] UNMOUNT /sys"
-  echo -e "[开始] UNMOUNT /proc"
+  echo -e "[完成 ] 解除/sys挂载"
+  echo -e "[开始] 解除/proc挂载"
   umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
-  echo -e "[完成 ] UNMOUNT /proc"
-  echo -e "[开始] UNMOUNT /sdcard"
+  echo -e "[完成 ] 解除/proc挂载"
+  echo -e "[开始] 解除/sdcard挂载"
   umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
-  echo -e "[完成 ] UNMOUNT /sdcard"
-  echo -e "[开始] UNMOUNT ${CHROOT_DIR}"
+  echo -e "[完成 ] 解除/sdcard挂载"
+  echo -e "[开始] 解除${CHROOT_DIR}挂载"
   umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
   losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
-  echo -e "[完成 ] UNMOUNT ${CHROOT_DIR}"
+  echo -e "[完成 ] 解除${CHROOT_DIR}挂载"
   #移动配置文件，不直接备份防止还原时覆盖其他container配置
   mkdir -p /data/data/com.termux/files/usr/tmp/termux-container
   cp container-${CONTAINER}.conf /data/data/com.termux/files/usr/tmp/termux-container/container.conf
@@ -214,7 +214,7 @@ CONTAINER_RESTORE(){  #用于还原container
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-17))
-  echo -e "\033[46;37mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m容器还原$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -223,7 +223,7 @@ CONTAINER_RESTORE(){  #用于还原container
   case $2 in
     *tar.gz) tar -xzvPf $2 -C /;;
     *tar.xz) tar -xvPf $2 -C /;;
-    *) echo 'UNKNOW FILE FORMAT';exit 0;;
+    *) echo '未知文件格式！';exit 0;;
   esac
   cd /data/data/com.termux/files/usr/tmp/termux-container
   printf "\033[0m"
@@ -239,7 +239,7 @@ CONTAINER_RESTORE(){  #用于还原container
   mv container.conf /data/data/com.termux/files/usr/etc/container.conf.d/container-${i1}.conf
   sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
 }
-CONTAINER_创建(){  #用于container创建
+CONTAINER_CREATE(){  #用于container创建
   clear
   echo -e ""
   echo -e "\033[36m//"
@@ -247,7 +247,7 @@ CONTAINER_创建(){  #用于container创建
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
-  echo -e "\033[46;37mCONTAINER_创建$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m创建容器$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -322,7 +322,7 @@ CONTAINER_创建(){  #用于container创建
   #清空tmp
   rm -rf /data/data/com.termux/files/usr/tmp/container
 }
-CONTAINER_HELP(){  #输出帮助信息
+CONTAINERCN_HELP(){  #输出帮助信息
   echo -e "              \033[32m┌───────────┐"
   echo -e "              │ ┌───────┐ │"
   echo -e "              │ │  \033[33m┌───────────┐"
@@ -342,7 +342,7 @@ CONTAINER_HELP(){  #输出帮助信息
   echo -e " containerCN -s                #设置"
   echo -e " containerCN -r                #移除一个container"
   echo -e " containerCN -m                #挂载镜像文件"
-  echo -e " containerCN -un               #取消挂载container"
+  echo -e " containerCN -un               #解除挂载container"
   echo -e " containerCN -bk               #备份container"
   echo -e " containerCN -R [备份文件]  #恢复container"
   echo -e " containerCN -up               #升级container"
@@ -358,7 +358,7 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-15))
-  echo -e "\033[46;37mCONTAINER_挂载$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m挂载容器$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -384,7 +384,7 @@ CONTAINER_REMOVE(){  #用于删除container
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1)) #i1转化为数值
   i1=$(($i1-16))
-  echo -e "\033[46;37mCONTAINER_移除$(yes " "|sed $i1'q'|tr -d '\n')\033[0m" #只是没用的输出 ？？？？？
+  echo -e "\033[46;37m移除容器$(yes " "|sed $i1'q'|tr -d '\n')\033[0m" #只是没用的输出 ？？？？？
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -397,11 +397,11 @@ CONTAINER_REMOVE(){  #用于删除container
       echo -e "[$i] $NAME"
     fi
   done
-  read -p "选择一个你要删除的Container: " CONTAINER
+  read -p "选择一个你要删除的容器: " CONTAINER
   if [[ ${CONTAINER} = "" ]];then
     exit
   fi
-  echo -e "[警告!!!] 此Container中的所有文件都将被删除"
+  echo -e "[警告!!!] 此容器中的所有文件都将被删除"
   echo -e "按ENTER键继续，或按CTRL-C键退出"
   read
   export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${CONTAINER}.conf)
@@ -410,24 +410,24 @@ CONTAINER_REMOVE(){  #用于删除container
   if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
     exit
   fi
-  echo -e "取消挂载..."
-  echo -e "[开始] UNMOUNT /dev"
+  echo -e "解除挂载..."
+  echo -e "[开始] 解除/dev挂载"
   umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
-  echo -e "[完成 ] UNMOUNT /dev"
-  echo -e "[开始] UNMOUNT /sys"
+  echo -e "[完成 ] 解除/dev挂载"
+  echo -e "[开始] 解除/sys挂载"
   umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
-  echo -e "[完成 ] UNMOUNT /sys"
-  echo -e "[开始] UNMOUNT /proc"
+  echo -e "[完成 ] 解除/sys挂载"
+  echo -e "[开始] 解除/proc挂载"
   umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
-  echo -e "[完成 ] UNMOUNT /proc"
-  echo -e "[开始] UNMOUNT /sdcard"
+  echo -e "[完成 ] 解除/proc挂载"
+  echo -e "[开始] 解除/sdcard挂载"
   umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
-  echo -e "[完成 ] UNMOUNT /sdcard"
-  echo -e "[开始] UNMOUNT ${CHROOT_DIR}"
+  echo -e "[完成 ] 解除/sdcard挂载"
+  echo -e "[开始] 解除${CHROOT_DIR}挂载"
   umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
   losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
-  echo -e "[完成 ] UNMOUNT ${CHROOT_DIR}"
-  echo -e "移除CONTAINER..."
+  echo -e "[完成 ] 解除挂载 ${CHROOT_DIR}"
+  echo -e "移除容器..."
   sleep 2s
   #删除旧container,同时防止执行rm -rf
   if [[ ${CHROOT_DIR} != "" ]];then
@@ -450,7 +450,7 @@ CONTAINER_REMOVE(){  #用于删除container
     export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
     export CONTAINER_BK=${CONTAINER}
     unset CONTAINER
-    read -p "选择一个CONTAINER: " CONTAINER
+    read -p "选择一个容器: " CONTAINER
     sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
     echo CONTAINER=${CONTAINER} >> /data/data/com.termux/files/usr/etc/container.conf
   fi
@@ -468,19 +468,19 @@ CONTAINER_RUN(){ #用于运行container
   [[ ${OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))
   [[ ${OUTPUT} = "n" ]] ||let i1=$(($i1))
   [[ ${OUTPUT} = "n" ]] ||i1=$(($i1-13))
-  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37mCONTAINER_运行$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "\033[46;37m运行容器$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${OUTPUT} = "n" ]] ||echo -e "\033[36m"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||echo -e "TERMUX-CONTAINER"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-  [[ ${OUTPUT} = "n" ]] ||echo -e "GPL-V3 LICENSE"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "GPL-V3协议"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
   [[ ${OUTPUT} = "n" ]] ||echo -e "没有保修"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-  [[ ${OUTPUT} = "n" ]] ||echo -e "CONTAINER ${NAME}"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "容器 ${NAME}"
   [[ ${OUTPUT} = "n" ]] ||echo -e "架构 $(uname -m)"
   [[ ${OUTPUT} = "n" ]] ||echo -e "内核 $(uname --kernel-release)"
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
@@ -493,13 +493,13 @@ CONTAINER_RUN(){ #用于运行container
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-  [[ ${OUTPUT} = "n" ]] ||echo -e "定义你自己"
+  [[ ${OUTPUT} = "n" ]] ||echo -e "DEFINE YOURSELF"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
   [[ ${OUTPUT} = "n" ]] ||echo -e "//"
   [[ ${OUTPUT} = "n" ]] ||echo -e ""
   if [[ ! -e ${CHROOT_DIR} ]];then #判断container是否存在
-    echo -e "[错误！] CONTAINER目录不存在！"&&printf "\033[?25h"
+    echo -e "[错误！] 容器目录不存在！"&&printf "\033[?25h"
     exit
   fi
   if [[ !${CHROOT_IMG} = "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用container镜像，判断其是否存在
@@ -614,6 +614,9 @@ CONTAINER_RUN(){ #用于运行container
     echo nameserver 8.8.8.8 >> ${CHROOT_DIR}/etc/resolv.conf #解决未设置dns导致无法联网             #垃圾114  谷歌YYDS！！！
     echo nameserver 8.8.4.4 >> ${CHROOT_DIR}/etc/resolv.conf
   fi
+  #设置时区
+    echo export TZ=Asia/Shanghai > ${CHROOT_DIR}/etc/init.d/timezone.sh
+    chmod 777 ${CHROOT_DIR}/etc/init.d/timezone.sh
   #挂载内置存储
   if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/proc是 否被挂载
     [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 挂载 /sdacrd"
@@ -676,7 +679,6 @@ CONTAINER_RUN(){ #用于运行container
   esac
   [[ ${OUTPUT} = "n" ]] || printf "\033[?25h\033[0m"
   export PATH_BK=$PATH #备份$PATH
-  export TZ=Aisa/Shanghai #设置时区
   unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
   /bin/chroot ${CHROOT_DIR} /bin/su - root #使用绝对路径是因为$PATH已被删除
   [[ ${OUTPUT} = "n" ]] ||export PATH=$PATH_BK #还原$PATH
@@ -698,7 +700,7 @@ CONTAINER_SELECT(){ #用于多container切换
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
-  echo -e "\033[46;37mCONTAINER_选择$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m选择容器$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -727,7 +729,7 @@ CONTAINER_SETTINGS(){ #用于设置container
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-18))
-  echo -e "\033[46;37mCONTAINER_设置$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m容器设置$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -766,7 +768,7 @@ CONTAINER_UNMOUNT(){  #用于解除container挂载
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-18))
-  echo -e "\033[46;37mCONTAINER_取消挂载$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m解除挂载$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e "\033[36m"
   echo -e "//"
   echo -e ""
@@ -774,27 +776,27 @@ CONTAINER_UNMOUNT(){  #用于解除container挂载
     exit
   fi
   [[ ${OUTPUT} = "n" ]] ||sleep 0.1s
-  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /dev"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 解除/dev挂载"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解除/dev的挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /dev"
-  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /sys"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 解除/dev挂载"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 解除/sys挂载"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 #解除/sys的挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /sys"
-  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /proc"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 解除/sys挂载"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 解除/proc挂载"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /proc"
-  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 /sdcard"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 解除/proc挂载"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 解除/sdcard挂载"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
-  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 /sdcard"
-  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 取消挂载 ${CHROOT_DIR}"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 解除/sdcard挂载"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 解除${CHROOT_DIR}挂载"
   [[ ${OUTPUT} = "n" ]] || sleep 0.3s
   umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目录自身挂载
   losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img镜像与虚拟设备的关联
-  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 取消挂载 ${CHROOT_DIR}"
+  [[ ${OUTPUT} = "n" ]] || echo -e "[完成 ] 解除${CHROOT_DIR}挂载"
   if [[ $SELINUX = "y" ]];then #判断SELINUX是否为关闭状态
     [[ ${OUTPUT} = "n" ]] || echo -e "[开始] 启用SELINUX"
     [[ ${OUTPUT} = "n" ]] || sleep 0.3s
@@ -830,7 +832,7 @@ CONTAINER_UPDATE(){  #用于更新本脚本
 }
 case $1 in  #根据$1调用函数
   *un)     CHECKOUT&&CONTAINER_UNMOUNT;;
-  *h)      CONTAINER_HELP;;
+  *h)      CONTAINERCN_HELP;;
   *s)      CONTAINER_SETTINGS;;
   *c)      CONTAINER_CREATE;;
   *up)     CONTAINER_UPDATE;;
@@ -840,7 +842,7 @@ case $1 in  #根据$1调用函数
   *bk)     CHECKOUT&&CONTAINER_BACKUP;;
   *S)      CONTAINER_SELECT;;
   *run|"") CHECKOUT&&CONTAINER_RUN;;
-  *)       CONTAINER_HELP;;
+  *)       CONTAINERCN_HELP;;
 esac
 #                   _ooOoo_
 #                  o8888888o
