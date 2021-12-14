@@ -1,7 +1,7 @@
 <p align="center">Dream With Me</p>         
 
 -----------      
-[![LICENSE](https://img.shields.io/badge/license-GPLV3-brightgreen)](https://github.com/2096779623/termux-container/blob/CN/LICENSE) 
+[![LICENSE](https://img.shields.io/badge/license-GPLV3-brightgreen)](https://github.com/2096779623/termux-container/blob/CN/LICENSE)    [![Shell](https://img.shields.io/badge/Shell-100%25-brightgreen)](https://yara.readthedocs.org/)
 &emsp;年轻人的第一个开源项目。    
 &emsp;汉化 BY [2096779623](https://github.com/2096779623)    
 &emsp;此脚本用于在termux中运行chroot系统，赛博朋克风格灵感来自一加赛博朋克联名开机动画。     
