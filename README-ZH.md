@@ -2,7 +2,7 @@
 
 -----------      
 
-Author  
+作者  
 <img src='https://github.com/moe-hacker.png?size=150'></img> <a href='https://github.com/moe-hacker'>moe-hacker</a>
 <img src='https://github.com/2096779623.png?size=150'></img> <a href='https://github.com/2096779623'>2096779623</a>  
 -----------      
