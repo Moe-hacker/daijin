@@ -20,17 +20,17 @@ container configure
 ```
 # 用法：
 ```shell
- container                   #运行容器
- container -c                #新建容器
- container -S                #选择已有容器
- container -s                #设置
- container -r                #删除容器
- container -m                #挂载容器镜像
- container -un               #解除容器挂在
- container -bk               #备份容器
- container -R [backup file]  #还原容器
- container -up               #更新此脚本
- container -h                #显示帮助信息
+ containerCN                   #运行容器
+ containerCN -c                #新建容器
+ containerCN -S                #选择已有容器
+ containerCN -s                #设置
+ containerCN -r                #删除容器
+ containerCN -m                #挂载容器镜像
+ containerCN -un               #解除容器挂在
+ containerCN -bk               #备份容器
+ containerCN -R [备份文件]      #还原容器
+ containerCN -up               #更新此脚本
+ containerCN -h                #显示帮助信息
 
 ```
 ### 交个官方作业：      
