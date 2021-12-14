@@ -24,7 +24,7 @@
 #### 安装:
 ```sh
 pkg install curl pv
-bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/containerCN)"
+bash -c "$(curl -L https://raw.fastgit.org/Moe-hacker/termux-container/main/containerCN)"
 container configure
 ```
 # 用法：
