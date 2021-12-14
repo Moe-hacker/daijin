@@ -50,6 +50,7 @@ https://share.weiyun.com/6sSwpBW8
 ### BUGS：      
 &emsp;目前已知可能有些设备ping无法使用，不过据说影响不大。      
 &emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错。      
+&emsp;执行脚本时可能会出现sed: invalidoption -- 'xxx'
 ### 说明:            
 &emsp;作者借鉴andrax的启动脚本写了这个脚本的container-run部分，故整个项目采用相同许可证。andrax项目链接：[andrax](https://gitlab.com/crk-mythical/andrax-hackers-platform-v5-2)      
 ### 背景：
