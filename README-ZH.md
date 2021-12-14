@@ -5,8 +5,8 @@
 开发人员       
 
 
-<img src='https://github.com/moe-hacker.png?size=150'></img> <a href='https://github.com/moe-hacker'>moe-hacker</a>
-<img src='https://github.com/2096779623.png?size=150'></img> <a href='https://github.com/2096779623'>2096779623</a>  
+<img src='https://github.com/moe-hacker.png?size=150'></img><br></br><a href='https://github.com/moe-hacker'>moe-hacker</a>
+<img src='https://github.com/2096779623.png?size=150'></img><br></br><a href='https://github.com/2096779623'>2096779623</a>  
 -----------      
 
 [![LICENSE](https://img.shields.io/badge/license-GPLV3-brightgreen)](https://github.com/2096779623/termux-container/blob/CN/LICENSE)    [![Shell](https://img.shields.io/badge/Shell-100%25-brightgreen)](https://baike.baidu.com/item/SHELL%E8%AF%AD%E8%A8%80/22710978?fr=aladdin)      
