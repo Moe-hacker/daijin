@@ -2,7 +2,7 @@
 
 -----------      
 
-作者       
+开发人员       
 
 
 <img src='https://github.com/moe-hacker.png?size=150'></img> <a href='https://github.com/moe-hacker'>moe-hacker</a>
