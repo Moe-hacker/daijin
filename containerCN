@@ -716,7 +716,7 @@ CONTAINER_SELECT(){ #用于多container切换
   export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null
   export CONTAINER_BK=${CONTAINER}
   unset CONTAINER
-  read -p "选择一个CONTAINER: " CONTAINER
+  read -p "选择一个容器: " CONTAINER
   if [[ ${CONTAINER} != "" ]];then
     sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container.conf
   fi
