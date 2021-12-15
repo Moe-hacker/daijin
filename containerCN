@@ -753,7 +753,7 @@ CONTAINER_SETTINGS(){ #用于设置container
   echo -e "[*] 主机名:${HOSTNAME}"
   echo -e "[*] 配色:${CUSOR}"
   echo -e "[*] 禁用_SELINUX:${SELINUX}"
-  echo -e "[*] CONTAINER:${CONTAINER}"
+  echo -e "[*] 容器:${CONTAINER}"
   echo -e "按ENTER键编辑配置文件，或按CTRL-C键退出"
   read
   nano /data/data/com.termux/files/usr/etc/container.conf
