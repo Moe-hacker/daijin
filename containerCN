@@ -817,7 +817,7 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$(($i1))
   i1=$(($i1-16))
-  echo -e "\033[46;37mCONTAINER_升级$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  echo -e "\033[46;37m升级脚本$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   echo -e ""
   echo -e "\033[36m//"
   echo -e ""
@@ -826,9 +826,9 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   echo -e "\033[36m$(git reset --hard||exit)"
   echo -e "\033[36m$(git pull||exit)"
   #更新主程序
-  rm /data/data/com.termux/files/usr/bin/container
-  cp ./container /data/data/com.termux/files/usr/bin/
-  chmod 777 /data/data/com.termux/files/usr/bin/container
+  rm /data/data/com.termux/files/usr/bin/containerCN||exit
+  cp ./containerCN /data/data/com.termux/files/usr/bin/||exit
+  chmod 777 /data/data/com.termux/files/usr/bin/containerCN
 }
 case $1 in  #根据$1调用函数
   *un)     CHECKOUT&&CONTAINER_UNMOUNT;;
