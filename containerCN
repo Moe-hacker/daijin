@@ -59,7 +59,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/containerCN ]];then #安装程序
   #新建文件夹
   mkdir -p /data/data/com.termux/files/usr/share/termux-container
   #克隆存储库
-  git clone https://hub.fastgit.org/2096779623/termux-container $PREFIX/share/termux-container
+  git clone https://hub.fastgit.org/2096779623/termux-container $PREFIX/share/termux-container --no-check-certificate
   #进入目录
   cd $PREFIX/share/termux-container
   #复制到PATH
