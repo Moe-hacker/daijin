@@ -1,4 +1,4 @@
-#原作者准备开发中文二次元版！
+# 原作者准备开发中文二次元版！现在continerCN有很多bug，之前的版本在发行版！
 
 
 <p align="center">Dream With Us</p>         
