@@ -1,4 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#/data/data/com.termux/files/usr/bin/bash
 #########container主程序#########
 ###### Github@Moe-hacker ######
 #❀我萌故我在❀
@@ -115,6 +115,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
     export $(cat $PREFIX/etc/container.conf) >> /dev/null
   fi
   if [[ ! -e $PREFIX/etc/container.conf.d ]];then
+    ROOTFS_DIR=$(mkdir -p $PREFIX/etc/container-ROOTFS)
     mkdir /data/data/com.termux/files/usr/etc/container.conf.d
     echo NAME=Default >> /data/data/com.termux/files/usr/etc/container.conf
     echo CUSOR=block >> /data/data/com.termux/files/usr/etc/container.conf
@@ -200,7 +201,7 @@ CONTAINER_BACKUP(){  #用于备份container
       2) tar -JcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.xz ${CHROOT_IMG} ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
     esac
   else
-   case ${FORMAT} in
+      case ${FORMAT} in
       1) tar -zcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.gz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
       2) tar -JcvPf /sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar.xz ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container ;;
     esac
@@ -264,6 +265,22 @@ CONTAINER_CREATE(){  #用于container创建
     read -p "[*]请输入这个镜像文件的绝对路径: " CHROOT_IMG_PATH
     read -p "[*]请给这个镜像定义一个名称: " CHROOT_IMG_NAME
     read -p "[*]输入这个镜像文件的大小(单位：GB): " SIZE
+  fi
+  if [[ ! -f "$ROOTFS_DIR/rootfs*" ]]; then
+  case $ROOTFS in
+    *tar.gz|*tgz|*tar) tar -xzvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+    *tar.xz|*txz) tar -xvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+    *) echo '未知文件格式！';exit 0;;
+  esac
+  else
+  read -p "[*]请输入rootfs的下载链接: " URL
+  echo -e "下载ROOTFS..."
+  sleep 1s
+  rm -rf /data/data/com.termux/files/usr/tmp/container >/dev/null 2>&1
+  mkdir -p /data/data/com.termux/files/usr/tmp/container >/dev/null 2>&1
+  cd /data/data/com.termux/files/usr/tmp/container >/dev/null 2>&1
+  #下载rootfs
+  wget ${URL}
   fi
   read -p "[*]请输入rootfs的下载链接: " URL
   echo -e "下载ROOTFS..."
@@ -338,13 +355,15 @@ CONTAINERCN_HELP(){  #输出帮助信息
   echo -e "\033[36m用法:"
   echo -e " containerCN                   #运行container"
   echo -e " containerCN -c                #创建一个新container"
+  echo -e " containerCN -anlinux          #使用Anlinux的rootfs创建容器"
   echo -e " containerCN -S                #选择一个container"
   echo -e " containerCN -s                #设置"
   echo -e " containerCN -r                #移除一个container"
   echo -e " containerCN -m                #挂载镜像文件"
   echo -e " containerCN -un               #解除挂载container"
   echo -e " containerCN -bk               #备份container"
-  echo -e " containerCN -R [备份文件]  #恢复container"
+  echo -e " containerCN -R [备份文件]      #恢复container"
+  echo -e " containerCN -SR               #卸载本脚本并删除所有容器"
   echo -e " containerCN -up               #升级container"
   echo -e " containerCN -h                #查看帮助\033[0m"
 }
@@ -830,6 +849,130 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   cp ./containerCN /data/data/com.termux/files/usr/bin/||exit
   chmod 777 /data/data/com.termux/files/usr/bin/containerCN
 }
+
+CONTAINER_UNINSTALL(){                                          
+  export $(cat /data/data/com.termux/files/usr/etc/container.conf) >> /dev/null                                               
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||i1=$(($(stty size|awk '{print $2}')))                                                        
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||i1=$(($i1-19))                 
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[30;48;5;159m卸载脚本$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e ""                     
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e ""                     
+  [[ ${ENABLE_OUTPUT} = "n" ]] ||sleep 0.1s
+  echo -e "\e[38;5;159m按 Enter 卸载此脚本或按 ctrl-c 退出"
+  read
+  read -p "移除你的容器？[y/n]?" REMOVE_CONTAINERS
+  echo -e "卸载中..."
+  if [[ ${REMOVE_CONTAINERS} = "y" ]];then
+    cd /data/data/com.termux/files/usr/etc/container.conf.d       
+    for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then                            
+        export $(cat /data/data/com.termux/files/usr/etc/container.conf.d/container-${i}.conf)                                      
+        echo -e "删除容器 ${NAME} ..."
+          sleep 1s
+          #解除挂载,防止误删系统文件
+          if [[ ! ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
+            umount -lvf ${CHROOT_DIR}/dev >/dev/null 2>&1 #解 除/dev 的挂载            
+            umount -lvf ${CHROOT_DIR}/sys >/dev/null 2>&1 # 解除/sys的挂载
+            umount -lvf ${CHROOT_DIR}/proc >/dev/null 2>&1 #解除/proc挂载                                                               
+            umount ${CHROOT_DIR}/sdcard >/dev/null 2>&1 #解除/sdcard的挂载
+            umount -lvf ${CHROOT_DIR} >/dev/null 2>&1 #解除目 录自身 挂载
+            losetup -d ${CHROOT_IMG} >/dev/null 2>&1 #解除img 镜像与 虚拟设备的关联
+            #删除容器                                                     
+            if [[ ${CHROOT_DIR} != "" ]];then
+              rm -rfv ${CHROOT_DIR}
+            fi
+            if [[ ${CHROOT_IMG} != "" ]];then                               
+            rm -rfv ${CHROOT_IMG}
+            fi
+          fi
+        fi
+    done
+  fi                                                            
+  hostname localhost >/dev/null 2>&1                            
+  setenforce 1  >/dev/null 2>&1   #还原设置
+  #删除脚本及配置
+  [[ ${REMOVE_CONTAINERS} = "n" ]]||
+  rm -rvf /data/data/com.termux/files/usr/etc/container.conf.d
+  rm -v /data/data/com.termux/files/usr/etc/container.conf      
+  rm -rvf /data/data/com.termux/files/usr/share/termux-container
+  rm -v /data/data/com.termux/files/usr/bin/container
+  echo -e "全部文件已删除"                               
+  echo -e "再见!"
+}
+
+
+ANLINUX(){
+  case `dpkg --print-architecture` in
+		aarch64)
+			archurl="arm64" ;;
+		arm)
+			archurl="armhf" ;;
+		amd64)
+			archurl="amd64" ;;
+		x86_64)
+			archurl="amd64" ;;	
+		i*86)
+			archurl="i386" ;;
+		x86)
+			archurl="i386" ;;
+		*)
+			echo "未知架构！"; exit 1 ;;
+		esac
+  echo 1.alpine
+  echo 2.backbox
+  echo 3.centos
+  echo 4.debian
+  echo 5.fedora
+  echo 6.ubuntu
+  echo 7.void linux
+  echo 8.opensuse
+  read -p "请输入你要安装的Linux容器:" ANLINUXNAME
+
+
+case $ANLINUXNAME in 
+  1)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.gz https://cdn.jsdelivr.net/gh/EXALAB/Anlinux-Resources@master/Rootfs/Alpine/$archurl/alpine-minirootfs-3.14.1-arm64.tar.gz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  2)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xz https://raw.fastgit.org/EXALAB/Anlinux-Resources/master/Rootfs/BackBox/$archurl/backbox-rootfs-arm64.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  3)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xz https://raw.githubusercontent.com/EXALAB/Anlinux-Resources/master/Rootfs/CentOS/$archurl/centos-rootfs-arm64.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  4)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xz https://raw.fastgit.org/EXALAB/Anlinux-Resources/master/Rootfs/Debian/$archurl/debian-rootfs-arm64.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  5)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xzhttps://raw.fastgit.org/EXALAB/Anlinux-Resources/master/Rootfs/Ubuntu/$archurl/ubuntu-rootfs-arm64.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  6)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xz https://raw.fastgit.org/EXALAB/Anlinux-Resources/master/Rootfs/Void/$archurl/void-arm64-ROOTFS-20210218.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  7)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xz https://cdn.jsdelivr.net/gh/EXALAB/Anlinux-Resources@master/Rootfs/openSUSE/Tumbleweed/$archurl/openSUSE-Tumbleweed-rootfs-arm64.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+  8)
+  wget -P ${ROOTFS_DIR} -O rootfs.tar.xz https://raw.githubusercontent.com/EXALAB/Anlinux-Resources/master/Rootfs/Fedora/$archurl/fedora-rootfs-arm64.tar.xz || 架构不支持或者网络错误！ &&exit
+  CONTAINER_CREATE
+  ;;
+esac
+}
+
+
+
 case $1 in  #根据$1调用函数
   *un)     CHECKOUT&&CONTAINER_UNMOUNT;;
   *h)      CONTAINERCN_HELP;;
@@ -838,10 +981,12 @@ case $1 in  #根据$1调用函数
   *up)     CONTAINER_UPDATE;;
   *m)      CHECKOUT&&CONTAINER_MOUNT;;
   *r)      CHECKOUT&&CONTAINER_REMOVE;;
-  *R)      CONTAINER_RESTORE;;
+  *R)      CONTAINER_RESTORE $2;;
   *bk)     CHECKOUT&&CONTAINER_BACKUP;;
   *S)      CONTAINER_SELECT;;
   *run|"") CHECKOUT&&CONTAINER_RUN;;
+  *anlinux) ANLINUX;;
+  *SR)     CONTAINER_UNINSTALL;;
   *)       CONTAINERCN_HELP;;
 esac
 #                   _ooOoo_
