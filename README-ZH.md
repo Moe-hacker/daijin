@@ -1,3 +1,6 @@
+#原作者准备开发中文二次元版！
+
+
 <p align="center">Dream With Us</p>         
 
 -----------      
@@ -11,6 +14,7 @@
 
 [![LICENSE](https://img.shields.io/badge/license-GPLV3-brightgreen)](https://github.com/2096779623/termux-container/blob/CN/LICENSE)    [![Shell](https://img.shields.io/badge/Shell-100%25-brightgreen)](https://baike.baidu.com/item/SHELL%E8%AF%AD%E8%A8%80/22710978?fr=aladdin)      
 &emsp;年轻人的第一个开源项目。    
+
 &emsp;汉化 BY [2096779623](https://github.com/2096779623)    
 &emsp;此脚本用于在termux中运行chroot系统，赛博朋克风格灵感来自一加赛博朋克联名开机动画。     
 > &emsp;chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux。      
