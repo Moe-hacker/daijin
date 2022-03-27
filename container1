@@ -330,7 +330,7 @@ CONTAINER_RESTORE(){  #用于还原容器
 ####################
 ######容器创建######
 ####################
-CONTAINER_创建(){  #用于容器创建
+CONTAINER_CREATE(){  #用于容器创建
   CONTAINER_LOG "创建容器"
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
@@ -340,7 +340,7 @@ CONTAINER_创建(){  #用于容器创建
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_创建$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -505,7 +505,7 @@ CONTAINER_创建(){  #用于容器创建
   mount --rbind /sys ${CHROOT_DIR}/sys/
   export PATH_BK=$PATH #备份$PATH
   unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
-  /bin/chroot ${CHROOT_DIR} /bin/bash -c "bash /tmp/group_add.sh" >> ${LOG_FILE} 2>&1
+  /bin/chroot ${CHROOT_DIR} /bin/sh -c "sh /tmp/group_add.sh" >> ${LOG_FILE} 2>&1
   export PATH=$PATH_BK
   CONTAINER_LOG "添加系统用户组，修复无法联网"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 解除系统挂载"
@@ -964,7 +964,7 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
     exit
   fi
   if [[ ${KILL} = "y" ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] KILL PROGRESS,THIS MIGHT TAKE A WHILE"
+    [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 杀死进程，这可能会花较长时间..."
     LSOF=$(lsof | awk '{print $1}' | grep -c '^lsof')
     if [ "${LSOF}" -eq 0 ]; then
       PIDS=$(lsof | grep "$CHROOT_DIR" | awk '{print $1}' | uniq)
@@ -1183,7 +1183,7 @@ case $1 in  #根据$1调用函数
   *run)    CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_RUN&&CONTAINER_LOG_END;;
   *h)      CONTAINER_LOG_HEAD&&CONTAINER_HELP&&CONTAINER_LOG_END;;
   *s)      CONTAINER_LOG_HEAD&&CONTAINER_SETTINGS&&CONTAINER_LOG_END;;
-  *c)      CONTAINER_LOG_HEAD&&CONTAINER_创建&&CONTAINER_LOG_END;;
+  *c)      CONTAINER_LOG_HEAD&&CONTAINER_CREATE&&CONTAINER_LOG_END;;
   *up)     CONTAINER_LOG_HEAD&&CONTAINER_UPDATE&&CONTAINER_LOG_END;;
   *m)      CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_MOUNT&&CONTAINER_LOG_END;;
   *r)      CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_REMOVE&&CONTAINER_LOG_END;;
