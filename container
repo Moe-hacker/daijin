@@ -82,7 +82,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   i2=0
   while (( $i2<=$i1 ));do
       i2=$(($i2+1))
-      echo -e "\a\e[38;5;159m\033[13H\033[${i2}G="
+      echo -e "\e[38;5;159m\033[13H\033[${i2}G="
       sleep 0.01s
   done
   i5=$(($i4+9))
@@ -147,7 +147,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
     3) CURSOR=block;;
   esac
   printf '\e[2 q\033[0m'
-  CONTAINER_LOG "CCONFIG IS DISABLE_SELINUX=${DISABLE_SELINUX} ENABLE_OUTPUT=${ENABLE_OUTPUT} HOSTNAME=${HOSTNAME} CURSOR=${CURSOR}"
+  CONTAINER_LOG "CONFIG IS DISABLE_SELINUX=${DISABLE_SELINUX} ENABLE_OUTPUT=${ENABLE_OUTPUT} HOSTNAME=${HOSTNAME} CURSOR=${CURSOR}"
   mkdir -p /data/data/com.termux/files/usr/etc/container
   echo DISABLE_SELINUX=${DISABLE_SELINUX} >> /data/data/com.termux/files/usr/etc/container/global.conf
   echo ENABLE_OUTPUT=${ENABLE_OUTPUT} >> /data/data/com.termux/files/usr/etc/container/global.conf
