@@ -58,7 +58,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
     termux-reload-settings
     CONTAINER_LOG "安装字体"
   else
-    echo "字体下载失败，请检查网络连接"
+    echo "字体下载失败，请检查网络连接 :("
     CONTAINER_LOG "字体下载失败"
   fi
   clear
@@ -88,7 +88,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   i5=$(($i4+9))
   echo -e "\033[${i5}G\e[38;5;159mMADE WITH  BY MOE-HACKER"|pv -qL 20
   echo -e "\033[${i5}G\e[38;5;159m    KEEP MOE KEEP COOL"|pv -qL 20
-  echo -e "\033[${i5}G\e[38;5;159m       此程序无担保"|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;159m      此程序\"无担保\""|pv -qL 20
   echo -e "\033[${i5}G\e[38;5;159m      请按回车键继续"|pv -qL 20
   i2=0
   printf '\033[?25h'
@@ -99,11 +99,11 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   CONTAINER_LOG "已同意协议"
   clear
   echo -e "\e[38;5;225m[+] 呐，现在要开始安装了哦ＯＫ(ゝω・★)"|pv -qL 20
-  echo -e "\a\e[38;5;159m[] 安装依赖软件"|pv -qL 20
+  echo -e "\a\e[38;5;159m[] 安装依赖软件(≧▽≦)"|pv -qL 20
   pkg install git wget tsu curl e2fsprogs nano whiptail
   CONTAINER_LOG "安装依赖软件"
   clear
-  echo -e "\a\e[38;5;159m[] 克隆存储库"|pv -qL 20
+  echo -e "\a\e[38;5;159m[] 克隆存储库(☆▽☆)"|pv -qL 20
   mkdir -p /data/data/com.termux/files/usr/share/termux-container
   git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container||exit
   cd /data/data/com.termux/files/usr/share/termux-container
@@ -122,7 +122,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   done
   while :
   do
-    read -p "[] 为您的主机起个名字(hostname)吧(必须是字母和数字以及下划线，不能包含空格哦): " HOSTNAME
+    read -p "[] 为您的主机起个名字(hostname)吧(必须是字母和数字以及下划线组合，不能包含空格哦): " HOSTNAME
     if [[ ${HOSTNAME} != "" ]];then
       break
     fi
@@ -156,7 +156,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo CURSOR=${CURSOR} >> /data/data/com.termux/files/usr/etc/container/global.conf
   echo CONTAINER=1 >> /data/data/com.termux/files/usr/etc/container/global.conf
   clear
-  echo -e "\e[38;5;159mJust wait a moment"|pv -qL 30
+  echo -e "\e[38;5;159m就快要完成了"|pv -qL 30
   i2=0
   while (( $i2<=60 ))
   do
@@ -349,22 +349,22 @@ CONTAINER_CREATE(){  #用于容器创建
   #读取容器信息
   while :
   do
-    read -p "[]  为这只容器娘命个名吧,不可以包含空格哦:" NAME
+    read -p "[] 为这只容器娘命个名吧,不可以包含空格哦:" NAME
     if [[ $NAME != "" ]];then
       break
     fi
-  done 
+  done
   read -p "[] 输入容器的绝对路径，不可以包含空格: " CHROOT_DIR
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do #目录黑名单,拒绝使用系统目录
     if [[ $CHROOT_DIR = $BLACKLIST* ]];then
-      CONTAINER_LOG "错误:不可以使用系统目录"
-      echo "[] 不可以使用系统目录哦!"
+      CONTAINER_LOG "错误:不可以使用系统目录!"
+      echo "[] 您正尝试使用系统目录，不可以的呢！"
       exit
     fi
   done
   if [[ -e $CHROOT_DIR ]];then #拒绝使用已存在的目录
     CONTAINER_LOG "错误:容器目录已存在"
-    echo -e "[] 错误:容器目录已存在!"
+    echo -e "[] 您正尝试使用已存在的目录，不可以的呢！"
     exit
   fi
   while :
@@ -385,7 +385,7 @@ CONTAINER_CREATE(){  #用于容器创建
     for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do #目录黑名单,拒绝使用系统目录
       if [[ $CHROOT_IMG_PATH = $BLACKLIST* ]];then
         CONTAINER_LOG "错误:不可以使用系统目录"
-        echo "[] 不可以使用系统目录哦!"
+        echo "[] 您正尝试使用系统目录，不可以的呢!"
         exit
       fi
     done
@@ -439,7 +439,7 @@ CONTAINER_CREATE(){  #用于容器创建
     sudo mount ${LOOP} ${CHROOT_DIR}  >> ${LOG_FILE} 2>&1
     CONTAINER_LOG "挂载镜像文件:LOOP=$LOOP,PATH=$CHROOT_DIR"
   fi
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] EXTRACTING ROOTFS"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 解压rootfs"|pv -qL 40
   sleep 2s
   #解压rootfs
   ROOTFS=$(ls /data/data/com.termux/files/usr/tmp/container/)
@@ -449,7 +449,7 @@ CONTAINER_CREATE(){  #用于容器创建
     *) echo "\a\033[31m[] 未知文件格式，请确认这是个rootfs文件";exit 0;;
   esac
   CONTAINER_LOG "解压rootfs"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[] WRITING CONFIGURE FILE"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
   sleep 1s
   for i1 in {1..100};do #遍历获取未使用的配置文件
     if [[ ! -e /data/data/com.termux/files/usr/etc/container/container-${i1}.conf ]];then
@@ -637,7 +637,7 @@ CONTAINER_REMOVE(){  #用于删除容器
   umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
   umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
   losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与虚拟设备的关联
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 正在删除容器: ${NAME}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 正在删除容器:${NAME}"
   sleep 2s
   #删除旧容器,同时防止执行rm -rf /
   if [[ ${CHROOT_DIR} != "" ]];then
@@ -680,7 +680,7 @@ CONTAINER_REMOVE(){  #用于删除容器
 CONTAINER_RUN(){ #用于运行容器
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf) >> ${LOG_FILE}
-  CONTAINER_LOG "C容器设置:"
+  CONTAINER_LOG "容器设置:"
   CONTAINER_LOG "NAME=${NAME}"
   CONTAINER_LOG "CHROOT_DIR=${CHROOT_DIR}"
   if [[ ${CHROOT_IMG} != "" ]];then
@@ -1026,7 +1026,7 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   cp ./container /data/data/com.termux/files/usr/bin/
   chmod 777 /data/data/com.termux/files/usr/bin/container
   CONTAINER_LOG "更新脚本"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 更新完成，快去体验新功能吧!"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 更新完成，快去体验新功能吧(｡•̀ᴗ-)✧~"
   return 0
   exit 0
 }
@@ -1034,29 +1034,27 @@ CONTAINER_UPDATE(){  #用于更新本脚本
 ######版本信息######
 ####################
 CONTAINER_VERSION(){
-  echo -e "\033[30m               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅\033[0m"
-  echo -e "\033[30m          ▅▅▀▀▀               ▀▀▅▅\033[0m"
-  echo -e "\033[30m     ▅▅▅▀▀                        ▀▅\033[0m"
-  echo -e "\033[30m      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅\033[0m"
-  echo -e "\033[30m     █▀   █▅▀▀  ▀     ▀ ▀▀▅▅    █ ▀▀▅▀▅\033[0m"
-  echo -e "\033[30m    ▅▀   ▅▀  ▅▀      ▀▅    ▀▅   █▅███ █\033[0m"
-  echo -e "\033[30m   ▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █\033[0m"
-  echo -e "\033[30m      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █\033[0m"
-  echo -e "\033[30m      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █\033[0m"
-  echo -e "\033[30m     ▅▀ █ █\033[31m█▀█\033[30m█        █\033[31m█▀█\033[30m█ █   █     █\033[0m"
-  echo -e "\033[30m     █  █ █\033[31m███\033[30m█        █\033[31m███\033[30m█ █   █      █\033[0m"
-  echo -e "\033[30m   ▅▀▅ ▅▀  ▀▀▀          ▀▀▀  █   █      █\033[0m"
-  echo -e "\033[30m ▅▀ ▀▅ █   ▅     ▅           █   █      █\033[0m"
-  echo -e "\033[30m █   █  ▀ █ ▀   █ ▀   █▅     █   █       █\033[0m"
-  echo -e "\033[30m███████ ████▅▅▅███▅█████  ██ ▀   █       █\033[0m"
-  echo -e "\033[30m▀█▀▀▀▀█  ▀███▀█████████████     ▅▅        ▀▅\033[0m"
-  echo -e "\033[30m █     ▀███▀   ▀▀  ▀▀  ▀▀ █     █          █\033[0m"
-  echo -e "\033[30m  ▀▄     ▅▀              ▅     ▅█         ▅▀\033[0m"
-  echo -e "\033[30m    ▀▅   █               ▀▅▅▅▅▅▀█        █\033[0m"
-  echo -e "\033[30m      ▀▀█                       █        █\033[0m"
-  echo -e '\e[38;5;225m         ╔═╝  ╔═║  ║ ║  ║ ║  ╔═║  ╔═║'
-  echo -e '\e[38;5;225m         ══║  ╔═║  ╔╝   ║ ║  ╔╔╝  ╔═║'
-  echo -e '\e[38;5;225m         ══╝  ╝ ╝  ╝ ╝  ══╝  ╝ ╝  ╝ ╝'
+  echo -e "\033[31m               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅\033[0m"
+  echo -e "\033[31m          ▅▅▀▀▀               ▀▀▅▅\033[0m"
+  echo -e "\033[31m     ▅▅▅▀▀                        ▀▅\033[0m"
+  echo -e "\033[31m      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅\033[0m"
+  echo -e "\033[31m     █▀   █▅▀▀  ▀     ▀ ▀▀▅▅    █ ▀▀▅▀▅\033[0m"
+  echo -e "\033[31m    ▅▀   ▅▀  ▅▀      ▀▅    ▀▅   █▅███ █\033[0m"
+  echo -e "\033[31m   ▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █\033[0m"
+  echo -e "\033[31m      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █\033[0m"
+  echo -e "\033[31m      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █\033[0m"
+  echo -e "\033[31m     ▅▀ █ █\033[31m█▀█\033[31m█        █\033[31m█▀█\033[31m█ █   █     █\033[0m"
+  echo -e "\033[31m     █  █ █\033[31m███\033[31m█        █\033[31m███\033[31m█ █   █      █\033[0m"
+  echo -e "\033[31m   ▅▀▅ ▅▀  ▀▀▀          ▀▀▀  █   █      █\033[0m"
+  echo -e "\033[31m ▅▀ ▀▅ █   ▅     ▅           █   █      █\033[0m"
+  echo -e "\033[31m █   █  ▀ █ ▀   █ ▀   █▅     █   █       █\033[0m"
+  echo -e "\033[31m███████ ████▅▅▅███▅█████  ██ ▀   █       █\033[0m"
+  echo -e "\033[31m▀█▀▀▀▀█  ▀███▀█████████████     ▅▅        ▀▅\033[0m"
+  echo -e "\033[31m █     ▀███▀   ▀▀  ▀▀  ▀▀ █     █          █\033[0m"
+  echo -e "\033[31m  ▀▄     ▅▀              ▅     ▅█         ▅▀\033[0m"
+  echo -e "\033[31m    ▀▅   █               ▀▅▅▅▅▅▀█        █\033[0m"
+  echo -e "\033[31m      ▀▀█                       █        █\033[0m"
+
   printf '\e[38;5;159m'
   echo -e "[] (>_×)"
   echo -e "[] 项目: termux-cntainer"
