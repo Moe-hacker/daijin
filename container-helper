@@ -22,7 +22,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then
     chmod 777 /data/data/com.termux/files/usr/bin/container-helper
     mkdir -p /data/data/com.termux/files/usr/etc/container
     echo DISABLE_SELINUX=n >> /data/data/com.termux/files/usr/etc/container/global.conf
-    echo ENABLE_OUTPUT=y >> /data/data/com.termux/files/usr/etc/container/global.conf
+    echo ENABLE_OUTPUT=n >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo HOSTNAME=localhost >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo CURSOR=bar >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo CONTAINER=helper >> /data/data/com.termux/files/usr/etc/container/global.conf
