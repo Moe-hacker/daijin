@@ -16,7 +16,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then
     mkdir -p /data/data/com.termux/files/usr/share/termux-container
     git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container
     cd /data/data/com.termux/files/usr/share/termux-container
-    cp container /data/data/com.termux/files/usr/bin/
+    cp container-zh /data/data/com.termux/files/usr/bin/container
     cp container-helper /data/data/com.termux/files/usr/bin/
     chmod 777 /data/data/com.termux/files/usr/bin/container
     chmod 777 /data/data/com.termux/files/usr/bin/container-helper
@@ -26,6 +26,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then
     echo HOSTNAME=localhost >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo CURSOR=bar >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo CONTAINER=helper >> /data/data/com.termux/files/usr/etc/container/global.conf
+    touch /data/data/com.termux/files/usr/etc/container/container-helper.conf
     cp font.ttf ~/.termux/
     termux-reload-settings
     exit 0
