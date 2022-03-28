@@ -11,7 +11,7 @@
 #### 安装:
 ```sh
 pkg install curl pv
-bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/container)"
+bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/container-zh)"
 ```
 # 用法：
 ```shell
