@@ -50,7 +50,7 @@ CONTAINER_LOG_END(){
 ####################
 if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   CONTAINER_LOG_HEAD
-  echo -e "\e[38;5;159m[] 正在为您安装字体..."
+  echo -e "\e[38;5;225m[] 正在为您安装字体..."
   mv ~/.termux/font.ttf ~/.termux/font-backup.ttf
   wget https://github.com/Moe-hacker/termux-container/raw/main/font.ttf
   if [[ -e font.ttf ]];then
@@ -67,13 +67,13 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   i1=$(($(stty size|awk '{print $2}')))
   let i1=$i1
   i4=$(($i1/2-22))
-  echo -e "\033[${i4}G              \e[38;5;159m┌───────────┐"
+  echo -e "\033[${i4}G              \e[38;5;225m┌───────────┐"
   echo -e "\033[${i4}G              │ ┌───────┐ │"
   echo -e "\033[${i4}G              │ │  \e[38;5;227m┌───────────┐"
-  echo -e "\033[${i4}G              \e[38;5;159m│ │  \e[38;5;227m│ ┌───────┐ │"
-  echo -e "\033[${i4}G              \e[38;5;159m│ │  \e[38;5;227m│ │  \e[38;5;159m│ │  \e[38;5;227m│ │"
-  echo -e "\033[${i4}G              \e[38;5;159m│ └──\e[38;5;227m│ │\e[38;5;159m──┘ │  \e[38;5;227m│ │"
-  echo -e "\033[${i4}G              \e[38;5;159m└────\e[38;5;227m│ │\e[38;5;159m────┘  \e[38;5;227m│ │"
+  echo -e "\033[${i4}G              \e[38;5;225m│ │  \e[38;5;227m│ ┌───────┐ │"
+  echo -e "\033[${i4}G              \e[38;5;225m│ │  \e[38;5;227m│ │  \e[38;5;225m│ │  \e[38;5;227m│ │"
+  echo -e "\033[${i4}G              \e[38;5;225m│ └──\e[38;5;227m│ │\e[38;5;225m──┘ │  \e[38;5;227m│ │"
+  echo -e "\033[${i4}G              \e[38;5;225m└────\e[38;5;227m│ │\e[38;5;225m────┘  \e[38;5;227m│ │"
   echo -e "\033[${i4}G                   \e[38;5;227m│ └───────┘ │"
   echo -e "\033[${i4}G                   \e[38;5;227m└───────────┘"
   echo -e "\033[${i4}G\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
@@ -82,14 +82,14 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   i2=0
   while (( $i2<=$i1 ));do
       i2=$(($i2+1))
-      echo -e "\e[38;5;159m\033[13H\033[${i2}G="
+      echo -e "\e[38;5;225m\033[13H\033[${i2}G="
       sleep 0.01s
   done
   i5=$(($i4+9))
-  echo -e "\033[${i5}G\e[38;5;159mMADE WITH  BY MOE-HACKER"|pv -qL 20
-  echo -e "\033[${i5}G\e[38;5;159m    KEEP MOE KEEP COOL"|pv -qL 20
-  echo -e "\033[${i5}G\e[38;5;159m      此程序\"无担保\""|pv -qL 20
-  echo -e "\033[${i5}G\e[38;5;159m      请按回车键继续"|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225mMADE WITH  BY MOE-HACKER"|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225m    KEEP MOE KEEP COOL"|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225m      此程序\"无担保\""|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225m      请按回车键继续"|pv -qL 20
   i2=0
   printf '\033[?25h'
   read
@@ -101,11 +101,11 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo -e "\e[38;5;225m[+] 呐，现在要开始安装了哦ＯＫ(ゝω・★)"|pv -qL 20
   sleep 1s
   clear
-  echo -e "\a\e[38;5;159m[] 安装依赖软件(≧▽≦)"|pv -qL 20
+  echo -e "\a\e[38;5;225m[] 安装依赖软件(≧▽≦)"|pv -qL 20
   pkg install git wget tsu curl e2fsprogs nano whiptail
   CONTAINER_LOG "安装依赖软件"
   clear
-  echo -e "\a\e[38;5;159m[] 克隆存储库(☆▽☆)"|pv -qL 20
+  echo -e "\a\e[38;5;225m[] 克隆存储库(☆▽☆)"|pv -qL 20
   mkdir -p /data/data/com.termux/files/usr/share/termux-container
   git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container||exit
   cd /data/data/com.termux/files/usr/share/termux-container
@@ -113,7 +113,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   chmod 777 /data/data/com.termux/files/usr/bin/container
   clear
   CONTAINER_LOG "安装完成"
-  echo -e "\a\e[38;5;159m[] 下面是几个简单的问题ε(*･ω･)_/ﾟ:･☆"|pv -qL 20
+  echo -e "\a\e[38;5;225m[] 下面是几个简单的问题ε(*･ω･)_/ﾟ:･☆"|pv -qL 20
   CONTAINER_LOG "开始配置"
   while :
   do
@@ -184,7 +184,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
       for i in {1..100};do
         if [[ -e container-${i}.conf ]];then
           export $(cat container-${i}.conf)
-          echo -e "\e[38;5;159m[$i] $NAME"
+          echo -e "\e[38;5;225m[$i] $NAME"
         fi
       done
       export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
@@ -213,17 +213,17 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
 CONTAINER_BACKUP(){  #用于备份容器
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  printf "\e[38;5;159m"
+  printf "\e[38;5;225m"
   cd /data/data/com.termux/files/usr/etc/container
   #遍历查找配置文件
   for i in {1..100};do
@@ -242,7 +242,7 @@ CONTAINER_BACKUP(){  #用于备份容器
   done
   export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf)
   #开始解除挂载
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 解除容器挂载"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除容器挂载"
   umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
   umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
   umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
@@ -281,16 +281,16 @@ CONTAINER_RESTORE(){  #用于还原容器
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-17))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  printf "\e[38;5;159m"
+  printf "\e[38;5;225m"
   sleep 1s
   #直接还原到根目录
   CONTAINER_LOG "还原容器"
@@ -327,17 +327,17 @@ CONTAINER_CREATE(){  #用于容器创建
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   sleep 0.1s
-  printf  "\e[38;5;159m"
+  printf  "\e[38;5;225m"
   #读取容器信息
   while :
   do
@@ -441,7 +441,7 @@ CONTAINER_CREATE(){  #用于容器创建
     *) echo "\a\033[31m[] 未知文件格式，请确认这是个rootfs文件";exit 0;;
   esac
   CONTAINER_LOG "解压rootfs"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] 写入配置文件"|pv -qL 40
   sleep 1s
   for i1 in {1..100};do #遍历获取未使用的配置文件
     if [[ ! -e /data/data/com.termux/files/usr/etc/container/container-${i1}.conf ]];then
@@ -515,13 +515,13 @@ CONTAINER_CREATE(){  #用于容器创建
 ######帮助信息######
 ####################
 CONTAINER_HELP(){  #输出帮助信息
-  echo -e "              \e[38;5;159m┌───────────┐"
+  echo -e "              \e[38;5;225m┌───────────┐"
   echo -e "              │ ┌───────┐ │"
   echo -e "              │ │  \e[38;5;227m┌───────────┐"
-  echo -e "              \e[38;5;159m│ │  \e[38;5;227m│ ┌───────┐ │"
-  echo -e "              \e[38;5;159m│ │  \e[38;5;227m│ │  \e[38;5;159m│ │  \e[38;5;227m│ │"
-  echo -e "              \e[38;5;159m│ └──\e[38;5;227m│ │\e[38;5;159m──┘ │  \e[38;5;227m│ │"
-  echo -e "              \e[38;5;159m└────\e[38;5;227m│ │\e[38;5;159m────┘  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;225m│ │  \e[38;5;227m│ ┌───────┐ │"
+  echo -e "              \e[38;5;225m│ │  \e[38;5;227m│ │  \e[38;5;225m│ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;225m│ └──\e[38;5;227m│ │\e[38;5;225m──┘ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;225m└────\e[38;5;227m│ │\e[38;5;225m────┘  \e[38;5;227m│ │"
   echo -e "                   \e[38;5;227m│ └───────┘ │"
   echo -e "                   \e[38;5;227m└───────────┘"
   echo -e "\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
@@ -554,14 +554,14 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-15))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_IMG} = "" ]];then
     echo -e "\a\033[31m[]  错误:未使用镜像文件\033[0m"
@@ -575,8 +575,8 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   sudo losetup $loop ${CHROOT_IMG}
   sudo mount $loop ${CHROOT_DIR}
   CONTAINER_LOG "挂载镜像， LOOP=$loop CHROOT_IMG=${CHROOT_IMG} CHROOT_DIR=${CHROOT_DIR}"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[] ${CHROOT_IMG} 已被挂载至 ${CHROOT_DIR} \033[0m"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[] 「终わる!」\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] ${CHROOT_IMG} 已被挂载至 ${CHROOT_DIR} \033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] 「终わる!」\033[0m"
   return 0
   exit 0
 }
@@ -587,16 +587,16 @@ CONTAINER_REMOVE(){  #用于删除容器
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  printf "\e[38;5;159m"
+  printf "\e[38;5;225m"
   cd /data/data/com.termux/files/usr/etc/container
   #遍历查找配置文件
   for i in {1..100};do
@@ -622,7 +622,7 @@ CONTAINER_REMOVE(){  #用于删除容器
   if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
     rm /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf&&exit
   fi
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] UNMOUNTING"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] UNMOUNTING"
   umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
   umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
   umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
@@ -646,7 +646,7 @@ CONTAINER_REMOVE(){  #用于删除容器
     for i in {1..100};do
       if [[ -e container-${i}.conf ]];then
         export $(cat container-${i}.conf)
-        echo -e "\e[38;5;159m[$i] $NAME"
+        echo -e "\e[38;5;225m[$i] $NAME"
       fi
     done
     export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
@@ -681,7 +681,7 @@ CONTAINER_RUN(){ #用于运行容器
     CONTAINER_LOG "CHROOT_IMG=null"
   fi
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
-  [[ ${ENABLE_OUTPUT} = "n" ]]||printf '\e[38;5;159m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "n" ]]||printf '\e[38;5;225m\033[?25l'
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -689,36 +689,36 @@ CONTAINER_RUN(){ #用于运行容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-13))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] 容器娘: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m    _________      [\e[38;5;153m\e[38;5;225m] 容器娘: \e[38;5;153m${NAME}"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] 大脑基于\e[38;5;153m$(uname -m)架构"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   /        /\\     [\e[38;5;153m\e[38;5;225m] 大脑基于\e[38;5;153m$(uname -m)架构"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
   if [[ $DISABLE_SELINUX = "y" ]];then
     SELINUX=Permissive
   else
     SELINUX=Enforcing
   fi
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m  /        /  \\    [\e[38;5;153m\e[38;5;159m] SELinux状态: \e[38;5;153m${SELINUX}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  /        /  \\    [\e[38;5;153m\e[38;5;225m] SELinux状态: \e[38;5;153m${SELINUX}"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m /        /    \\   [\e[38;5;153m\e[38;5;159m] 由内核\e[38;5;153m$(uname --kernel-release)驱动"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m /        /    \\   [\e[38;5;153m\e[38;5;225m] 由内核\e[38;5;153m$(uname --kernel-release)驱动"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m/________/      \\  [\e[38;5;153m\e[38;5;159m] 在\e[38;5;153m$(date|awk '{print $4}')被唤醒"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m/________/      \\  [\e[38;5;153m\e[38;5;225m] 在\e[38;5;153m$(date|awk '{print $4}')被唤醒"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m\\        \\      /  [\e[38;5;153m\e[38;5;159m] 主机名: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m\\        \\      /  [\e[38;5;153m\e[38;5;225m] 主机名: \e[38;5;153m$(hostname)"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] 基于安卓\e[38;5;153m$(getprop ro.build.version.release)娘"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] 容器目录: \e[38;5;153m${CHROOT_DIR}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m \\        \\    /   [\e[38;5;153m\e[38;5;225m] 基于安卓\e[38;5;153m$(getprop ro.build.version.release)娘"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  \\        \\  /    [\e[38;5;153m\e[38;5;225m] 容器目录: \e[38;5;153m${CHROOT_DIR}"
   if [[ $CHROOT_IMG != "" ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 镜像文件: \e[38;5;153m${CHROOT_IMG}"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: \e[38;5;153m${CHROOT_IMG}"
   else
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 镜像文件: \e[38;5;153mnull"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: \e[38;5;153mnull"
   fi
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;111mTERMUX-CONTAINER\e[38;5;159m]"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;111mTERMUX-CONTAINER\e[38;5;225m]"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
     echo -e "\033[31m\a[] 错误:容器目录不存在"&&printf "\033[?25h"
@@ -732,67 +732,67 @@ CONTAINER_RUN(){ #用于运行容器
   fi
   if [[ ${DISABLE_SELINUX} = "y" ]];then #判断是否需要关闭selinux
     if [[ ! $(getenforce) = "Permissive" ]];then
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭SELinux"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 关闭SELinux"
       CONTAINER_LOG "关闭SELinux"
       setenforce 0 >> ${LOG_FILE} 2>&1 #关闭SELINUX [!]危险操作
     fi
   fi
   if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
     if [[ ! $(hostname) = ${HOSTNAME} ]];then
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 设置主机名"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 设置主机名"
       CONTAINER_LOG "设置主机名为:${HOSTNAME}"
       hostname ${HOSTNAME} >> ${LOG_FILE} 2>&1 #设置主机名
     fi
   fi
   #创建一些由于android和普通linux之间的差异而不存在的文件
   if [[ ! -e /dev/fd ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/fd"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/fd"
     CONTAINER_LOG "创建/dev/fd"
     ln -s /proc/self/fd /dev/ >> ${LOG_FILE} 2>&1
   fi
   if [[ ! -e /dev/stdin ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/stdin"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/stdin"
     CONTAINER_LOG "创建/dev/stdin"
     ln -s /proc/self/fd/0 /dev/stdin  >> ${LOG_FILE} 2>&1
   fi
   if [[ ! -e /dev/stdout ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/stdout"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/stdout"
     CONTAINER_LOG "创建/dev/stdout"
     ln -s /proc/self/fd/1 /dev/stdout >> ${LOG_FILE} 2>&1
   fi
   if [[ ! -e /dev/stderr ]] ;then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/stderr"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/stderr"
     CONTAINER_LOG "创建/dev/stderr"
     ln -s /proc/self/fd/2 /dev/stderr >> ${LOG_FILE} 2>&1
   fi
   if [[ ! -e /dev/tty0 ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/tty0"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/tty0"
     CONTAINER_LOG "创建/dev/tty0"
     ln -s /dev/null /dev/tty0 >> ${LOG_FILE} 2>&1
   fi
   if [[ ! -e /dev/net/tun ]];then
     if [[ ! -d /dev/net ]];then
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/net"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/net"
       mkdir -p /dev/net >> ${LOG_FILE} 2>&1
       fi
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建/dev/net/tun"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建/dev/net/tun"
       CONTAINER_LOG "创建/dev/net"
     mknod /dev/net/tun c 10 200  >> ${LOG_FILE} 2>&1
   fi
   #挂载系统
   if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
     if [[ ${CHROOT_IMG} = "" ]];then
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 重挂载/data"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 重挂载/data"
       CONTAINER_LOG "重挂载/data,启用suid"
       mount -o remount,suid /data  >> ${LOG_FILE} 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载${CHROOT_DIR} "
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载${CHROOT_DIR} "
       CONTAINER_LOG "挂载容器目录至它本身"
       mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #将容器目录挂载到自身，解决pacman无法使用
     else
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 执行fsck"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 执行fsck"
       CONTAINER_LOG "执行fsck"
       fsck.ext4 -a -f  ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #修复结构需要清理报错，有一定效果
-      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载${CHROOT_IMG}"
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载${CHROOT_IMG}"
       loop=$(losetup -f) #查找未使用的loop文件
       losetup  ${loop} ${CHROOT_IMG}  >> ${LOG_FILE} 2>&1
       mount  ${loop} ${CHROOT_DIR}  >> ${LOG_FILE} 2>&1
@@ -801,46 +801,46 @@ CONTAINER_RUN(){ #用于运行容器
   fi
   #挂载内置存储
   if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" ]];then #判断/sdcard是否被挂载
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载/sdacrd"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/sdacrd"
     CONTAINER_LOG "挂载/sdcard"
     mount -o ro,bind /sdcard ${CHROOT_DIR}/sdcard/ >> ${LOG_FILE} 2>&1
   fi
   #挂载系统运行所需文件
   if [[ $(mount|grep ${CHROOT_DIR}|grep /proc) =  "" ]];then #判断/proc是否被挂载
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载/proc"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/proc"
     mount -t proc proc  ${CHROOT_DIR}/proc/ >> ${LOG_FILE} 2>&1
     CONTAINER_LOG "挂载/proc"
   fi
   if [[ ! -e ${CHROOT_DIR}/dev/block ]];then #判断/dev是否被挂载
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载/dev"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/dev"
     CONTAINER_LOG "挂载/dev"
     mount --rbind /dev ${CHROOT_DIR}/dev/ >> ${LOG_FILE} 2>&1
   fi
   if [[ $(mount|grep ${CHROOT_DIR}|grep /sys) =  "" ]];then #判断/sys是否被挂载
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载/sys"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/sys"
     CONTAINER_LOG "挂载/sys"
     mount --rbind /sys ${CHROOT_DIR}/sys/ >> ${LOG_FILE} 2>&1
   fi
   #挂载/dev下一些文件到系统，我也不知道为啥，貌似andrax中就这样写的
   if [[ ! -e /dev/shm ]] || [[ ! -e ${CHROOT_DIR}/dev/shm ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建目录/dev/shm"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建目录/dev/shm"
     mkdir -p /dev/shm ${CHROOT_DIR}/dev/shm >> ${LOG_FILE} 2>&1 #创建/dev/shm
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建tmpfs"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 创建tmpfs"
     mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >> ${LOG_FILE} 2>&1 #挂载tmpfs
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载/dev/shm"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/dev/shm"
     CONTAINER_LOG "挂载/dev/shm"
     mount --bind /dev/shm ${CHROOT_DIR}/dev/shm >> ${LOG_FILE} 2>&1 #挂载/dev/shm
   fi
   if  [[ ! -e ${CHROOT_DIR}/dev/pts/1 ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载/dev/pts"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/dev/pts"
     mkdir -p ${CHROOT_DIR}/dev/pts >> ${LOG_FILE} 2>&1
     CONTAINER_LOG "挂载/dev/pts"
     mount --bind /dev/pts ${CHROOT_DIR}/dev/pts >> ${LOG_FILE} 2>&1
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 更改/dev/null的权限模式"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 更改/dev/null的权限模式"
     CONTAINER_LOG "chmod 666 /dev/null"
     chmod 666 /dev/null >> ${LOG_FILE} 2>&1
   fi
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 运行容器"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 运行容器"
   [[ ${ENABLE_OUTPUT} = "n" ]] || echo -e "「お帰りなさい！御主人様!」"  #欢迎回家，主人！(太他妈二刺螈了)
   case $CURSOR in #更换光标
     block)     printf '\e[2 q';;
@@ -864,21 +864,21 @@ CONTAINER_SWITCH(){ #用于多容器切换
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_SWITCH$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   cd /data/data/com.termux/files/usr/etc/container
   #列举已创建容器
   for i in {1..100};do
     if [[ -e container-${i}.conf ]];then
       export $(cat container-${i}.conf)
-      echo -e "\e[38;5;159m[$i] $NAME"
+      echo -e "\e[38;5;225m[$i] $NAME"
     fi
   done
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
@@ -911,14 +911,14 @@ CONTAINER_SETTINGS(){ #用于设置容器
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-18))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   #输出当前配置信息
@@ -940,7 +940,7 @@ CONTAINER_SETTINGS(){ #用于设置容器
 CONTAINER_UNMOUNT(){  #用于解除容器挂载
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf) >> ${LOG_FILE}
-  printf "\e[38;5;159m"
+  printf "\e[38;5;225m"
   read -p "杀死容器中的进程[y/n]? " KILL
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
@@ -949,14 +949,14 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-18))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_UNMOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
     exit
   fi
   if [[ ${KILL} = "y" ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 杀死进程，这可能会花较长时间..."
+    [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 杀死进程，这可能会花较长时间..."
     LSOF=$(lsof | awk '{print $1}' | grep -c '^lsof')
     if [ "${LSOF}" -eq 0 ]; then
       PIDS=$(lsof | grep "$CHROOT_DIR" | awk '{print $1}' | uniq)
@@ -967,24 +967,24 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
       kill -9 ${PIDS} >> $LOG_FILE
     fi
   fi
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 解除/dev挂载"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除/dev挂载"
   CONTAINER_LOG "解除/dev挂载"
   umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 解除/sys挂载"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除/sys挂载"
   CONTAINER_LOG "解除/sys挂载"
   umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 解除/proc挂载"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除/proc挂载"
   CONTAINER_LOG "解除/proc挂载"
   umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 解除/sdcard挂载"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除/sdcard挂载"
   CONTAINER_LOG "解除/sdcard挂载"
   umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 解除${CHROOT_DIR}挂载"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除${CHROOT_DIR}挂载"
   CONTAINER_LOG "解除${CHROOT_DIR}挂载"
   umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
   losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与虚拟设备的关联
   if [[ ${DISABLE_SELINUX} = "y" ]];then #判断SELINUX是否为关闭状态
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 重启SELinux"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 重启SELinux"
     CONTAINER_LOG "重启SELinux"
     setenforce 1  >> ${LOG_FILE} 2>&1 #重启SELinux
   fi
@@ -999,23 +999,23 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_UPDATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 正在更新脚本..."
   cd /data/data/com.termux/files/usr/share/termux-container
   #使用git pull更新目录
-  echo -e "\e[38;5;159m$(git reset --hard||exit)"
-  echo -e "\e[38;5;159m$(git pull||exit)"
+  echo -e "\e[38;5;225m$(git reset --hard||exit)"
+  echo -e "\e[38;5;225m$(git pull||exit)"
   #更新主程序
   rm /data/data/com.termux/files/usr/bin/container
-  cp ./container /data/data/com.termux/files/usr/bin/
+  cp ./container-zh /data/data/com.termux/files/usr/bin/container
   chmod 777 /data/data/com.termux/files/usr/bin/container
   CONTAINER_LOG "更新脚本"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 更新完成，快去体验新功能吧(｡•̀ᴗ-)✧~"
@@ -1046,8 +1046,7 @@ CONTAINER_VERSION(){
   echo -e "\033[0m  ▀▄     ▅▀              ▅     ▅█         ▅▀\033[0m"
   echo -e "\033[0m    ▀▅   █               ▀▅▅▅▅▅▀█        █\033[0m"
   echo -e "\033[0m      ▀▀█                       █        █\033[0m"
-
-  printf '\e[38;5;159m'
+  printf '\e[38;5;225m'
   echo -e "[] (>_×)"
   echo -e "[] 项目: termux-container"
   echo -e "[] 作者: Moe-hacker"
@@ -1064,16 +1063,16 @@ CONTAINER_UNINSTALL(){
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   [[ ${ENABLE_OUTPUT} = "n" ]]||clear
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-19))
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_UNINSTALL$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  echo -e "\a\e[38;5;159m[] 按回车键卸载此脚本或者按ctrl-c退出"|pv -qL 40
+  echo -e "\a\e[38;5;225m[] 按回车键卸载此脚本或者按ctrl-c退出"|pv -qL 40
   read
   while :
   do
@@ -1128,7 +1127,7 @@ CONTAINER_UNINSTALL(){
 ######程序菜单######
 ####################
 CONTAINER_MENU(){
-  printf '\e[38;5;159m'
+  printf '\e[38;5;225m'
   WIDTH=$(($(stty size|awk '{print $2}')-4))
   OPTION=$(whiptail --title "容器菜单" --menu "选择您要进行的操作" 16 $WIDTH 9 \
   "1" "运行容器" \
