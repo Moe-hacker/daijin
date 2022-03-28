@@ -29,7 +29,6 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then
     touch /data/data/com.termux/files/usr/etc/container/container-helper.conf
     cp font.ttf ~/.termux/
     termux-reload-settings
-    exit 0
 fi
 if [[ $(whoami) != "root" ]];then #判断用户，若不是root则调用sudo重新启动
     sudo container-helper
@@ -59,6 +58,7 @@ CREATE_CONTAINER(){
     chmod 777 /data/data/com.termux/files/home/$OS
     echo -e "容器已被安装至/data/container/$OS"
     echo -e "安装完毕,输入 ~/$OS 启动系统"
+    rm $OS.tar.xz
     return 0
     exit 0
 }
