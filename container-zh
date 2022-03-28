@@ -1018,7 +1018,7 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   cp ./container-zh /data/data/com.termux/files/usr/bin/container
   chmod 777 /data/data/com.termux/files/usr/bin/container
   CONTAINER_LOG "更新脚本"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 更新完成，快去体验新功能吧(｡•̀ᴗ-)✧~"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 更新完成，快去体验新功能吧(≧▽≦)"
   return 0
   exit 0
 }
