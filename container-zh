@@ -157,7 +157,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container/global.conf
   echo CURSOR=${CURSOR} >> /data/data/com.termux/files/usr/etc/container/global.conf
   echo CONTAINER=1 >> /data/data/com.termux/files/usr/etc/container/global.conf
-  echo -e "[38;5;225m[+] 安装完毕，先生请慢用"
+  echo -e "\e[38;5;225m[+] 安装完毕，先生请慢用"
   CONTAINER_LOG_END
   container -h&&exit 0
 fi
