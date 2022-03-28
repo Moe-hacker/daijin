@@ -219,7 +219,7 @@ CONTAINER_BACKUP(){  #用于备份容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -286,7 +286,7 @@ CONTAINER_RESTORE(){  #用于还原容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-17))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -332,7 +332,7 @@ CONTAINER_CREATE(){  #用于容器创建
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -559,7 +559,7 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-15))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -592,7 +592,7 @@ CONTAINER_REMOVE(){  #用于删除容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -688,7 +688,7 @@ CONTAINER_RUN(){ #用于运行容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-13))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
@@ -869,7 +869,7 @@ CONTAINER_SWITCH(){ #用于多容器切换
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_SWITCH$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_SWITCH$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -916,7 +916,7 @@ CONTAINER_SETTINGS(){ #用于设置容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-18))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -948,7 +948,7 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-18))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_UNMOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_UNMOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -1004,7 +1004,7 @@ CONTAINER_UPDATE(){  #用于更新本脚本
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_UPDATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_UPDATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
@@ -1068,7 +1068,7 @@ CONTAINER_UNINSTALL(){
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
   [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
   [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-19))
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;159mCONTAINER_UNINSTALL$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_UNINSTALL$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
