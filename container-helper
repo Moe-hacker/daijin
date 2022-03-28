@@ -52,7 +52,7 @@ CREATE_CONTAINER(){
     echo -e "容器将被安装至/data/container/$OS"
     sleep 2s
     mkdir -p /data/container/$OS
-    wget https://github.com/TermuxCHN/rootfs/raw/main/$OS.tar.xz
+    wget https://github.com/TermuxCHN/rootfs/releases/download/rootfs/$OS.tar.xz
     tar -xvf $OS.tar.xz -C /data/container/$OS
     cp /data/data/com.termux/files/usr/share/termux-container/helper-start /data/data/com.termux/files/home/$OS
     sed -i "s/OS/$OS/" /data/data/com.termux/files/home/$OS
