@@ -157,16 +157,6 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container/global.conf
   echo CURSOR=${CURSOR} >> /data/data/com.termux/files/usr/etc/container/global.conf
   echo CONTAINER=1 >> /data/data/com.termux/files/usr/etc/container/global.conf
-  clear
-  echo -e "\e[38;5;159m就快要完成了"|pv -qL 30
-  i2=0
-  while (( $i2<=60 ))
-  do
-    for i in {16,17,18,19,20,21,27,33,32,39,45,51,45,39,32,33,27,21,20,19,18,17,16}
-    do
-      echo -e "\e[1H\e[25G\e[38;5;${i}m●"&&sleep 0.05s&&i2=$(($i2+1))
-    done
-  done
   echo -e "[38;5;225m[+] 安装完毕，先生请慢用"
   CONTAINER_LOG_END
   container -h&&exit 0
