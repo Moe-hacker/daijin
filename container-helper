@@ -42,18 +42,18 @@ CREATE_CONTAINER(){
         exit
     fi
     OS=$1
-    if [[ -e /data/data/com.termux/files/home/container/$OS ]];then
+    if [[ -e /data/container/$OS ]];then
         echo "您已安装$OS"
         exit 0
     fi
     case $OS in
         "kali") echo -e "检测到您要安装的是kali系统，请勿违反当地法律使用!";;
     esac
-    echo -e "容器将被安装至~/container/$OS"
+    echo -e "容器将被安装至/data/container/$OS"
     sleep 2s
-    mkdir -p /data/data/com.termux/files/home/container/$OS
-    wget /$OS.tar.xz
-    tar -xvf $OS.tar.xz -C /data/data/com.termux/files/home/container/$OS
+    mkdir -p /data/container/$OS
+    wget https://github.com/TermuxCHN/rootfs/raw/main/$OS.tar.xz
+    tar -xvf $OS.tar.xz -C /data/container/$OS
     cp /data/data/com.termux/files/usr/share/termux-container/helper-start /data/data/com.termux/files/home/$OS
     sed -i "s/OS/$OS/" /data/data/com.termux/files/home/$OS
     chmod 777 /data/data/com.termux/files/home/$OS
@@ -63,19 +63,19 @@ CREATE_CONTAINER(){
 }
 REMOVE_CONTAINER(){
     OS=$1
-    if [[ ! -e /data/data/com.termux/files/home/container/$OS ]];then
+    if [[ ! -e /data/container/$OS ]];then
         echo "您未安装$OS"
         exit 0
     fi
     read -p "按回车键确认卸载$OS,或者按ctrl-c取消" NULL
     sleep 3s
-    CHROOT_DIR=/data/data/com.termux/files/home/container/$OS
+    CHROOT_DIR=/data/container/$OS
     umount -lvf ${CHROOT_DIR}/dev >> /dev/null 2>&1 #解除/dev的挂载
     umount -lvf ${CHROOT_DIR}/sys >> /dev/null 2>&1 #解除/sys的挂载
     umount -lvf ${CHROOT_DIR}/proc >> /dev/null 2>&1 #解除/proc挂载
     umount ${CHROOT_DIR}/sdcard >> /dev/null 2>&1 #解除/sdcard的挂载
     umount -lvf ${CHROOT_DIR} >> /dev/null 2>&1 #解除目录自身挂载
-    rm -rfv /data/data/com.termux/files/home/container/$OS
+    rm -rfv /data/container/$OS
     rm -rvf /data/data/com.termux/files/home/$OS
     echo -e "卸载完毕!"
     return 0
@@ -97,7 +97,7 @@ MENU(){
         3) CREATE_CONTAINER fedora;;
         4) CREATE_CONTAINER debian;;
         5) CREATE_CONTAINER archlinux;;
-        6) CREATE_CONTAINER parrot;; 
+        6) CREATE_CONTAINER parrot;;
         7) CREATE_CONTAINER kali;;
         8) CREATE_CONTAINER alpine;;
         9) REMOVE_CONTAINER ubuntu;;
