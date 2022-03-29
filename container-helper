@@ -90,11 +90,11 @@ UNMOUNT_ALL(){
     if [[ $(ls /data/container) != "" ]];then
         for i in $(ls /data/container)
         do
-            umount -lvf /data/container/$i/dev
-            umount -lvf /data/container/$i/proc
-            umount -lvf /data/container/$i/sys
-            umount -lvf /data/container/$i
-            umount /data/container/$i/sdcard
+            umount -lvf /data/container/$i/dev >> /dev/null 2>&1
+            umount -lvf /data/container/$i/proc >> /dev/null 2>&1
+            umount -lvf /data/container/$i/sys >> /dev/null 2>&1
+            umount -lvf /data/container/$i >> /dev/null 2>&1
+            umount /data/container/$i/sdcard >> /dev/null 2>&1
         done
     fi
     return 0
