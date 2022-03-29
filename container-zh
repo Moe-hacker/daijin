@@ -1122,6 +1122,7 @@ CONTAINER_UNINSTALL(){
   rm -fv /data/data/com.termux/files/usr/etc/container/global.conf
   rm -rvf /data/data/com.termux/files/usr/share/termux-container
   rm -fv /data/data/com.termux/files/usr/bin/container
+  rm -fv /data/data/com.termux/files/usr/bin/container-helper
   rm -fv /data/data/com.termux/files/usr/var/log/container.log
   echo -e "[] 卸载完成，很抱歉没能给您较好的体验"
   echo -e "[] 再见!"
