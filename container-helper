@@ -93,17 +93,18 @@ UNINSTALL_ALL(){
             umount -lvf /data/container/$i/dev >> /dev/null 2>&1
             umount -lvf /data/container/$i/proc >> /dev/null 2>&1
             umount -lvf /data/container/$i/sys >> /dev/null 2>&1
-            umount -lvf /data/container/$i >> /dev/null 2>&1
             umount /data/container/$i/sdcard >> /dev/null 2>&1
+            umount -lvf /data/container/$i >> /dev/null 2>&1
             rm -vf /data/data/com.termux/files/home/$i
             rm -rvf /data/container/$i
-            rm -rvf /data/container
-            rm -rvf /data/data/com.termux/files/usr/etc/container
-            rm -rvf /data/data/com.termux/files/usr/share/termux-container
-            rm -fv /data/data/com.termux/files/usr/bin/container          rm -fv /data/data/com.termux/files/usr/bin/container-helper
-            rm -fv /data/data/com.termux/files/usr/var/log/container.log
         done
     fi
+    rm -rvf /data/container
+    rm -rvf /data/data/com.termux/files/usr/etc/container
+    rm -rvf /data/data/com.termux/files/usr/share/termux-container
+    rm -fv /data/data/com.termux/files/usr/bin/container
+    rm -fv /data/data/com.termux/files/usr/bin/container-helper
+    rm -fv /data/data/com.termux/files/usr/var/log/container.log
     return 0
     exit 0
 }
@@ -161,7 +162,7 @@ MENU(){
         "17")LIST_INSTALLED;;
         "18")container -up;;
         "19")echo "version:$VERSION";;
-        "20")UNINSTALL_ALL&&container -U;;
+        "20")UNINSTALL_ALL;;
     esac
     return 0
 }
