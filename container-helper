@@ -141,7 +141,7 @@ MENU(){
     echo -e "7. 安装kali       15.卸载kali"
     echo -e "8. 安装alpine     16.卸载alpine"
     echo -e "17.查询已安装     18.更新脚本"
-    echo -e "19.版本信息       20.卸载此脚本"
+    echo -e "19.版本信息       20.卸载此脚本并删除所有容器"
     read -p "选择一个操作:" OPTION
     case $OPTION in
         "1") CREATE_CONTAINER ubuntu;;
