@@ -12,6 +12,7 @@ VERSION=1.0
 if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then
     echo -e "检测到您未安装termux-container，正在为您安装..."
     sleep 1s
+    pkg install pv git wget tsu curl e2fsprogs nano whiptail
     mkdir -p ~/.termux >> /dev/null
     mkdir -p /data/data/com.termux/files/usr/share/termux-container
     git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container

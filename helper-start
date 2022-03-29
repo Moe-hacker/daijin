@@ -6,7 +6,7 @@
 #╚██╔═██╔╝ ██╗ ██████╔╝ ██║  ██║ ███████║ ██║  ██║
 # ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
 ###### Github@Moe-hacker ######
-export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> /dev/null
+export $(cat /data/data/com.termux/files/usr/etc/container/global.conf)
 export CONTAINER_BK=${CONTAINER}
 unset CONTAINER
 sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=helper/" /data/data/com.termux/files/usr/etc/container/global.conf
