@@ -1118,6 +1118,7 @@ CONTAINER_UNINSTALL(){
   hostname localhost >> ${LOG_FILE} 2>&1
   setenforce 1  >> ${LOG_FILE} 2>&1
   #删除脚本及配置
+  [[ ${REMOVE_CONTAINERS} = "n" ]]||rm -rvf /data/container
   [[ ${REMOVE_CONTAINERS} = "n" ]]||rm -rvf /data/data/com.termux/files/usr/etc/container
   rm -fv /data/data/com.termux/files/usr/etc/container/global.conf
   rm -rvf /data/data/com.termux/files/usr/share/termux-container
