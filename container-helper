@@ -87,6 +87,7 @@ REMOVE_CONTAINER(){
     exit 0
 }
 UNINSTALL_ALL(){
+    read -p "按回车键确认卸载,或者按ctrl-c取消" NULL
     if [[ $(ls /data/container) != "" ]];then
         for i in $(ls /data/container)
         do
