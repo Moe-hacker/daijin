@@ -8,31 +8,25 @@
 > &emsp;chroot系统限制更少，速度更快，但由于没有像docker一样的运行隔离因此并不安全，非特殊情况请勿关闭SELinux。      
 
 ### 使用教程(需要root权限):               
-#### 安装:
+#### 使用container-helper一键安装，适合萌新:         
+```sh
+git clone https://github.com/Moe-hacker/termux-container 
+cd termux-container
+./container-helper
+```
+#### 自定义安装:
 ```sh
 pkg install curl pv
 bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/container-zh)"
 ```
 # 用法：
 ```shell
- container -run              #Run container
- container -c                #Creat a new container
- container -S                #Switch a container
- container -s                #Settings
- container -r                #Remove a container
- container -m                #Mount image file
- container -un               #Unmount container
- container -bk               #Backup container
- container -R [backup file]  #Restore container
- container -up               #Update this script(obsolete)
- container -v                #Show version
- container -U                #Uninstall this script
- container -h                #Show helps
-
+container        #启动菜单
+container-helper #一键安装系统，适合萌新使用，使用此脚本安装的容器必须通过此脚本卸载
+container -h     #查看命令行用法
 ```
 ## BUGS:        
-&emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错,[解决方案](https://gitee.com/mo2/linux/issues/I294GU)
-
+&emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错,container-helper中的rootfs已解决此问题
 ## 免责申明：        
 > 此程序"无任何担保"。          
 > 此项目采用GPL V3协议开源          
