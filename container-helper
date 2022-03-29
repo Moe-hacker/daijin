@@ -97,6 +97,8 @@ UNMOUNT_ALL(){
             umount /data/container/$i/sdcard
         done
     fi
+    return 0
+    exit 0
 }
 LIST_INSTALLED(){
     if [[ $(ls /data/container) != "" ]];then
@@ -104,6 +106,8 @@ LIST_INSTALLED(){
     else
         echo -e "您未安装任何系统!"
     fi
+    return 0
+    exit 0
 }
 MENU(){
     echo -e "1. 安装ubuntu     9. 卸载ubuntu "
