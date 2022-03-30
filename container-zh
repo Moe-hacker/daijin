@@ -566,11 +566,13 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_IMG} = "" ]];then
-    echo -e "\a\033[31m[]  错误:未使用镜像文件\033[0m"
+    echo -e "\a\033[31m[] 错误:未使用镜像文件\033[0m"
+    CONTAINER_LOG "错误:未使用镜像文件"
     CONTAINER_LOG_END&&exit 0
   fi
   if [[ ! -e ${CHROOT_IMG} ]];then
     echo -e "\a\033[31m[] 错误:镜像文件不存在\033[0m"
+    CONTAINER_LOG "错误:镜像文件不存在"
     CONTAINER_LOG_END&&exit 0
   fi
   loop=$(sudo losetup -f)

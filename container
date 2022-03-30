@@ -575,10 +575,12 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_IMG} = "" ]];then
     echo -e "\a\033[31m[] ERR:NOT USING IMAGE FILE\033[0m"
+    CONTAINER_LOG "ERR:NOT USING IMAGE FILE"
     CONTAINER_LOG_END&&exit
   fi
   if [[ ! -e ${CHROOT_IMG} ]];then
     echo -e "\a\033[31m[] ERR:IMAGE FILE DOES NOT EXIST\033[0m"
+    CONTAINER_LOG "ERR:IMAGE FILE DOES NOT EXIST"
     CONTAINER_LOG_END&&exit
   fi
   loop=$(sudo losetup -f)
