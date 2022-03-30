@@ -1089,6 +1089,19 @@ CONTAINER_UNINSTALL(){
   echo -e "\a[] 卸载中..."
   sleep 0.1s
   if [[ ${REMOVE_CONTAINERS} = "y" ]];then
+    if [[ $(ls /data/container) != "" ]];then
+        for i in $(ls /data/container)
+        do
+            umount -lvf /data/container/$i/dev >> /dev/null 2>&1
+            umount -lvf /data/container/$i/proc >> /dev/null 2>&1
+            umount -lvf /data/container/$i/sys >> /dev/null 2>&1
+            umount /data/container/$i/sdcard >> /dev/null 2>&1
+            umount -lvf /data/container/$i >> /dev/null 2>&1
+            rm -vf /data/data/com.termux/files/home/$i
+            rm -rvf /data/container/$i
+        done
+    fi
+    rm -rvf /data/container
     cd /data/data/com.termux/files/usr/etc/container
     for i in {1..100};do
         if [[ -e container-${i}.conf ]];then

@@ -101,6 +101,27 @@ UNINSTALL_ALL(){
         done
     fi
     rm -rvf /data/container
+    cd /data/data/com.termux/files/usr/etc/container
+    for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then
+          export $(cat /data/data/com.termux/files/usr/etc/container/container-${i}.conf)
+          #解除挂载,防止误删系统文件
+          if [[ ! ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
+            umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
+            umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 # 解除/sys的挂载
+            umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
+            umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
+            umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
+            #删除容器
+            if [[ ${CHROOT_DIR} != "" ]];then
+              rm -rfv ${CHROOT_DIR}
+            fi
+            if [[ ${CHROOT_IMG} != "" ]];then
+              rm -rfv ${CHROOT_IMG}
+            fi
+          fi
+        fi
+    done
     rm -rvf /data/data/com.termux/files/usr/etc/container
     rm -rvf /data/data/com.termux/files/usr/share/termux-container
     rm -fv /data/data/com.termux/files/usr/bin/container
