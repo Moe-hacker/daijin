@@ -697,29 +697,29 @@ CONTAINER_RUN(){ #用于运行容器
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m    _________      [\e[38;5;153m\e[38;5;225m] 容器娘: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m    _________      [\e[38;5;153m\e[38;5;225m] 容器娘: ${NAME}"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   /        /\\     [\e[38;5;153m\e[38;5;225m] 大脑基于\e[38;5;153m$(uname -m)架构"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   /        /\\     [\e[38;5;153m\e[38;5;225m] 大脑基于$(uname -m)架构"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
   if [[ $DISABLE_SELINUX = "y" ]];then
     SELINUX=Permissive
   else
     SELINUX=Enforcing
   fi
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  /        /  \\    [\e[38;5;153m\e[38;5;225m] SELinux状态: \e[38;5;153m${SELINUX}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  /        /  \\    [\e[38;5;153m\e[38;5;225m] SELinux状态: ${SELINUX}"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m /        /    \\   [\e[38;5;153m\e[38;5;225m] 由内核\e[38;5;153m$(uname --kernel-release)驱动"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m /        /    \\   [\e[38;5;153m\e[38;5;225m] 由内核$(uname --kernel-release)驱动"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m/________/      \\  [\e[38;5;153m\e[38;5;225m] 在\e[38;5;153m$(date|awk '{print $4}')被唤醒"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m/________/      \\  [\e[38;5;153m\e[38;5;225m] 在$(date|awk '{print $4}')被唤醒"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m\\        \\      /  [\e[38;5;153m\e[38;5;225m] 主机名: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m\\        \\      /  [\e[38;5;153m\e[38;5;225m] 主机名: $(hostname)"
   [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m \\        \\    /   [\e[38;5;153m\e[38;5;225m] 基于安卓\e[38;5;153m$(getprop ro.build.version.release)娘"
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  \\        \\  /    [\e[38;5;153m\e[38;5;225m] 容器目录: \e[38;5;153m${CHROOT_DIR}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m \\        \\    /   [\e[38;5;153m\e[38;5;225m] 基于安卓$(getprop ro.build.version.release)娘"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  \\        \\  /    [\e[38;5;153m\e[38;5;225m] 容器目录: ${CHROOT_DIR}"
   if [[ $CHROOT_IMG != "" ]];then
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: \e[38;5;153m${CHROOT_IMG}"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: ${CHROOT_IMG}"
   else
-    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: \e[38;5;153mnull"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: null"
   fi
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;111mTERMUX-CONTAINER\e[38;5;225m]"
@@ -845,7 +845,7 @@ CONTAINER_RUN(){ #用于运行容器
     chmod 666 /dev/null >> ${LOG_FILE} 2>&1
   fi
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 运行容器"
-  [[ ${ENABLE_OUTPUT} = "n" ]] || echo -e "「お帰りなさい！御主人様!」"  #欢迎回家，主人！(太他妈二刺螈了)
+  [[ ${ENABLE_OUTPUT} = "n" ]] || echo -e "お帰りなさい！御主人様!"  #欢迎回家，主人！(太他妈二刺螈了)
   case $CURSOR in #更换光标
     block)     printf '\e[2 q';;
     bar)       printf '\e[6 q';;
