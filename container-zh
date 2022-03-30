@@ -133,7 +133,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   done
   while :
   do
-    read -p "[] 是否启用花里胡哨的输出(或是输n启用精简模式)?[y/n]: " ENABLE_OUTPUT
+    read -p "[] 是否启用额外输出(或是输n启用精简模式)?[y/n]: " ENABLE_OUTPUT
     if [[ ${ENABLE_OUTPUT} = "n" || ${ENABLE_OUTPUT} = "y" ]];then
       break
     fi
@@ -177,7 +177,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
   if [[ ! -e /data/data/com.termux/files/usr/etc/container/global.conf ]];then  #空全局配置检查
     CONTAINER_LOG "全局配置文件不存在"
     echo -e "\033[31m\a[] 错误:配置文件 /data/data/com.termux/files/usr/etc/container/global.conf 不存在，您可能未正确安装此脚本"
-    exit
+    CONTAINER_LOG_END&&exit 0
   fi
   export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
   if [[ ! -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then  #不存在的容器配置检查
@@ -204,7 +204,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
     else
       CONTAINER_LOG "未找到任何容器配置文件"
       echo -e "\033[31m\a[] 错误:未找到任何容器，请先创建一个容器"
-      exit
+      CONTAINER_LOG_END&&exit 0
     fi
   fi
   return 0
@@ -353,13 +353,13 @@ CONTAINER_CREATE(){  #用于容器创建
     if [[ $CHROOT_DIR = $BLACKLIST* ]];then
       CONTAINER_LOG "错误:不可以使用系统目录!"
       echo "[] 您正尝试使用系统目录，不可以的呢！"
-      exit
+      CONTAINER_LOG_END&&exit 0
     fi
   done
   if [[ -e $CHROOT_DIR ]];then #拒绝使用已存在的目录
     CONTAINER_LOG "错误:容器目录已存在"
     echo -e "[] 您正尝试使用已存在的目录，不可以的呢！"
-    exit
+    CONTAINER_LOG_END&&exit 0
   fi
   while :
   do
@@ -380,7 +380,7 @@ CONTAINER_CREATE(){  #用于容器创建
       if [[ $CHROOT_IMG_PATH = $BLACKLIST* ]];then
         CONTAINER_LOG "错误:不可以使用系统目录"
         echo "[] 您正尝试使用系统目录，不可以的呢!"
-        exit
+        CONTAINER_LOG_END&&exit 0
       fi
     done
     while :
@@ -414,7 +414,7 @@ CONTAINER_CREATE(){  #用于容器创建
   mkdir -p /data/data/com.termux/files/usr/tmp/container >> ${LOG_FILE} 2>&1
   cd /data/data/com.termux/files/usr/tmp/container >> ${LOG_FILE} 2>&1
   #下载rootfs
-  wget ${LINK}||cp ${LINK} ./||exit
+  wget ${LINK}||cp ${LINK} ./||exit 0
   CONTAINER_LOG "获取rootfs:LINK=$LINK"
   sudo mkdir -p ${CHROOT_DIR}
   if [[ ! ${CHROOT_IMG_NAME} = "" ]];then  #创建img镜像并挂载
@@ -440,7 +440,7 @@ CONTAINER_CREATE(){  #用于容器创建
   case $ROOTFS in
     *tar.gz|*tgz|*tar) tar -xzvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
     *tar.xz|*txz) tar -xvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
-    *) echo "\a\033[31m[] 未知文件格式，请确认这是个rootfs文件";exit 0;;
+    *) CONTAINER_LOG_END&&echo "\a\033[31m[] 未知文件格式，请确认这是个rootfs文件";exit 0;;
   esac
   CONTAINER_LOG "解压rootfs"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] 写入配置文件"|pv -qL 40
@@ -567,11 +567,11 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_IMG} = "" ]];then
     echo -e "\a\033[31m[]  错误:未使用镜像文件\033[0m"
-    exit
+    CONTAINER_LOG_END&&exit 0
   fi
   if [[ ! -e ${CHROOT_IMG} ]];then
     echo -e "\a\033[31m[] 错误:镜像文件不存在\033[0m"
-    exit
+    CONTAINER_LOG_END&&exit 0
   fi
   loop=$(sudo losetup -f)
   sudo losetup $loop ${CHROOT_IMG}
@@ -725,12 +725,12 @@ CONTAINER_RUN(){ #用于运行容器
   if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
     echo -e "\033[31m\a[] 错误:容器目录不存在"&&printf "\033[?25h"
     CONTAINER_LOG "错误:容器目录不存在"
-    exit
+   CONTAINER_LOG_END&&exit 0
   fi
   if [[ ${CHROOT_IMG} != "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用容器镜像，判断其是否存在
     echo -e "\a\033[31m[] 错误:镜像文件不存在"&&printf "\033[?25h"
     CONTAINER_LOG "错误:镜像文件不存在"
-    exit
+    CONTAINER_LOG_END&&exit 0
   fi
   if [[ ${DISABLE_SELINUX} = "y" ]];then #判断是否需要关闭selinux
     if [[ ! $(getenforce) = "Permissive" ]];then
@@ -955,7 +955,7 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
-    exit
+    CONTAINER_LOG_END&&exit 0
   fi
   if [[ ${KILL} = "y" ]];then
     [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 杀死进程，这可能会花较长时间..."

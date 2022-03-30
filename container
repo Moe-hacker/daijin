@@ -208,7 +208,7 @@ CHECKOUT(){ #配置兼容性检查和空配置检查
     else
       CONTAINER_LOG "NO CONTAINERS FOUND"
       echo -e "\033[31m\a[] ERR:YOU SHOULD CREATE A CONTAINER FIRST"
-      exit
+      CONTAINER_LOG_END&&exit
     fi
   fi
   return 0
@@ -358,13 +358,13 @@ CONTAINER_CREATE(){  #用于容器创建
     if [[ $CHROOT_DIR = $BLACKLIST* ]];then
       CONTAINER_LOG "ERR:CONTAINER ABSOLUTE PATH IS IN BLACKLIST"
       echo "[] REFUSE TO USE SYSTEM DIRECTORY"
-      exit
+      CONTAINER_LOG_END&&exit
     fi
   done
   if [[ -e $CHROOT_DIR ]];then #拒绝使用已存在的目录
     CONTAINER_LOG "ERR:CONTAINER ABSOLUTE PATH IS EXIST"
     echo -e "[] DIRECTORY ALREADY EXISTS"
-    exit
+    CONTAINER_LOG_END&&exit
   fi
   echo -e "[] THIS IS JUST AN EXPERIMENTAL FEATURE TO INSTALL CONTAINER WITH AN IMAGE FILE"|pv -qL 40
   while :
@@ -387,7 +387,7 @@ CONTAINER_CREATE(){  #用于容器创建
       if [[ $CHROOT_IMG_PATH = $BLACKLIST* ]];then
         CONTAINER_LOG "ERR:IMAGE FILE ABSOLUTE PATH IS IN BLACKLIST"
         echo "[] REFUSE TO USE SYSTEM DIRECTORY "
-        exit
+        CONTAINER_LOG_END&&exit
       fi
     done
     while :
@@ -575,11 +575,11 @@ CONTAINER_MOUNT(){ #用于挂载镜像
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_IMG} = "" ]];then
     echo -e "\a\033[31m[] ERR:NOT USING IMAGE FILE\033[0m"
-    exit
+    CONTAINER_LOG_END&&exit
   fi
   if [[ ! -e ${CHROOT_IMG} ]];then
     echo -e "\a\033[31m[] ERR:IMAGE FILE DOES NOT EXIST\033[0m"
-    exit
+    CONTAINER_LOG_END&&exit
   fi
   loop=$(sudo losetup -f)
   sudo losetup $loop ${CHROOT_IMG}
@@ -733,12 +733,12 @@ CONTAINER_RUN(){ #用于运行容器
   if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
     echo -e "\033[31m\a[] ERR:CONTAINER DIRECTORY DOES NOT EXIST"&&printf "\033[?25h"
     CONTAINER_LOG "ERR:CONTAINER DIRECTORY DOES NOT EXIST"
-    exit
+    CONTAINER_LOG_END&&exit
   fi
   if [[ ${CHROOT_IMG} != "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用容器镜像，判断其是否存在
     echo -e "\a\033[31m[] ERR:IMAGE FILE DOES NOT EXIST "&&printf "\033[?25h"
     CONTAINER_LOG "ERR:IMAGE FILE DOES NOT EXIST"
-    exit
+    CONTAINER_LOG_END&&exit
   fi
   if [[ ${DISABLE_SELINUX} = "y" ]];then #判断是否需要关闭selinux
     if [[ ! $(getenforce) = "Permissive" ]];then
@@ -962,7 +962,7 @@ CONTAINER_UNMOUNT(){  #用于解除容器挂载
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
-    exit
+    CONTAINER_LOG_END&&exit
   fi
   if [[ ${KILL} = "y" ]];then
     [[ ${ENABLE_OUTPUT} = "n" ]] ||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] KILL PROGRESS,THIS MIGHT TAKE A WHILE"
