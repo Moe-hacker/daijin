@@ -55,7 +55,8 @@ CREATE_CONTAINER(){
     sleep 2s
     mkdir -p /data/container/$OS
     wget https://github.com/TermuxCHN/rootfs/releases/download/rootfs/$OS.tar.xz
-    tar -xvf $OS.tar.xz -C /data/container/$OS
+    echo -e "下载完成，正在解压rootfs"
+    pv $OS.tar.xz |tar -C /data/container/$OS -Jxf -
     cp /data/data/com.termux/files/usr/share/termux-container/helper-start /data/data/com.termux/files/home/$OS
     sed -i "s/OS/$OS/" /data/data/com.termux/files/home/$OS
     chmod 777 /data/data/com.termux/files/home/$OS
