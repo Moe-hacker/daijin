@@ -82,7 +82,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   i2=0
   while (( $i2<=$i1 ));do
       i2=$(($i2+1))
-      echo -e "\e[38;5;225m\033[13H\033[${i2}G="
+      echo -e "\e[38;5;225m\033[13H\033[${i2}G○"
       sleep 0.01s
   done
   i5=$(($i4+9))
