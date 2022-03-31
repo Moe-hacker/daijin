@@ -108,11 +108,11 @@ UNINSTALL_ALL(){
           export $(cat /data/data/com.termux/files/usr/etc/container/container-${i}.conf)
           #解除挂载,防止误删系统文件
           if [[ ! ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
-            umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
-            umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 # 解除/sys的挂载
-            umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
-            umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
-            umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
+            umount -lvf ${CHROOT_DIR}/dev >> /dev/null 2>&1 #解除/dev的挂载
+            umount -lvf ${CHROOT_DIR}/sys >> /dev/null 2>&1 # 解除/sys的挂载
+            umount -lvf ${CHROOT_DIR}/proc >> /dev/null 2>&1 #解除/proc挂载
+            umount ${CHROOT_DIR}/sdcard >> /dev/null 2>&1 #解除/sdcard的挂载
+            umount -lvf ${CHROOT_DIR} >> /dev/null 2>&1 #解除目录自身挂载
             #删除容器
             if [[ ${CHROOT_DIR} != "" ]];then
               rm -rfv ${CHROOT_DIR}
