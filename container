@@ -730,7 +730,11 @@ CONTAINER_RUN(){ #用于运行容器
     [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] CHROOT_IMG: \e[38;5;153mnull"
   fi
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;111mTERMUX-CONTAINER\e[38;5;159m]"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m〉 \e[38;5;153mTERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//////"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
     echo -e "\033[31m\a[] ERR:CONTAINER DIRECTORY DOES NOT EXIST"&&printf "\033[?25h"
