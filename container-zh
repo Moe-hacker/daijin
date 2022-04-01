@@ -722,7 +722,11 @@ CONTAINER_RUN(){ #用于运行容器
     [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: null"
   fi
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;111mTERMUX-CONTAINER\e[38;5;225m]"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m〉TERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//////"
   [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
   if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
     echo -e "\033[31m\a[] 错误:容器目录不存在"&&printf "\033[?25h"
