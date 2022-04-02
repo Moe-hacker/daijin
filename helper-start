@@ -7,9 +7,7 @@
 # ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
 ###### Github@Moe-hacker ######
 export $(cat /data/data/com.termux/files/usr/etc/container/global.conf)
-export CONTAINER_BK=${CONTAINER}
-unset CONTAINER
-sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=helper/" /data/data/com.termux/files/usr/etc/container/global.conf
+sed -i "s/CONTAINER=$CONTAINER/CONTAINER=helper/" /data/data/com.termux/files/usr/etc/container/global.conf
 rm /data/data/com.termux/files/usr/etc/container/container-helper.conf
 echo NAME=helper >> /data/data/com.termux/files/usr/etc/container/container-helper.conf
 echo CHROOT_DIR=/data/container/OS >> /data/data/com.termux/files/usr/etc/container/container-helper.conf

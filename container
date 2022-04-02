@@ -58,7 +58,9 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
     termux-reload-settings
     CONTAINER_LOG "INSTALLED FONTS"
   else
+    mv ~/.termux/font-backup.ttf ~/.termux/font.ttf
     echo "Failed to download fonts,please check your network"
+    sleep 2s
     CONTAINER_LOG "FAILED TO INSTALL FONTS"
   fi
   clear
@@ -425,7 +427,7 @@ CONTAINER_CREATE(){  #用于容器创建
   wget ${URL}||cp ${URL} ./||exit
   CONTAINER_LOG "DOWNLOAD ROOTFS:URL=$URL"
   sudo mkdir -p ${CHROOT_DIR}
-  if [[ ! ${CHROOT_IMG_NAME} = "" ]];then  #创建img镜像并挂载
+  if [[ ${CHROOT_IMG_NAME} != "" ]];then  #创建img镜像并挂载
     [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] CREATING IMAGE FILE"|pv -qL 40
     sudo mkdir -p ${CHROOT_IMG_PATH}
     cd ${CHROOT_IMG_PATH}
@@ -747,14 +749,14 @@ CONTAINER_RUN(){ #用于运行容器
     CONTAINER_LOG_END&&exit
   fi
   if [[ ${DISABLE_SELINUX} = "y" ]];then #判断是否需要关闭selinux
-    if [[ ! $(getenforce) = "Permissive" ]];then
+    if [[ $(getenforce) != "Permissive" ]];then
       [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] DISABLE SELINUX"
       CONTAINER_LOG "DISABLE SELINUX"
       setenforce 0 >> ${LOG_FILE} 2>&1 #关闭SELINUX [!]危险操作
     fi
   fi
-  if [[ ! ${HOSTNAME} = "" ]];then #判断主机名设置是否为空值
-    if [[ ! $(hostname) = ${HOSTNAME} ]];then
+  if [[ ${HOSTNAME} != "" ]];then #判断主机名设置是否为空值
+    if [[ $(hostname) != ${HOSTNAME} ]];then
       [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] SET HOSTNAME"
       CONTAINER_LOG "SET HOSTNAME=${HOSTNAME}"
       hostname ${HOSTNAME} >> ${LOG_FILE} 2>&1 #设置主机名

@@ -13,28 +13,29 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then
     echo -e "检测到您未安装termux-container，正在为您安装..."
     sleep 1s
     pkg install pv git wget tsu curl e2fsprogs nano whiptail
-    mkdir -p ~/.termux >> /dev/null
-    mkdir -p /data/data/com.termux/files/usr/share/termux-container
+    mkdir -p ~/.termux >> /dev/null 2>&1
+    mkdir -p /data/data/com.termux/files/usr/share/termux-container 2>&1
     git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container
     cd /data/data/com.termux/files/usr/share/termux-container
     cp container-zh /data/data/com.termux/files/usr/bin/container
     cp container-helper /data/data/com.termux/files/usr/bin/
     chmod 777 /data/data/com.termux/files/usr/bin/container
     chmod 777 /data/data/com.termux/files/usr/bin/container-helper
-    mkdir -p /data/data/com.termux/files/usr/etc/container
+    mkdir -p /data/data/com.termux/files/usr/etc/container 2>&1
     echo DISABLE_SELINUX=n >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo ENABLE_OUTPUT=n >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo HOSTNAME=localhost >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo CURSOR=bar >> /data/data/com.termux/files/usr/etc/container/global.conf
     echo CONTAINER=helper >> /data/data/com.termux/files/usr/etc/container/global.conf
     touch /data/data/com.termux/files/usr/etc/container/container-helper.conf
+    mv ~/.termux/font.ttf ~/.termux/font-bk.ttf
     cp font.ttf ~/.termux/
     termux-reload-settings
     echo -e "安装完成，输入container-helper启动本脚本"
     sleep 2s
 fi
 if [[ $(whoami) != "root" ]];then #判断用户，若不是root则调用sudo重新启动
-    sudo container-helper
+    sudo container-helper $@
     exit 0
 fi
 CREATE_CONTAINER(){
@@ -187,7 +188,12 @@ MENU(){
         "18")container -up;;
         "19")echo "version:$VERSION";;
         "20")UNINSTALL_ALL;;
+           *)echo -e "\033[31m\a选择错误，请重新选择!"
     esac
     return 0
 }
-MENU
+if [[ $@ != "" ]];then
+    echo -e "\033[31m\acontainer-helper目前不支持任何命令行参数!"
+else
+    MENU
+fi
