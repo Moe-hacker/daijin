@@ -104,7 +104,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   sleep 1s
   clear
   echo -e "\a\e[38;5;225m[] 安装依赖软件(≧▽≦)"|pv -qL 20
-  pkg install git wget tsu curl e2fsprogs nano whiptail
+  pkg install p7zip unzip zip tar git wget tsu curl e2fsprogs nano whiptail
   CONTAINER_LOG "安装依赖软件"
   clear
   echo -e "\a\e[38;5;225m[] 克隆存储库(☆▽☆)"|pv -qL 20
@@ -261,8 +261,7 @@ CONTAINER_BACKUP(){  #用于备份容器
   echo -e "[] 选择备份文件格式: "
   while :
   do
-    read -p "[1]tar.gz [2]tar.xz [3]tar" FORMAT
-    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" ]];then
+    read -p "[1]tar.gz [2]tar.xz [3]tar [4]7z [5]tar.bz2 [6]zip " FORMAT                            if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" || $FORMAT = "4" || $FORMAT = "5" || $FORMAT = "6" ]];then
       break
     fi
   done
@@ -272,7 +271,10 @@ CONTAINER_BACKUP(){  #用于备份容器
   case ${FORMAT} in
     1) tar -zcvPf ${TARGET}.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.gz" ;;
     2) tar -JcvPf ${TARGET}.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.xz" ;;
-    3) tar -cvPf ${TARGET} ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}"
+    3) tar -cvPf ${TARGET} ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}" ;;
+    4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}" ;;
+    5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}" ;;
+    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}"
   esac
   CONTAINER_LOG "备份完成"
   return 0
@@ -301,7 +303,11 @@ CONTAINER_RESTORE(){  #用于还原容器
   case $1 in
     *tar.gz) tar -xzvPf $1 -C /;;
     *tar.xz) tar -xvPf $1 -C /;;
-    *tar)    tar -xvPf $1 -C /;;
+    *tar.bz2) tar -vxjf $1 -C /;;
+    *7z) 7za x $1 -r -o/ ;;
+    *zip) zip $1 -d /;;
+    *tar)    tar -xvPf $1 -C /
+
     *) echo -e "\033[31m[] 错误:未知文件格式，请确认这是一个备份文件且存在";exit 0;;
   esac
   CONTAINER_LOG "还原完成"

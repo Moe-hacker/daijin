@@ -101,7 +101,7 @@ if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
   CONTAINER_LOG "ACCEPTED LICENSE"
   clear
   echo -e "\a\e[38;5;159m[] INSTALLING PACKAGES"|pv -qL 20
-  pkg install git wget tsu curl e2fsprogs nano whiptail
+  pkg install p7zip tar unzip zip git wget tsu curl e2fsprogs nano whiptail
   CONTAINER_LOG "INSTALLED DEPENDS"
   clear
   echo -e "\a\e[38;5;159m[] CLONING REPOSITORY"|pv -qL 20
@@ -265,18 +265,21 @@ CONTAINER_BACKUP(){  #用于备份容器
   echo -e "[] CHOOSE THE FILE FORMAT: "
   while :
   do
-    read -p "[1]tar.gz [2]tar.xz [3]tar" FORMAT
-    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" ]];then
+    read -p "[1]tar.gz [2]tar.xz [3]tar [4]7z [5]tar.bz2 [6]zip " FORMAT
+    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" || $FORMAT = "4" || $FORMAT = "5" || $FORMAT = "6" ]];then
       break
     fi
   done
   CONTAINER_LOG "BACKUP CONTAINER ${CONTAINER}"
   #备份,使用tar
-  TARGET=/sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar
+  TARGET=/sdcard/container-${NAME}-$(date +%y%m%d%H%M%S)
   case ${FORMAT} in
-    1) tar -zcvPf ${TARGET}.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.gz" ;;
-    2) tar -JcvPf ${TARGET}.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.xz" ;;
-    3) tar -cvPf ${TARGET} ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}"
+    1) tar -zcvPf ${TARGET}.tar.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.gz" ;;
+    2) tar -JcvPf ${TARGET}.tar.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.xz" ;;
+    3) tar -cvPf ${TARGET}.tar ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}" ;;
+    4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}" ;;
+    5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}" ;;
+    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}"
   esac
   CONTAINER_LOG "BACKUP FINISHED"
   return 0
@@ -305,7 +308,10 @@ CONTAINER_RESTORE(){  #用于还原容器
   case $1 in
     *tar.gz) tar -xzvPf $1 -C /;;
     *tar.xz) tar -xvPf $1 -C /;;
-    *tar)    tar -xvPf $1 -C /;;
+    *tar.bz2) tar -vxjf $1 -C /;;
+    *7z) 7za x $1 -r -o/ ;;
+    *zip) zip $1 -d /;;
+    *tar)    tar -xvPf $1 -C /
     *) echo -e "\033[31m[] ERR:UNKNOW FILE FORMAT";exit 0;;
   esac
   CONTAINER_LOG "RESTORE FINISHED"
