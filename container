@@ -279,7 +279,7 @@ CONTAINER_BACKUP(){  #用于备份容器
     3) tar -cvPf ${TARGET}.tar ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.tar" ;;
     4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.7z" ;;
     5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.tar.bz2" ;;
-    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.zip"
+    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.zip";;
   esac
   CONTAINER_LOG "BACKUP FINISHED"
   return 0
@@ -311,7 +311,7 @@ CONTAINER_RESTORE(){  #用于还原容器
     *tar.bz2) tar -vxjf $1 -C /;;
     *7z) 7za x $1 -r -o/ ;;
     *zip) zip $1 -d /;;
-    *tar)    tar -xvPf $1 -C /
+    *tar) tar -xvPf $1 -C /;;
     *) echo -e "\033[31m[] ERR:UNKNOW FILE FORMAT";exit 0;;
   esac
   CONTAINER_LOG "RESTORE FINISHED"
