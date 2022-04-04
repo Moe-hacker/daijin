@@ -1,0 +1,19 @@
+{
+    "name": "termux-container",
+    "version": "1.0",
+    "arch": "all",
+    "maintainer": "@Moe-Hacker",
+    "description": "Run linux with chroot on your Android phone (git-release installer)",
+    "homepage": "https://moe-hacker.github.io/termux-container",
+    "depends": ["p7zip","unzip","zip","tar","git","wget","tsu","curl","e2fsprogs","nano","whiptail"],
+    "files" : {
+      "LICENSE": "share/doc/termux-container/LICENSE",
+      "README.md": "share/doc/termux-container/README.md",
+      "README-ZH.md": "share/doc/termux-container/README-ZH.md",
+      "container": "bin/container",
+      "container-zh": "bin/container-zh",
+      "container-helper": "bin/container-helper",
+      "group_add.sh": "share/termux-container/group_add.sh",
+      "font.ttf": "../home/font.ttf"
+    }
+  }

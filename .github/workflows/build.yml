@@ -1,0 +1,77 @@
+name: Build
+
+on:
+  push:
+  label:
+      types: [created,edited]
+  pull_request:
+  schedule:
+    - cron: "0 9 * * 0-5"
+    
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v3.1.0
+      - name: Install dependencies and scripts check
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ruamel.yaml termux-create-package
+      - name: Build Package
+        run: |
+          mkdir -p debs
+          termux-create-package termux-container.json
+          mv termux-container_1.0_all.deb debs/
+      - name: Download Artifact
+        uses: actions/download-artifact@v3.0.0
+        with:
+          path: ./debs
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          name: termux-container_1.0_all.deb
+          path: ./debs
+      - name: Get checksums
+        id: get_checksums
+        run: |
+          checksums=$(md5sum debs/termux-container_1.0_all.deb)
+          checksums2=$(sha256sum debs/termux-container_1.0_all.deb)
+          checksums3=$(sha512sum debs/termux-container_1.0_all.deb)
+          checksum=${checksums1}'\n'${checksums2}'\n'${checksums3}'\n'
+          echo -e $checksum > debs/hash
+          echo "::set-output name=checksums::$checksums"
+      - name: Create new tag
+        id: get_tag
+        run: |
+          new_tag="termux-container-$(date "+%Y.%m.%d")"
+          existing_tag_revision=$(git tag)
+          if [ -n "$existing_tag_revision" ]; then
+            tag_rev=$((existing_tag_revision + 1))
+          else
+            tag_rev=1
+          fi
+          new_tag="${new_tag}-r${tag_rev}"
+          git tag "$new_tag"
+          git push --tags
+          echo "::set-output name=tag_name::$new_tag"
+      - name: Publish GitHub release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: |
+            debs/*
+          file_glob: true
+          release_name: "termux-container Auto Release"
+          tag: ${{ steps.get_tag.outputs.tag_name }}
+      
+      - name: ShellCheck
+        uses: sudo-bot/action-shellcheck@latest
+        with:
+          cli-args:  -S error container container-zh container-helper
