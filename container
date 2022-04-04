@@ -309,7 +309,7 @@ CONTAINER_RESTORE(){  #用于还原容器
     *tar.gz) tar -xzvPf $1 -C /;;
     *tar.xz) tar -xvPf $1 -C /;;
     *tar.bz2) tar -vxjf $1 -C /;;
-    *7z) 7za x -r $1 -r -o/ ;;
+    *7z) 7za x -r $1  -o/ ;;
     *zip) unzip $1 -d /;;
     *tar) tar -xvPf $1 -C /;;
     *) echo -e "\033[31m[] ERR:UNKNOW FILE FORMAT";exit 0;;
