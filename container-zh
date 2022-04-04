@@ -274,7 +274,7 @@ CONTAINER_BACKUP(){  #用于备份容器
     3) tar -cvPf ${TARGET} ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar" ;;
     4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.7z" ;;
     5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.bz2" ;;
-    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.zip"
+    6) zip -q ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.zip"
   esac
   CONTAINER_LOG "备份完成"
   return 0
