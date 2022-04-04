@@ -306,7 +306,7 @@ CONTAINER_RESTORE(){  #用于还原容器
     *tar.xz) tar -xvPf $1 -C /;;
     *tar.bz2) tar -vxjf $1 -C /;;
     *7z) 7za x $1 -r -o/ ;;
-    *zip) zip $1 -d /;;
+    *zip) unzip $1 -d /;;
     *tar) tar -xvPf $1 -C /;;
     *) echo -e "\033[31m[] 错误:未知文件格式，请确认这是一个备份文件且存在";exit 0;;
   esac
