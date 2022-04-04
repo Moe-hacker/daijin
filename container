@@ -277,7 +277,7 @@ CONTAINER_BACKUP(){  #用于备份容器
     1) tar -zcvPf ${TARGET}.tar.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.tar.gz" ;;
     2) tar -JcvPf ${TARGET}.tar.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.tar.xz" ;;
     3) tar -cvPf ${TARGET}.tar ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.tar" ;;
-    4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.7z" ;;
+    4) 7z a -r ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.7z" ;;
     5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.tar.bz2" ;;
     6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] BACKUP FILE IS ${TARGET}.zip";;
   esac
