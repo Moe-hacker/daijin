@@ -269,12 +269,12 @@ CONTAINER_BACKUP(){  #用于备份容器
   #备份,使用tar
   TARGET=/sdcard/container-${NAME}-$(date +%y%m%d%H%M%S).tar
   case ${FORMAT} in
-    1) tar -zcvPf ${TARGET}.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.gz" ;;
-    2) tar -JcvPf ${TARGET}.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.xz" ;;
-    3) tar -cvPf ${TARGET} ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}" ;;
-    4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}" ;;
-    5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}" ;;
-    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}"
+    1) tar -zcvPf ${TARGET}.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.gz" ;;
+    2) tar -JcvPf ${TARGET}.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.xz" ;;
+    3) tar -cvPf ${TARGET} ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar" ;;
+    4) 7z a ${TARGET}.7z ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.7z" ;;
+    5) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.bz2" ;;
+    6) zip -q -r ${TARGET}.zip ${CHROOT_DIR} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.zip"
   esac
   CONTAINER_LOG "备份完成"
   return 0
