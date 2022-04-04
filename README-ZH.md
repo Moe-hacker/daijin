@@ -24,10 +24,10 @@ bash -c "$(curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container
 container        #启动菜单
 container-helper #一键安装系统，适合萌新使用，使用此脚本安装的容器必须通过此脚本卸载
 container -h     #查看命令行用法
-```
-注:使用helper安装的系统和container不完全兼容，因此无法通过container单个删除。      
+```    
 ## BUGS:        
-&emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错,container-helper中的rootfs已解决此问题
+&emsp;archlinux中fakeroot需自行编译，否则yay的buildpkg环节会报错,container-helper中的rootfs已解决此问题。  
+&emsp;使用helper安装的系统和container不完全兼容，因此无法通过container单个删除。    
 ## 免责申明：        
 > 此程序"无任何担保"。          
 > 此项目采用GPL V3协议开源          
