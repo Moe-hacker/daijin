@@ -144,6 +144,7 @@ CREATE_CHROOT_CONTAINER(){
         break
       fi
     done
+  echo -e "[] 如果sudo报错无法使用，请重装sudo."
   fi
   echo -e "[] 容器绝对路径是用来存放容器的路径，例如，你可以用使用/data/container-容器名，但不要用/sdcard下的目录!!!"|pv -qL 40
   read -p "[] 请输入容器的绝对路径，不可包含空格: " CONTAINER_DIR

@@ -7,6 +7,7 @@
 # ╚═╝ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
 NEW_USER=""
 PASSWORD=""
+PATH="/bin:/sbin:/usr/bin"
 groupadd aid_system -g 1000 || groupadd aid_system -g 1074
 groupadd aid_radio -g 1001
 groupadd aid_bluetooth -g 1002
