@@ -1,0 +1,279 @@
+           CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
+  4:     242801     222533     197804     174746      47249      53832      67400      90528     GICv3  27 Level     arch_timer
+  5:          0          0          0          0          0          0          0          0     GICv3  26 Level     trusty
+  6:      29139      28735      25739      22724       6748       7537      11022      14088     GICv3 265 Level     mtk-clkevt
+  7:          0          0          0          0          0          0          0          0     GICv3  23 Level     arm-pmu
+  8:          0          0          0          0          0          0          0          0     GICv3  50 Level     arm_dsu_0
+  9:          0          0          0          0          0          0          0          0     GICv3  33 Level     cache_parity
+ 10:          0          0          0          0          0          0          0          0     GICv3  34 Level     cache_parity
+ 11:          0          0          0          0          0          0          0          0     GICv3  35 Level     cache_parity
+ 12:          0          0          0          0          0          0          0          0     GICv3  36 Level     cache_parity
+ 13:          0          0          0          0          0          0          0          0     GICv3  37 Level     cache_parity
+ 14:          0          0          0          0          0          0          0          0     GICv3  38 Level     cache_parity
+ 15:          0          0          0          0          0          0          0          0     GICv3  39 Level     cache_parity
+ 16:          0          0          0          0          0          0          0          0     GICv3  40 Level     cache_parity
+ 17:          0          0          0          0          0          0          0          0     GICv3  32 Level     cache_parity
+ 20:          0          0          0          0          0          0          0          0   mt-eint   1 Edge      xmusb350 irq
+ 22:          0          0          0          0          0          0          0          0   mt-eint   3 Edge      bq2597x charger irq
+ 32:          0          0          0          0          0          0          0          0   mt-eint  13 Edge      ESD_TE-eint
+ 34:          0          0          0          0          0          0          0          0   mt-eint  15 Edge      goodix_fp_irq
+ 40:       7929       7367       5778       4615        487        456        704       1699   mt-eint  21 Edge      focal
+ 41:          0          0          0          0          0          0          0          0   mt-eint  22 Edge      aw8624
+ 42:          0          0          0          0          0          0          0          0   mt-eint  23 Edge      11f70000.msdc cd
+ 43:        119        102         87         61         23         10         19         39   mt-eint  24 Edge      5-0034
+ 44:          0          0          1          1          0          0          0          0   mt-eint  25 Edge      type_c_port0-IRQ
+ 50:          0          0          0          0          0          0          0          0   mt-eint  31 Level     cs35l41
+182:          0          0          0          0          0          0          0          0   mt-eint 163 Level     10027000.spmi:mt6315@7:mt6315_7_regulator
+183:          0          0          0          0          0          0          0          0   mt-eint 164 Level     10027000.spmi:mt6315@3:mt6315_3_regulator
+186:          0          0          0          0          0          0          0          0   mt-eint 167 Level     10027000.spmi:mt6315@6:mt6315_6_regulator
+230:          0          0          0          0          0          0          0          1   mt-eint 211 Level     usbcd_eint
+233:          6          4          2          2          1          0          0          4   mt-eint 214 Level     mt6358-irq
+244:          0          0          0          0          0          0          0          0     GICv3 135 Level     mtk-msdc
+245:          0          0          0          0          0          0          0          0     GICv3 254 Level     TWAM
+246:          0          0          0          0          0          0          0          0     GICv3 466 Level     mt_wdt
+247:          0          0          0          0          0          0          0          0     GICv3 243 Level     dramc_apxgpt3
+249:          0          0          0          0          0          0          0          0     GICv3 252 Level     mt-pmic-pwrap
+250:          0          0          0          0          0          0          0          0     GICv3 281 Level     dvfsrc
+251:        630        636        542        465         65        103        159        328     GICv3 241 Level     DPMAIF_AP
+252:          0          0          0          0          0          0          0          0     GICv3 110 Edge      MD_WDT
+253:        630        420        349        310        684       1059       1024       1231     GICv3 226 Level     CCIF_AP_DATA
+254:          0          0          0          0          0          0          0          0     GICv3 227 Level     CCIF0_AP
+255:          0          0          0          0          0          0          0          0     GICv3 253 Level     event_0, event_1, event_2, event_3, event_4
+257:          0          0          0          0          0          0          0          0     GICv3 116 Edge      tee_sanity
+258:          0          0          0          0          0          0          0          0     GICv3 117 Edge      tz_drivers_service
+260:          0          0          0          0          0          0          0          0     GICv3 242 Level     mt-pwm
+261:          0          0          0          0          0          0          0          0     GICv3 219 Level     devapc
+262:          0          0          0          0          0          0          0          0     GICv3 233 Level     SYSTRACKER
+263:      15728      16134      15079      14481      12734      11890      14957      33449     GICv3 137 Level     ufshcd
+268:          1          0          0          0          0          0          0          0     GICv3 220 Level     devmpu
+269:          0          0          0          0          0          0          0          0     GICv3 232 Level     devmpu
+270:          0          0          0          0          0          0          0          0     GICv3 221 Level     emimpu
+271:      13262      11422       9011       7343       1584       1549       1882       3450     GICv3 235 Level     mtk_cmdq
+278:          0          0          0          0          1          0          0          0     GICv3 141 Level     ttyS0
+280:          0          0          0          0          0          0          0          0     GICv3 128 Level     musb-hdrc
+283:          0          0          0          0          0          0          0          0     GICv3 276 Level     MBOX_ISR
+284:          0          0          0          0          0          0          0          0     GICv3 277 Level     MBOX_ISR
+285:       8230       8471       7470       6444       2033       2306       2965       5714     GICv3 278 Level     MBOX_ISR
+286:          0          0          0          0          0          0          0          0     GICv3 279 Level     MBOX_ISR
+287:          0          0          0          0          0          0          0          0     GICv3 280 Level     MBOX_ISR
+288:          0          0          0          0          0          0          0          0     GICv3 467 Level     SCP IPC0
+289:          0          0          0          0          0          0          0          0     GICv3 468 Level     SCP IPC1
+290:          0          0          0          0          0          0          0          0     GICv3 469 Level     MBOX_ISR
+291:          1          0          1          0          0          0          1          1     GICv3 470 Level     MBOX_ISR
+292:        223        233        185        208        138        129        153        185     GICv3 471 Level     MBOX_ISR
+293:          0          1          0          0          0          0          0          1     GICv3 472 Level     MBOX_ISR
+294:          0          0          0          0          0          0          0          0     GICv3 473 Level     MBOX_ISR
+295:          0          0          0          0          0          0          0          0     GICv3 483 Level     MBOX_ISR
+296:          2          0          2          2          2          1          1          6     GICv3 484 Level     MBOX_ISR
+297:          0          0          0          0          0          0          0          0     GICv3 485 Level     MBOX_ISR
+298:          1          1          3          2          4          2          5          4     GICv3 486 Level     MBOX_ISR
+300:          0          0          0          0          0          0          0          0     GICv3 479 Level     adsp_0
+301:          0          0          0          0          0          0          0          0     GICv3 481 Level     adsp_0
+303:          0          0          0          0          0          0          0          0     GICv3 480 Level     adsp_1
+304:          0          0          0          0          0          0          0          0     GICv3 482 Level     adsp_1
+308:         11         13          8          3          5          9          8         10     GICv3 199 Level     eemg
+309:          0          0          0          0          0          0          0          0     GICv3 201 Level     mtk-thermal
+311:      27980      26455      22467      19894       3489       3840       5366      10958     GICv3 395 Level     13000000.mali
+312:         16         18         20         23         22         15         12         21     GICv3 396 Level     13000000.mali
+313:      19444      18024      16102      14698       4655       5555       7645      11911     GICv3 397 Level     13000000.mali
+316:          0          0          0          0          0          0          0          0     GICv3 190 Level     mtk btif irq
+317:        219        222        210        223        230        128        220         36     GICv3 184 Level     mtk btif tx dma irq
+318:         44         63         31         44         54         69         60         55     GICv3 185 Level     mtk btif rx dma irq
+319:       7131       7483       6495       6703       2477       2456       3733       5277     GICv3 408 Level     wlan0
+320:          0          0          0          0          0          0          0          0     GICv3 409 Level     BTIF_WAKEUP_IRQ
+322:          0          0          0          0          0          0          0          1     GICv3 410 Level     CONN_LOG_IRQ
+323:        400        446        443        397        232        215        226        316     GICv3 234 Level     Afe_ISR_Handle
+324:          0          0          0          0          0          0          0          0     GICv3 406 Level     BTCVSD_ISR_Handle
+325:          0          0          0          0          0          0          0          0     GICv3 446 Level     mtk_mdla
+326:          0          0          0          0          0          0          0          0     GICv3 439 Level     apusys_reviser, apusys_mnoc, apusys-devapc
+327:          0          0          0          0          0          0          0          0     GICv3 351 Level     cam1
+328:          0          0          0          0          0          0          0          0     GICv3 352 Level     cam2
+329:          0          0          0          0          0          0          0          0     GICv3 353 Level     cam3
+330:          0          0          0          0          0          0          0          0     GICv3 356 Level     camsv1
+331:          0          0          0          0          0          0          0          0     GICv3 357 Level     camsv2
+332:          0          0          0          0          0          0          0          0     GICv3 358 Level     camsv3
+333:          0          0          0          0          0          0          0          0     GICv3 359 Level     camsv4
+334:          0          0          0          0          0          0          0          0     GICv3 360 Level     camsv5
+335:          0          0          0          0          0          0          0          0     GICv3 361 Level     camsv6
+336:          0          0          0          0          0          0          0          0     GICv3 365 Level     camsv7
+337:          0          0          0          0          0          0          0          0     GICv3 366 Level     camsv8
+338:        152        156        129        131         53         23         47         96     GICv3 457 Level     16000000.vdec
+339:        133        148        147        115         19         44         50        131     GICv3 458 Level     16000000.vdec
+340:          0          0          0          0          0          0          0          0     GICv3 341 Level     17020000.venc
+343:      13091      12065      10120       9326       1789       1834       2149       3851     GICv3 284 Level     14001000.disp_mutex
+346:       7064       6796       5886       5089       1238       1099       1200       2077     GICv3 286 Level     14005000.disp_ovl0
+347:       6971       6359       5979       5229       1231       1145       1355       2186     GICv3 287 Level     14006000.disp_ovl0_2l
+348:      19067      18556      15372      13253       2880       2931       3565       6930     GICv3 288 Level     14007000.disp_rdma0
+351:          3          3          5          5          6         15          5         14     GICv3 291 Level     1400a000.disp_ccorr0
+352:      70307      56599      40242      31610       1192       1371       1733       3259     GICv3 292 Level     1400b000.disp_aal0
+354:      13690      12398      10662       8962       1784       1735       2155       3904     GICv3 294 Level     1400d000.disp_postmask0
+356:          0          0          0          0          0          0          0          0     GICv3 296 Level     1400f000.disp_dsc_wrap
+357:       6858       6627       5848       4901       1122       1000       1150       1839     GICv3 297 Level     14010000.dsi
+358:          0          0          0          0          0          0          0          0     GICv3 298 Level     14011000.disp_wdma0
+360:          0          0          0          0          0          0          0          0     GICv3 300 Level     14014000.disp_ovl2_2l
+361:          0          0          0          0          0          0          0          0     GICv3 301 Level     14015000.disp_rdma4
+368:          0          0          0          0          0          0          0          0     GICv3 362 Level     ccu
+369:          0          0          0          0          0          0          0          0     GICv3 309 Level     1401d000.m4u
+370:          0          0          0          0          0          0          0          0     GICv3 310 Level     bank_m4u
+371:          0          0          0          0          0          0          0          0     GICv3 311 Level     bank_m4u
+372:          0          0          0          0          0          0          0          0     GICv3 312 Level     bank_m4u
+373:          0          0          0          0          0          0          0          0     GICv3 313 Level     secure_m4u
+374:          0          0          0          0          0          0          0          0     GICv3 426 Level     19010000.m4u
+375:          0          0          0          0          0          0          0          0     GICv3 427 Level     bank_m4u
+376:          0          0          0          0          0          0          0          0     GICv3 428 Level     bank_m4u
+377:          0          0          0          0          0          0          0          0     GICv3 429 Level     bank_m4u
+378:          0          0          0          0          0          0          0          0     GICv3 430 Level     secure_m4u
+385:          0          0          0          0          0          0          0          0     GICv3 386 Level     wpe_a
+390:          0          0          0          0          0          0          0          0     GICv3 342 Level     17030000.jpgenc
+391:          0          0          0          0          0          0          0          0     GICv3 393 Level     dvs
+392:          0          0          0          0          0          0          0          0     GICv3 394 Level     dvp
+393:          0          0          0          0          0          0          0          0     GICv3 390 Level     fdvt
+395:          0          0          0          0          0          0          0          0     GICv3 391 Level     rsc
+396:          0          0          0          0          0          0          1          0     GICv3  65 Level     MBOX_ISR
+397:       3220       3127       2570       2174        602        634        793       1616     GICv3  66 Level     MBOX_ISR
+398:        582        755        605        522        176        178        218        349     GICv3  67 Level     MBOX_ISR
+399:          0          0          0          0          0          0          0          0     GICv3  68 Level     MBOX_ISR
+400:          0          0          0          0          0          0          0          0     GICv3  69 Level     MBOX_ISR
+401:          0          0          0          0          0          0          0          0     GICv3  70 Level     MBOX_ISR
+402:          0          0          0          0          0          0          0          0     GICv3  71 Level     MBOX_ISR
+403:          0          0          0          0          0          3          0          0     GICv3  72 Level     MBOX_ISR
+404:          0          0          0          0          0          0          0          0     GICv3 191 Level     1100a000.spi0
+405:          1          0          0          0          0          0          0          1     GICv3 192 Level     11010000.spi1
+406:          0          0          0          0          0          0          0          0     GICv3 193 Level     11012000.spi2
+407:          0          0          0          0          0          0          0          0     GICv3 194 Level     11013000.spi3
+408:          0          0          0          0          0          0          0          0     GICv3 195 Level     11018000.spi4
+409:          0          0          0          0          0          0          0          0     GICv3 196 Level     11019000.spi5
+410:          0          0          0          0          0          0          0          0     GICv3 197 Level     1101d000.spi6
+411:          0          0          0          0          0          0          0          0     GICv3 198 Level     1101e000.spi7
+412:      16096      14553      11589       9307       1011        896       1441       3642     GICv3 144 Level     mt-i2c
+413:          0          0          0          0          0          0          0          0     GICv3 145 Level     mt-i2c
+414:          1          1          0          0          5         10          9          3     GICv3 146 Level     mt-i2c
+415:          0          0          0          0          0          0          0          0     GICv3 147 Level     mt-i2c
+416:         18          3          3          0          6         10         15         14     GICv3 148 Level     mt-i2c
+417:       5922       5114       4493       3266        709        983        931       2005     GICv3 149 Level     mt-i2c
+418:       5506       5381       4364       3508        899        491        908       3749     GICv3 150 Level     mt-i2c
+419:          9         11          7         12         29         45         43         51     GICv3 151 Level     mt-i2c
+420:         17          9          4          2         19         49         53         53     GICv3 152 Level     mt-i2c
+421:         43         58         23         28        115         21         35         53     GICv3 153 Level     mt-i2c
+422:          0          0          0          0          0          0          0          0     GICv3 154 Level     mt-i2c
+423:          0          0          0          0          0          0          0          0     GICv3 155 Level     mt-i2c
+424:          0          0          0          0          0          0          0          0     GICv3 448 Level     19027000.edma0
+425:          0          0          0          0          0          0          0          0     GICv3 452 Level     vpu0
+426:          0          0          0          0          0          0          0          0     GICv3 453 Level     vpu1
+427:          0          0          0          0          0          0          0          0     GICv3 106 Edge      mtk-kpd
+428:          0          0          0          0          0          0          0          0  mt6358-irq  48 Level     pwrkey
+429:          0          0          0          0          0          0          0          0  mt6358-irq  50 Level     pwrkey_r
+430:          0          0          0          0          0          0          0          0  mt6358-irq  49 Level     homekey
+431:          0          0          0          0          0          0          0          0  mt6358-irq  51 Level     homekey_r
+432:          0          0          0          0          0          0          0          0  mt6358-irq 112 Level     bat_h
+433:          0          0          0          0          0          0          0          0  mt6358-irq 113 Level     bat_l
+434:          0          0          0          0          0          0          0          0  mt6358-irq  82 Level     fg_cur_h
+435:          0          0          0          0          0          0          0          0  mt6358-irq  83 Level     fg_cur_l
+436:          0          0          0          0          0          0          0          0  mt6358-irq   7 Level     VS1
+437:          0          0          0          0          0          0          0          0  mt6358-irq   2 Level     VGPU11
+438:          0          0          0          0          0          0          0          0  mt6358-irq   4 Level     VMODEM
+439:          0          0          0          0          0          0          0          0  mt6358-irq   0 Level     VPU
+440:          0          0          0          0          0          0          0          0  mt6358-irq   1 Level     VCORE
+441:          0          0          0          0          0          0          0          0  mt6358-irq   8 Level     VS2
+442:          0          0          0          0          0          0          0          0  mt6358-irq   9 Level     VPA
+443:          0          0          0          0          0          0          0          0  mt6358-irq   6 Level     VPROC2
+444:          0          0          0          0          0          0          0          0  mt6358-irq   5 Level     VPROC1
+445:          0          0          0          0          0          0          0          0  mt6358-irq  29 Level     VAUD18
+446:          0          0          0          0          0          0          0          0  mt6358-irq  19 Level     VRF12
+447:          0          0          0          0          0          0          0          0  mt6358-irq  38 Level     VUSB
+448:          0          0          0          0          0          0          0          0  mt6358-irq  32 Level     VSRAM_PROC2
+449:          0          0          0          0          0          0          0          0  mt6358-irq  30 Level     VIO18
+450:          0          0          0          0          0          0          0          0  mt6358-irq  24 Level     VCN18
+451:          0          0          0          0          0          0          0          0  mt6358-irq  16 Level     VFE28
+452:          0          0          0          0          0          0          0          0  mt6358-irq  23 Level     VCN13
+453:          0          0          0          0          0          0          0          0  mt6358-irq  21 Level     VCN33_1_BT
+454:          0          0          0          0          0          0          0          0  mt6358-irq  28 Level     VAUX18
+455:          0          0          0          0          0          0          0          0  mt6358-irq  33 Level     VSRAM_OTHERS
+456:          0          0          0          0          0          0          0          0  mt6358-irq  20 Level     VEFUSE
+457:          0          0          0          0          0          0          0          0  mt6358-irq  17 Level     VXO22
+458:          0          0          0          0          0          0          0          0  mt6358-irq  39 Level     VRFCK
+459:          0          0          0          0          0          0          0          0  mt6358-irq  41 Level     VBIF28
+460:          0          0          0          0          0          0          0          0  mt6358-irq  43 Level     VIO28
+461:          0          0          0          0          0          0          0          0  mt6358-irq  35 Level     VEMC
+462:          0          0          0          0          0          0          0          0  mt6358-irq  22 Level     VCN33_2_BT
+463:          0          0          0          0          0          0          0          0  mt6358-irq  27 Level     VA12
+464:          0          0          0          0          0          0          0          0  mt6358-irq  25 Level     VA09
+465:          0          0          0          0          0          0          0          0  mt6358-irq  18 Level     VRF18
+466:          0          0          0          0          0          0          0          0  mt6358-irq  34 Level     VSRAM_MD
+467:          0          0          0          0          0          0          0          0  mt6358-irq  45 Level     VUFS
+468:          0          0          0          0          0          0          0          0  mt6358-irq  44 Level     VM18
+469:          0          0          0          0          0          0          0          0  mt6358-irq  31 Level     VSRAM_PROC1
+470:          0          0          0          0          0          0          0          0     GICv3 266 Edge      trusty
+471:          0          0          0          0          0          0          0          0     GICv3 267 Edge      trusty
+472:          0          0          0          0          0          0          0          0  mt6358-irq 133 Level     accdet
+473:          0          0          0          0          0          0          0          0  mt6358-irq 134 Level     accdet_eint0
+474:          0          0          0          0          0          0          0          0  mt6358-irq  64 Level     mt6358-rtc
+475:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  65 Edge      ap_wdtrst_evt
+476:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  66 Edge      en_evt
+477:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  67 Edge      qonb_rst_evt
+478:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  68 Edge      mrstb_evt
+479:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  69 Edge      otp_evt
+480:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  70 Edge      vddaov_evt
+481:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  71 Edge      sysuv_evt
+482:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  41 Edge      bat_ovp_adc_evt
+483:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  43 Edge      adc_wakeup_evt
+484:        139        113        108         71          1          2          8         18  mt6360_pmu_irqs  44 Edge      adc_donei
+485:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs   4 Edge      chg_treg_evt
+486:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs   6 Edge      chg_mivr_evt
+487:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs   7 Edge      pwr_rdy_evt
+488:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs   9 Edge      chg_batsysuv_evt
+489:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  12 Edge      chg_vsysuv_evt
+490:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  13 Edge      chg_vsysov_evt
+491:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  14 Edge      chg_vbatov_evt
+492:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  15 Edge      chg_vbusov_evt
+493:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  27 Edge      chg_tmri
+494:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  29 Edge      chg_adpbadi
+495:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  32 Edge      chg_aiccmeasl
+496:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  35 Edge      wdtmri
+497:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  40 Edge      pumpx_donei
+498:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  48 Edge      attachi
+499:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  60 Edge      chrdet_ext_evt
+500:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  11 Edge      fled_chg_vinovp_evt
+501:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  74 Edge      fled_tx_evt
+502:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  75 Edge      fled_lvf_evt
+503:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  78 Edge      fled2_short_evt
+504:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  79 Edge      fled1_short_evt
+505:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs  96 Edge      buck1_pgb_evt
+506:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 100 Edge      buck1_oc_evt
+507:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 101 Edge      buck1_ov_evt
+508:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 102 Edge      buck1_uv_evt
+509:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 104 Edge      buck2_pgb_evt
+510:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 108 Edge      buck2_oc_evt
+511:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 109 Edge      buck2_ov_evt
+512:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 110 Edge      buck2_uv_evt
+513:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 118 Edge      ldo6_oc_evt
+514:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 119 Edge      ldo7_oc_evt
+515:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 126 Edge      ldo6_pgb_evt
+516:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 127 Edge      ldo7_pgb_evt
+517:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 113 Edge      ldo1_oc_evt
+518:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 114 Edge      ldo2_oc_evt
+519:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 115 Edge      ldo3_oc_evt
+520:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 117 Edge      ldo5_oc_evt
+521:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 121 Edge      ldo1_pgb_evt
+522:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 122 Edge      ldo2_pgb_evt
+523:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 123 Edge      ldo3_pgb_evt
+524:          0          0          0          0          0          0          0          0  mt6360_pmu_irqs 125 Edge      ldo5_pgb_evt
+525:          0          0          0          0          0          0          0          0  mt6358-irq 117 Level     bat_temp_l
+526:          0          0          1          0          0          0          0          0  mt6358-irq 116 Level     bat_temp_h
+528:          1          1          0          2          0          0          0          0  mt6358-irq  88 Level     fg_iavg_h
+529:          2          4          0          0          0          0          0          0  mt6358-irq  89 Level     fg_iavg_l
+530:          0          0          0          0          0          0          0          0  mt6358-irq  87 Level     fg_n_charge_l
+531:          0          0          0          0          0          0          0          0  mt6358-irq  80 Level     fg_bat_h
+532:          2          2          1          0          0          0          0          1  mt6358-irq  81 Level     fg_bat_l
+533:          1          0          1          0          0          0          0          0  mt6358-irq 121 Level     nag_c_dltv
+534:          0          0          0          0          0          0          0          0  mt6358-irq  84 Level     fg_zcv
+535:          0          0          0          0          0          0          0          0  mt6358-irq  99 Level     baton_bat_out
+536:          0          0          0          0          0          0          0          0  mt6358-irq 115 Level     bat2_l
+IPI0:    545490     498058     446065     389970     156896     180728     239097     270154       Rescheduling interrupts
+IPI1:      8037       8228       7241      10478       6269       6817       8311      15769       Function call interrupts
+IPI2:         0          0          0          0          0          0          0          0       CPU stop interrupts
+IPI3:         0          0          0          0          0          0          0          0       CPU stop (for crash dump) interrupts
+IPI4:      6634       7888       8605       8983       3379       4105       5864       6303       Timer broadcast interrupts
+IPI5:       583        554        367        431        115         62        170        195       IRQ work interrupts
+IPI6:         0          0          0          0          0          0          0          0       CPU wake-up interrupts
+Err:          0

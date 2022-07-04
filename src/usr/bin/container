@@ -1,0 +1,1392 @@
+#!/data/data/com.termux/files/usr/bin/bash
+#事实上你不应该去研究这段代码的，因为作者仅能保证它能跑
+#跟着沨鸾学shell，学到最后只会喵喵喵
+
+
+
+##################################
+###############TODO###############
+#换源
+#中文
+#简易模式
+#完善postinst/preinst脚本
+##################################
+#版本号定义，建议直接改成114514(雾)
+TERMUX_CONTAINER_VERSION="9.0-dev"
+#此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
+RGB_COLOR="254;228;208"
+COLOR="\033[1;38;2;${RGB_COLOR}m"
+#确保脚本不会被ctrl-c直接杀死，接到ctrl-c信号会自动跳转回console
+trap "echo&&CONTAINER_CONSOLE" SIGINT
+#小彩蛋，这个北方酱可能是我的第一个作品，原作品事实上诞生于我github大号刚注册时期
+#为了字符画显示正常，此处不进行缩进
+CONSOLE_GREETING(){
+LINE=$(($(($(stty size|awk '{print $2}')))/2-22))
+HOPPOU="\033[30m\033[${LINE}C               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅
+\033[${LINE}C          ▅▅▀▀▀               ▀▀▅▅
+\033[${LINE}C     ▅▅▅▀▀            ▅           ▀▅
+\033[${LINE}C      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅
+\033[${LINE}C     ▅▀   █▅▀▀  ▀     ▀ ▀▀▅▅    █ ▀▀▅ █
+\033[${LINE}C    ▅▀   ▅▀  ▅▀      ▀▅    ▀▅   █▅███▀█
+\033[${LINE}C  ▅▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █
+\033[${LINE}C      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █
+\033[${LINE}C      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █
+\033[${LINE}C      █ █ █\033[40;31m█▀█\033[0m\033[30m█        █\033[40;31m█▀█\033[0m\033[30m█ █   █     █
+\033[${LINE}C     █  █ █\033[31m███\033[30m█        █\033[31m███\033[30m█ █   █     ▀▅
+\033[${LINE}C    ▅▀  █  ▀▀▀          ▀▀▀  █   █      █
+\033[${LINE}C  ▅▀▅▀ █                     █   █      █
+\033[${LINE}C █   █ ▀▅ ▅▀▅   ▅▀▅   ▅▅     █   █      ▀▅
+\033[${LINE}C▅█▅▅██▅ ▅██  ▀███ ▅████ ▀▅█▀▅▀   █       ▀▅
+\033[${LINE}C███████ ▀██████████████████▀▀             █
+\033[${LINE}C █    ▀▅  ██▀ ▀██▀▀██▀▀██▀█     █▀         █
+\033[${LINE}C ▀▅     ▀▀█              ▅▀     █          █
+\033[${LINE}C   ▀▅    █               █     ██        ▅▀
+\033[${LINE}C     ▀▅▅▅▀                ▀▀▀▀▀ █        █
+\033[${LINE}C        ▀                       ▀        ▀
+\033[${LINE}C           「Keep moe,keep cool」
+"
+printf "${HOPPOU}"
+#无聊的开场白
+echo -e "${COLOR}Console of Termux-container"
+echo -e "$(date)"
+#学习自docker的check-config.sh
+kernelVersion="$(uname -r)"
+kernelMajor="${kernelVersion%%.*}"
+kernelMinor="${kernelVersion#$kernelMajor.}"
+kernelMinor="${kernelMinor%%.*}"
+kernelPatch="${kernelVersion#*$kernelMinor.}"
+kernelPatch="${kernelPatch%%-*}"
+echo -e "Linux kernel version: $kernelMajor.$kernelMinor.$kernelPatch"
+echo -e "Made with  by Moe-hacker"
+echo -e "         (>_)"
+echo -e "WARNING: NO WARRANTY HERE"
+echo -e "For usage,just type \`help\`"
+echo ""
+}
+#很明显是帮助信息，这里是给console准备的
+SHOW_HELPS(){
+  echo -e "${COLOR}Usage:"
+  echo "  help                       :Show this page."
+  echo "  exit                       :Exit console."
+  echo "  new                        :Create a new container."
+  echo "  search [all/OS] (Arch)     :Search for images."
+  echo "  pull [OS] [Version] (Arch) :Download image,just save."
+  echo "  rmi [OS] [Version] (Arch)  :Remove an image."
+  echo "  cp [Name:Path] [Path]      :Copy files,like docker cp."
+  echo "  ls                         :List containers and images."
+  echo "  rm [Name]                  :Remove a container."
+  echo "  login [Name]               :Login to the container."
+  echo "  import [Image File]        :Import an image."
+  echo "  export [Name]              :Export a container as an image."
+  echo "  info                       :Show version info."
+}
+#事实上几乎没啥大用
+SHOW_INFO(){
+  echo
+  echo -e "${COLOR}    _________"
+  echo -e "   /\\        \\"
+  echo -e "  /  \\        \\"
+  echo -e " /    \\        \\   ═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "/      \\________\\   ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e "\\      /        /   ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  echo -e " \\    /        /"
+  echo -e "  \\  /        /"
+  echo -e "   \\/________/"
+  echo -e "\nScript Info :"
+  echo -e "[] Project               : termux-container"
+  echo -e "[] Author                : Moe-hacker"
+  echo -e "[] Signature             : (>_)"
+  echo -e "[] License               : APACHE-2.0"
+  echo -e "[] Legal Information     : NO WARRANTY"
+  echo -e '[] Version               : ${TERMUX_CONTAINER_VERSION}'
+  if [[ -e $PREFIX/bin/moe-container ]];then
+    echo -e "[] Moe-container Version : $(moe-container -v|head -1|awk '{print $2}')"
+    echo -e "[] Moe-container License : MIT"
+  else
+    echo -e "\033[33m Warning: moe-container not installed !${COLOR}"
+  fi
+  kernelVersion="$(uname -r)"
+  kernelMajor="${kernelVersion%%.*}"
+  kernelMinor="${kernelVersion#$kernelMajor.}"
+  kernelMinor="${kernelMinor%%.*}"
+  kernelPatch="${kernelVersion#*$kernelMinor.}"
+  kernelPatch="${kernelPatch%%-*}"
+  echo -e "\nSystem info :"
+  echo -e "[] Kernel Version        : $kernelMajor.$kernelMinor.$kernelPatch"
+  if [[ ${TERMUX_VERSION} != "" ]];then
+    echo -e "[] Termux Version        : ${TERMUX_VERSION}"
+  fi
+  echo -e "[] Username              : $(whoami)"
+  echo -e "[] Android Version       : $(getprop ro.build.version.release)"
+  echo -e "[] Cpu Architecture      : $(uname -m)"
+  echo -e "[] Hostname              : $(hostname)"
+  echo -e "[] Uptime                : $(uptime -p)"
+  #与ksu的su -c语法貌似冲突，不过一般没人装俩
+  if [[ -e /bin/magisk ]];then
+    echo -e "[] Magisk version        : $(su -c /bin/magisk -V)"
+    echo -e "[] SELinux               : $(sudo getenforce)"
+  fi
+  echo -e "\nHardware info :"
+  echo -e "[] Brand                 : $(getprop ro.product.brand)"
+  echo -e "[] Model                 : $(getprop ro.product.model)"
+  echo -e "[] Model Codename        : $(getprop ro.product.board)"
+  echo -e "[] Platform Codename     : $(getprop ro.board.platform)"
+  echo -e "[] Cpu Model             : $(cat /proc/cpuinfo|grep "Hardware"|awk '{print $NF}')"
+  echo -e "[] Cpus                  : $(lscpu|grep CPU\(s\)\:|awk '{print $2}')"
+  echo -e "[] Total Memory          : $(free -g --si | grep "Mem" | awk {'print $2'})GB"
+  _temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+  temp=$(echo $_temp|cut -c 1-2)
+  temp+=".$(echo $_temp|cut -c 3)"
+  echo -e "[] Temperature           : ${temp}°C"
+  echo
+}
+#来自tmoe的cpu架构判断，许可证相同因此借用下也不过分吧
+#事实上应该不会有这么多拥有奇怪的cpu架构的手机，至于i386我甚至都没听说出现在手机端过
+GET_CPU_ARCH(){
+  DPKG_ARCH=$(dpkg --print-architecture)
+  case ${DPKG_ARCH} in
+    armel) export ARCH="armel" ;;
+    armv7* | armv8l | armhf | arm) export ARCH="armhf" ;;
+    aarch64 | arm64* | armv8* | arm*) export ARCH="arm64" ;;
+    i*86 | x86) export ARCH="i386" ;;
+    x86_64 | amd64) export ARCH="amd64" ;;
+    *) echo -e "\033[31mUnknow cpu architecture for this device !\033[0m"&&exit 1 ;;
+  esac
+  return 0
+}
+#类docker cp命令支持
+#貌似不太优雅?
+CONTAINER_CP(){
+  printf "${COLOR}"
+  if [[ $1 == *:/* ]];then
+    CONTAINER_NAME=$(echo $1|cut -d ":" -f 1)
+    CONTAINER_PATH=$(echo $1|cut -d ":" -f 2)
+    HOST_PATH=$2
+    CP_MODE=1
+  else
+    CONTAINER_NAME=$(echo $2|cut -d ":" -f 1)
+    CONTAINER_PATH=$(echo $2|cut -d ":" -f 2)
+    HOST_PATH=$1
+    CP_MODE=2
+  fi
+  if [[ -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
+    source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+    if [[ $CP_MODE == 1 ]];then
+      cp ${CONTAINER_DIR}${CONTAINER_PATH} ${HOST_PATH}
+    else
+      cp ${HOST_PATH} ${CONTAINER_DIR}${CONTAINER_PATH}
+    fi
+  elif [[ -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
+    source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+    if [[ $CP_MODE == 1 ]];then
+      sudo cp ${CONTAINER_DIR}${CONTAINER_PATH} ${HOST_PATH}
+    else
+      sudo cp ${HOST_PATH} ${CONTAINER_DIR}${CONTAINER_PATH}
+    fi
+  else
+    echo -e "\033[31mError: container does not exist !${COLOR}"
+    return
+  fi
+}
+
+
+
+#rootfs获取，manjaro与parrot需要重新打包
+#记得换源
+PULL_ROOTFS(){
+  OS=$1
+  VERSION=$2
+  printf "${COLOR}"
+  if [[ $3 = "" ]];then
+    GET_CPU_ARCH
+  else
+    ARCH=$3
+  fi
+  if [[ -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
+    echo -e "\033[31mError: Rootfs already exists !${COLOR}"
+    return 1
+  fi
+  if [[ $OS != "parrot" ]]&&[[ $OS != "manjaro" ]];then
+    MIRROR="http://images.linuxcontainers.org/images"
+    if [[ $OS = "gentoo" ]];then
+        VERSION2="openrc"
+    else
+      VERSION2="default"
+    fi
+    #来自tmoe的url解析
+    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "href" |cut -d ">" -f 2|cut -d "/" -f 1|tail -n 1)
+    if [[ ${TIME} = "" ]];then
+      echo -e "\033[31mError: Can not find rootfs !${COLOR}"
+      return 1
+    fi
+    URL=${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}/${TIME}/rootfs.tar.xz
+    rm -rf $PREFIX/tmp/container
+    mkdir -p $PREFIX/tmp/container
+    [[ -e $PREFIX/var/container ]]||mkdir -p $PREFIX/var/container
+    cd $PREFIX/tmp/container
+    axel -n16 ${URL}
+    if [[ $? != 0 ]];then
+      echo -e "\033[31mError: Failed to download rootfs !${COLOR}"
+      return 1
+    fi
+    mv rootfs.tar.xz $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
+  elif [[ $OS == "parrot" ]];then
+    ROOTFS=$(curl -sL https://mirrors.bfsu.edu.cn/parrot/iso/testing/|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
+    if [[ ${ROOTFS} = "" ]];then
+      echo -e "\033[31mError: Can not find rootfs !${COLOR}"
+      return 1
+    fi
+    URL="https://mirrors.bfsu.edu.cn/parrot/iso/testing/${ROOTFS}"
+    proot -0 rm -rf $PREFIX/tmp/container
+    mkdir -p $PREFIX/tmp/container
+    [[ -e $PREFIX/var/container ]]||mkdir -p $PREFIX/var/container
+    cd $PREFIX/tmp/container
+    axel -n16 ${URL}
+    proot -0 -l tar -xvf ${ROOTFS}
+    cd parrot-${ARCH}
+    proot -l -0 tar -cvJf ../rootfs.tar.xz .
+    cd ..
+    rm ${ROOTFS}
+    rm -rf parrot-${ARCH}
+    mv rootfs.tar.xz $PREFIX/var/container/parrot-current-${ARCH}.tar.xz
+  else
+    proot -0 rm -rf $PREFIX/tmp/container
+    mkdir -p $PREFIX/tmp/container
+    [[ -e $PREFIX/var/container ]]||mkdir -p $PREFIX/var/container
+    cd $PREFIX/tmp/container
+    wget https://osdn.net/projects/manjaro-arm/storage/.rootfs/Manjaro-ARM-aarch64-latest.tar.gz
+    mkdir manjaro
+    proot -0 -l tar -xvf Manjaro-ARM-aarch64-latest.tar.gz -C manjaro
+    echo "Server = https://mirrors.bfsu.edu.cn/manjaro/arm-stable/\$repo/\$arch" > manjaro/etc/pacman.d/mirrorlist
+    pacmanconf="
+[options]
+HoldPkg      = pacman glibc manjaro-system
+SyncFirst    = manjaro-system manjaro-keyring manjaro-arm-keyring archlinux-keyring archlinuxarm-keyring
+Architecture = aarch64
+
+
+Color
+ILoveCandy
+CheckSpace
+
+SigLevel    = Required DatabaseOptional
+LocalFileSigLevel = Optional
+
+
+
+[core]
+SigLevel = Never
+Include = /etc/pacman.d/mirrorlist
+
+[extra]
+SigLevel = Never
+Include = /etc/pacman.d/mirrorlist
+
+[community]
+SigLevel = Never
+Include = /etc/pacman.d/mirrorlist
+"
+#为兼容性考虑这里使用proot
+    printf "$pacmanconf" > manjaro/etc/pacman.conf
+    rm manjaro/etc/resolv.conf
+    echo nameserver 114.114.114.114 > manjaro/etc/resolv.conf
+    echo "#!/bin/sh" >> manjaro/tmp/pacman-init.sh
+    echo "PATH=\$PATH:\"/sbin:/bin:/usr/bin:/usr/local/bin\"" >> manjaro/tmp/pacman-init.sh
+    echo "rm /etc/mtab&&echo / / > /etc/mtab" >> manjaro/tmp/pacman-init.sh
+    echo "yes \"\"|pacman-key --init" >> manjaro/tmp/pacman-init.sh
+    echo "yes \"\"|pacman -Syyu" >> manjaro/tmp/pacman-init.sh
+    echo "rm /etc/mtab&&echo / / > /etc/mtab" >> manjaro/tmp/pacman-init.sh
+    echo "yes \"\"|pacman -Syy base base-devel" >> manjaro/tmp/pacman-init.sh
+    chmod 777 manjaro/tmp/pacman-init.sh
+    COMMAND="proot"
+    COMMAND+=" --link2symlink"
+    COMMAND+=" --kill-on-exit"
+    COMMAND+=" --sysvipc"
+    COMMAND+=" -0"
+    COMMAND+=" -r $PREFIX/tmp/container/manjaro"
+    COMMAND+=" -b /dev"
+    COMMAND+=" -b /sys"
+    COMMAND+=" -b /proc"
+    COMMAND+=" -w /root"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/buddyinfo:/proc/buddyinfo"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/cgroups:/proc/cgroups"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/consoles:/proc/consoles"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/crypto:/proc/crypto"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/devices:/proc/devices"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/diskstats:/proc/diskstats"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/execdomains:/proc/execdomains"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/fb:/proc/fb"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/filesystems:/proc/filesystems"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/interrupts:/proc/interrupts"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/iomem:/proc/iomem"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/ioports:/proc/ioports"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kallsyms:/proc/kallsyms"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/key-users:/proc/key-users"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/keys:/proc/keys"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kpageflags:/proc/kpageflags"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/loadavg:/proc/loadavg"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/locks:/proc/locks"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/misc:/proc/misc"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/modules:/proc/modules"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/pagetypeinfo:/proc/pagetypeinfo"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/partitions:/proc/partitions"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/sched_debug:/proc/sched_debug"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/softirqs:/proc/softirqs"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/stat:/proc/stat"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/timer_list:/proc/timer_list"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/uptime:/proc/uptime"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/version:/proc/version"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmallocinfo:/proc/vmallocinfo"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmstat:/proc/vmstat"
+    COMMAND+=" --mount=$PREFIX/share/termux-container/proc/zoneinfo:/proc/zoneinfo"
+    COMMAND+=" --mount=$PREFIX/tmp:/tmp"
+    COMMAND+="/bin/sh /tmp/pacman-init.sh"
+    unset LD_PRELOAD
+    ${COMMAND}
+    cd manjaro
+    proot -0 -l tar -cvJf ../rootfs.tar.xz .
+    mv ../rootfs.tar.xz $PREFIX/var/container/manjaro-current-arm64.tar.xz
+    cd ~
+    proot -0 rm -rf $PREFIX/tmp/container
+  fi
+  return 0
+}
+#镜像删除
+REMOVE_IMAGE(){
+  OS=$1
+  VERSION=$2
+  ARCH=$3
+  if [[ ${ARCH} == "" ]];then
+    GET_CPU_ARCH
+  fi
+  if [[ -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
+    rm -fv $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
+  else
+    echo -e "\033[31mError: Rootfs does not exist !${COLOR}"
+  fi
+}
+#chroot容器创建
+#此函数被-e接口以root权限调用
+CREATE_CHROOT_CONTAINER(){
+  ROOTFS=$1
+  CONTAINER_DIR=$2
+  NEW_USER=$3
+  PASSWORD=$4
+  printf "${COLOR}"
+  if ! mkdir -p ${CONTAINER_DIR};then
+    echo -e "\033[31mError: Failed to create container directory !${COLOR}"
+    return 1
+  fi
+  pv $PREFIX/var/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR}
+  #修复su二进制的文件权限
+  chown root:root ${CONTAINER_DIR}/bin/su
+  chmod 777 ${CONTAINER_DIR}/bin/su
+  #创建不存在的系统目录
+  [[ -e ${CONTAINER_DIR}/dev ]]||mkdir ${CONTAINER_DIR}/dev
+  [[ -e ${CONTAINER_DIR}/proc ]]||mkdir ${CONTAINER_DIR}/proc
+  [[ -e ${CONTAINER_DIR}/sys ]]||mkdir ${CONTAINER_DIR}/sys
+  [[ -e ${CONTAINER_DIR}/sdcard ]]||mkdir ${CONTAINER_DIR}/sdcard
+  #自动修复dns
+  rm -f ${CONTAINER_DIR}/etc/resolv.conf >> /dev/null 2>&1
+  echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  #解决联网问题
+  cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp
+  chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
+  if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
+    sed -i "s/NEW_USER=\"\"/NEW_USER=${NEW_USER}/" ${CONTAINER_DIR}/tmp/group_add.sh
+    sed -i "s/PASSWORD=\"\"/PASSWORD=${PASSWORD}/" ${CONTAINER_DIR}/tmp/group_add.sh
+  fi
+  mount -t proc proc  ${CONTAINER_DIR}/proc/
+  mount --rbind /dev ${CONTAINER_DIR}/dev/
+  mount --rbind /sys ${CONTAINER_DIR}/sys/
+  unset LD_PRELOAD
+  $PREFIX/bin/chroot ${CONTAINER_DIR} /tmp/group_add.sh >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+  echo -e "\nCreation done.\n"
+  return 0
+}
+#proot容器创建
+CREATE_PROOT_CONTAINER(){
+  ROOTFS=$1
+  CONTAINER_DIR=$2
+  CROSS_ARCH=$3
+  NEW_USER=$4
+  PASSWORD=$5
+  printf "${COLOR}"
+  if ! mkdir -p ${CONTAINER_DIR};then
+    echo -e "\033[31mFailed to create container directory !${COLOR}"
+    return 1
+  fi
+  pv $PREFIX/var/container/$ROOTFS|proot -0 -l tar -xJf - -C ${CONTAINER_DIR}
+  [[ -e ${CONTAINER_DIR}/dev ]]||mkdir ${CONTAINER_DIR}/dev
+  [[ -e ${CONTAINER_DIR}/proc ]]||mkdir ${CONTAINER_DIR}/proc
+  [[ -e ${CONTAINER_DIR}/sys ]]||mkdir ${CONTAINER_DIR}/sys
+  [[ -e ${CONTAINER_DIR}/sdcard ]]||mkdir ${CONTAINER_DIR}/sdcard
+  rm -f ${CONTAINER_DIR}/etc/resolv.conf >> /dev/null 2>&1
+  echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp/
+  chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
+  if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
+    sed -i "s/NEW_USER=\"\"/NEW_USER=${NEW_USER}/" ${CONTAINER_DIR}/tmp/group_add.sh
+    sed -i "s/PASSWORD=\"\"/PASSWORD=${PASSWORD}/" ${CONTAINER_DIR}/tmp/group_add.sh
+  fi
+  unset LD_PRELOAD
+  COMMAND="proot --link2symlink --sysvipc -0 -r ${CONTAINER_DIR} -b /dev -b /sys -b /proc -w /root"
+  if [[ ${CROSS_ARCH} != "null" ]];then
+    COMMAND+=" -q qemu-${CROSS_ARCH}"
+  fi
+  ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
+  echo -e "\nCreation done.\n"
+  return 0
+}
+#chroot容器运行，调用moe-container以提供unshare与capability移除支持
+#同样被以root权限调用
+RUN_CHROOT_CONTAINER(){
+  if [[ ! -e $PREFIX/bin/moe-container ]];then
+    echo -e "\033[31mError: Can not find moe-container installed !${COLOR}"
+    return 1
+  fi
+  CONTAINER_NAME=$1
+  if [[ ! -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
+    echo -e "\033[31mError: Container does not exist !${COLOR}"
+    return 1
+  fi
+  source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+  kernelVersion="$(uname -r)"
+  kernelMajor="${kernelVersion%%.*}"
+  kernelMinor="${kernelVersion#$kernelMajor.}"
+  kernelMinor="${kernelMinor%%.*}"
+  kernelPatch="${kernelVersion#*$kernelMinor.}"
+  kernelPatch="${kernelPatch%%-*}"
+  SELINUX=$(getenforce)
+  HOSTNAME=$(hostname)
+  ANDROID=$(getprop ro.build.version.release)
+  TIME=$(date|awk '{print $4}')
+  clear
+  printf "${COLOR}"
+  echo -e ""
+  echo -e "//"
+  echo -e ""
+  LINE=$(($(stty size|awk '{print $2}')))
+  LINE=$(($LINE-16))
+  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed ${LINE}'q'|tr -d '\n')\033[0m"
+  echo -e "${COLOR}"
+  echo -e "//"
+  echo -e ""
+  echo -e "    _________      [] CONTAINER: ${CONTAINER_NAME}"
+  echo -e "   /        /\\     [] ARCH: $(uname -m)"
+  echo -e "  /        /  \\    [] SELINUX: ${SELINUX}"
+  echo -e " /        /    \\   [] KERNEL VERSION: $kernelMajor.$kernelMinor.$kernelPatch"
+  echo -e "/________/      \\  [] TIME: ${TIME}"
+  echo -e "\\        \\      /  [] HOSTNAME: ${HOSTNAME}"
+  echo -e " \\        \\    /   [] ANDROID VERSION: ${ANDROID}"
+  echo -e "  \\        \\  /    [] CONTAINER DIR: $(echo ${CONTAINER_DIR}|sed 's#/data/data/com.termux/files/home#$HOME#'|sed 's#/data/data/com.termux/files/usr#$PREFIX#')"
+  echo -e "   \\________\\/     [] PRIVAGE LEVEL: ${PRIVAGE_LEVEL}"
+  echo -e ""
+  echo -e "〉TERMUX-CONTAINER"
+  LINE=$(($(stty size|awk '{print $2}')))
+  echo -e "$(yes "─"|sed ${LINE}'q'|tr -d '\n')"
+  echo -e "//////"
+  echo -e ""
+  if [[ ! -e ${CONTAINER_DIR} ]];then
+    echo -e "\033[31mError: Container directory does not exist !${COLOR}"
+    return 1
+  fi
+  [[ -e ${CONTAINER_DIR}/sdcard ]]||mkdir -p ${CONTAINER_DIR}/sdcard
+  if [[ ${MOUNT_SDCARD} == "true" ]];then
+    mount --bind -o ro /sdcard ${CONTAINER_DIR}/sdcard
+  fi
+  #直接挂载termux的tmp
+  mount --bind ${PREFIX}/tmp ${CONTAINER_DIR}/tmp
+  #解决sudo提示nosuid挂载无法使用
+  mount -o remount,suid /data  >> /dev/null 2>&1
+  CONTAINER_PARAMETER="-w"
+  if [[ ${ENABLE_UNSHARE} == "true" ]];then
+    CONTAINER_PARAMETER+=" -u"
+  fi
+  if [[ ${PRIVAGE_LEVEL} == "0" ]];then
+    CONTAINER_PARAMETER+=" -d"
+  elif [[ ${PRIVAGE_LEVEL} == "2" ]];then
+    CONTAINER_PARAMETER+=" -p"
+  fi
+  printf "\033[0m"
+  unset LD_PRELOAD
+  #调用moe-container二进制代替chroot/unshare
+  moe-container ${CONTAINER_PARAMETER} ${CONTAINER_DIR}
+  return 0
+}
+#proot容器运行
+RUN_PROOT_CONTAINER(){
+  CONTAINER_NAME=$1
+  if [[ ! -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
+    echo -e "\033[31mError: Container does not exist !${COLOR}"
+    return 1
+  fi
+  source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+  kernelVersion="$(uname -r)"
+  kernelMajor="${kernelVersion%%.*}"
+  kernelMinor="${kernelVersion#$kernelMajor.}"
+  kernelMinor="${kernelMinor%%.*}"
+  kernelPatch="${kernelVersion#*$kernelMinor.}"
+  kernelPatch="${kernelPatch%%-*}"
+  clear
+  printf "${COLOR}"
+  echo -e ""
+  echo -e "//"
+  echo -e ""
+  LINE=$(($(stty size|awk '{print $2}')))
+  LINE=$(($LINE-16))
+  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed ${LINE}'q'|tr -d '\n')\033[0m"
+  echo -e "${COLOR}"
+  echo -e "//"
+  echo -e ""
+  echo -e "    _________      [] CONTAINER: ${CONTAINER_NAME}"
+  echo -e "   /        /\\     [] ARCH: $(uname -m)"
+  echo -e "  /        /  \\    [] CROSS-ARCH: ${CROSS_ARCH}"
+  echo -e " /        /    \\   [] KERNEL: $kernelMajor.$kernelMinor.$kernelPatch"
+  echo -e "/________/      \\  [] TIME: $(date|awk '{print $4}')"
+  echo -e "\\        \\      /  [] HOSTNAME: $(hostname)"
+  echo -e " \\        \\    /   [] ANDROID: $(getprop ro.build.version.release)"
+  echo -e "  \\        \\  /    [] CONTAINER_DIR: $(echo ${CONTAINER_DIR}|sed 's#/data/data/com.termux/files/home#$HOME#'|sed 's#/data/data/com.termux/files/usr#$PREFIX#')"
+  echo -e "   \\________\\/     [] VERSION: 9.0-dev"
+  echo -e ""
+  echo -e "〉TERMUX-CONTAINER"
+  LINE=$(($(stty size|awk '{print $2}')))
+  echo -e "$(yes "─"|sed ${LINE}'q'|tr -d '\n')"
+  echo -e "//////"
+  echo -e ""
+  if [[ ! -e ${CONTAINER_DIR} ]];then
+    echo -e "\033[31mError: Container directory does not exist !${COLOR}"
+    return 1
+  fi
+  unset LD_PRELOAD
+  COMMAND="proot"
+  COMMAND+=" --link2symlink"
+  COMMAND+=" --kill-on-exit"
+  COMMAND+=" --sysvipc"
+  COMMAND+=" -0"
+  COMMAND+=" -r ${CONTAINER_DIR}"
+  COMMAND+=" -b /dev"
+  COMMAND+=" -b /sys"
+  COMMAND+=" -b /proc"
+  COMMAND+=" -w /root"
+  if [[ ${MOUNT_SDCARD} = "true" ]];then
+    COMMAND+=" -b /sdcard"
+  fi
+  if [[ ${CROSS_ARCH} != "null" ]];then
+    COMMAND+=" -q qemu-${CROSS_ARCH}"
+  fi
+  #挂载伪文件，提取自Redmi 10X 5G，老古董了
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/buddyinfo:/proc/buddyinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/cgroups:/proc/cgroups"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/consoles:/proc/consoles"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/crypto:/proc/crypto"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/devices:/proc/devices"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/diskstats:/proc/diskstats"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/execdomains:/proc/execdomains"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/fb:/proc/fb"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/filesystems:/proc/filesystems"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/interrupts:/proc/interrupts"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/iomem:/proc/iomem"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/ioports:/proc/ioports"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kallsyms:/proc/kallsyms"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/key-users:/proc/key-users"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/keys:/proc/keys"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kpageflags:/proc/kpageflags"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/loadavg:/proc/loadavg"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/locks:/proc/locks"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/misc:/proc/misc"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/modules:/proc/modules"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/pagetypeinfo:/proc/pagetypeinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/partitions:/proc/partitions"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/sched_debug:/proc/sched_debug"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/softirqs:/proc/softirqs"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/stat:/proc/stat"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/timer_list:/proc/timer_list"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/uptime:/proc/uptime"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/version:/proc/version"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmallocinfo:/proc/vmallocinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmstat:/proc/vmstat"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/zoneinfo:/proc/zoneinfo"
+  #挂载termux的tmp目录
+  COMMAND+=" --mount=$PREFIX/tmp:/tmp"
+  COMMAND+=" /bin/su - root"
+  printf "\033[0m"
+  ${COMMAND}
+  return 0
+}
+#自动判断容器类型并调用相关函数运行
+RUN_CONTAINER(){
+  CONTAINER_NAME=$1
+  if [[ -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
+    RUN_PROOT_CONTAINER ${CONTAINER_NAME}
+  elif [[ -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
+    if [[ $(whoami) != "root" ]];then
+      sudo container -e RUN_CHROOT_CONTAINER ${CONTAINER_NAME}
+      return
+    fi
+  else
+    echo -e "\033[31mError: container does not exist !${COLOR}"
+    return
+  fi
+}
+#镜像查找，仅获取并输出信息
+SEARCH_IMAGES(){
+  OS=$1
+  if [[ $1 == "all" ]];then
+    LIST_IMAGES $2
+    return 0
+  fi
+  if [[ $2 = "" ]];then
+    GET_CPU_ARCH
+  else
+    ARCH=$2
+  fi
+  echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
+  echo "Searching for images,this might take a while......"
+  if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "404 Not Found") != "" ]];then
+    echo -e "\033[33mOS distro not found.\033[0m"
+    return 1
+  fi
+  for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+    if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
+      found_arch=1
+      echo -e "\033[34m$OS [$ARCH] : $VERSION"
+    fi
+  done
+  if [[ $found_arch != 1 ]];then
+    echo -e "\033[33mCould not found image for current cpu architecture,maybe you should choose another cpu architecture and use proot to run cross-arch container.\033[0m"
+    return 1
+  fi
+  return 0
+}
+#镜像列表
+LIST_IMAGES(){
+  if [[ $1 = "" ]];then
+    GET_CPU_ARCH
+  else
+    ARCH=$1
+  fi
+  echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
+  echo "Searching for images,this might take a while......"
+  echo
+  for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
+  do
+    for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+      if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
+        echo -e "\033[34m$OS [$ARCH] : $VERSION"
+      else
+        continue
+      fi
+    done
+    echo
+  done
+  return 0
+}
+#新建容器，含有大量循环以确保获取到的值合法
+CONTAINER_NEW(){
+  GET_CPU_ARCH
+  echo
+  echo -e "${COLOR}Enter the name of this container."
+  while :
+  do
+    read -p "[] Name > "  CONTAINER_NAME
+    if [[ $? != 0 ]];then
+      echo
+      return 1
+    fi
+    if [[ ${CONTAINER_NAME} != "" ]];then
+      if [[ ! -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]]&&[[ ! -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
+        echo
+        break
+      else
+        echo -e "\033[31mError: container name already in use !${COLOR}"
+      fi
+    fi
+  done
+  echo -e "If your phone is rooted,it is recommand to run container with chroot mode.If not or you want to run cross-arch container,please choose proot."
+  echo -e "Chroot mode will use moe-container for unshare feature and capability reduse to make the container more secure,see:\n\033[4mhttps://github.com/Moe-hacker/moe-container\033[0m${COLOR}"
+  echo -e "Before you use it,you should allow the MIT License of it:\n\033[4mhttps://github.com/Moe-hacker/moe-container/blob/main/LICENSE\033[0m${COLOR}"
+  echo -e "\nEnter the type of this container."
+  while :
+  do
+    read -p "[] Type [chroot/proot] > "  CONTAINER_TYPE
+    if [[ $? != 0 ]];then
+      echo
+      return 1
+    fi
+    if [[ ${CONTAINER_TYPE} == "chroot" ]]||[[ ${CONTAINER_TYPE} == "proot" ]];then
+      break
+    fi
+  done
+  if [[ ${CONTAINER_TYPE} == "chroot" ]];then
+    echo -e "\nUnshare mode will use namespace features of Linux kernel to provide more security,but some devices may crash after using it.\n"
+    while :
+    do
+      read -p "[] Enable unshare [true/false] > " ENABLE_UNSHARE
+      if [[ $? != 0 ]];then
+        echo
+        return 1
+      fi
+      if [[ ${ENABLE_UNSHARE} == "true" ]]||[[ ${ENABLE_UNSHARE} == "false" ]];then
+        break
+      fi
+    done
+    echo -e "\nThe privilege level determines the privileges that the container can get. 0 is the lowest and 2 is the highest.Lower privileges can make the container more secure,but operations like mount will not be authorized in the container.It's recommended to set it to 1.\n"
+    while :
+    do
+      read -p "[] Privilege level [0-2] > " PRIVAGE_LEVEL
+      if [[ $? != 0 ]];then
+        echo
+        return 1
+      fi
+      if [[ ${PRIVAGE_LEVEL} == "0" ]]||[[ ${PRIVAGE_LEVEL} == "1" ]]||[[ ${PRIVAGE_LEVEL} == "2" ]];then
+        break
+      fi
+    done
+  else
+    echo -e "\nYou can use qemu to simulate another CPU architecture to run containers,however,the performance is not ideal."
+    echo -e "Available CPU architectures are: arm64 armhf amd64 i386 m68k ppc ppc64el riscv32 riscv64"
+    echo -e "If you don't want to use qemu,just press Enter here.\n"
+    while :
+    do
+      read -p "[] CPU architecture > " ARCH
+      if [[ $? != 0 ]];then
+        echo
+        return 1
+      fi
+      case ${ARCH} in
+        "i386"|"m68k"|"ppc"|"riscv32"|"riscv64") export ARCH=${CROSS_ARCH}&&apt install qemu-user-${CROSS_ARCH};break;;
+        "arm64") export CROSS_ARCH=aarch64&&apt install qemu-user-${CROSS_ARCH};break;;
+        "armhf") export CROSS_ARCH=arm&&apt install qemu-user-${CROSS_ARCH};break;;
+        "amd64") export CROSS_ARCH=x86_64&&apt install qemu-user-x86-64;break;;
+        "ppc64el") export CROSS_ARCH=ppc64&&apt install qemu-user-${CROSS_ARCH};break;;
+        "") GET_CPU_ARCH&&export CROSS_ARCH=null&&break;;
+      esac
+    done
+  fi
+  echo -e "\nYou can mount /sdcard to the container to share files in your phone.However,it's not a secure way.It's recommended to use \`container cp\` instead.\n"
+  while :
+  do
+    read -p "[] Mount sdcard [true/false] > " MOUNT_SDCARD
+    if [[ $? != 0 ]];then
+      echo
+      return 1
+    fi
+    if [[ ${MOUNT_SDCARD} == "true" ]]||[[ ${MOUNT_SDCARD} == "false" ]];then
+      break
+    fi
+  done
+  echo -e "\nYou can create a new common user in the container.If you don't want it,just press Enter here.\n"
+  while :
+  do
+    read -p "[] Username > " NEW_USER
+    if [[ $? != 0 ]];then
+      echo
+      return 1
+    fi
+    break
+  done
+  if [[ ${NEW_USER} != "" ]];then
+    while :
+    do
+      read -p "[] Password > " PASSWORD
+      if [[ $? != 0 ]];then
+        echo
+        return 1
+      fi
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  fi
+  echo -e "\nThe container absolute path is the directory used to store the container,for chroot,you can use /data/container-name,and for proot,you can use /data/data/com.termux/files/home/container-name,but do not use directory in /sdcard,or you might run into problems !\n"
+  echo -e "Enter the absolute path of container."
+  while :
+  do
+    read -p "[] Container path > " CONTAINER_DIR
+    if [[ $? != 0 ]];then
+      echo
+      return 1
+    fi
+    if [[ -e ${CONTAINER_DIR} ]];then
+      echo -e "\033[31mError: container directory already exist !${COLOR}"
+      continue
+    fi
+    for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
+      if [[ ${CONTAINER_DIR} = $BLACKLIST* ]];then
+        echo -e "\033[31mError: refuse to use system directory !${COLOR}"
+        CONTINUE=true
+      fi
+    done
+    if [[ ${CONTINUE} == "true" ]];then
+      continue
+    fi
+    if [[ ${CONTAINER_DIR:0:1} != "/" ]];then
+      echo -e "\033[31mError: please use absolute path !${COLOR}"
+      continue
+    else
+      break
+    fi
+  done
+  echo -e "\nChoose the OS and the version to install,you can use \`search\` command here."
+  while :
+  do
+    read -p "[] OS > " OS
+    if [[ $? != 0 ]];then
+      echo
+      return 1
+    fi
+    if [[ $(echo $OS|awk '{print $1}') == search ]];then
+      SEARCH_IMAGES $(echo $OS|awk '{print $2}') $ARCH
+      printf "${COLOR}"
+      continue
+    fi
+    if [[ ${OS} != "" ]];then
+      while :
+      do
+        printf "${COLOR}"
+        read -p "[] Vesion > " VERSION
+        if [[ $? != 0 ]];then
+          echo
+          return 1
+        fi
+        if [[ ${VERSION} != "" ]];then
+          if [[ ! -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
+            PULL_ROOTFS ${OS} ${VERSION} ${ARCH}&&break
+          else
+            break
+          fi
+        fi
+      done
+      break
+    fi
+  done
+  echo -e "Before creating the container,you need to make sure the config is all right:"
+  if [[ ${CONTAINER_TYPE} == "chroot" ]];then
+    echo -e "Type            : chroot"
+    echo -e "Enable unshare  : ${ENABLE_UNSHARE}"
+    echo -e "Privilege level : ${PRIVAGE_LEVEL}"
+  else
+    echo -e "Type            : proot"
+    echo -e "Cross-arch      : ${CROSS_ARCH}"
+  fi
+  echo -e "Name            : ${CONTAINER_NAME}"
+  echo -e "Container path  : ${CONTAINER_DIR}"
+  echo -e "New user        : ${NEW_USER}"
+  echo -e "Password        : ${PASSWORD}"
+  echo -e "OS              : ${OS}"
+  echo -e "Version         : ${VERSION}"
+  echo -e "Mount sdcard    : ${MOUNT_SDCARD}"
+  read -p "Continue [y/n] " CONTINUE
+  if [[ ${CONTINUE} == "n" ]];then
+    return 1
+  fi
+  if [[ ${CONTAINER_TYPE} == "chroot" ]];then
+    sudo container -e CREATE_CHROOT_CONTAINER ${OS}-${VERSION}-${ARCH}.tar.xz ${CONTAINER_DIR} ${NEW_USER} ${PASSWORD}
+    [[ -e $PREFIX/etc/container/chroot ]]||mkdir -p $PREFIX/etc/container/chroot
+    echo -e "#This file was automatically created by termux-container.\n#Do not edit this file if you don't know what you are doing !" >> $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+    echo -e "OS=${OS}\nCONTAINER_DIR=${CONTAINER_DIR}\nENABLE_UNSHARE=${ENABLE_UNSHARE}\nPRIVAGE_LEVEL=${PRIVAGE_LEVEL}\nCROSS_ARCH=null\nMOUNT_SDCARD=${MOUNT_SDCARD}" >> $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+  else
+    export CROSSARCH=${CROSS_ARCH}
+    CREATE_PROOT_CONTAINER ${OS}-${VERSION}-${ARCH}.tar.xz ${CONTAINER_DIR} ${CROSS_ARCH} ${NEW_USER} ${PASSWORD}
+    [[ -e $PREFIX/etc/container/proot ]]||mkdir -p $PREFIX/etc/container/proot
+    echo -e "#This file was automatically created by termux-container.\n#Do not edit this file if you don't know what you are doing !" >> $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+    echo -e "OS=${OS}\nCONTAINER_DIR=${CONTAINER_DIR}\nCROSS_ARCH=${CROSSARCH}\nMOUNT_SDCARD=${MOUNT_SDCARD}" >> $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+  fi
+}
+#本地镜像与容器列表
+LIST(){
+  echo
+  echo -e "${COLOR}Images:"
+  echo -e "OS:Version:Arch"
+  echo -e "================"
+  if [[ -e $PREFIX/var/container ]];then
+    for IMAGE in $(ls $PREFIX/var/container);do
+      OS=${IMAGE%%-*}
+      VERSION=${IMAGE#$OS-}
+      VERSION=${VERSION%-*}
+      ARCH=${IMAGE#*$VERSION-}
+      ARCH=${ARCH%%.*}
+      echo "$OS:$VERSION:$ARCH"
+    done
+  fi
+  echo
+  echo
+  echo -e "Containers:"
+  echo -e "Type:Name"
+  echo -e "================"
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      echo "proot:$NAME"
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      echo "chroot:$NAME"
+    done
+  fi
+  echo
+}
+#以下两函数事实上是容器备份还原的更简单实现
+#备份
+EXPORT_CONTAINER(){
+  CONTAINER_NAME=$1
+  if [[ -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
+    export TYPE=proot
+    source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+  elif [[ -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
+    export TYPE=chroot
+    if [[ $(whoami) != "root" ]];then
+      sudo container -e EXPORT_CONTAINER ${CONTAINER_NAME}
+      return
+    fi
+  else
+    echo -e "\033[31mError: container does not exist !${COLOR}"
+    return
+  fi
+  FILE=/sdcard/${OS}-${ARCH}-${CROSS_ARCH}-${CONTAINER_NAME}-$(date +%y%m%d%H%M%S).tar.xz
+  if ! cd ${CONTAINER_DIR};then
+    echo -e "\033[31mError: container directory does not exist !${COLOR}"
+    return
+  fi
+  printf "${COLOR}"
+  if [[ ${TYPE} == "chroot" ]];then
+    tar -JPpcvf ${FILE} .
+  else
+    proot -l tar -JPpcvf ${FILE} .
+  fi
+  echo -e "Export done, file: ${FILE}"
+}
+#还原
+IMPORT_ROOTFS(){
+  FILE=$1
+  if [[ ! -e ${FILE} ]];then
+    echo -e "\033[31mError: rootfs file does not exist !${COLOR}"
+    return 1
+  fi
+  while :
+  do
+    read -p "[] OS > " OS
+    if [[ ${OS} != "" ]];then
+      break
+    fi
+  done
+  while :
+  do
+    read -p "[] Arch > " ARCH
+    case $ARCH in
+      "i386"|"m68k"|"ppc"|"riscv32"|"riscv64"|"arm64"|"armhf"|"ppc64"|"amd64") break;;
+    esac
+  done
+  while :
+  do
+    read -p "[] Version > " VERSION
+    if [[ ${VERSION} != "" ]]&&[[ ! -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
+      break
+    else
+      echo -e "\033[31mError: OS version already in use !${COLOR}"
+    fi
+  done
+  cp ${FILE} $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
+  return 0
+}
+#提权接口，chroot容器相关函数在这里被sudo调用
+EXEC_FUNCTION(){
+  $@
+}
+#又一个小彩蛋，但我不说
+EASTER_EGG(){
+LINE=$(($(($(stty size|awk '{print $2}')))/2-27))
+SIGNATURE="\033[${LINE}C       00                                  00
+\033[${LINE}C      01                                    00
+\033[${LINE}C     00      000                100  001     10
+\033[${LINE}C     01        1010               0\\\/0       11
+\033[${LINE}C     10           001             0000       01
+\033[${LINE}C     00        1110              00/\\\00      00
+\033[${LINE}C      10     000                111  111    01
+\033[${LINE}C       11                                  10
+\033[${LINE}C                    ^^^^^^^^^^^
+"
+printf "\033[1;38;2;135;206;250m${SIGNATURE}\033[0m"
+return
+}
+#console获取到的命令在这里被解析
+CONTAINER_CONSOLE_MAIN(){
+  if [[ $1 != "" ]];then
+    echo $@ >> $HOME/.container_history
+  fi
+  case $1 in
+    "help") SHOW_HELPS;;
+    "search") SEARCH_IMAGES $2 $3;;
+    "login") RUN_CONTAINER $2;;
+    "pull") PULL_ROOTFS $2 $3 $4;;
+    "import") IMPORT_ROOTFS $2;;
+    "export") EXPORT_CONTAINER $2;;
+    "new") CONTAINER_NEW;;
+    "ls") LIST;;
+    "exit") echo -e "\nExit.\033[0m"&&exit;;
+    "rmi") REMOVE_IMAGE $2 $3 $4;;
+    "rm") REMOVE_CONTAINER $2;;
+    "cp") CONTAINER_CP $2 $3;;
+    "info") SHOW_INFO;;
+    "") return;;
+    *) echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
+  esac
+}
+#容器删除
+REMOVE_CONTAINER(){
+  CONTAINER_NAME=$1
+  if [[ -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
+    source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+    echo -e "${COLOR}======================================="
+    echo -e "Name                : ${CONTAINER_NAME}"
+    echo -e "OS                  : ${OS}"
+    echo -e "TYPE                : proot"
+    echo -e "Container directory : ${CONTAINER_DIR}"
+    echo
+    read -p "Press Enter to remove this container or CTRL-C to exit."
+    chmod -Rv 777 ${CONTAINER_DIR}
+    rm -rfv ${CONTAINER_DIR}
+    rm -v $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+  elif [[ -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
+    source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+    if [[ $(whoami) != "root" ]];then
+      sudo container -e REMOVE_CONTAINER $1
+      return
+    fi
+    source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+    echo -e "======================================="
+    echo -e "Name                : ${CONTAINER_NAME}"
+    echo -e "OS                  : ${OS}"
+    echo -e "TYPE                : chroot"
+    echo -e "Container directory : ${CONTAINER_DIR}"
+    echo
+    read -p "Press Enter to remove this container or CTRL-C to exit."
+    for i in {0..10};do
+      umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+      umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+      umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+      umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+      umount ${CONTAINER_DIR}/tmp >> /dev/null 2>&1
+      umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+    done
+    if mountpoint -q ${CONTAINER_DIR}/sdcard;then
+      echo -e "\033[31mError: can not umount container at this time !${COLOR}"
+      return 1
+    fi
+     if mountpoint -q ${CONTAINER_DIR}/tmp;then
+      echo -e "\033[31mError: can not umount container at this time !${COLOR}"
+      return 1
+    fi
+    if mountpoint -q ${CONTAINER_DIR}/dev;then
+      echo -e "\033[31mError: can not umount container at this time !${COLOR}"
+      return 1
+    fi
+    if mountpoint -q ${CONTAINER_DIR}/sys;then
+      echo -e "\033[31mError: can not umount container at this time !${COLOR}"
+      return 1
+    fi
+    if mountpoint -q ${CONTAINER_DIR}/proc;then
+      echo -e "\033[31mError: can not umount container at this time !${COLOR}"
+      return 1
+    fi
+    rm -rvf ${CONTAINER_DIR}
+    rm -v $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+  else
+    echo -e "\033[31mError: container does not exist !${COLOR}"
+    return
+  fi
+}
+#用于获取命令并交由console_main函数解析
+CONTAINER_CONSOLE(){
+  [[ -e $HOME/.container_history ]]||touch $HOME/.container_history
+  if [[ $(whoami) == "root" ]];then
+    echo -e "\033[33mWarning: This script should not be run with root privileges !${COLOR}\n"
+  fi
+  HISTORY=0
+  COMMAND=""
+  ALL_COMMANDS="help exit new search pull rmi cp ls rm login import export info"
+  while :
+  do
+    #删除行首空格
+    while [[ $(printf "${COMMAND}"|cut -c 1-1) == " " ]];
+    do
+      COMMAND=${COMMAND#?}
+    done
+    #内置命令高亮
+    for GREEN in $ALL_COMMANDS
+    do
+      if [[ $(printf "${COMMAND}"|cut -d " " -f 1) == "${GREEN}" ]];then
+        if [[ $(printf "${COMMAND}"|grep " ") != "" ]];then
+          OTHER=" $(printf "${COMMAND}"|cut -d " " -f 2-10)"
+        else
+          OTHER=""
+        fi
+        COMMAND_SHOW="\033[1;38;2;166;227;161m${GREEN}${COLOR}${OTHER}"
+        break
+      else
+        COMMAND_SHOW="${COMMAND}"
+      fi
+    done
+    HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
+    HISTORY_LINES=$(( ${HISTORY_LINES}-1))
+    SIZE=$(stty size|awk '{printf $2}')
+#    stty erase '^?'
+    printf "${COLOR}"
+    printf "\033[?25l"
+    printf "\r"
+    printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
+    printf "\033[1GConsole > ${COMMAND_SHOW}"
+    printf "\033[?25h"
+    #每次读取一字符内容并解析
+    read -s -N1 COMMAND0
+    #ctrl-d捕获
+    if [[ ${COMMAND0} == $(echo -e "\004") ]];then
+      echo -e "\n\nExit.\033[0m"&&exit
+    fi
+    #回车捕获
+    if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ ${COMMAND0} != " " ]];then
+      echo
+      CONTAINER_CONSOLE_MAIN ${COMMAND}
+      COMMAND=""
+      COMMAND_SHOW=""
+      continue
+    fi
+    #删除键捕获
+    if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
+      COMMAND=${COMMAND%?}
+      continue
+    #也是删除键捕获,为方便调试，兼容作者笔记本
+    elif [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a08" ]];then
+      COMMAND=${COMMAND%?}
+      continue
+    #上下键捕获，用于历史命令显示
+    elif [[ ${COMMAND0} == $(printf "\033") ]];then
+      read -s -N 2 COMMAND1
+      #上键捕获
+      if [[ ${COMMAND1} == "[A" ]];then
+        if (($HISTORY <= ${HISTORY_LINES}));then
+          HISTORY=$(($HISTORY+1))
+        fi
+        COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
+        continue
+      #下键捕获
+      elif [[ ${COMMAND1} == "[B" ]];then
+        if (($HISTORY >= 2));then
+          HISTORY=$(($HISTORY-1))
+        fi
+        COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
+        continue
+      else
+        continue
+      fi
+    else
+      COMMAND+=${COMMAND0}
+      continue
+    fi
+  done
+}
+#外部-h参数的帮助信息输出
+SHOW_USAGE(){
+  LINE=$(($(($(stty size|awk '{print $2}')))/2-23))
+  echo -e "\033[${LINE}C${COLOR}                  _________"
+  echo -e "\033[${LINE}C                 /\\        \\"
+  echo -e "\033[${LINE}C                /  \\        \\"
+  echo -e "\033[${LINE}C               /    \\        \\"
+  echo -e "\033[${LINE}C              /      \\________\\"
+  echo -e "\033[${LINE}C              \\      /        / "
+  echo -e "\033[${LINE}C               \\    /        /"
+  echo -e "\033[${LINE}C                \\  /        /"
+  echo -e "\033[${LINE}C                 \\/________/"
+  echo
+  echo -e "\033[${LINE}C═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "\033[${LINE}C ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e "\033[${LINE}C ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  SIZE=$(stty size|awk '{print $2}')
+  let SIZE=$(($SIZE-16))
+  echo "//"
+  echo
+  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed $SIZE'q'|tr -d '\n')\033[0m"
+  echo
+  echo -e "${COLOR}//"
+  echo
+  echo -e "Usage:"
+  echo -e " container                       #Start container console."
+  echo -e " container -h                    #Show this page."
+  echo -e " container cp [Name:Path] [Path] #Copy files,like docker cp."
+  echo -e " container -i [Image File]       #Import an image."
+  echo -e " container -E                    #Easy mode."
+  echo -e " container -e [Function]         #Exec function in this script *NOT for user."
+}
+#萌新模式
+EASY_INSTALL(){
+  trap "exit" SIGINT
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  if whiptail --title "[] RUN MODE" --yes-button "chroot" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
+    TYPE=chroot
+  else
+    TYPE=proot
+  fi
+  LIST="1 alpine 2 archlinux 3 centos 4 debian 5 fedora 6 kali 7 manjaro 8 opensuse 9 parrot 10 ubuntu"
+  LIST2="alpine archlinux centos debian fedora kali manjaro opensuse parrot ubuntu"
+  NUMBER=$(whiptail --title "[] OS" --menu "Choose the OS to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  OS=$(echo $LIST2|awk "{print \$$NUMBER}")
+  unset LIST LIST2 NUMBER
+  if [[ ${OS} != "parrot" ]]&&[[ ${OS} != "manjaro" ]];then
+    NUMBER=0
+    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+    unset VERSION NUMBER
+    NUMBER=$(whiptail --title "[] VERSION" --menu "Choose the version to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
+  fi
+  GET_CPU_ARCH
+  if [[ ! -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
+    PULL_ROOTFS ${OS} ${VERSION} ${ARCH}
+  fi
+  if [[ -e /data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH} ]];then
+    echo -e "Error: container already installed"
+    return 1
+  fi
+  if [[ ${TYPE} == "chroot" ]];then
+    [[ -e $PREFIX/etc/container/chroot ]]||mkdir -p $PREFIX/etc/container/chroot
+    echo -e "#This file was automatically created by termux-container.\n#Do not edit this file if you don't know what you are doing !" >> $PREFIX/etc/container/chroot/container-${TYPE}-${OS}-${VERSION}_${ARCH}.conf
+    echo -e "OS=${OS}\nCONTAINER_DIR=/data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH}\nENABLE_UNSHARE=${ENABLE_UNSHARE}\nPRIVAGE_LEVEL=1\nCROSS_ARCH=null\nMOUNT_SDCARD=${MOUNT_SDCARD}" >> $PREFIX/etc/container/chroot/container-${TYPE}-${OS}-${VERSION}_${ARCH}.conf
+    sudo container -e CREATE_CHROOT_CONTAINER ${OS}-${VERSION}-${ARCH}.tar.xz /data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH}
+  else
+    export CROSSARCH=null
+    CREATE_PROOT_CONTAINER ${OS}-${VERSION}-${ARCH}.tar.xz /data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH} ${CROSS_ARCH}
+    [[ -e $PREFIX/etc/container/proot ]]||mkdir -p $PREFIX/etc/container/proot
+    echo -e "#This file was automatically created by termux-container.\n#Do not edit this file if you don't know what you are doing !" >> $PREFIX/etc/container/proot/container-${TYPE}-${OS}-${VERSION}_${ARCH}.conf
+    echo -e "OS=${OS}\nCONTAINER_DIR=/data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH}\nCROSS_ARCH=${CROSSARCH}\nMOUNT_SDCARD=${MOUNT_SDCARD}" >> $PREFIX/etc/container/proot/container-${TYPE}-${OS}-${VERSION}_${ARCH}.conf
+  fi
+}
+EASY_REMOVE(){
+  trap "exit" SIGINT
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  NUMBER=0
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(proot) "
+      LIST2+="$NAME "
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(chroot) "
+      LIST2+="$NAME "
+    done
+  fi
+  unset CONTAINER NUMBER
+  if [[ $LIST == "" ]];then
+    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    return 1
+  fi
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to remove:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+  REMOVE_CONTAINER "$CONTAINER"
+}
+EASY_RUN(){
+  trap "exit" SIGINT
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  NUMBER=0
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(proot) "
+      LIST2+="$NAME "
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(chroot) "
+      LIST2+="$NAME "
+    done
+  fi
+  unset CONTAINER NUMBER
+  if [[ $LIST == "" ]];then
+    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    return 1
+  fi
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to run:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+  RUN_CONTAINER $CONTAINER
+}
+EASY_BACKUP(){
+  trap "exit" SIGINT
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  NUMBER=0
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(proot) "
+      LIST2+="$NAME "
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(chroot) "
+      LIST2+="$NAME "
+    done
+  fi
+  unset CONTAINER NUMBER
+  if [[ $LIST == "" ]];then
+    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    return 1
+  fi
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to backup:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+  EXPORT_CONTAINER $CONTAINER
+}
+
+
+
+EASY_RESTORE(){
+  return 0
+}
+EASY_MODE(){
+  trap "exit" SIGINT
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "Choose an operation:" 15 $WIDTH 6 1 install 2 remove 3 run 3>&1 1>&2 2>&3)
+  case $OPTION in
+    1) EASY_INSTALL;;
+    2) EASY_REMOVE;;
+    3) EASY_RUN;;
+  esac
+}
+#函数从这里开始被调用
+case $1 in
+    "-h") SHOW_USAGE;;
+    "-E") EASY_MODE;;
+    "-e") EXEC_FUNCTION ${@:2};;
+    "-b") CONTAINER_BUILD $2;;
+    "cp") CONTAINER_CP $2 $3;;
+    "-v") EASTER_EGG;;
+    "") CONSOLE_GREETING&&CONTAINER_CONSOLE;;
+    *) CONTAINER_CONSOLE_MAIN ${@:1};;
+esac
