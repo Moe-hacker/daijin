@@ -122,6 +122,29 @@ CREATE_CHROOT_CONTAINER(){
       break
     fi
   done
+  while :
+  do
+    read -p "[] CREATE A NEW COMMON USER [y/n]? " CREATE_NEW_USER
+    if [[ ${CREATE_NEW_USER} = "n" || ${CREATE_NEW_USER} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${CREATE_NEW_USER} = "y" ]];then
+    while :
+    do
+      read -p "[] ENTER YOUR USERNAME: " NEW_USER
+      if [[ ${NEW_USER} != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      read -p "[] ENTER YOUR PASSWORD: " PASSWORD
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  fi
   echo -e "[] THE CONTAINER ABSOLUTE PATH IS THE DIRECTORY USED TO STORE THE CONTAINER,FOR EXAMPLE,YOU CAN USE /data/container-name,BUT DO NOT USE DIRECTORY IN /sdcard!!!"|pv -qL 40
   read -p "[] ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CONTAINER_DIR
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
@@ -276,7 +299,7 @@ CREATE_CHROOT_CONTAINER(){
   mount --rbind /dev ${CONTAINER_DIR}/dev/
   mount --rbind /sys ${CONTAINER_DIR}/sys/
   unset LD_PRELOAD
-  $PREFIX/bin/chroot ${CONTAINER_DIR} /bin/bash -c "bash /tmp/group_add.sh" >> /dev/null 2>&1
+  $PREFIX/bin/chroot ${CONTAINER_DIR} /tmp/group_add.sh >> /dev/null 2>&1
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] COPY INIT SCRIPT"|pv -qL 40
   mkdir -p ${CONTAINER_DIR}/usr/local/bin >> /dev/null 2>&1
   cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
@@ -304,6 +327,29 @@ CREATE_PROOT_CONTAINER(){
       break
     fi
   done
+  while :
+  do
+    read -p "[] CREATE A NEW COMMON USER [y/n]? " CREATE_NEW_USER
+    if [[ ${CREATE_NEW_USER} = "n" || ${CREATE_NEW_USER} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${CREATE_NEW_USER} = "y" ]];then
+    while :
+    do
+      read -p "[] ENTER YOUR USERNAME: " NEW_USER
+      if [[ ${NEW_USER} != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      read -p "[] ENTER YOUR PASSWORD: " PASSWORD
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  fi
   read -p "[] ENTER THE PATH OF THIS CONTAINER(SUGGEST TO USE DIRECTORY IN /data/data/com.termux/files/home): " CONTAINER_DIR
   if [[ -e $CONTAINER_DIR ]];then
     echo -e "[] WARNING: DIRECTORY ALREADY EXISTS!"

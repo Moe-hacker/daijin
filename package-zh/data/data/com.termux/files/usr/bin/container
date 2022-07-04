@@ -122,6 +122,29 @@ CREATE_CHROOT_CONTAINER(){
       break
     fi
   done
+  while :
+  do
+    read -p "[] 创建一个新的普通用户[y/n]? " CREATE_NEW_USER
+    if [[ ${CREATE_NEW_USER} = "n" || ${CREATE_NEW_USER} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${CREATE_NEW_USER} = "y" ]];then
+    while :
+    do
+      read -p "[] 请输入用户名: " NEW_USER
+      if [[ ${NEW_USER} != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      read -p "[] 请输入密码: " PASSWORD
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  fi
   echo -e "[] 容器绝对路径是用来存放容器的路径，例如，你可以用使用/data/container-容器名，但不要用/sdcard下的目录!!!"|pv -qL 40
   read -p "[] 请输入容器的绝对路径，不可包含空格: " CONTAINER_DIR
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
@@ -276,7 +299,7 @@ CREATE_CHROOT_CONTAINER(){
   mount --rbind /dev ${CONTAINER_DIR}/dev/
   mount --rbind /sys ${CONTAINER_DIR}/sys/
   unset LD_PRELOAD
-  $PREFIX/bin/chroot ${CONTAINER_DIR} /bin/bash -c "bash /tmp/group_add.sh" >> /dev/null 2>&1
+  $PREFIX/bin/chroot ${CONTAINER_DIR} /tmp/group_add.sh >> /dev/null 2>&1
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 复制初始化脚本"|pv -qL 40
   mkdir -p ${CONTAINER_DIR}/usr/local/bin >> /dev/null 2>&1
   cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
@@ -304,6 +327,29 @@ CREATE_PROOT_CONTAINER(){
       break
     fi
   done
+  while :
+  do
+    read -p "[] 创建一个新的普通用户[y/n]? " CREATE_NEW_USER
+    if [[ ${CREATE_NEW_USER} = "n" || ${CREATE_NEW_USER} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${CREATE_NEW_USER} = "y" ]];then
+    while :
+    do
+      read -p "[] 请输入用户名: " NEW_USER
+      if [[ ${NEW_USER} != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      read -p "[] 请输入密码: " PASSWORD
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  fi
   read -p "[] 请输入容器绝对路径(建议放置在/data/data/com.termux/files/home下的目录中): " CONTAINER_DIR
   if [[ -e $CONTAINER_DIR ]];then
     echo -e "[] 警告:目录已存在!"
