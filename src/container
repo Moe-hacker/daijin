@@ -1,0 +1,153 @@
+#!/data/data/com.termux/files/usr/bin/bash
+#  ██╗ ██╗  ██╗ ██████╗  █████╗   ███████╗ ██╗  ██╗
+# ████████╗ ██║ ██╔══██╗ ██╔══██╗ ██╔════╝ ██║  ██║
+# ╚██╔═██╔╝ ██║ ██████╔╝ ███████║ ███████╗ ███████║
+# ████████╗ ╚═╝ ██╔══██╗ ██╔══██║ ╚════██║ ██╔══██║
+# ╚██╔═██╔╝ ██╗ ██████╔╝ ██║  ██║ ███████║ ██║  ██║
+#  ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+# SPDX-License-Identifier: Apache-2.0
+# This file is part of termux-container.
+#
+# Copyright (c) 2021-2023 Moe-hacker
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# •.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
+# `•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
+# `•.,¸,.•*¯`•.,¸,.•* <|:::::::::(｡ ●ω●｡)
+# `•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
+# Github@Moe-hacker
+# E-mail: moe-hacker@outlook.com
+# Blog: https://blog.crack.moe
+################################
+################################
+################################
+################################
+# Load functions && Load configs && check the environment.
+function _init() {
+  # Usage:
+  # _init
+  for i in $(ls /data/data/com.termux/files/usr/share/termux-container/functions); do
+    source /data/data/com.termux/files/usr/share/termux-container/functions/$i
+  done
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container/global.conf ]]; then
+    error "Could not find global config file!"
+  fi
+  source /data/data/com.termux/files/usr/etc/container/global.conf
+  for i in capsh unshare chroot proot wget curl; do
+    if ! command -v $i 2>&1 >/dev/null; then
+      error "Missing dependencies: $i!"
+    fi
+  done
+  if ! command -v ruri 2>&1 >/dev/null; then
+    error "ruri not found, package might be broken!"
+  fi
+  if ! command -v container-console 2>&1 >/dev/null; then
+    error "container-console not found, package might be broken!"
+  fi
+  kernelVersion="$(uname -r)"
+  kernelMajor="${kernelVersion%%.*}"
+  if ((kernelMajor < 4)); then
+    echo -e "\033[33mWarning: termux-container has not been tested under linux 3.x or lower.\033[0m" >&2
+  fi
+}
+
+# Maybe it seems to be stupid.
+# But it provides an interface for executing built-in functions easily.
+function exec_function() {
+  $@
+}
+# Parse command from container-console.
+function container_console_main() {
+  case $1 in
+  "help") console_help ;;
+  "search") search_images $2 $3 ;;
+  "login") run_container $2 ;;
+  "pull") pull_rootfs $2 $3 $4 ;;
+  "import") import_rootfs $2 ;;
+  "export") export_container $2 ;;
+  "new") create_new_container ;;
+  "ls") container_list ;;
+  "exit") echo -e "\nExit.\033[0m" && exit ;;
+  "rmi") remove_image $2 $3 $4 ;;
+  "rm") remove_container $2 ;;
+  "cp") container_cp $2 $3 ;;
+  "info") show_info ;;
+  "") return ;;
+  *)
+    RANDOM_NUM=$RANDOM
+    RANDOM_NUM=$((RANDOM_NUM % 6))
+    case $RANDOM_NUM in
+    "1")
+      x=${CAT2}
+      ;;
+    "2")
+      x=${CAT3}
+      ;;
+    "3")
+      x=${CAT4}
+      ;;
+    "4")
+      x=${CAT5}
+      ;;
+    "5")
+      x=${CAT6}
+      ;;
+    "0")
+      x=${CAT7}
+      ;;
+    esac
+    printf "$x\n"
+    echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
+    ;;
+  esac
+}
+function container_console() {
+  # It has been rewritten with Go.
+  container-console
+  x="${CAT8}\nBye, nya~"
+  printf "$x\n"
+}
+# I think a large script should includes a main function...
+function main() {
+  case $1 in
+  "-h") script_help ;;
+  "-E") easy_mode ;;
+  "-e") exec_function ${@:2} ;;
+  "cp") container_cp $2 $3 ;;
+  "") container_console ;;
+  *) container_console_main ${@:1} ;;
+  esac
+}
+_init
+main "$@"
+#         ●●●●● ●●●●● ●●●●  ●   ● ●   ● ●   ●
+#           ●   ●     ●   ● ●● ●● ●   ●  ● ●
+#           ●   ●●●●  ●●●●  ● ● ● ●   ●   ●
+#           ●   ●     ●  ●  ●   ● ●   ●  ● ●
+#           ●   ●●●●● ●   ● ●   ●  ●●●  ●   ●
+#
+#
+#  ●●●   ●●●  ●   ● ●●●●●   ●    ●●●  ●   ● ●●●●● ●●●●
+# ●   ● ●   ● ●●  ●   ●    ● ●    ●   ●●  ● ●     ●   ●
+# ●     ●   ● ● ● ●   ●   ●   ●   ●   ● ● ● ●●●●  ●●●●
+# ●   ● ●   ● ●  ●●   ●   ●●●●●   ●   ●  ●● ●     ●  ●
+#  ●●●   ●●●  ●   ●   ●   ●   ●  ●●●  ●   ● ●●●●● ●   ●
+#
+#  ██╗ ██╗  ███████╗   ████╗   ███████╗
+# ████████╗ ██╔════╝ ██╔═══██╗ ██╔════╝
+# ╚██╔═██╔╝ █████╗   ██║   ██║ █████╗
+# ████████╗ ██╔══╝   ██║   ██║ ██╔══╝
+# ╚██╔═██╔╝ ███████╗ ╚██████╔╝ ██║
+#  ╚═╝ ╚═╝  ╚══════╝  ╚═════╝  ╚═╝

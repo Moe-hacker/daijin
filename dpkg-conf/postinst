@@ -1,0 +1,380 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+# This file is part of termux-container.
+#
+# Copyright (c) 2023 Moe-hacker
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# 100% shit-code.
+# You can't understand how this works,
+# trust me, because I don't understand either.
+while true; do
+  if (($(stty size | awk '{print $2}') < 64))||(($(stty size | awk '{print $1}') < 14)); then
+    echo -e "\033[31mWindow is too small, 64x14 least."
+    sleep 1
+  else
+    break
+  fi
+done
+col=$(($(($(stty size | awk '{print $2}'))) / 2 - 25))
+logo="\033[?25l\033[1;38;2;254;228;208m
+\033[${col}G         ●●●●● ●●●●● ●●●●  ●   ● ●   ● ●   ●
+\033[${col}G           ●   ●     ●   ● ●● ●● ●   ●  ● ●
+\033[${col}G           ●   ●●●●  ●●●●  ● ● ● ●   ●   ●
+\033[${col}G           ●   ●     ●  ●  ●   ● ●   ●  ● ●
+\033[${col}G           ●   ●●●●● ●   ● ●   ●  ●●●  ●   ●
+
+
+
+\033[${col}G ●●●   ●●●  ●   ● ●●●●●   ●    ●●●  ●   ● ●●●●● ●●●●
+\033[${col}G●   ● ●   ● ●●  ●   ●    ● ●    ●   ●●  ● ●     ●   ●
+\033[${col}G●     ●   ● ● ● ●   ●   ●   ●   ●   ● ● ● ●●●●  ●●●●
+\033[${col}G●   ● ●   ● ●  ●●   ●   ●●●●●   ●   ●  ●● ●     ●  ●
+\033[${col}G ●●●   ●●●  ●   ●   ●   ●   ●  ●●●  ●   ● ●●●●● ●   ●
+"
+clear
+row=$(($(($(stty size | awk '{print $1}'))) / 2 - 7))
+i=0
+while ((i < row)); do
+  i=$((i + 1))
+  echo
+done
+printf "$logo"
+sleep 1
+i=0
+j=$col
+k1=$((row + 2))
+k2=$((row + 10))
+x=0
+while ((x < 5)); do
+  i=0
+  j=$col
+  while ((i < 54)); do
+    i=$((i + 1))
+    printf "\033[${k1};${j}H "
+    printf "\033[${k2};${j}H "
+    j=$((j + 1))
+    sleep 0.004
+  done
+  k1=$((k1 + 1))
+  k2=$((k2 + 1))
+  x=$((x + 1))
+done
+clear
+row=$((row + 7))
+i=0
+while ((i < row)); do
+  i=$((i + 1))
+  echo
+done
+x=$(stty size | awk '{print $2}')
+echo $(yes "●" | sed $x'q' | tr -d '\n')
+row=$((row + 1))
+k=0
+while ((k < 3)); do
+  j=0
+  i=0
+  printf "\033[${row};${j}H\033[1;38;2;135;206;250m●●●●●●●●●●●●"
+  while ((i < x - 12)); do
+    i=$((i + 1))
+    printf "\033[${row};${j}H\033[1;38;2;254;228;208m●"
+    j=$((j + 1))
+    printf "\033[${row};${j}H\033[1;38;2;135;206;250m●●●●●●●●●●●●●"
+    sleep 0.004
+  done
+  while ((i <= x)); do
+    i=$((i + 1))
+    printf "\033[${row};${j}H\033[1;38;2;254;228;208m●"
+    j=$((j + 1))
+    sleep 0.004
+  done
+  k=$((k + 1))
+done
+i=0
+j=0
+while ((i <= x)); do
+  printf "\033[${row};${j}H\033[1;38;2;135;206;250m●"
+  sleep 0.007
+  i=$((i + 1))
+  j=$((j + 1))
+done
+clear
+col=$(($(($(stty size | awk '{print $2}'))) / 2 - 15))
+row=$(($(($(stty size | awk '{print $1}'))) / 2 - 3))
+h="\033[1;38;2;254;228;208m
+\033[${row};${col}H●   ●
+\033[$((row + 1));${col}H●   ●
+\033[$((row + 2));${col}H●●●●●
+\033[$((row + 3));${col}H●   ●
+\033[$((row + 4));${col}H●   ●
+"
+printf "$h"
+sleep 0.5
+e="\033[1;38;2;254;228;208m
+\033[${row};$((col + 6))H●●●●●
+\033[$((row + 1));$((col + 6))H●
+\033[$((row + 2));$((col + 6))H●●●●
+\033[$((row + 3));$((col + 6))H●
+\033[$((row + 4));$((col + 6))H●●●●●
+"
+printf "$e"
+sleep 0.5
+l="\033[1;38;2;254;228;208m
+\033[${row};$((col + 12))H●
+\033[$((row + 1));$((col + 12))H●
+\033[$((row + 2));$((col + 12))H●
+\033[$((row + 3));$((col + 12))H●
+\033[$((row + 4));$((col + 12))H●●●●●
+"
+printf "$l"
+sleep 0.5
+l="\033[1;38;2;254;228;208m
+\033[${row};$((col + 18))H●
+\033[$((row + 1));$((col + 18))H●
+\033[$((row + 2));$((col + 18))H●
+\033[$((row + 3));$((col + 18))H●
+\033[$((row + 4));$((col + 18))H●●●●●
+"
+printf "$l"
+sleep 0.5
+o="\033[1;38;2;254;228;208m
+\033[${row};$((col + 24))H ●●●
+\033[$((row + 1));$((col + 24))H●   ●
+\033[$((row + 2));$((col + 24))H●   ●
+\033[$((row + 3));$((col + 24))H●   ●
+\033[$((row + 4));$((col + 24))H ●●●
+"
+printf "$o"
+sleep 2
+clear
+col=$(($(($(stty size | awk '{print $2}'))) / 2 - 32))
+termsofuse="\033[1;38;2;254;228;208m
+\033[${col}G●●●●● ●●●●● ●●●●  ●   ●  ●●●●   ●●●  ●●●●●  ●   ●  ●●●● ●●●●●
+\033[${col}G  ●   ●     ●   ● ●● ●● ●      ●   ● ●      ●   ● ●     ●
+\033[${col}G  ●   ●●●●  ●●●●  ● ● ●  ●●●   ●   ● ●●●●   ●   ●  ●●●  ●●●●
+\033[${col}G  ●   ●     ●  ●  ●   ●     ●  ●   ● ●      ●   ●     ● ●
+\033[${col}G  ●   ●●●●● ●   ● ●   ● ●●●●    ●●●  ●       ●●●  ●●●●  ●●●●●
+
+
+"
+printf "$termsofuse"
+sleep 3
+termsofuse="\033[38;2;254;228;208m
+\033[1mACCEPTANCE OF TERMS OF USE
+
+  \033[0m\033[38;2;254;228;208mThe author of termux-container, Moe-hacker@Github, also named \`沨鸾\` (\"I\"), and other contributors, provide you with access to resources of github repo Moe-hacker/termux-container, including documents, software and source code (\"Software\").
+  The Software, and all other resources of this github repo subject to these Terms of Use. 
+  I reserve the right to update these Terms of Use at any time without notice to you.
+
+  By using this Software you accept these terms.
+  By using this Software, you confirm that you accept the terms of this policy and that you agree to comply with them.
+  If you do not agree to these terms, you must not use this Software.
+
+\033[1mProhibited uses:
+
+  \033[0m\033[38;2;254;228;208m• I am not willing to restrict how you can use this software, it should be your freedom, but if you want to redistribute this software, please comply with the license which you can see in the next page.
+
+\033[1mAdditional prohibited uses (only for users in People's Republic of China):
+
+  \033[0m\033[38;2;254;228;208mYou may use this Software only for lawful purposes.
+  You may not use this Software:
+   • In any way that breaches any applicable Chinese law or regulation.
+   • In any way that is unlawful or fraudulent or has any unlawful or fraudulent purpose or effect.
+   • To knowingly send or make any material that contains viruses, Trojan horses, worms, time-bombs, keystroke loggers, spyware, adware or any other harmful programs or similar computer code designed to adversely affect the operation of any computer software or hardware.
+   • In any way that violate the Criminal Law of the People's Republic of China.
+
+\033[1mYou also agree:
+
+  \033[0m\033[38;2;254;228;208m• This Software is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  • I am not responsible for anything that may happen to your device by using this Software.
+  • You use this Software at your own risk and take the responsibility upon yourself.
+  • And you are not to blame me or Github and its developers.
+
+\033[1mMAKE SURE YOU HAVE READ THE TERMS OF USE,
+AND AGREE WITH THEM.
+OR YOU CAN JUST PRESS CTRL-C TO EXIT.
+PRESS ENTER TO CONTINUE.
+"
+printf "$termsofuse" | pv -qL 150
+read x
+clear
+col=$(($(($(stty size | awk '{print $2}'))) / 2 - 21))
+license="\033[1;38;2;254;228;208m
+\033[${col}G●      ●●●   ●●●  ●●●●● ●   ●  ●●●● ●●●●●
+\033[${col}G●       ●   ●   ● ●     ●●  ● ●     ●
+\033[${col}G●       ●   ●     ●●●●  ● ● ●  ●●●  ●●●●
+\033[${col}G●       ●   ●   ● ●     ●  ●●     ● ●
+\033[${col}G●●●●●  ●●●   ●●●  ●●●●● ●   ● ●●●●  ●●●●●
+
+
+"
+printf "$license"
+sleep 3
+license="\033[1;38;2;254;228;208m
+License of termux-container:
+ 
+  Copyright (c) 2021-2023 Moe-hacker
+
+  Licensed under the Apache License, Version 2.0 (the \"License\");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an \"AS IS\" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+License of ruri:
+
+  MIT License
+ 
+  Copyright (c) 2022-2023 Moe-hacker
+ 
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the \"Software\"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+ 
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+ 
+  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+License of yoshinon:
+
+  MIT License
+ 
+  Copyright (c) 2023 Moe-hacker
+ 
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the \"Software\"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+ 
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+ 
+  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+License of rootfstool:
+
+  Copyright (c) 2023 Moe-hacker
+
+  Licensed under the Apache License, Version 2.0 (the \"License\");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an \"AS IS\" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+License of FiraCode fonts:
+
+  Monospaced font with programming ligatures by Nikita Prokopov.
+
+  https://github.com/tonsky/FiraCode
+
+  Copyright (c) 2014, Nikita Prokopov http://tonsky.me
+  with Reserved Font Name Fira Code.
+
+  Copyright (c) 2014, Mozilla Foundation https://mozilla.org/
+  with Reserved Font Name Fira Sans.
+
+  Copyright (c) 2014, Mozilla Foundation https://mozilla.org/
+  with Reserved Font Name Fira Mono.
+
+  Copyright (c) 2014, Telefonica S.A.
+
+  This Font Software is licensed under the SIL Open Font License, Version 1.1.
+  This license is copied below, and is also available with a FAQ at:
+  http://scripts.sil.org/OFL
+
+PRESS ENTER TO CONTINUE.
+"
+printf "$license" | pv -qL 200
+read x
+clear
+col=$(($(($(stty size | awk '{print $2}'))) / 2 - 12))
+note="\033[1;38;2;254;228;208m
+\033[${col}G●   ●  ●●●  ●●●●● ●●●●● 
+\033[${col}G●●  ● ●   ●   ●   ●
+\033[${col}G● ● ● ●   ●   ●   ●●●●
+\033[${col}G●  ●● ●   ●   ●   ●
+\033[${col}G●   ●  ●●●    ●   ●●●●●
+"
+printf "$note"
+note="\033[1;38;2;254;228;208m
+
+About special characters:
+  termux-container uses special characters for a better look.
+  But not every font supports them.
+  For a test:
+  If this (\033[0m\033[1;38;2;254;228;208m) is a tofu but not a ubuntu logo:
+  please run:
+  mkdir -p ~/.termux
+  cp \$PREFIX/share/termux-container/font.ttf ~/.termux
+  termux-reload-settings
+
+Reporting bugs:
+  Please go to:
+  https://github.com/Moe-hacker/termux-container/discussions
+
+
+"
+printf "$note"
+printf "PRESS ENTER TO CONTINUE."
+read x
+clear
+col=$(($(($(stty size | awk '{print $2}'))) / 2 - 15))
+logo="\033[1;38;2;254;228;208m
+\033[${col}G   ●●  ●●          ●   ●  ●●
+\033[${col}G  ●      ●●         ● ●     ●
+\033[${col}G  ●        ●         ●      ●
+\033[${col}G  ●      ●●         ● ●     ●
+\033[${col}G   ●●  ●●    ●●●●● ●   ●  ●●
+
+\033[${col}G●   ● ●   ●   ●●    ●   ●  ●●●
+\033[${col}G●  ●  ●● ●●  ●  ●   ●  ●  ●   ●
+\033[${col}G●●●   ● ● ●   ●● ●  ●●●   ●
+\033[${col}G●  ●  ●   ●  ●  ●   ●  ●  ●   ●
+\033[${col}G●   ● ●   ●   ●● ●  ●   ●  ●●●
+"
+printf "$logo\033[?25h\033[0m"
