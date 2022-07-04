@@ -1,0 +1,119 @@
+#!/bin/sh
+# ██╗ ██╗  ██╗ ███████╗ ██╗  ██╗
+#████████╗ ██║ ██╔════╝ ██║  ██║
+#╚██╔═██╔╝ ██║ ███████╗ ███████║
+#████████╗ ╚═╝ ╚════██║ ██╔══██║
+#╚██╔═██╔╝ ██╗ ███████║ ██║  ██║
+# ╚═╝ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+###### Github@Moe-hacker ######
+export PATH="/bin:/usr/bin:/usr/local/bin"
+if [ -e /etc/enable_output ];then
+  export ENABLE_OUTPUT=true
+else
+  export ENABLE_OUTPUT=false
+fi
+mount -t proc proc -o rw,nosuid,nodev,noexec,relatime /proc >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -t sysfs sysfs -o ro,seclabel,nosuid,nodev,noexec,relatime /sys >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /sys"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -t tmpfs tmpfs -o rw,seclabel,nosuid,size=65536k,mode=755 /dev >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /dev"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mknod -m 622 /dev/console c 5 1 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/console"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+chown root:tty /dev/console >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 更改 /dev/console所属用户"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+rm /dev/null -f
+mknod -m 666 /dev/null c 1 3 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/null"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mknod -m 666 /dev/zero c 1 5 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/zero"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mknod -m 666 /dev/ptmx c 5 2 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/ptmx"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+chown root:tty /dev/ptmx >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 更改 /dev/ptmx所属用户"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mknod -m 666 /dev/tty c 5 0 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/tty"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+chown root:tty /dev/tty >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 更改 /dev/tty所属用户"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mknod -m 444 /dev/random c 1 8 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/random"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mknod -m 444 /dev/urandom c 1 9 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/urandom"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+ln -s /proc/self/fd /dev/fd >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/fd"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+ln -s /proc/self/fd/0 /dev/stdin >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/stdin"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+ln -s /proc/self/fd/1 /dev/stdout >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/stdout"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+ln -s /proc/self/fd/2 /dev/stderr >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/stderr"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+ln -s /dev/null /dev/tty0 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/tty0"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mkdir /dev/pts >> /dev/null 2>&1
+mount -t devpts -o gid=4,mode=620 devpts /dev/pts >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/pts"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mkdir /dev/shm >> /dev/null 2>&1
+mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/shm"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mkdir /dev/mqueue >> /dev/null 2>&1
+mount -t mqueue none /dev/mqueue >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/mqueue"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mkdir /dev/net >> /dev/null 2>&1
+mknod /dev/net/tun c 10 200 >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 创建 /dev/net/tun"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,private,ro /proc/sysrq-trigger /proc/sysrq-trigger >> /dev/null 2>&1
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/sysrq-trigger"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,relatime /proc/bus /proc/bus
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/bus"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,relatime /proc/fs /proc/fs
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/fs"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,relatime /proc/irq /proc/irq
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/irq"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,relatime /proc/sys /proc/sys
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/sys"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,seclabel,relatime  /proc/asound /proc/asound
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/asound"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,seclabel,relatime /proc/scsi /proc/scsi
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /proc/scsi"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+mount -o bind,ro,seclabel,relatime /sys/firmware /sys/firmware
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 挂载 /sys/firmware"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+if [ $(hostname) != $(cat /etc/hostname) ];then
+  hostname $(cat /etc/hostname) >> /dev/null 2>&1
+  [ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 设置主机名"
+  [ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+fi
+[ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] 登录"
+[ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
+rm /dev/null&&mknod -m 666 /dev/null c 1 3
+printf "\033[0m"
+/bin/su - root

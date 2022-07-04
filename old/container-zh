@@ -1,0 +1,1239 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# ██╗ ██╗  ██╗ ██████╗  █████╗   ███████╗ ██╗  ██╗
+#████████╗ ██║ ██╔══██╗ ██╔══██╗ ██╔════╝ ██║  ██║
+#╚██╔═██╔╝ ██║ ██████╔╝ ███████║ ███████╗ ███████║
+#████████╗ ╚═╝ ██╔══██╗ ██╔══██║ ╚════██║ ██╔══██║
+#╚██╔═██╔╝ ██╗ ██████╔╝ ██║  ██║ ███████║ ██║  ██║
+# ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+###### Github@Moe-hacker ######
+#❀我萌故我在❀
+#•.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
+#`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
+#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::(｡ ●ω●｡)
+#`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
+#编程第一法则:如果你的代码不知道为啥能跑起来，就别再动它了
+#编程第二法则:多个人拉的屎放一起会炸
+#编程第三法则:老代码不要乱动，因为你可能也不知道你写的什么
+#编程第四法则:如果一个功能太难实现，那就放弃
+###### E-mail: moe-hacker@outlook.com ######
+######  Blog: cnblogs.com/Moe-hacker  ######
+####################
+######日志管理######
+####################
+export RUN_WITH=$@
+export LOG_FILE="/data/data/com.termux/files/usr/var/log/container.log"
+CONTAINER_LOG_HEAD(){
+  echo "------------------日志开始记录啦----------------------" >> ${LOG_FILE}
+  echo "[$(date +%Y-%m-%d\ %H:%M:%S)] 运行参数: \"$RUN_WITH\"" >> ${LOG_FILE}
+  echo "[$(date +%Y-%m-%d\ %H:%M:%S)] 系统架构: $(uname -m)" >> ${LOG_FILE}
+  echo "[$(date +%Y-%m-%d\ %H:%M:%S)] 内核版本: $(uname -r)" >> ${LOG_FILE}
+  echo "[$(date +%Y-%m-%d\ %H:%M:%S)] 安卓版本: $(getprop ro.build.version.release)" >> ${LOG_FILE}
+  if [[ -e /data/data/com.termux/files/usr/etc/container/global.conf ]];then
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] 全局设置:" >> ${LOG_FILE}
+    export $(cat /data/data/com.termux/files/usr/etc/container/global.conf)
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] DISABLE_SELINUX=${DISABLE_SELINUX}" >> ${LOG_FILE}
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] MOUNT_SDCARD=${MOUNYT_SDCARD}" >> ${LOG_FILE}
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] ENABLE_OUTPUT=${ENABLE_OUTPUT}" >> ${LOG_FILE}
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] HOSTNAME=${HOSTNAME}" >> ${LOG_FILE}
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] CURSOR=${CURSOR}" >> ${LOG_FILE}
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] CONTAINER=${CONTAINER}" >> ${LOG_FILE}
+  fi
+}
+CONTAINER_LOG(){
+  echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] $@" >> ${LOG_FILE}
+}
+CONTAINER_LOG_END(){
+  echo "----------------本次运行日志结束啦--------------------" >> ${LOG_FILE}
+}
+####################
+######安装程序######
+####################
+if [[ ! -e /data/data/com.termux/files/usr/bin/container ]];then #安装程序
+  CONTAINER_LOG_HEAD
+  echo -e "\e[38;5;225m[] 正在为您安装字体..."
+  mv ~/.termux/font.ttf ~/.termux/font-backup.ttf
+  wget https://github.com/Moe-hacker/termux-container/raw/main/font.ttf
+  if [[ -e font.ttf ]];then
+    mv font.ttf ~/.termux/font.ttf
+    termux-reload-settings
+    CONTAINER_LOG "安装字体"
+  else
+    mv ~/.termux/font-backup.ttf ~/.termux/font.ttf
+    echo "字体下载失败，请检查网络连接 :("
+    sleep 1s
+    CONTAINER_LOG "字体下载失败"
+  fi
+  clear
+  printf '\e[6 q'
+  printf '\033[?25l'
+  i1=$(($(stty size|awk '{print $2}')))
+  let i1=$i1
+  i4=$(($i1/2-22))
+  echo -e "\033[${i4}G              \e[38;5;225m┌───────────┐"
+  echo -e "\033[${i4}G              │ ┌───────┐ │"
+  echo -e "\033[${i4}G              │ │  \e[38;5;227m┌───────────┐"
+  echo -e "\033[${i4}G              \e[38;5;225m│ │  \e[38;5;227m│ ┌───────┐ │"
+  echo -e "\033[${i4}G              \e[38;5;225m│ │  \e[38;5;227m│ │  \e[38;5;225m│ │  \e[38;5;227m│ │"
+  echo -e "\033[${i4}G              \e[38;5;225m│ └──\e[38;5;227m│ │\e[38;5;225m──┘ │  \e[38;5;227m│ │"
+  echo -e "\033[${i4}G              \e[38;5;225m└────\e[38;5;227m│ │\e[38;5;225m────┘  \e[38;5;227m│ │"
+  echo -e "\033[${i4}G                   \e[38;5;227m│ └───────┘ │"
+  echo -e "\033[${i4}G                   \e[38;5;227m└───────────┘"
+  echo -e "\033[${i4}G\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "\033[${i4}G ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e "\033[${i4}G ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  i2=0
+  while (( $i2<=$i1 ));do
+      i2=$(($i2+1))
+      echo -e "\e[38;5;225m\033[13H\033[${i2}G○"
+      sleep 0.01s
+  done
+  i5=$(($i4+9))
+  echo -e "\033[${i5}G\e[38;5;225mMADE WITH  BY MOE-HACKER"|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225m    KEEP MOE KEEP COOL"|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225m      此程序\"无担保\""|pv -qL 20
+  echo -e "\033[${i5}G\e[38;5;225m      请按回车键继续"|pv -qL 20
+  i2=0
+  printf '\033[?25h'
+  read
+  clear
+  curl -L https://raw.githubusercontent.com/Moe-hacker/termux-container/main/LICENSE
+  read -p "[] 按回车键同意此协议或者按ctrl-c退出" NULL
+  CONTAINER_LOG "已同意协议"
+  clear
+  echo -e "\e[38;5;225m[+] 呐，现在要开始安装了哦ＯＫ(ゝω・★)"|pv -qL 20
+  sleep 1s
+  clear
+  echo -e "\a\e[38;5;225m[] 安装依赖软件(≧▽≦)"|pv -qL 20
+  pkg install coreutils p7zip unzip zip tar git wget tsu curl e2fsprogs nano whiptail
+  CONTAINER_LOG "安装依赖软件"
+  clear
+  echo -e "\a\e[38;5;225m[] 克隆存储库(☆▽☆)"|pv -qL 20
+  mkdir -p /data/data/com.termux/files/usr/share/termux-container
+  git clone https://github.com/Moe-hacker/termux-container /data/data/com.termux/files/usr/share/termux-container||exit
+  cd /data/data/com.termux/files/usr/share/termux-container
+  cp container-zh /data/data/com.termux/files/usr/bin/container
+  cp container-helper /data/data/com.termux/files/usr/bin/
+  chmod 777 /data/data/com.termux/files/usr/bin/container-helper
+  chmod 777 /data/data/com.termux/files/usr/bin/container
+  clear
+  CONTAINER_LOG "安装完成"
+  echo -e "\a\e[38;5;225m[] 下面是几个简单的问题ε(*･ω･)_/ﾟ:･☆"|pv -qL 20
+  CONTAINER_LOG "开始配置"
+  while :
+  do
+    read -p "[] 是否关闭Selinux(用于在容器中正常使用普通用户，具有危险性!!!)?[y/n]: " DISABLE_SELINUX
+    if [[ ${DISABLE_SELINUX} = "n" || ${DISABLE_SELINUX} = "y" ]];then
+      break
+    fi
+  done
+  while :
+  do
+    read -p "[] 是否共享/sdcard(可能因误删导致数据丢失!!!)?[y/n]: " MOUNT_SDCARD
+    if [[ ${MOUNT_SDCARD} = "n" || ${MOUNT_SDCARD} = "y" ]];then
+      break
+    fi
+  done
+  while :
+  do
+    read -p "[] 为您的主机起个名字(hostname)吧(必须是字母和数字以及下划线组合，不能包含空格哦): " HOSTNAME
+    if [[ ${HOSTNAME} != "" ]];then
+      break
+    fi
+  done
+  while :
+  do
+    read -p "[] 是否启用额外输出(或是输n启用精简模式)?[y/n]: " ENABLE_OUTPUT
+    if [[ ${ENABLE_OUTPUT} = "n" || ${ENABLE_OUTPUT} = "y" ]];then
+      break
+    fi
+  done
+  while :
+  do
+  echo -e "[] 为您的容器选择一个光标主题: "
+    read -p '[1]: $|   [2]: $▂   [3]: $█ ' CURSOR
+    if [[ ${CURSOR} = "1" || ${CURSOR} = "2" || ${CURSOR} = "3" ]];then
+      break
+    fi
+  done
+  case ${CURSOR} in
+    1) CURSOR=bar;;
+    2) CURSOR=underline;;
+    3) CURSOR=block;;
+  esac
+  printf '\e[2 q\033[0m'
+  CONTAINER_LOG "配置内容为: DISABLE_SELINUX=${DISABLE_SELINUX} MOUNT_SDCARD=${MOUNT_SDCARD} ENABLE_OUTPUT=${ENABLE_OUTPUT} HOSTNAME=${HOSTNAME} CURSOR=${CURSOR}"
+  mkdir -p /data/data/com.termux/files/usr/etc/container
+  echo DISABLE_SELINUX=${DISABLE_SELINUX} >> /data/data/com.termux/files/usr/etc/container/global.conf
+  echo ENABLE_OUTPUT=${ENABLE_OUTPUT} >> /data/data/com.termux/files/usr/etc/container/global.conf
+  echo MOUNT_SDCARD=${MOUNT_SDCARD} >> /data/data/com.termux/files/usr/etc/container/global.conf
+  echo HOSTNAME=${HOSTNAME} >> /data/data/com.termux/files/usr/etc/container/global.conf
+  echo CURSOR=${CURSOR} >> /data/data/com.termux/files/usr/etc/container/global.conf
+  echo CONTAINER=1 >> /data/data/com.termux/files/usr/etc/container/global.conf
+  echo -e "\e[38;5;225m[+] 安装完毕，先生请慢用"
+  CONTAINER_LOG_END
+  container -h&&exit 0
+fi
+####################
+######权限判断######
+####################
+if [[ $(whoami) != "root" ]];then #判断用户，若不是root则调用sudo重新启动
+  sudo container $@
+  exit 0
+fi
+####################
+######配置检查######
+####################
+CHECKOUT(){ #配置兼容性检查和空配置检查
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container/global.conf ]];then  #空全局配置检查
+    CONTAINER_LOG "全局配置文件不存在"
+    echo -e "\033[31m\a[] 错误:配置文件 /data/data/com.termux/files/usr/etc/container/global.conf 不存在，您可能未正确安装此脚本"
+    CONTAINER_LOG_END&&exit 0
+  fi
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  if [[ ! -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then  #不存在的容器配置检查
+    if [[ $( ls /data/data/com.termux/files/usr/etc/container|grep container ) != "" ]];then
+      cd /data/data/com.termux/files/usr/etc/container
+      for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then
+          export $(cat container-${i}.conf)
+          echo -e "\e[38;5;225m[$i] $NAME"
+        fi
+      done
+      export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+      export CONTAINER_BK=${CONTAINER}
+      unset CONTAINER
+      while :
+      do
+        read -p "[] 请选择你要运行的容器: " CONTAINER
+        if [[ -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then
+          break
+        fi
+      done
+      CONTAINER_LOG "设置容器编号为${CONTAINER}"
+      sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container/global.conf
+    else
+      CONTAINER_LOG "未找到任何容器配置文件"
+      echo -e "\033[31m\a[] 错误:未找到任何容器，请先创建一个容器"
+      CONTAINER_LOG_END&&exit 0
+    fi
+  fi
+  return 0
+}
+####################
+######容器备份######
+####################
+CONTAINER_BACKUP(){  #用于备份容器
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  printf "\e[38;5;225m"
+  cd /data/data/com.termux/files/usr/etc/container
+  #遍历查找配置文件
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      export $(cat container-${i}.conf)
+      echo -e "[$i] $NAME"
+      sleep 0.3s
+    fi
+  done
+  while :
+  do
+    read -p "[] 选择一个容器进行备份: " CONTAINER
+    if [[ -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then
+      break
+    fi
+  done
+  export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf)
+  #开始解除挂载
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 解除容器挂载"
+  umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
+  umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
+  umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
+  umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
+  umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
+  losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与虚拟设备的关联
+  #移动配置文件，不直接备份防止还原时覆盖其他容器配置
+  mkdir -p /data/data/com.termux/files/usr/tmp/termux-container
+  cp container-${CONTAINER}.conf /data/data/com.termux/files/usr/tmp/termux-container/container.conf
+  clear
+  #选择格式
+  echo -e "[] 选择备份文件格式: "
+  while :
+  do
+    read -p "[1]tar.gz [2]tar.xz [3]tar [4]tar.bz2 [5]zip " FORMAT
+    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" || $FORMAT = "4" || $FORMAT = "5" ]];then
+      break
+    fi
+  done
+  CONTAINER_LOG "备份容器，编号为 ${CONTAINER}"
+  #备份,使用tar
+  TARGET=/sdcard/container-${NAME}-$(date +%y%m%d%H%M%S)
+  case ${FORMAT} in
+    1) tar -zcvPf ${TARGET}.tar.gz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.gz" ;;
+    2) tar -JcvPf ${TARGET}.tar.xz ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.xz" ;;
+    3) tar -cvPf ${TARGET}.tar ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar" ;;
+    4) tar -vcjf ${TARGET}.tar.bz2 ${CHROOT_DIR} ${CHROOT_IMG}  /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.tar.bz2" ;;
+    5) zip -q -r ${TARGET}.zip ${CHROOT_DIR} ${CHROOT_IMG} /data/data/com.termux/files/usr/tmp/termux-container&&echo -e "[] 备份文件为${TARGET}.zip";;
+  esac
+  CONTAINER_LOG "备份完成"
+  return 0
+  exit 0
+}
+####################
+######容器还原######
+####################
+CONTAINER_RESTORE(){  #用于还原容器
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-17))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  printf "\e[38;5;225m"
+  sleep 1s
+  #直接还原到根目录
+  CONTAINER_LOG "还原容器"
+  case $1 in
+    *tar.gz) tar -xzvPf $1 -C /;;
+    *tar.xz) tar -xvPf $1 -C /;;
+    *tar.bz2) tar -vxjf $1 -C /;;
+    *zip) unzip $1 -d /;;
+    *tar) tar -xvPf $1 -C /;;
+    *) echo -e "\033[31m[] 错误:未知文件格式，请确认这是一个备份文件且存在";exit 0;;
+  esac
+  CONTAINER_LOG "还原完成"
+  cd /data/data/com.termux/files/usr/tmp/termux-container
+  printf "\033[0m"
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  for i1 in {1..100};do
+    if [[ ! -e /data/data/com.termux/files/usr/etc/container/container-${i1}.conf ]];then
+      CONTAINER=$i1
+      break
+    fi
+  done
+  mkdir -p /data/data/com.termux/files/usr/etc/container >> ${LOG_FILE}
+  mv container.conf /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf
+  CONTAINER_LOG "设置容器编号为${CONTAINER}"
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container/global.conf
+  return 0
+  exit 0
+}
+####################
+######容器下载######
+####################
+CONTAINER_DOWNLOAD(){
+  export OS=$1
+  export VERSION=$2
+  CHECK_ARCH(){
+    DPKG_ARCH=$(dpkg --print-architecture)
+    case ${DPKG_ARCH} in
+      armel) export ARCH="armel" ;;
+      armv7* | armv8l | armhf | arm) export ARCH="armhf" ;;
+      aarch64 | arm64* | armv8* | arm*) export ARCH="arm64" ;;
+      i*86 | x86) export ARCH="i386" ;;
+      x86_64 | amd64) export ARCH="amd64" ;;
+      *) echo -e "\e[38;5;196m\aERR:未知cpu架构"&&exit 0 ;;
+    esac
+    return 0
+  }
+  DOWNLOAD_COMMON_ROOTFS(){
+    CHECK_ARCH
+    MIRROR="https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images/"
+    if [[ $OS = "gentoo" ]];then
+      VERSION2="openrc"
+    else
+      VERSION2="default"
+    fi
+    TIME=$(curl -sL ${MIRROR}${OS}/${VERSION}/${ARCH}/${VERSION2}|grep title |sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 | tail -n 1)
+    if [[ ${TIME} = ""||${TIME} = "/static/img/favicon.png" ]];then
+      echo -e "\e[38;5;196m\a未找到rootfs!"
+      exit 1
+    fi
+    [[ -e /data/data/com.termux/files/usr/tmp/container ]]||mkdir -p /data/data/com.termux/files/usr/tmp/container
+    cd /data/data/com.termux/files/usr/tmp/container
+    URL=${MIRROR}${OS}/${VERSION}/${ARCH}/${VERSION2}/${TIME}rootfs.tar.xz
+    CONTAINER_LOG "下载容器rootfs,链接:${URL}"
+    wget ${URL}
+    return 0
+  }
+  DOWNLOAD_PARROT_ROOTFS(){
+    CHECK_ARCH
+    mkdir -p /data/data/com.termux/files/usr/tmp/container
+    cd /data/data/com.termux/files/usr/tmp/container
+    ROOTFS=$(curl -sL https://mirrors.tuna.tsinghua.edu.cn/parrot/iso/testing|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
+    if [[ ${ROOTFS} = "" ]];then
+      echo -e "\e[38;5;196m\aERR:未找到rootfs!"
+      exit 1
+    fi
+    URL="https://mirrors.tuna.tsinghua.edu.cn/parrot/iso/testing/${ROOTFS}"
+    CONTAINER_LOG "下载容器rootfs,链接:${URL}"
+    wget ${URL}
+    echo "正在创建parrot的rootfs,可能耗时较长,请耐心等待..."
+    sleep 2s
+    tar -xvf ${ROOTFS}
+    cd parrot-${ARCH}
+    tar -cvJf ../rootfs.tar.xz .
+    cd ..
+    rm ${ROOTFS}
+    rm -rf parrot-${ARCH}
+    return 0
+  }
+  case $OS in
+      "parrot") DOWNLOAD_PARROT_ROOTFS;;
+      *) DOWNLOAD_COMMON_ROOTFS;;
+  esac
+}
+####################
+######容器创建######
+####################
+CONTAINER_CREATE(){  #用于容器创建
+  CONTAINER_LOG "创建容器"
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  sleep 0.1s
+  printf  "\e[38;5;225m"
+  #读取容器信息
+  while :
+  do
+    read -p "[] 为这只容器娘命个名吧,不可以包含空格哦:" NAME
+    if [[ $NAME != "" ]];then
+      break
+    fi
+  done
+  read -p "[] 输入容器的绝对路径(或挂载点)，不可以包含空格,不可以使用/sdcard下的目录: " CHROOT_DIR
+  for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do #目录黑名单,拒绝使用系统目录
+    if [[ $CHROOT_DIR = $BLACKLIST* ]];then
+      CONTAINER_LOG "错误:不可以使用系统目录!"
+      echo "[] 您正尝试使用系统目录，不可以的呢！"
+      CONTAINER_LOG_END&&exit 0
+    fi
+  done
+  if [[ -e $CHROOT_DIR ]];then #拒绝使用已存在的目录
+    CONTAINER_LOG "错误:容器目录已存在"
+    echo -e "[] 您正尝试使用已存在的目录，不可以的呢！"
+    CONTAINER_LOG_END&&exit 0
+  fi
+  while :
+  do
+    read -p "[] 你想把容器娘放入镜像文件吗？[y/n]?" USE_IMAGE
+    if [[ ${USE_IMAGE} = "n" || ${USE_IMAGE} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${USE_IMAGE} = "y" ]];then #判断是否使用镜像
+    while :
+    do
+      read -p "[] 输入你想放置镜像文件的目录，例如/data或/sdcard " CHROOT_IMG_PATH
+      if [[ $CHROOT_IMG_PATH != "" ]];then
+        break
+      fi
+    done
+    for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do #目录黑名单,拒绝使用系统目录
+      if [[ $CHROOT_IMG_PATH = $BLACKLIST* ]];then
+        CONTAINER_LOG "错误:不可以使用系统目录"
+        echo "[] 您正尝试使用系统目录，不可以的呢!"
+        CONTAINER_LOG_END&&exit 0
+      fi
+    done
+    while :
+    do
+      read -p "[] 输入镜像名称，不需要加.img后缀: " CHROOT_IMG_NAME
+      if [[ $CHROOT_IMG_NAME != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      read -p "[] 输入镜像大小(纯数字,单位为GB): " SIZE
+      if [[ $SIZE != "" ]];then
+        break
+      fi
+    done
+  fi
+  while :
+  do
+    read -p "[] 你想从tuna服务器下载rootfs吗? [y/n]" DOWNLOAD_FROM_TUNA
+    if [[ ${DOWNLOAD_FROM_TUNA} = "n" || ${DOWNLOAD_FROM_TUNA} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${DOWNLOAD_FROM_TUNA} = "n" ]];then
+    while :
+    do
+      read -p "[] 输入rootfs的下载链接或绝对路径: " LINK
+      if [[ $LINK != "" ]];then
+        break
+      fi
+    done
+  fi
+  CONTAINER_LOG "创建容器:NAME=$NAME,CHROOT_DIR=$CHROOT_DIR,CHROOT_IMG_PATH=$CHROOT_IMG_PATH,CHROOT_IMG_NAME=$CHROOT_IMG_NAME,SIZE=$SIZE"
+  rm -rf /data/data/com.termux/files/usr/tmp/container >> ${LOG_FILE} 2>&1
+  mkdir -p /data/data/com.termux/files/usr/tmp/container >> ${LOG_FILE} 2>&1
+  cd /data/data/com.termux/files/usr/tmp/container >> ${LOG_FILE} 2>&1
+  #下载rootfs
+  if [[ ${DOWNLOAD_FROM_TUNA} = "y" ]];then
+    echo -e "目前支持的系统有:"
+    echo -e "常用系统(推荐):debian,ubuntu,kali,parrot,fedora,centos,archlinux,alpine"
+    echo -e "其他系统:oracle,amazonlinux,voidlinux,opensuse,almalinux,alt,apertis,rockylinux,devuan,gentoo"
+    read -p "选择您要安装的系统:" OS
+    case $OS in
+      "amazonlinux"|"archlinux"|"kali"|"voidlinux"|"parrot") 
+        [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+        [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "------开始创建容器------"
+        [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 下载rootfs"|pv -qL 40
+        CONTAINER_DOWNLOAD $OS current;;
+      *)
+        echo -e "支持的版本号:"
+        for i in $(curl -sL https://mirrors.bfsu.edu.cn/lxc-images/images/${OS}|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1| tail -n +5);do
+          echo $i
+        done
+        read -p "选择你要安装的系统版本:" VERSION
+        [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+        [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "------开始创建容器------"
+        [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 下载rootfs"|pv -qL 40
+        CONTAINER_DOWNLOAD $OS $VERSION;;
+    esac
+  else
+    [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "------开始创建容器------"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 下载rootfs"|pv -qL 40
+    wget ${LINK}||cp ${LINK} ./||exit 0
+    CONTAINER_LOG "获取rootfs:LINK=$LINK"
+  fi
+  sudo mkdir -p ${CHROOT_DIR}
+  if [[ ${CHROOT_IMG_NAME} != "" ]];then  #创建img镜像并挂载
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 创建镜像文件"|pv -qL 40
+    sudo mkdir -p ${CHROOT_IMG_PATH}
+    cd ${CHROOT_IMG_PATH}
+    sudo dd if=/dev/zero of=${CHROOT_IMG_NAME}.img bs=1G count=${SIZE}
+    CONTAINER_LOG "创建镜像文件:NAME=$CHROOT_IMG_NAME,PATH=$CHROOT_IMG_PATH,SIZE=$SIZE"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 为镜像文件创建ext4文件系统"|pv -qL 40
+    sudo mkfs.ext4 ${CHROOT_IMG_NAME}.img
+    CONTAINER_LOG "创建ext4文件系统"
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 挂载镜像文件"|pv -qL 40
+    sleep 1s
+    LOOP=$(sudo losetup -f)
+    sudo losetup  ${LOOP} ${CHROOT_IMG_NAME}.img  >> ${LOG_FILE} 2>&1
+    sudo mount ${LOOP} ${CHROOT_DIR}  >> ${LOG_FILE} 2>&1
+    CONTAINER_LOG "挂载镜像文件:LOOP=$LOOP,PATH=$CHROOT_DIR"
+  fi
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 解压rootfs"|pv -qL 40
+  sleep 2s
+  #解压rootfs
+  ROOTFS=$(ls /data/data/com.termux/files/usr/tmp/container/)
+  case $ROOTFS in
+    *tar.gz|*tgz) tar -xzvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+    *tar.xz|*txz|*tar) tar -xvf /data/data/com.termux/files/usr/tmp/container/$ROOTFS -C ${CHROOT_DIR};;
+    *) CONTAINER_LOG_END&&echo "\a\033[31m[] 未知文件格式,请确认这是个rootfs文件";exit 0;;
+  esac
+  CONTAINER_LOG "解压rootfs"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] 写入配置文件"|pv -qL 40
+  sleep 1s
+  for i1 in {1..100};do #遍历获取未使用的配置文件
+    if [[ ! -e /data/data/com.termux/files/usr/etc/container/container-${i1}.conf ]];then
+      CONTAINER=$i1
+      break
+    fi
+  done
+  #写入配置
+  echo NAME=${NAME} >> /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf
+  echo CHROOT_DIR=${CHROOT_DIR} >> /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf
+  if [[ ${CHROOT_IMG_NAME} != "" ]];then
+    echo CHROOT_IMG=${CHROOT_IMG_PATH}/${CHROOT_IMG_NAME}.img >> /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf
+  else
+    echo CHROOT_IMG= >> /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf
+  fi
+  export NEW_CONTAINER=${CONTAINER}
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" /data/data/com.termux/files/usr/etc/container/global.conf
+  CONTAINER_LOG "写入配置"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 清理已下载的rootfs"|pv -qL 40
+  sleep 1s
+  #清空tmp
+  rm -rf /data/data/com.termux/files/usr/tmp/container
+  CONTAINER_LOG "清理rootfs文件"
+  cd /
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 正在修复系统"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 创建系统目录"|pv -qL 40
+  #创建rootfs中可能不存在的文件
+  [[ -e ${CHROOT_DIR}/dev ]]||mkdir ${CHROOT_DIR}/dev
+  [[ -e ${CHROOT_DIR}/proc ]]||mkdir ${CHROOT_DIR}/proc
+  [[ -e ${CHROOT_DIR}/sys ]]||mkdir ${CHROOT_DIR}/sys
+  [[ -e ${CHROOT_DIR}/sdcard ]]||mkdir ${CHROOT_DIR}/sdcard
+  CONTAINER_LOG "创建系统目录"
+  #修复sudo
+  if [[ $(cat ${CHROOT_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 修复sudo无法访问主机"|pv -qL 40
+    echo 127.0.0.1 ${HOSTNAME} >> ${CHROOT_DIR}/etc/hosts #修复sudo报错无法解析主机
+    CONTAINER_LOG "修复sudo无法访问主机"
+  fi
+  #修复dns
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 修复dns无法解析域名"|pv -qL 40
+  rm -f ${CHROOT_DIR}/etc/resolv.conf >> ${LOG_FILE} 2>&1
+  echo nameserver 8.8.8.8 >> ${CHROOT_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CHROOT_DIR}/etc/resolv.conf #解决未设置dns导致无法联网
+  CONTAINER_LOG "修复dns无法解析域名"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 添加系统用户组，修复无法联网"|pv -qL 40
+  cp /data/data/com.termux/files/usr/share/termux-container/group_add.sh ${CHROOT_DIR}/tmp
+  chmod 777 ${CHROOT_DIR}/tmp/group_add.sh
+  mount -t proc proc  ${CHROOT_DIR}/proc/
+  mount --rbind /dev ${CHROOT_DIR}/dev/
+  mount --rbind /sys ${CHROOT_DIR}/sys/
+  export PATH_BK=$PATH #备份$PATH
+  unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH #删除部分环境变量
+  /data/data/com.termux/files/usr/bin/chroot ${CHROOT_DIR} /bin/sh -c "sh /tmp/group_add.sh" >> ${LOG_FILE} 2>&1
+  export PATH=$PATH_BK
+  CONTAINER_LOG "添加系统用户组，修复无法联网"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 复制init脚本"|pv -qL 40
+  mkdir -p ${CHROOT_DIR}/usr/local/bin >> ${LOG_FILE} 2>&1 #复制init脚本到rootfs中
+  cp /data/data/com.termux/files/usr/share/termux-container/unshare_init_zh ${CHROOT_DIR}/usr/local/bin/unshare_init
+  chmod 777 ${CHROOT_DIR}/usr/local/bin/unshare_init
+  CONTAINER_LOG "复制init脚本到rootfs中"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 设置主机名"|pv -qL 40
+  echo ${HOSTNAME} > ${CHROOT_DIR}/etc/hostname
+  if [[ ${ENABLE_OUTPUT} = "y" ]];then
+    touch ${CHROOT_DIR}/etc/enable_output
+  fi
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 解除系统挂载"|pv -qL 40
+  umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
+  umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
+  umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
+  umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
+  losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与虚拟设备的关联
+  CONTAINER_LOG "解除系统挂载"
+  echo -e "[] 创建成功!"
+  return 0
+  exit 0
+}
+####################
+######帮助信息######
+####################
+CONTAINER_HELP(){  #输出帮助信息
+  echo -e "              \e[38;5;225m┌───────────┐"
+  echo -e "              │ ┌───────┐ │"
+  echo -e "              │ │  \e[38;5;227m┌───────────┐"
+  echo -e "              \e[38;5;225m│ │  \e[38;5;227m│ ┌───────┐ │"
+  echo -e "              \e[38;5;225m│ │  \e[38;5;227m│ │  \e[38;5;225m│ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;225m│ └──\e[38;5;227m│ │\e[38;5;225m──┘ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;225m└────\e[38;5;227m│ │\e[38;5;225m────┘  \e[38;5;227m│ │"
+  echo -e "                   \e[38;5;227m│ └───────┘ │"
+  echo -e "                   \e[38;5;227m└───────────┘"
+  echo -e "\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  echo -e "\e[38;5;225m         「这只容器娘并没有超级牛力!」"
+  echo -e "Usage:"
+  echo -e " container                   #打开容器菜单"
+  echo -e " container -run              #运行容器"
+  echo -e " container -c                #创建一个新容器"
+  echo -e " container -S                #切换容器"
+  echo -e " container -s                #设置"
+  echo -e " container -r                #删除容器"
+  echo -e " container -m                #挂载镜像文件"
+  echo -e " container -bk               #备份容器"
+  echo -e " container -R [backup file]  #还原容器"
+  echo -e " container -up               #更新脚本"
+  echo -e " container -v                #输出版本信息"
+  echo -e " container -U                #卸载此脚本"
+  echo -e " container -h                #显示帮助信息\033[0m"
+  return 0
+  exit 0
+}
+####################
+######挂载镜像######
+####################
+CONTAINER_MOUNT(){ #用于挂载镜像
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-15))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  if [[ ${CHROOT_IMG} = "" ]];then
+    echo -e "\a\033[31m[] 错误:未使用镜像文件\033[0m"
+    CONTAINER_LOG "错误:未使用镜像文件"
+    CONTAINER_LOG_END&&exit 0
+  fi
+  if [[ ! -e ${CHROOT_IMG} ]];then
+    echo -e "\a\033[31m[] 错误:镜像文件不存在\033[0m"
+    CONTAINER_LOG "错误:镜像文件不存在"
+    CONTAINER_LOG_END&&exit 0
+  fi
+  loop=$(sudo losetup -f)
+  sudo losetup $loop ${CHROOT_IMG}
+  sudo mount $loop ${CHROOT_DIR}
+  CONTAINER_LOG "挂载镜像， LOOP=$loop CHROOT_IMG=${CHROOT_IMG} CHROOT_DIR=${CHROOT_DIR}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] ${CHROOT_IMG} 已被挂载至 ${CHROOT_DIR} \033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] 「终わる!」\033[0m"
+  return 0
+  exit 0
+}
+####################
+######容器删除######
+####################
+CONTAINER_REMOVE(){  #用于删除容器
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  printf "\e[38;5;225m"
+  cd /data/data/com.termux/files/usr/etc/container
+  #遍历查找配置文件
+  for i in {1..100};do
+  if [[ -e container-${i}.conf ]];then
+      export $(cat container-${i}.conf)
+      echo -e "[$i] $NAME"
+  fi
+  done
+  while :
+  do
+    read -p "[] 选择你要删除的容器: " CONTAINER
+    if [[ -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then
+      break
+    fi
+  done
+  echo -e "\a[] 容器中所有文件将被删除，请确认您已做好备份"|pv -qL 40
+  echo -e "\a[] 按回车键继续或者按ctrl-c取消"|pv -qL 40
+  read
+  export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf)
+  CONTAINER_LOG "删除容器 ${NAME},CHROOT_DIR=${CHROOT_DIR},CHROOT_IMG=${CHROOT_IMG}"
+  #解除挂载,防止误删系统文件
+  clear
+  if [[ ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
+    rm /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf&&exit
+  fi
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[] 解除容器挂载"
+  umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
+  umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
+  umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
+  umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
+  umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
+  losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与虚拟设备的关联
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 正在删除容器:${NAME}"
+  sleep 2s
+  #删除旧容器,同时防止执行rm -rf /
+  if [[ ${CHROOT_DIR} != "" ]];then
+    rm -rfv ${CHROOT_DIR}
+  fi
+  if [[ ${CHROOT_IMG} != "" ]];then
+    rm -rfv ${CHROOT_IMG}
+  fi
+  rm /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf
+  #选择新容器
+  unset CONTAINER
+  if [[ $( ls /data/data/com.termux/files/usr/etc/container|grep container ) != "" ]];then
+    cd /data/data/com.termux/files/usr/etc/container
+    for i in {1..100};do
+      if [[ -e container-${i}.conf ]];then
+        export $(cat container-${i}.conf)
+        echo -e "\e[38;5;225m[$i] $NAME"
+      fi
+    done
+    export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+    export CONTAINER_BK=${CONTAINER}
+    unset CONTAINER
+    while :
+    do
+      read -p "[] 选择你要运行的容器: " CONTAINER
+      if [[ -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then
+        break
+      fi
+    done
+    CONTAINER_LOG "设置容器编号为${CONTAINER}"
+    sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container/global.conf
+  fi
+  printf "\033[0m"
+  return 0
+  exit 0
+}
+####################
+######容器运行######
+####################
+CONTAINER_RUN(){ #用于运行容器
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf) >> ${LOG_FILE}
+  CONTAINER_LOG "容器设置:"
+  CONTAINER_LOG "NAME=${NAME}"
+  CONTAINER_LOG "CHROOT_DIR=${CHROOT_DIR}"
+  if [[ ${CHROOT_IMG} != "" ]];then
+    CONTAINER_LOG "CHROOT_IMG=${CHROOT_IMG}"
+  else
+    CONTAINER_LOG "CHROOT_IMG=null"
+  fi
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||printf '\e[38;5;225m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-13))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m    _________      [\e[38;5;153m\e[38;5;225m] 容器娘: ${NAME}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   /        /\\     [\e[38;5;153m\e[38;5;225m] 大脑基于$(uname -m)架构"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  if [[ $DISABLE_SELINUX = "y" ]];then
+    SELINUX=Permissive
+  else
+    SELINUX=Enforcing
+  fi
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  /        /  \\    [\e[38;5;153m\e[38;5;225m] SELinux状态: ${SELINUX}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m /        /    \\   [\e[38;5;153m\e[38;5;225m] 由内核$(uname -r)驱动"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m/________/      \\  [\e[38;5;153m\e[38;5;225m] 在$(date|awk '{print $4}')被唤醒"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m\\        \\      /  [\e[38;5;153m\e[38;5;225m] 主机名: $(hostname)"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m \\        \\    /   [\e[38;5;153m\e[38;5;225m] 基于安卓$(getprop ro.build.version.release)娘"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m  \\        \\  /    [\e[38;5;153m\e[38;5;225m] 容器目录: ${CHROOT_DIR}"
+  if [[ $CHROOT_IMG != "" ]];then
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: ${CHROOT_IMG}"
+  else
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m   \\________\\/     [\e[38;5;153m\e[38;5;225m] 镜像文件: null"
+  fi
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m〉TERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "//////"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  if [[ ! -e ${CHROOT_DIR} ]];then #判断容器是否存在
+    echo -e "\033[31m\a[] 错误:容器目录不存在"&&printf "\033[?25h"
+    CONTAINER_LOG "错误:容器目录不存在"
+   CONTAINER_LOG_END&&exit 0
+  fi
+  if [[ ${CHROOT_IMG} != "" ]] && [[ ! -e ${CHROOT_IMG} ]];then #如果使用容器镜像，判断其是否存在
+    echo -e "\a\033[31m[] 错误:镜像文件不存在"&&printf "\033[?25h"
+    CONTAINER_LOG "错误:镜像文件不存在"
+    CONTAINER_LOG_END&&exit 0
+  fi
+  if [[ ${DISABLE_SELINUX} = "y" ]];then #判断是否需要关闭selinux
+    if [[ $(getenforce) != "Permissive" ]];then
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 关闭 SELinux"
+      CONTAINER_LOG "关闭SELinux"
+      setenforce 0 >> ${LOG_FILE} 2>&1 #关闭SELINUX [!]危险操作
+    fi
+  fi
+  #挂载系统
+  if [[ $(mount|grep ${CHROOT_DIR}) =  "" ]];then #判断容器自身是否被挂载，由于容器自身在运行脚本时第一个被挂载，故采用判断挂载点是否为空的方法
+    if [[ ${CHROOT_IMG} = "" ]];then
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 重挂载 /data"
+      CONTAINER_LOG "重挂载/data,启用suid"
+      mount -o remount,suid /data  >> ${LOG_FILE} 2>&1 #将data 分区重新挂载，启用suid,解决sudo由于nosuid挂载无法使用问题
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载 ${CHROOT_DIR} "
+      CONTAINER_LOG "挂载容器目录至它本身"
+      mount --rbind ${CHROOT_DIR} ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #将容器目录挂载到自身，解决pacman无法使用
+    else
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 执行 fsck"
+      CONTAINER_LOG "执行fsck"
+      fsck.ext4 -a -f  ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #修复结构需要清理报错，有一定效果
+      [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载 ${CHROOT_IMG}"
+      loop=$(losetup -f) #查找未使用的loop文件
+      losetup  ${loop} ${CHROOT_IMG}  >> ${LOG_FILE} 2>&1
+      mount  ${loop} ${CHROOT_DIR}  >> ${LOG_FILE} 2>&1
+      CONTAINER_LOG "挂载镜像文件 ${CHROOT_IMG} 到 ${CHROOT_DIR}"
+    fi
+  fi
+  #挂载内置存储
+  if [[ $(mount|grep ${CHROOT_DIR}|grep /sdcard) =  "" && ${MOUNT_SDCARD} = "y" ]];then #判断/sdcard是否被挂载
+    [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 挂载/sdacrd"
+    CONTAINER_LOG "挂载 /sdcard"
+    mount -o ro,bind /sdcard ${CHROOT_DIR}/sdcard/ >> ${LOG_FILE} 2>&1
+  fi
+  case $CURSOR in #更换光标
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  if [[ ! -e ${CHROOT_DIR}/usr/local/bin/unshare_init ]];then #复制init脚本到rootfs中
+    mkdir -p ${CHROOT_DIR}/usr/local/bin/ >> ${LOG_FILE} 2>&1
+    cp /data/data/com.termux/files/usr/share/termux-container/unshare_init_zh ${CHROOT_DIR}/usr/local/bin/unshare_init
+    chmod 777 ${CHROOT_DIR}/usr/local/bin/unshare_init
+    CONTAINER_LOG "复制init脚本到rootfs中"
+  fi
+  printf "\033[?25h\033[0m"
+  UNSHARE_PARAMETER="--fork"
+  if [[ -e  /proc/$$/ns/ipc ]];then
+    UNSHARE_PARAMETER+=" -i"
+  fi
+  if [[ -e /proc/$$/ns/mnt ]];then
+    UNSHARE_PARAMETER+=" -m"
+  fi
+  if [[ -e /proc/$$/ns/pid ]];then
+    UNSHARE_PARAMETER+=" -p"
+  fi
+  if [[ -e /proc/$$/ns/uts ]];then
+    UNSHARE_PARAMETER+=" -u"
+  fi
+  export PATH_BK=$PATH #备份$PATH
+  printf "\033[?25h\033[0m"
+  CONTAINER_LOG "运行unshare,参数:${UNSHARE_PARAMETER}"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m[\e[38;5;158m\e[38;5;225m] 运行 unshare"
+  unset TMP TEMP TMPDIR LD_PRELOAD LD_DEBUG ZPFX ZSH_CACHE PATH
+  /bin/unshare ${UNSHARE_PARAMETER} /data/data/com.termux/files/usr/bin/chroot ${CHROOT_DIR} /usr/local/bin/unshare_init
+  export PATH=$PATH_BK #还原$PATH
+  cat ${CHROOT_DIR}/tmp/init.log >> ${LOG_FILE}
+  printf '\e[2 q\033[0m'
+  return 0
+  exit 0
+}
+####################
+######容器切换######
+####################
+CONTAINER_SWITCH(){ #用于多容器切换
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_SWITCH$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  cd /data/data/com.termux/files/usr/etc/container
+  #列举已创建容器
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      export $(cat container-${i}.conf)
+      echo -e "\e[38;5;225m[$i] $NAME"
+    fi
+  done
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  export $(cat /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf) >> ${LOG_FILE}
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  while :
+  do
+    read -p "[] 选择一只要唤醒的容器娘: " CONTAINER
+    if [[ -e /data/data/com.termux/files/usr/etc/container/container-${CONTAINER}.conf ]];then
+      #解除原容器挂载
+      umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev的挂载
+      umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 #解除/sys的挂载
+      umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
+      umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
+      umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身挂载
+      losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与虚拟设备的关联
+      break
+    fi
+  done
+  CONTAINER_LOG "设置容器编号为${CONTAINER}"
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" /data/data/com.termux/files/usr/etc/container/global.conf
+  return 0
+  exit 0
+}
+####################
+######容器设置######
+####################
+CONTAINER_SETTINGS(){ #用于设置容器
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-18))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  #输出当前配置信息
+  echo -e "------设置------"
+  echo -e "[] 开启输出:${ENABLE_OUTPUT}"
+  echo -e "[] 是否挂载/sdcard:${MOUNT_SDCARD}"
+  echo -e "[] 主机名:${HOSTNAME}"
+  echo -e "[] 光标主题:${CURSOR}"
+  echo -e "[] 是否关闭SELinux:${DISABLE_SELINUX}"
+  echo -e "[] 容器编号:${CONTAINER}"
+  read -p "按回车键编辑配置文件或者按ctrl-c退出" NULL
+  nano /data/data/com.termux/files/usr/etc/container/global.conf
+  CONTAINER_LOG "编辑配置文件"
+  return 0
+  exit 0
+}
+####################
+######更新脚本######
+####################
+CONTAINER_UPDATE(){  #用于更新本脚本
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_UPDATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 正在更新脚本..."
+  cd /data/data/com.termux/files/usr/share/termux-container
+  #使用git pull更新目录
+  git config --global --add safe.directory /data/data/com.termux/files/usr/share/termux-container
+  echo -e "\e[38;5;225m$(git reset --hard||exit)"
+  echo -e "\e[38;5;225m$(git pull||exit)"
+  #更新主程序
+  rm /data/data/com.termux/files/usr/bin/container
+  rm /data/data/com.termux/files/usr/bin/container-helper
+  cp ./container-helper /data/data/com.termux/files/usr/bin/
+  cp ./container-zh /data/data/com.termux/files/usr/bin/container
+  chmod 777 /data/data/com.termux/files/usr/bin/container
+  chmod 777 /data/data/com.termux/files/usr/bin/container-helper
+  CONTAINER_LOG "更新脚本"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "[] 更新完成，快去体验新功能吧(≧▽≦)"
+  return 0
+  exit 0
+}
+####################
+######版本信息######
+####################
+CONTAINER_VERSION(){
+  echo -e "\033[0m               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅\033[0m"
+  echo -e "\033[0m          ▅▅▀▀▀               ▀▀▅▅\033[0m"
+  echo -e "\033[0m     ▅▅▅▀▀                        ▀▅\033[0m"
+  echo -e "\033[0m      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅\033[0m"
+  echo -e "\033[0m     █▀   █▅▀▀  ▀     ▀ ▀▀▅▅    █ ▀▀▅▀▅\033[0m"
+  echo -e "\033[0m    ▅▀   ▅▀  ▅▀      ▀▅    ▀▅   █▅███ █\033[0m"
+  echo -e "\033[0m   ▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █\033[0m"
+  echo -e "\033[0m      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █\033[0m"
+  echo -e "\033[0m      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █\033[0m"
+  echo -e "\033[0m     ▅▀ █ █\033[31m█▀█\033[0m█        █\033[31m█▀█\033[0m█ █   █     █\033[0m"
+  echo -e "\033[0m     █  █ █\033[31m███\033[0m█        █\033[31m███\033[0m█ █   █      █\033[0m"
+  echo -e "\033[0m   ▅▀▅ ▅▀  ▀▀▀          ▀▀▀  █   █      █\033[0m"
+  echo -e "\033[0m ▅▀ ▀▅ █   ▅     ▅           █   █      █\033[0m"
+  echo -e "\033[0m █   █  ▀ █ ▀   █ ▀   █▅     █   █       █\033[0m"
+  echo -e "\033[0m███████ ████▅▅▅███▅█████  ██ ▀   █       █\033[0m"
+  echo -e "\033[0m▀█▀▀▀▀█  ▀███▀█████████████     ▅▅        ▀▅\033[0m"
+  echo -e "\033[0m █     ▀███▀   ▀▀  ▀▀  ▀▀ █     █          █\033[0m"
+  echo -e "\033[0m  ▀▄     ▅▀              ▅     ▅█         ▅▀\033[0m"
+  echo -e "\033[0m    ▀▅   █               ▀▅▅▅▅▅▀█        █\033[0m"
+  echo -e "\033[0m      ▀▀█                       █        █\033[0m"
+  printf '\e[38;5;225m'
+  echo -e "[] (>_×)"
+  echo -e "[] 项目: termux-container"
+  echo -e "[] 作者: Moe-hacker"
+  echo -e "[] 许可证: Apache-2.0"
+  echo -e "[] 本脚本无任何担保"
+  echo -e '[] 版本: 5.0\033[0m'
+  return 0
+  exit 0
+}
+####################
+######卸载程序######
+####################
+CONTAINER_UNINSTALL(){
+  export $(cat /data/data/com.termux/files/usr/etc/container/global.conf) >> ${LOG_FILE}
+  [[ ${ENABLE_OUTPUT} = "n" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||i1=$(($i1-19))
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[30;48;5;225mCONTAINER_UNINSTALL$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e "\e[38;5;225m//"
+  [[ ${ENABLE_OUTPUT} = "n" ]]||echo -e ""
+  echo -e "\a\e[38;5;225m[] 按回车键卸载此脚本或者按ctrl-c退出"|pv -qL 40
+  read
+  while :
+  do
+    read -p "[] 是否删除容器[y/n]?" REMOVE_CONTAINERS
+    if [[ ${REMOVE_CONTAINERS} = "n" || ${REMOVE_CONTAINERS} = "y" ]];then
+      break
+    fi
+  done
+  echo -e "\a[] 卸载中..."
+  sleep 0.1s
+  if [[ ${REMOVE_CONTAINERS} = "y" ]];then
+    cd /data/data/com.termux/files/usr/etc/container
+    for i in {1..100};do
+        if [[ -e container-${i}.conf ]];then
+          export $(cat /data/data/com.termux/files/usr/etc/container/container-${i}.conf)
+          read -p "删除容器：${NAME}?[y/n]" REMOVE
+          if [[ $REMOVE = "n" ]];then
+            continue
+          fi
+          sleep 1s
+          #解除挂载,防止误删系统文件
+          if [[ ! ${CHROOT_DIR} = "" ]];then #防止误将宿主机系统文件解除挂载
+            umount -lvf ${CHROOT_DIR}/dev >> ${LOG_FILE} 2>&1 #解除/dev 的挂载
+            umount -lvf ${CHROOT_DIR}/sys >> ${LOG_FILE} 2>&1 # 解除/sys的挂载
+            umount -lvf ${CHROOT_DIR}/proc >> ${LOG_FILE} 2>&1 #解除/proc挂载
+            umount ${CHROOT_DIR}/sdcard >> ${LOG_FILE} 2>&1 #解除/sdcard的挂载
+            umount -lvf ${CHROOT_DIR} >> ${LOG_FILE} 2>&1 #解除目录自身 挂载
+            losetup -d ${CHROOT_IMG} >> ${LOG_FILE} 2>&1 #解除img镜像与 虚拟设备的关联
+            #删除容器
+            if [[ ${CHROOT_DIR} != "" ]];then
+              rm -rfv ${CHROOT_DIR}
+            fi
+            if [[ ${CHROOT_IMG} != "" ]];then
+              rm -rfv ${CHROOT_IMG}
+            fi
+          fi
+          unset REMOVE
+        fi
+    done
+  fi
+  #还原设置
+  hostname localhost >> ${LOG_FILE} 2>&1
+  setenforce 1  >> ${LOG_FILE} 2>&1
+  #删除脚本及配置
+  [[ ${REMOVE_CONTAINERS} = "n" ]]||rm -rvf /data/data/com.termux/files/usr/etc/container
+  rm -fv /data/data/com.termux/files/usr/etc/container/global.conf
+  rm -rvf /data/data/com.termux/files/usr/share/termux-container
+  rm -fv /data/data/com.termux/files/usr/bin/container
+  rm -fv /data/data/com.termux/files/usr/bin/container-helper
+  rm -fv /data/data/com.termux/files/usr/var/log/container.log
+  echo -e "[] 卸载完成，很抱歉没能给您较好的体验"
+  echo -e "[] 再见!"
+  return 0
+  exit 0
+}
+####################
+######程序菜单######
+####################
+CONTAINER_MENU(){
+  printf '\e[38;5;225m'
+  WIDTH=$(($(stty size|awk '{print $2}')-4))
+  OPTION=$(whiptail --title "容器菜单" --menu "选择您要进行的操作" 16 $WIDTH 9 \
+  "1" "运行容器" \
+  "2" "创建一个新容器" \
+  "3" "切换容器"  \
+  "4" "备份容器" \
+  "5" "还原容器" \
+  "6" "删除容器" \
+  "7" "设置" \
+  "8" "更新此脚本" \
+  "9" "版本信息" \
+  "10" "卸载此脚本" \
+  "11" "显示帮助信息" \
+  "12" "显示日志" \
+  "13" "清除日志" \
+  "14" "退出" 3>&1 1>&2 2>&3)
+  case $OPTION in
+    "1") container -run;;
+    "2") container -c;;
+    "3") container -S;;
+    "4") container -bk;;
+    "5") read -p "输入备份文件绝对路径:" BKFILE&&container -R $BKFILE;;
+    "6") container -r;;
+    "7") container -s;;
+    "8") container -up;;
+    "9") container -v;;
+    "10") container -U;;
+    "11") container -h;;
+    "12") cat ${LOG_FILE};;
+    "13") rm -fv ${LOG_FILE};;
+    "14") exit;;
+  esac
+  return 0
+  exit 0
+}
+####################
+######调用函数######
+####################
+case $1 in  #根据$1调用函数
+  *run)    CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_RUN&&CONTAINER_LOG_END;;
+  *h)      CONTAINER_LOG_HEAD&&CONTAINER_HELP&&CONTAINER_LOG_END;;
+  *s)      CONTAINER_LOG_HEAD&&CONTAINER_SETTINGS&&CONTAINER_LOG_END;;
+  *c)      CONTAINER_LOG_HEAD&&CONTAINER_CREATE&&CONTAINER_LOG_END;;
+  *up)     CONTAINER_LOG_HEAD&&CONTAINER_UPDATE&&CONTAINER_LOG_END;;
+  *m)      CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_MOUNT&&CONTAINER_LOG_END;;
+  *r)      CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_REMOVE&&CONTAINER_LOG_END;;
+  *R)      CONTAINER_LOG_HEAD&&CONTAINER_RESTORE $2&&CONTAINER_LOG_END;;
+  *bk)     CONTAINER_LOG_HEAD&&CHECKOUT&&CONTAINER_BACKUP&&CONTAINER_LOG_END;;
+  *S)      CONTAINER_LOG_HEAD&&CONTAINER_SWITCH&&CONTAINER_LOG_END;;
+  *v)      CONTAINER_LOG_HEAD&&CONTAINER_VERSION&&CONTAINER_LOG_END;;
+  *U)      CONTAINER_LOG_HEAD&&CONTAINER_UNINSTALL&&CONTAINER_LOG_END;;
+  "")      CONTAINER_MENU;;
+  *)       CONTAINER_LOG_HEAD&&CONTAINER_HELP&&CONTAINER_LOG_END;;
+esac
+####################
+######水个注释######
+####################
+#                   _ooOoo_
+#                  o8888888o
+#                  88" . "88
+#                  (| -_- |)
+#                  O\  =  /O
+#               ____/`---'\____
+#             .'  \\|     |//  `.
+#            /  \\|||  :  |||//  \
+#           /  _||||| -:- |||||-  \
+#           |   | \\\  -  /// |   |
+#           | \_|  ''\---/''  |   |
+#           \  .-\__  `-`  ___/-. /
+#         ___`. .'  /--.--\  `. . __
+#      ."" '<  `.___\_<|>_/___.'  >'"".
+#     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+#     \  \ `-.   \_ __\ /__ _/   .-` /  /
+#======`-.____`-.___\_____/___.-`____.-'======
+#                   `=---='
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#           佛祖保佑        永无BUG
+#
+#没人比我更懂水注释(👻)
+#copyright 2022 Moe-hacker (Author)
+# ██╗ ██╗  ███████╗   ████╗   ███████╗
+#████████╗ ██╔════╝ ██╔═══██╗ ██╔════╝
+#╚██╔═██╔╝ █████╗   ██║   ██║ █████╗
+#████████╗ ██╔══╝   ██║   ██║ ██╔══╝
+#╚██╔═██╔╝ ███████╗ ╚██████╔╝ ██║
+# ╚═╝ ╚═╝  ╚══════╝  ╚═════╝  ╚═╝

@@ -1,0 +1,1095 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# ██╗ ██╗  ██╗ ██████╗  █████╗   ███████╗ ██╗  ██╗
+#████████╗ ██║ ██╔══██╗ ██╔══██╗ ██╔════╝ ██║  ██║
+#╚██╔═██╔╝ ██║ ██████╔╝ ███████║ ███████╗ ███████║
+#████████╗ ╚═╝ ██╔══██╗ ██╔══██║ ╚════██║ ██╔══██║
+#╚██╔═██╔╝ ██╗ ██████╔╝ ██║  ██║ ███████║ ██║  ██║
+# ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+###### Github@Moe-hacker ######
+#•.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
+#`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
+#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::(｡ ●ω●｡)
+#`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
+###### E-mail: moe-hacker@outlook.com ######
+######  Blog: cnblogs.com/Moe-hacker  ######
+LOAD_GLOBAL_CONFIG(){
+  if [[ -e $PREFIX/etc/container/global.conf ]];then
+    source $PREFIX/etc/container/global.conf
+  else
+    echo -e "\a\033[31m[]ERR:global config not found!"
+    exit 1
+  fi
+}
+LOAD_CONTAINER_CONFIG(){
+  if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+    source $PREFIX/etc/container/container-${CONTAINER}.conf
+  else
+    echo -e "\a\033[31m[]ERR:CONTAINER NOT FOUND,YOU MAY NEED TO RUN container -S TO SWITCH CONTAINER OR container -c TO CREATE A CONTAINER FIRST."
+    exit 1
+  fi
+}
+GET_CPU_ARCH(){
+  DPKG_ARCH=$(dpkg --print-architecture)
+  case ${DPKG_ARCH} in
+    armel) export ARCH="armel" ;;
+    armv7* | armv8l | armhf | arm) export ARCH="armhf" ;;
+    aarch64 | arm64* | armv8* | arm*) export ARCH="arm64" ;;
+    i*86 | x86) export ARCH="i386" ;;
+    x86_64 | amd64) export ARCH="amd64" ;;
+    *) echo -e "\e[38;5;196m\a[]ERR:Unknow cpu architecture!"&&exit 1 ;;
+  esac
+  return 0
+}
+DOWNLOAD_ROOTFS(){
+  echo -e "CURRENTLY SUPPORTED OS:"
+  echo -e "debian,ubuntu,kali,parrot,fedora,centos,archlinux,alpine,oracle,amazonlinux,voidlinux,opensuse,almalinux,alt,apertis,rockylinux,devuan,gentoo"
+  read -p "CHOOSE THE OS TO INSTALL: " OS
+  case $OS in
+    "amazonlinux"|"archlinux"|"kali"|"voidlinux"|"parrot") export VERSION=current;;
+    *)
+      echo -e "CURRENTLY SUPPORTED VERSIONS: "
+      for i in $(curl -sL http://images.linuxcontainers.org/images/${OS}|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+        echo $i
+      done
+      read -p "CHOOSE THE VERSION TO INSTALL: " VERSION;;
+  esac
+  if [[ ${CROSS_ARCH} != "null" && ${CROSS_ARCH} != "" ]];then
+    case ${CROSS_ARCH} in
+      "aarch64") export ARCH="arm64";;
+      "arm") export ARCH="armhf";;
+      "i386") export ARCH="i386";;
+      "m68k") export ARCH="m68k";;
+      "ppc") export ARCH="ppc";;
+      "ppc64") export ARCH="ppc64";;
+      "riscv32") export ARCH="riscv32";;
+      "riscv64") export ARCH="riscv64";;
+      "x86_64") export ARCH="amd64";;
+    esac
+  else
+    GET_CPU_ARCH
+  fi
+  DOWNLOAD_COMMON_ROOTFS(){
+    MIRROR="http://images.linuxcontainers.org/images"
+    if [[ $OS = "gentoo" ]];then
+      VERSION2="openrc"
+    else
+      VERSION2="default"
+    fi
+    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "DIR" |sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 2|tail -n 1)
+    if [[ ${TIME} = "" ]];then
+      echo -e "\e[38;5;196m\a[]ERR:Unable to find rootfs!"
+      exit 1
+    fi
+    [[ -e $PREFIX/tmp/container ]]||mkdir -p $PREFIX/tmp/container
+    cd $PREFIX/tmp/container
+    URL=${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}/${TIME}/rootfs.tar.xz
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] DOWNLOADING ROOTFS"|pv -qL 40
+    axel -n16 ${URL}
+    return 0
+  }
+  DOWNLOAD_PARROT_ROOTFS(){
+    mkdir -p $PREFIX/tmp/container
+    cd $PREFIX/tmp/container
+    ROOTFS=$(curl -sL https://download.parrot.sh/parrot/iso/testing|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
+    if [[ ${ROOTFS} = "" ]];then
+      echo -e "\e[38;5;196m\a[]ERR:Unable to find rootfs!"
+      exit 1
+    fi
+    URL="https://download.parrot.sh/parrot/iso/testing/${ROOTFS}"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] DOWNLOADING ROOTFS"|pv -qL 40
+    axel -n16 ${URL}
+    echo "[] Building parrot rootfs,this might take a while..."
+    sleep 2s
+    tar -xvf ${ROOTFS}
+    cd parrot-${ARCH}
+    tar -cvJf ../rootfs.tar.xz .
+    cd ..
+    rm ${ROOTFS}
+    rm -rf parrot-${ARCH}
+    return 0
+  }
+  case $OS in
+      "parrot") DOWNLOAD_PARROT_ROOTFS;;
+      *) DOWNLOAD_COMMON_ROOTFS;;
+  esac
+  return 0
+}
+CREATE_CHROOT_CONTAINER(){
+  while :
+  do
+    read -p "[] ENTER THE NAME OF THIS CONTAINER: " NAME
+    if [[ $NAME != "" ]];then
+      break
+    fi
+  done
+  echo -e "[] THE CONTAINER ABSOLUTE PATH IS THE DIRECTORY USED TO STORE THE CONTAINER,FOR EXAMPLE,YOU CAN USE /data/container-name,BUT DO NOT USE DIRECTORY IN /sdcard!!!"|pv -qL 40
+  read -p "[] ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CONTAINER_DIR
+  for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
+    if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
+      echo -e "\a\033[31m[] REFUSE TO USE SYSTEM DIRECTORY!"
+      exit 1
+    fi
+  done
+  if [[ -e $CONTAINER_DIR ]];then
+    echo -e "\a\033[31m[] DIRECTORY ALREADY EXISTS!"
+    exit 1
+  fi
+  while :
+  do
+    read -p "[] DO YOU WANT TO INSTALL THIS CONTAINER IN AN IMAGE FILE [y/n]? " USE_IMAGE
+    if [[ ${USE_IMAGE} = "n" || ${USE_IMAGE} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${USE_IMAGE} = "y" ]];then
+    echo -e "[] THE IMAGE FILE ABSOLUTE PATH IS THE DIRECTORY USED TO STORE THE IMAGE FILE,FOR EXAMPLE,YOU CAN USE /data"|pv -qL 40
+    while :
+    do
+      read -p "[] ENTER THE ABSOLUTE PATH OF IMAGE FILE: " CONTAINER_IMG_PATH
+      if [[ $CONTAINER_IMG_PATH != "" ]];then
+        break
+      fi
+    done
+    for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
+      if [[ $CONTAINER_IMG_PATH = $BLACKLIST* ]];then
+        echo -e "\a\033[31m[] REFUSE TO USE SYSTEM DIRECTORY!"
+        exit 1
+      fi
+    done
+    while :
+    do
+      read -p "[] ENTER THE NAME OF IMAGE FILE: " CONTAINER_IMG_NAME
+      if [[ $CONTAINER_IMG_NAME != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      read -p "[] ENTER THE SIZE OF IMAGE FILE(UNIT IS GB): " SIZE
+      if [[ $SIZE != "" ]];then
+        break
+      fi
+    done
+  fi
+  while :
+  do
+    read -p "[] AUTOMATICALLY GET ROOTFS DOWNLOAD LINK [y/n]? " AUTO_GET_LINK
+    if [[ ${AUTO_GET_LINK} = "n" || ${AUTO_GET_LINK} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${AUTO_GET_LINK} = "n" ]];then
+    echo -e "[] YOU CAN GO TO \033[4mhttp://images.linuxcontainers.org/images\033[0m\e[38;5;159m TO GET THE LINK OF YOUR ROOTFS OR USE CUSTOM ROOTFS"|pv -qL 40
+    while :
+    do
+      read -p "[] ENTER THE ROOTFS DOWNLOAD LINK OR THE PATH OF YOUR CUSTOM ROOTFS: " LINK
+      if [[ $LINK != "" ]];then
+        break
+      fi
+    done
+  fi
+  rm -rf $PREFIX/tmp/container >> /dev/null 2>&1
+  mkdir -p $PREFIX/tmp/container >> /dev/null 2>&1
+  cd $PREFIX/tmp/container
+  if [[ ${AUTO_GET_LINK} = "y" ]];then
+    DOWNLOAD_ROOTFS
+  else
+    [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] DOWNLOADING ROOTFS"|pv -qL 40
+    wget ${LINK}||cp ${LINK} ./||exit 0
+  fi
+  if ! sudo mkdir -p ${CONTAINER_DIR};then
+    echo -e "\a\033[31m[] ERR:CANNOT CREATE CONTAINER DIRECTORY!"
+    rm -rf $PREFIX/tmp/container
+    exit 1
+  fi
+  if [[ ${CONTAINER_IMG_NAME} != "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] CREATING IMAGE FILE"|pv -qL 40
+    sudo mkdir -p ${CONTAINER_IMG_PATH}
+    cd ${CONTAINER_IMG_PATH}
+    sudo dd if=/dev/zero of=${CONTAINER_IMG_NAME}.img bs=1G count=${SIZE}
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] CREATING FILE SYSTEM"|pv -qL 40
+    sudo mkfs.ext4 ${CONTAINER_IMG_NAME}.img
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] MOUNTING IMAGE FILE"|pv -qL 40
+    sleep 1s
+    LOOPFILE=$(sudo losetup -f)
+    sudo losetup  ${LOOPFILE} ${CONTAINER_IMG_NAME}.img  >> /dev/null 2>&1
+    sudo mount ${LOOPFILE} ${CONTAINER_DIR}  >> /dev/null 2>&1
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] EXTRACTING ROOTFS"|pv -qL 40
+  sleep 2s
+  ROOTFS=$(ls $PREFIX/tmp/container/)
+  case $ROOTFS in
+    *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
+    *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
+    *) echo "\a\033[31m[] ERR:UNKNOW FILE FORMAT!";exit 1;;
+  esac
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] WRITING CONFIGURE FILE"|pv -qL 40
+  sleep 1s
+  for i in {1..100};do
+    if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
+      CONTAINER=$i
+      break
+    fi
+  done
+  echo "#This file was automatically created by termux-container." >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo "#Do not edit this file if you don't know what you are doing." >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo RUN_MODE=chroot-unshare >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo NAME=${NAME} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo CONTAINER_DIR=${CONTAINER_DIR} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  if [[ ${CONTAINER_IMG_NAME} != "" ]];then
+    echo CONTAINER_IMG=${CONTAINER_IMG_PATH}/${CONTAINER_IMG_NAME}.img >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  else
+    echo CONTAINER_IMG=null >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  fi
+  export NEW_CONTAINER=${CONTAINER}
+  LOAD_GLOBAL_CONFIG
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" $PREFIX/etc/container/global.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] REMOVING DOWNLOADED ROOTFS"|pv -qL 40
+  sleep 1s
+  rm -rf $PREFIX/tmp/container
+  cd /data/data/com.termux/files/home
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] FIXING BUGS"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] CREATE DIRECTORYS"|pv -qL 40
+  [[ -e ${CONTAINER_DIR}/dev ]]||mkdir ${CONTAINER_DIR}/dev
+  [[ -e ${CONTAINER_DIR}/proc ]]||mkdir ${CONTAINER_DIR}/proc
+  [[ -e ${CONTAINER_DIR}/sys ]]||mkdir ${CONTAINER_DIR}/sys
+  [[ -e ${CONTAINER_DIR}/sdcard ]]||mkdir ${CONTAINER_DIR}/sdcard
+  if [[ $(cat ${CONTAINER_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] FIX SUDO"|pv -qL 40
+    echo 127.0.0.1 ${HOSTNAME} >> ${CONTAINER_DIR}/etc/hosts
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] FIX DNS PROBLEM"|pv -qL 40
+  rm -f ${CONTAINER_DIR}/etc/resolv.conf >> /dev/null 2>&1
+  echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] ADD SYSTEM GROUPS"|pv -qL 40
+  cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp
+  chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
+  if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
+    sed -i "s/NEW_USER=\"\"/NEW_USER=${NEW_USER}/" ${CONTAINER_DIR}/tmp/group_add.sh
+    sed -i "s/PASSWORD=\"\"/PASSWORD=${PASSWORD}/" ${CONTAINER_DIR}/tmp/group_add.sh
+  fi
+  mount -t proc proc  ${CONTAINER_DIR}/proc/
+  mount --rbind /dev ${CONTAINER_DIR}/dev/
+  mount --rbind /sys ${CONTAINER_DIR}/sys/
+  unset LD_PRELOAD
+  $PREFIX/bin/chroot ${CONTAINER_DIR} /bin/bash -c "bash /tmp/group_add.sh" >> /dev/null 2>&1
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] COPY INIT SCRIPT"|pv -qL 40
+  mkdir -p ${CONTAINER_DIR}/usr/local/bin >> /dev/null 2>&1
+  cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
+  chmod 777 ${CONTAINER_DIR}/usr/local/bin/unshare_init
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] SET HOSTNAME"|pv -qL 40
+  echo ${HOSTNAME} > ${CONTAINER_DIR}/etc/hostname
+  if [[ ${ENABLE_OUTPUT} = "y" ]];then
+    touch ${CONTAINER_DIR}/etc/enable_output
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] UNMOUNT CONTAINER"|pv -qL 40
+  umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+  losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+  echo -e "[] DONE"
+  return 0
+  exit 0
+}
+CREATE_PROOT_CONTAINER(){
+  while :
+  do
+    read -p "[] ENTER THE NAME OF THIS CONTAINER: " NAME
+    if [[ $NAME != "" ]];then
+      break
+    fi
+  done
+  read -p "[] ENTER THE PATH OF THIS CONTAINER(SUGGEST TO USE DIRECTORY IN /data/data/com.termux/files/home): " CONTAINER_DIR
+  if [[ -e $CONTAINER_DIR ]];then
+    echo -e "[] WARNING: DIRECTORY ALREADY EXISTS!"
+  fi
+  while :
+  do
+    read -p "[] CROSS ARCH [y/n]?" CROSS
+    if [[ ${CROSS} = "n" || ${CROSS} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${CROSS} = "y" ]];then
+    echo -e "[1]aarch64 [2]arm     [3]i386    [4]m68k [5]ppc"
+    echo -e "[6]ppc64   [7]riscv32 [8]riscv64 [9]x86-64"
+    read -p "CHOOSE YOUR ARCH TO SIMULATE:" ARCH
+    case ${ARCH} in
+      "1") apt install qemu-user-aarch64&&export CROSS_ARCH="aarch64";;
+      "2") apt install qemu-user-arm&&export CROSS_ARCH="arm";;
+      "3") apt install qemu-user-i386&&export CROSS_ARCH="i386";;
+      "4") apt install qemu-user-m68k&&export CROSS_ARCH="m68k";;
+      "5") apt install qemu-user-ppc&&export CROSS_ARCH="ppc";;
+      "6") apt install qemu-user-ppc64&&export CROSS_ARCH="ppc64";;
+      "7") apt install qemu-user-riscv32&&export CROSS_ARCH="riscv32";;
+      "8") apt install qemu-user-riscv64&&export CROSS_ARCH="riscv64";;
+      "9") apt install qemu-user-x86-64&&export CROSS_ARCH="x86_64";;
+    esac
+  else
+    export CROSS_ARCH="null"
+  fi
+  while :
+  do
+    read -p "[] AUTOMATICALLY GET ROOTFS DOWNLOAD LINK [y/n]? " AUTO_GET_LINK
+    if [[ ${AUTO_GET_LINK} = "n" || ${AUTO_GET_LINK} = "y" ]];then
+      break
+    fi
+  done
+  if [[ ${AUTO_GET_LINK} = "n" ]];then
+    echo -e "[] YOU CAN GO TO \033[4mhttp://images.linuxcontainers.org/images\033[0m\e[38;5;159m TO GET THE LINK OF YOUR ROOTFS OR USE CUSTOM ROOTFS"|pv -qL 40
+    while :
+    do
+      read -p "[] ENTER THE ROOTFS DOWNLOAD LINK OR THE PATH OF YOUR CUSTOM ROOTFS: " LINK
+      if [[ $LINK != "" ]];then
+        break
+      fi
+    done
+  fi
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  cd $PREFIX/tmp/container
+  if [[ ${AUTO_GET_LINK} = "y" ]];then
+    DOWNLOAD_ROOTFS
+  else
+    axel -n16 ${LINK}||cp ${LINK} ./||exit 0
+  fi
+  if ! mkdir -p ${CONTAINER_DIR};then
+    rm -rf $PREFIX/tmp/container
+    echo -e "\a\033[31m[] ERR:CANNOT CREATE CONTAINER DIRECTORY!"
+    exit 1
+  fi
+  ROOTFS=$(ls $PREFIX/tmp/container/)
+  case $ROOTFS in
+    *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
+    *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
+    *) echo "\a\033[31m[] ERR:UNKNOW FILE FORMAT";exit 1;;
+  esac
+  for i in {1..100};do
+    if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
+      CONTAINER=$i
+      break
+    fi
+  done
+  echo "#This file was automatically created by termux-container." >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo "#Do not edit this file if you don't know what you are doing." >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo RUN_MODE=proot >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo NAME=${NAME} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo CONTAINER_DIR=${CONTAINER_DIR} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo CROSS_ARCH=${CROSS_ARCH} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  export NEW_CONTAINER=${CONTAINER}
+  LOAD_GLOBAL_CONFIG
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" $PREFIX/etc/container/global.conf
+  rm -f ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp/
+  chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
+  if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
+    sed -i "s/NEW_USER=\"\"/NEW_USER=${NEW_USER}/" ${CONTAINER_DIR}/tmp/group_add.sh
+    sed -i "s/PASSWORD=\"\"/PASSWORD=${PASSWORD}/" ${CONTAINER_DIR}/tmp/group_add.sh
+  fi
+  unset LD_PRELOAD
+  COMMAND="proot --link2symlink --sysvipc -0 -r ${CONTAINER_DIR} -b /dev -b /sys -b /proc -w /root"
+  if [[ ${CROSS_ARCH} != "null" ]];then
+    COMMAND+=" -q qemu-${CROSS_ARCH}"
+  fi
+  exec ${COMMAND} /tmp/group_add.sh >> /dev/null 2&>1
+}
+CREATE_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  echo -e "If your device is rooted,it is recommended to run container with chroot-unshare mode.If your device is not rooted or you want to run cross-arch container,you should choose proot."
+  echo -e "[1] chroot-unshare   [2] proot"
+  while :
+  do
+    read -p "PLEASE CHOOSE YOUR CONTAINER RUN MODE: " RUN_MODE
+    if [[ ${RUN_MODE} = "1" || ${RUN_MODE} = "2" ]];then
+      break
+    fi
+  done
+  if [[ ${RUN_MODE} = "1" ]];then
+    sudo container -e CREATE_CHROOT_CONTAINER
+  else
+    CREATE_PROOT_CONTAINER
+  fi
+}
+BACKUP_CHROOT_CONTAINER(){
+  pkill unshare
+  source $PREFIX/etc/container/container-$1.conf
+  umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+  umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+  losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+  echo -e "[] CHOOSE THE BACKUP FILE COMPRESSION FORMAT:"
+  while :
+  do
+    read -p "[1]tar.gz [2]tar.xz [3]tar " FORMAT
+    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" ]];then
+      break
+    fi
+  done
+  cd ${CONTAINER_DIR}
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  case ${FORMAT} in
+    1) tar -zcvPf $PREFIX/tmp/container/rootfs.tar.gz .;;
+    2) tar -JcvPf $PREFIX/tmp/container/rootfs.tar.xz .;;
+    3) tar -cvPf  $PREFIX/tmp/container/rootfs.tar .;;
+  esac
+  cp $PREFIX/etc/container/container-$1.conf $PREFIX/tmp/container/container.conf
+  cd $PREFIX/tmp/container
+  TARGET="/sdcard/container-$NAME-$(date +%y%m%d%H%M%S).bk"
+  tar -cvf ${TARGET} .
+  rm -rf $PREFIX/tmp/container
+  echo -e "[] BACKUP DONE,FILE: ${TARGET}"
+}
+BACKUP_PROOT_CONTAINER(){
+  pkill proot
+  source $PREFIX/etc/container/container-$1.conf
+  echo -e "[] CHOOSE THE BACKUP FILE COMPRESSION FORMAT:"
+  while :
+  do
+    read -p "[1]tar.gz [2]tar.xz [3]tar " FORMAT
+    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" ]];then
+      break
+    fi
+  done
+  cd ${CONTAINER_DIR}
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  case ${FORMAT} in
+    1) tar -zcvPf $PREFIX/tmp/container/rootfs.tar.gz .;;
+    2) tar -JcvPf $PREFIX/tmp/container/rootfs.tar.xz .;;
+    3) tar -cvPf  $PREFIX/tmp/container/rootfs.tar .;;
+  esac
+  cp $PREFIX/etc/container/container-$1.conf $PREFIX/tmp/container/container.conf
+  cd $PREFIX/tmp/container
+  TARGET="/sdcard/container-$NAME-$(date +%y%m%d%H%M%S).bk"
+  tar -cvf ${TARGET} .
+  rm -rf $PREFIX/tmp/container
+  echo -e "[] BACKUP DONE,FILE: ${TARGET}"
+}
+BACKUP_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      source container-${i}.conf
+      echo -e "[${i}] ${NAME} (${RUN_MODE})"
+      sleep 0.3s
+    fi
+  done
+  while :
+  do
+    read -p "[] SELECT A CONTAINER TO BACKUP: " CONTAINER
+    if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+      break
+    fi
+  done
+  source $PREFIX/etc/container/container-${CONTAINER}.conf
+  if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+    sudo container -e BACKUP_CHROOT_CONTAINER ${CONTAINER}
+  else
+    BACKUP_PROOT_CONTAINER ${CONTAINER}
+  fi
+}
+RESTORE_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-17))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 1s
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  tar -xvf $1 -C $PREFIX/tmp/container
+  source $PREFIX/tmp/container/container.conf
+  if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+    sudo mkdir -p ${CONTAINER_DIR}
+    ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
+    case ${ROOTFS} in
+      *tar) sudo tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+      *tar.gz) sudo tar -xzvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+      *tar.xz) sudo tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+    esac
+  else
+    mkdir -p ${CONTAINER_DIR}
+    ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
+    case ${ROOTFS} in
+      *tar) tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+      *tar.gz) tar -xzvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+      *tar.xz) tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+    esac
+  fi
+  for i in {1..100};do
+    if [[ ! -e $PREFIX/etc/container/container-$i.conf ]];then
+      mv $PREFIX/tmp/container/container.conf $PREFIX/etc/container/container-$i.conf
+      sed -i "s/CONTAINER=$CONTAINER/CONTAINER=$i/" $PREFIX/etc/container/global.conf
+      break
+    fi
+  done
+  rm -rf $PREFIX/tmp/container
+}
+SWITCH_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_SWITCH$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      source container-${i}.conf
+      echo -e "\e[38;5;159m[$i] ${NAME} (${RUN_MODE})"
+    fi
+  done
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  while :
+  do
+    read -p "[] SELECT A CONTAINER: " CONTAINER
+    if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+      source $PREFIX/etc/termux-container/container-${CONTAINER_BK}.conf >> /dev/null 2>&1
+      if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+        sudo umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+        sudo umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+        sudo umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+        sudo umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+        sudo umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+        sudo losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+      fi
+      break
+    fi
+  done
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" $PREFIX/etc/container/global.conf
+  return 0
+  exit 0
+}
+MOUNT_IMAGE_FILE(){
+  if [[ $(whoami) != "root" ]];then
+    sudo container -e MOUNT_IMAGE_FILE
+    exit 0
+  fi
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-15))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  if [[ ${CONTAINER_IMG} = "" ]];then
+    echo -e "\a\033[31m[] ERR:NOT USING IMAGE FILE!\033[0m"
+    exit 1
+  fi
+  if [[ ! -e ${CONTAINER_IMG} ]];then
+    echo -e "\a\033[31m[] ERR:IMAGE FILE DOES NOT EXIST!\033[0m"
+    exit 1
+  fi
+  LOOPFILE=$(sudo losetup -f)
+  sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
+  sudo mount ${LOOPFILE} ${CONTAINER_DIR}
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] ${CONTAINER_IMG} MOUNTED ON ${CONTAINER_DIR} \033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] DONE\033[0m"
+  return 0
+  exit 0
+}
+RUN_CHROOT_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-13))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] CONTAINER: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] ARCH: \e[38;5;153m$(uname -m)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  if [[ $DISABLE_SELINUX = "true" ]];then
+    SELINUX=Permissive
+  else
+    SELINUX=Enforcing
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  /        /  \\    [\e[38;5;153m\e[38;5;159m] SELinux: \e[38;5;153m${SELINUX}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m /        /    \\   [\e[38;5;153m\e[38;5;159m] KERNEL: \e[38;5;153m$(uname -r)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m/________/      \\  [\e[38;5;153m\e[38;5;159m] TIME: \e[38;5;153m$(date|awk '{print $4}')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m\\        \\      /  [\e[38;5;153m\e[38;5;159m] HOST: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] ANDROID: \e[38;5;153m$(getprop ro.build.version.release)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] CONTAINER_DIR: \e[38;5;153m${CONTAINER_DIR}"
+  if [[ $CONTAINER_IMG != "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] CONTAINER_IMG: \e[38;5;153m${CONTAINER_IMG}"
+  else
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] CONTAINER_IMG: \e[38;5;153mnull"
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//////"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  if [[ ! -e ${CONTAINER_DIR} ]];then
+    echo -e "\033[31m\a[] ERR:CONTAINER DIRECTORY DOES NOT EXIST!"&&printf "\033[?25h"
+    exit 1
+  fi
+  if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]] && [[ ! -e ${CONTAINER_IMG} ]];then
+    echo -e "\a\033[31m[] ERR:IMAGE FILE DOES NOT EXIST!"&&printf "\033[?25h"
+    exit 1
+  fi
+  if [[ ${DISABLE_SELINUX} = "true" ]];then
+    if [[ $(getenforce) != "Permissive" ]];then
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] DISABLE SELINUX"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      setenforce 0 >> /dev/null 2>&1
+    fi
+  fi
+  if [[ $(mount|grep ${CONTAINER_DIR}) =  "" ]];then
+    if [[ ${CONTAINER_IMG} = "" || ${CONTAINER_IMG} = "null" ]];then
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] REMOUNT /data"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      mount -o remount,suid /data  >> /dev/null 2>&1
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] MOUNT ${CONTAINER_DIR}"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      mount --rbind ${CONTAINER_DIR} ${CONTAINER_DIR} >> /dev/null 2>&1
+    else
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] RUN FSCK"
+      fsck.ext4 -a -f  ${CONTAINER_IMG} >> /dev/null 2>&1
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] MOUNT ${CONTAINER_IMG}"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      LOOPFILE=$(losetup -f)
+      losetup  ${LOOPFILE} ${CONTAINER_IMG}  >> /dev/null 2>&1
+      mount  ${LOOPFILE} ${CONTAINER_DIR}  >> /dev/null 2>&1
+    fi
+  fi
+  if [[ $(mount|grep ${CONTAINER_DIR}|grep /sdcard) =  "" && ${MOUNT_SDCARD} = "true" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] MOUNT /sdacrd"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount -o ro,bind /sdcard ${CONTAINER_DIR}/sdcard/ >> /dev/null 2>&1
+  fi
+  case $CURSOR in
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  if [[ ! -e ${CONTAINER_DIR}/usr/local/bin/unshare_init ]];then
+    mkdir -p ${CONTAINER_DIR}/usr/local/bin/ >> /dev/null 2>&1
+    cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
+    chmod 777 ${CONTAINER_DIR}/usr/local/bin/unshare_init
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||touch ${CONTAINER_DIR}/etc/enable_output
+  [[ ${ENABLE_OUTPUT} = "true" ]]||rm ${CONTAINER_DIR}/etc/enable_output >> /dev/null 2>&1
+  echo ${HOSTNAME} > ${CONTAINER_DIR}/etc/hostname
+  UNSHARE_PARAMETER="--fork"
+  if [[ -e  /proc/$$/ns/ipc ]];then
+    UNSHARE_PARAMETER+=" -i"
+  fi
+  if [[ -e /proc/$$/ns/mnt ]];then
+    UNSHARE_PARAMETER+=" -m"
+  fi
+  if [[ -e /proc/$$/ns/pid ]];then
+    UNSHARE_PARAMETER+=" -p"
+  fi
+  if [[ -e /proc/$$/ns/uts ]];then
+    UNSHARE_PARAMETER+=" -u"
+  fi
+  printf "\033[?25h\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] RUN UNSHARE"
+  unset LD_PRELOAD
+  /bin/unshare ${UNSHARE_PARAMETER} $PREFIX/bin/chroot ${CONTAINER_DIR} /usr/local/bin/unshare_init
+  printf '\e[2 q\033[0m'
+  return 0
+  exit 0
+}
+RUN_PROOT_CONTAINER(){
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-13))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] CONTAINER: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] ARCH: \e[38;5;153m$(uname -m)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  /        /  \\    [\e[38;5;153m\e[38;5;159m] CROSS_ARCH: \e[38;5;153m${CROSS_ARCH}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m /        /    \\   [\e[38;5;153m\e[38;5;159m] KERNEL: \e[38;5;153m$(uname -r)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m/________/      \\  [\e[38;5;153m\e[38;5;159m] TIME: \e[38;5;153m$(date|awk '{print $4}')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m\\        \\      /  [\e[38;5;153m\e[38;5;159m] HOSTNAME: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] ANDROID: \e[38;5;153m$(getprop ro.build.version.release)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] CONTAINER_DIR: \e[38;5;153m${CONTAINER_DIR}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] VERSION: \e[38;5;153m7.0"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//////"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  unset LD_PRELOAD
+  COMMAND="proot"
+  COMMAND+=" --link2symlink"
+  COMMAND+=" --kill-on-exit"
+  COMMAND+=" --sysvipc"
+  COMMAND+=" -0"
+  COMMAND+=" -r ${CONTAINER_DIR}"
+  COMMAND+=" -b /dev"
+  COMMAND+=" -b /sys"
+  COMMAND+=" -b /proc"
+  COMMAND+=" -w /root"
+  if [[ ${MOUNT_SDCARD} = "true" ]];then
+    COMMAND+=" -b /sdcard"
+  fi
+  if [[ ${CROSS_ARCH} != "null" ]];then
+    COMMAND+=" -q qemu-${CROSS_ARCH}"
+  fi
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/buddyinfo:/proc/buddyinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/cgroups:/proc/cgroups"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/consoles:/proc/consoles"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/crypto:/proc/crypto"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/devices:/proc/devices"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/diskstats:/proc/diskstats"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/execdomains:/proc/execdomains"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/fb:/proc/fb"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/filesystems:/proc/filesystems"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/interrupts:/proc/interrupts"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/iomem:/proc/iomem"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/ioports:/proc/ioports"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kallsyms:/proc/kallsyms"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/key-users:/proc/key-users"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/keys:/proc/keys"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kpageflags:/proc/kpageflags"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/loadavg:/proc/loadavg"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/locks:/proc/locks"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/misc:/proc/misc"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/modules:/proc/modules"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/pagetypeinfo:/proc/pagetypeinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/partitions:/proc/partitions"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/sched_debug:/proc/sched_debug"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/softirqs:/proc/softirqs"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/timer_list:/proc/timer_list"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/uptime:/proc/uptime"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/version:/proc/version"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmallocinfo:/proc/vmallocinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmstat:/proc/vmstat"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/zoneinfo:/proc/zoneinfo"
+  COMMAND+=" /bin/su - root"
+  case ${CURSOR} in
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  printf "\033[?25h\033[0m"
+  exec ${COMMAND}
+  printf '\e[2 q'
+  return 0
+  exit 0
+}
+RUN_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+    sudo container -e RUN_CHROOT_CONTAINER
+  else
+    RUN_PROOT_CONTAINER
+  fi
+}
+REMOVE_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      source container-${i}.conf
+      echo -e "[$i] $NAME ($RUN_MODE)"
+    fi
+  done
+  while :
+  do
+    read -p "[] SELECT A CONTAINER TO REMOVE: " CONTAINER
+    if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+      break
+     fi
+  done
+  echo -e "\a[] ALL YOUR FILES IN THIS CONTAINER WILL BE DELEATED"|pv -qL 40
+  read -p "[] PRESS ENTER TO CONTINUE OR PRESS CTRL-C TO EXIT" NULL
+  source $PREFIX/etc/container/container-${CONTAINER}.conf
+  if [[ ${RUN_MODE} = "proot" ]];then
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      rm -rvf ${CONTAINER_DIR}
+    fi
+    rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
+  else
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      sudo umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+      sudo umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+      sudo umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+      sudo umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+      sudo umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+      sudo losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+      sudo rm -rvf ${CONTAINER_DIR}
+    fi
+    if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]];then
+      sudo rm -v ${CONTAINER_IMG}
+    fi
+    sudo rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
+  fi
+}
+REMOVE_ALL_CONTAINERS(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-19))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_UNINSTALL$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+      if [[ -e container-${i}.conf ]];then
+        source $PREFIX/etc/container/container-${i}.conf
+        read -p "[] REMOVE CONTAINER ${NAME}?[y/n] " REMOVE
+        if [[ $REMOVE = "n" ]];then
+          continue
+        fi
+        sleep 1s
+        if [[ ${RUN_MODE} = "proot" ]];then
+          if [[ ${CONTAINER_DIR} != "" ]];then
+            rm -rvf ${CONTAINER_DIR}
+            rm -v $PREFIX/etc/container/container-${i}.conf
+          fi
+        else
+          if [[ ! ${CONTAINER_DIR} = "" ]];then
+            sudo umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+            sudo umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+            sudo umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+            sudo umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+            sudo umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+            sudo losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+            if [[ ${CONTAINER_DIR} != "" ]];then
+              sudo rm -rfv ${CONTAINER_DIR}
+            fi
+            if [[ ${CONTAINER_IMG} != "" ]];then
+              sudo rm -rfv ${CONTAINER_IMG}
+            fi
+            sudo rm -v $PREFIX/etc/container/container-${i}.conf
+          fi
+        fi
+        unset REMOVE
+      fi
+  done
+  apt purge termux-container
+  echo -e "\e[38;5;159m[] UNINSTALL DONE"
+  return 0
+  exit 0
+}
+SETTINGS(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-18))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  echo -e "------SETTINGS------"
+  echo -e "[] ENABLE_OUTPUT:${ENABLE_OUTPUT}"
+  echo -e "[] MOUNT_SDCARD:${MOUNT_SDCARD}"
+  echo -e "[] HOSTNAME:${HOSTNAME}"
+  echo -e "[] CURSOR:${CURSOR}"
+  echo -e "[] DISABLE_SELINUX:${DISABLE_SELINUX}"
+  echo -e "[] CONTAINER:${CONTAINER}"
+  read -p "PRESS ENTER TO EDIT THE CONFIG FILE OR PRESS CTRL-C TO EXIT" NULL
+  nano $PREFIX/etc/container/global.conf
+  return 0
+  exit 0
+}
+SHOW_HELPS(){
+  echo -e "              \e[38;5;157m┌───────────┐"
+  echo -e "              │ ┌───────┐ │"
+  echo -e "              │ │  \e[38;5;227m┌───────────┐"
+  echo -e "              \e[38;5;157m│ │  \e[38;5;227m│ ┌───────┐ │"
+  echo -e "              \e[38;5;157m│ │  \e[38;5;227m│ │  \e[38;5;157m│ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;157m│ └──\e[38;5;227m│ │\e[38;5;157m──┘ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;157m└────\e[38;5;227m│ │\e[38;5;157m────┘  \e[38;5;227m│ │"
+  echo -e "                   \e[38;5;227m│ └───────┘ │"
+  echo -e "                   \e[38;5;227m└───────────┘"
+  echo -e "\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  echo -e "\e[38;5;159m   「This script has no Super Cow Powers!」"
+  echo -e "Usage:"
+  echo -e " container                   #Show menu."
+  echo -e " container -run              #Run container."
+  echo -e " container -c                #Creat a new container."
+  echo -e " container -S                #Switch container."
+  echo -e " container -s                #Settings."
+  echo -e " container -r                #Remove a container."
+  echo -e " container -m                #Mount image file. *Only for chroot-unshare containers."
+  echo -e " container -bk               #Backup container."
+  echo -e " container -R [backup file]  #Restore container."
+  echo -e " container -e [function name]#Exec function. *Only for debugging."
+  echo -e " container -v                #Display version."
+  echo -e " container -U                #Remove all containers&Uninstall."
+  echo -e " container -h                #Show this page.\033[0m"
+  return 0
+  exit 0
+}
+DISPLAY_VERSION(){
+  printf '\e[38;5;159m'
+  echo -e "[] (>_×)"
+  echo -e "[] NAME: TERMUX-CONTAINER"
+  echo -e "[] AUTHOR: Moe-hacker"
+  echo -e "[] LICENSE: APACHE-2.0"
+  echo -e "[] NO WARRANTY"
+  echo -e '[] VERSION: 7.0\033[0m'
+  return 0
+  exit 0
+}
+MENU(){
+  printf '\e[38;5;159m'
+  WIDTH=$(($(stty size|awk '{print $2}')-4))
+  OPTION=$(whiptail --title "termux-container" --menu "Choose your option" 16 $WIDTH 9 \
+  "1" "Run container" \
+  "2" "Create a new container" \
+  "3" "Switch container"  \
+  "4" "Backup container" \
+  "5" "Restore container" \
+  "6" "Remove container" \
+  "7" "Settings" \
+  "8" "Display version" \
+  "9" "Remove all containers&Uninstall" \
+  "10" "Show helps" \
+  "11" "Exit" 3>&1 1>&2 2>&3)
+  case $OPTION in
+    "1") container -run;;
+    "2") container -c;;
+    "3") container -S;;
+    "4") container -bk;;
+    "5") read -p "Backup file:" BKFILE&&container -R $BKFILE;;
+    "6") container -r;;
+    "7") container -s;;
+    "8") container -v;;
+    "9") container -U;;
+    "10") container -h;;
+    "11") exit;;
+  esac
+  return 0
+  exit 0
+}
+EXEC_FUNCTION(){
+  $1 $2
+}
+case $1 in
+  *run)    RUN_CONTAINER;;
+  *h)      SHOW_HELPS;;
+  *s)      SETTINGS;;
+  *c)      CREATE_CONTAINER;;
+  *m)      MOUNT_IMAGE_FILE;;
+  *r)      REMOVE_CONTAINER;;
+  *R)      RESTORE_CONTAINER $2;;
+  *bk)     BACKUP_CONTAINER;;
+  *S)      SWITCH_CONTAINER;;
+  *v)      DISPLAY_VERSION;;
+  *U)      REMOVE_ALL_CONTAINERS;;
+  *e)      EXEC_FUNCTION $2 $3;;
+  "")      MENU;;
+   *)      SHOW_HELPS;;
+esac
+#copyright 2022 Moe-hacker (Author)
+# ██╗ ██╗  ███████╗   ████╗   ███████╗
+#████████╗ ██╔════╝ ██╔═══██╗ ██╔════╝
+#╚██╔═██╔╝ █████╗   ██║   ██║ █████╗
+#████████╗ ██╔══╝   ██║   ██║ ██╔══╝
+#╚██╔═██╔╝ ███████╗ ╚██████╔╝ ██║
+# ╚═╝ ╚═╝  ╚══════╝  ╚═════╝  ╚═╝

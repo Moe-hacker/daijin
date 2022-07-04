@@ -1,0 +1,8 @@
+Package: termux-container
+Architecture: all
+Installed-Size: 24904
+Maintainer: Moe-hacker
+Version: 7.0
+Homepage: https://github.com/Moe-hacker/termux-container
+Depends: tsu, coreutils, p7zip, tar, unzip, zip, git, wget, dpkg, curl, e2fsprogs, nano, whiptail, proot, axel, termux-tools, util-linux
+Description: Run linux with chroot&unshare/proot on your Android phone,safety and easy.

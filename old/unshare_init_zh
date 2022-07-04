@@ -1,0 +1,171 @@
+#!/bin/sh
+# ██╗ ██╗  ██╗ ███████╗ ██╗  ██╗
+#████████╗ ██║ ██╔════╝ ██║  ██║
+#╚██╔═██╔╝ ██║ ███████╗ ███████║
+#████████╗ ╚═╝ ╚════██║ ██╔══██║
+#╚██╔═██╔╝ ██╗ ███████║ ██║  ██║
+# ╚═╝ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+###### Github@Moe-hacker ######
+export PATH="/bin:/usr/bin:/usr/local/bin"
+if [ -e /etc/enable_output ];then
+  export ENABLE_OUTPUT=y
+else
+  export ENABLE_OUTPUT=n
+fi
+####################
+######日志管理######
+####################
+rm -f /tmp/init.log
+export LOG_FILE="/tmp/init.log"
+CONTAINER_LOG(){
+  echo -e "[$(date +%Y-%m-%d\ %H:%M:%S)] $@" >> ${LOG_FILE}
+}
+####################
+######挂载目录######
+####################
+CONTAINER_LOG "挂载 /proc"
+mount -t proc proc -o rw,nosuid,nodev,noexec,relatime /proc >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /sys"
+mount -t sysfs sysfs -o ro,seclabel,nosuid,nodev,noexec,relatime /sys >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /sys"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /dev"
+mount -t tmpfs tmpfs -o rw,seclabel,nosuid,size=65536k,mode=755 /dev >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /dev"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+####################
+######创建设备######
+####################
+CONTAINER_LOG "创建 /dev/console"
+mknod -m 622 /dev/console c 5 1 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/console"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "更改/dev/console所属用户"
+chown root:tty /dev/console >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 更改 /dev/console所属用户"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/null"
+mknod -m 666 /dev/null c 1 3 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/null"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/zero"
+mknod -m 666 /dev/zero c 1 5 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/zero"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/ptmx"
+mknod -m 666 /dev/ptmx c 5 2 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/ptmx"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "更改/dev/ptmx所属用户"
+chown root:tty /dev/ptmx >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 更改 /dev/ptmx所属用户"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/tty"
+mknod -m 666 /dev/tty c 5 0 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/tty"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "更改/dev/tty所属用户"
+chown root:tty /dev/tty >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 更改 /dev/tty所属用户"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/random"
+mknod -m 444 /dev/random c 1 8 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/random"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/urandom"
+mknod -m 444 /dev/urandom c 1 9 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/urandom"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/fd"
+ln -s /proc/self/fd /dev/fd >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/fd"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/stdin"
+ln -s /proc/self/fd/0 /dev/stdin >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/stdin"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/stdout"
+ln -s /proc/self/fd/1 /dev/stdout >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/stdout"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/stderr"
+ln -s /proc/self/fd/2 /dev/stderr >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/stderr"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/tty0"
+ln -s /dev/null /dev/tty0 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/tty0"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/pts"
+mkdir /dev/pts >> ${LOG_FILE} 2>&1
+mount -t devpts -o gid=4,mode=620 devpts /dev/pts >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/pts"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/shm"
+mkdir /dev/shm >> ${LOG_FILE} 2>&1
+mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/shm"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/mqueue"
+mkdir /dev/mqueue >> ${LOG_FILE} 2>&1
+mount -t mqueue none /dev/mqueue >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/mqueue"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "创建 /dev/net/tun"
+mkdir /dev/net >> ${LOG_FILE} 2>&1
+mknod /dev/net/tun c 10 200 >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 创建 /dev/net/tun"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/sysrq-trigger为只读文件系统"
+mount -o bind,private,ro /proc/sysrq-trigger /proc/sysrq-trigger >> ${LOG_FILE} 2>&1
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/sysrq-trigger"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/bus为只读文件系统"
+mount -o bind,ro,relatime /proc/bus /proc/bus
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/bus"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/fs为只读文件系统"
+mount -o bind,ro,relatime /proc/fs /proc/fs
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/fs"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/irq为只读文件系统"
+mount -o bind,ro,relatime /proc/irq /proc/irq
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/irq"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/sys为只读文件系统"
+mount -o bind,ro,relatime /proc/sys /proc/sys
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/sys"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/asound为只读文件系统"
+mount -o bind,ro,seclabel,relatime  /proc/asound /proc/asound
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/asound"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/scsi为只读文件系统"
+mount -o bind,ro,seclabel,relatime /proc/scsi /proc/scsi
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /proc/scsi"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+CONTAINER_LOG "挂载 /proc/firmware为只读文件系统"
+mount -o bind,ro,seclabel,relatime /sys/firmware /sys/firmware
+[ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 挂载 /sys/firmware"
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+####################
+######设置名称######
+####################
+#设置主机名
+if [ $(hostname) != $(cat /etc/hostname) ];then
+  CONTAINER_LOG "设置主机名"
+  hostname $(cat /etc/hostname) >> ${LOG_FILE} 2>&1
+  [ ${ENABLE_OUTPUT} = "n" ]||echo -e "\033[38;5;225m[\033[38;5;158m\033[38;5;225m] 设置主机名"
+  [ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+fi
+####################
+######切换用户######
+####################
+#切换为容器中的root用户
+CONTAINER_LOG "登录"
+[ ${ENABLE_OUTPUT} = "n" ] || echo -e "お帰りなさい！御主人様!"  #欢迎回家，主人！(太他妈二刺螈了)
+[ ${ENABLE_OUTPUT} = "n" ]||sleep 0.1s
+printf "\033[0m"
+/bin/su - root
