@@ -32,7 +32,6 @@ apt install ~/termux-container.deb
 ```
 Enjoy it!     
 
-![people](metrics.plugin.people.repository.svg)
 ### About:      
 &emsp;I used some of the source code in [Tmoe-linux](https://gitee.com/mo2/linux) to finish this script.   
 &emsp;I'm sorry that my English is not very well.If there are any mistakes in this document,please tell me.      
