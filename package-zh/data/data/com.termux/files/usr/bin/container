@@ -150,12 +150,12 @@ CREATE_CHROOT_CONTAINER(){
   read -p "[] 请输入容器的绝对路径，不可包含空格: " CONTAINER_DIR
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
     if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
-      echo -e "\a\033[31m[] 拒绝使用系统目录!"
+      echo -e "\a\033[31m[] 错误:拒绝使用系统目录!"
       exit 1
     fi
   done
   if [[ -e $CONTAINER_DIR ]];then
-    echo -e "\a\033[31m[] 目录已存在!"
+    echo -e "\a\033[31m[] 错误:目录已存在!"
     exit 1
   fi
   while :
@@ -174,9 +174,13 @@ CREATE_CHROOT_CONTAINER(){
         break
       fi
     done
+    if [[ $CONTAINER_IMG_PATH = $CONTAINER_DIR ]];then
+      echo -e "\a\033[31m[] 错误:拒绝使用和容器相同的目录!"
+      exit 1
+    fi
     for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
       if [[ $CONTAINER_IMG_PATH = $BLACKLIST* ]];then
-        echo -e "\a\033[31m[] 拒绝使用系统目录!"
+        echo -e "\a\033[31m[] 错误:拒绝使用系统目录!"
         exit 1
       fi
     done

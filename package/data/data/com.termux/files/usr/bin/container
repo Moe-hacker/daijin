@@ -144,18 +144,18 @@ CREATE_CHROOT_CONTAINER(){
         break
       fi
     done
-  echo -e "[] IF SUDO IS UNUSEABLE,PLEASE REINSTALL SUDO"
+    echo -e "[] IF SUDO IS UNUSEABLE,PLEASE REINSTALL SUDO."
   fi
   echo -e "[] THE CONTAINER ABSOLUTE PATH IS THE DIRECTORY USED TO STORE THE CONTAINER,FOR EXAMPLE,YOU CAN USE /data/container-name,BUT DO NOT USE DIRECTORY IN /sdcard!!!"|pv -qL 40
   read -p "[] ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CONTAINER_DIR
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
     if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
-      echo -e "\a\033[31m[] REFUSE TO USE SYSTEM DIRECTORY!"
+      echo -e "\a\033[31m[] ERR:REFUSE TO USE SYSTEM DIRECTORY!"
       exit 1
     fi
   done
   if [[ -e $CONTAINER_DIR ]];then
-    echo -e "\a\033[31m[] DIRECTORY ALREADY EXISTS!"
+    echo -e "\a\033[31m[] ERR:DIRECTORY ALREADY EXISTS!"
     exit 1
   fi
   while :
@@ -174,9 +174,13 @@ CREATE_CHROOT_CONTAINER(){
         break
       fi
     done
+    if [[ $CONTAINER_IMG_PATH = $CONTAINER_DIR ]];then
+      echo -e "\a\033[31m[] ERR:REFUSE TO USE THE SAME DIRECTORY AS THE CONTAINER!"
+      exit 1
+    fi
     for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
       if [[ $CONTAINER_IMG_PATH = $BLACKLIST* ]];then
-        echo -e "\a\033[31m[] REFUSE TO USE SYSTEM DIRECTORY!"
+        echo -e "\a\033[31m[] ERR:REFUSE TO USE SYSTEM DIRECTORY!"
         exit 1
       fi
     done
