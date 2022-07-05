@@ -250,7 +250,7 @@ CREATE_CHROOT_CONTAINER(){
   case $ROOTFS in
     *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
     *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
-    *) echo "\a\033[31m[]错误:未知文件格式!";exit 1;;
+    *) echo -e "\a\033[31m[]错误:未知文件格式!";exit 1;;
   esac
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
   sleep 1s
