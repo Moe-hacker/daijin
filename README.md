@@ -2,9 +2,14 @@
 <p align="center">(>_×)</p>         
 <p align="center">Moe-hacker</p>
 
------------        
-[[简体中文]](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)           
+-----------                   
 
+![](https://img.shields.io/github/stars/Moe-hacker/termux-container)
+![](https://img.shields.io/github/forks/Moe-hacker/termux-container)
+![](https://img.shields.io/github/license/Moe-hacker/termux-container)
+![](https://img.shields.io/badge/language-shell-green)
+
+[[简体中文]](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)
 
 &emsp;Run Linux with chroot&unshare/proot on your Android phone!      
 &emsp;This is a script that runs a Linux system on your phone.You are free to define this script and make it to be you want.      
