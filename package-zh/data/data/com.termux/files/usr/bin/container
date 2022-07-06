@@ -971,6 +971,8 @@ RUN_CHROOT_CONTAINER_LEGACY_MODE(){
     [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
     mount -o bind /dev/pts ${CONTAINER_DIR}/dev/pts >> /dev/null 2>&1
   fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 运行容器"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   case ${CURSOR} in
     block)     printf '\e[2 q';;
     bar)       printf '\e[6 q';;

@@ -971,6 +971,8 @@ RUN_CHROOT_CONTAINER_LEGACY_MODE(){
     [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
     mount -o bind /dev/pts ${CONTAINER_DIR}/dev/pts >> /dev/null 2>&1
   fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] RUN CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   case ${CURSOR} in
     block)     printf '\e[2 q';;
     bar)       printf '\e[6 q';;
@@ -1229,6 +1231,7 @@ SHOW_HELPS(){
   echo -e "Usage:"
   echo -e " container                   #Show menu."
   echo -e " container -run              #Run container."
+  echo -e " container -l                #Run container(legacy mode). *only for chroot containers."
   echo -e " container -c                #Creat a new container."
   echo -e " container -S                #Switch container."
   echo -e " container -s                #Settings."
@@ -1259,28 +1262,30 @@ MENU(){
   WIDTH=$(($(stty size|awk '{print $2}')-4))
   OPTION=$(whiptail --title "termux-container" --menu "Choose your option" 16 $WIDTH 9 \
   "1" "Run container" \
-  "2" "Create a new container" \
-  "3" "Switch container"  \
-  "4" "Backup container" \
-  "5" "Restore container" \
-  "6" "Remove container" \
-  "7" "Settings" \
-  "8" "Display version" \
-  "9" "Remove all containers&Uninstall" \
-  "10" "Show helps" \
-  "11" "Exit" 3>&1 1>&2 2>&3)
+  "2" "Run container(legacy mode for chroot)"\
+  "3" "Create a new container" \
+  "4" "Switch container"  \
+  "5" "Backup container" \
+  "6" "Restore container" \
+  "7" "Remove container" \
+  "8" "Settings" \
+  "9" "Display version" \
+  "10" "Remove all containers&Uninstall" \
+  "11" "Show helps" \
+  "12" "Exit" 3>&1 1>&2 2>&3)
   case $OPTION in
     "1") container -run;;
-    "2") container -c;;
-    "3") container -S;;
-    "4") container -bk;;
-    "5") read -p "Backup file:" BKFILE&&container -R $BKFILE;;
-    "6") container -r;;
-    "7") container -s;;
-    "8") container -v;;
-    "9") container -U;;
-    "10") container -h;;
-    "11") exit;;
+    "2") container -l;;
+    "3") container -c;;
+    "4") container -S;;
+    "5") container -bk;;
+    "6") read -p "Backup file:" BKFILE&&container -R $BKFILE;;
+    "7") container -r;;
+    "8") container -s;;
+    "9") container -v;;
+    "10") container -U;;
+    "11") container -h;;
+    "12") exit;;
   esac
   return 0
   exit 0
@@ -1290,6 +1295,7 @@ EXEC_FUNCTION(){
 }
 case $1 in
   *run)    RUN_CONTAINER;;
+  *l)      LEGACY_MODE;;
   *h)      SHOW_HELPS;;
   *s)      SETTINGS;;
   *c)      CREATE_CONTAINER;;
