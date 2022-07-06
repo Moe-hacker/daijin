@@ -1229,11 +1229,12 @@ SHOW_HELPS(){
   echo -e "Usage:"
   echo -e " container                   #打开菜单"
   echo -e " container -run              #运行容器"
+  echo -e " container -l                #运行容器(传统模式) *仅供chroot容器"
   echo -e " container -c                #创建一个新容器"
   echo -e " container -S                #切换容器"
   echo -e " container -s                #设置"
   echo -e " container -r                #删除一个容器"
-  echo -e " container -m                #挂载镜像文件 *仅供chroot-unshare容器使用"
+  echo -e " container -m                #挂载镜像文件 *仅供chroot容器"
   echo -e " container -bk               #备份容器"
   echo -e " container -R [备份文件]     #还原容器"
   echo -e " container -e [函数名]       #执行内置函数 *仅供调试"
@@ -1259,28 +1260,30 @@ MENU(){
   WIDTH=$(($(stty size|awk '{print $2}')-4))
   OPTION=$(whiptail --title "termux-container" --menu "选择你的操作" 16 $WIDTH 9 \
   "1" "运行容器" \
-  "2" "创建容器" \
-  "3" "切换容器"  \
-  "4" "备份容器" \
-  "5" "还原容器" \
-  "6" "删除容器" \
-  "7" "设置" \
-  "8" "版本信息" \
-  "9" "批量删除容器&卸载此脚本" \
-  "10" "帮助信息" \
-  "11" "退出" 3>&1 1>&2 2>&3)
+  "2" "运行容器(传统模式)" \
+  "3" "创建容器" \
+  "4" "切换容器"  \
+  "5" "备份容器" \
+  "6" "还原容器" \
+  "7" "删除容器" \
+  "8" "设置" \
+  "9" "版本信息" \
+  "10" "批量删除容器&卸载此脚本" \
+  "11" "帮助信息" \
+  "12" "退出" 3>&1 1>&2 2>&3)
   case $OPTION in
     "1") container -run;;
-    "2") container -c;;
-    "3") container -S;;
-    "4") container -bk;;
-    "5") read -p "备份文件:" BKFILE&&container -R $BKFILE;;
-    "6") container -r;;
-    "7") container -s;;
-    "8") container -v;;
-    "9") container -U;;
-    "10") container -h;;
-    "11") exit;;
+    "2") container -l;;
+    "3") container -c;;
+    "4") container -S;;
+    "5") container -bk;;
+    "6") read -p "备份文件:" BKFILE&&container -R $BKFILE;;
+    "7") container -r;;
+    "8") container -s;;
+    "9") container -v;;
+    "10") container -U;;
+    "11") container -h;;
+    "12") exit;;
   esac
   return 0
   exit 0
@@ -1290,6 +1293,7 @@ EXEC_FUNCTION(){
 }
 case $1 in
   *run)    RUN_CONTAINER;;
+  *l)      LEGACY_MODE;;
   *h)      SHOW_HELPS;;
   *s)      SETTINGS;;
   *c)      CREATE_CONTAINER;;
