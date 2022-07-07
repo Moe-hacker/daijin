@@ -459,7 +459,7 @@ CREATE_PROOT_CONTAINER(){
   if [[ ${CROSS_ARCH} != "null" ]];then
     COMMAND+=" -q qemu-${CROSS_ARCH}"
   fi
-  exec ${COMMAND} /tmp/group_add.sh >> /dev/null 2&>1
+  ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
   echo -e "[] DONE"
 }
 CREATE_CONTAINER(){
@@ -1081,7 +1081,7 @@ RUN_PROOT_CONTAINER(){
     underline) printf '\e[4 q';;
   esac
   printf "\033[?25h\033[0m"
-  exec ${COMMAND}
+  ${COMMAND}
   printf '\e[2 q'
   return 0
   exit 0
