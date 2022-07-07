@@ -43,7 +43,7 @@ GET_CPU_ARCH(){
 DOWNLOAD_ROOTFS(){
   echo -e "CURRENTLY SUPPORTED OS:"
   echo -e "debian,ubuntu,kali,parrot,fedora,centos,archlinux,alpine,oracle,amazonlinux,voidlinux,opensuse,almalinux,alt,apertis,rockylinux,devuan,gentoo"
-  read -p "CHOOSE THE OS TO INSTALL: " OS
+  read -p "[] CHOOSE THE OS TO INSTALL: " OS
   case $OS in
     "amazonlinux"|"archlinux"|"kali"|"voidlinux"|"parrot") export VERSION=current;;
     *)
@@ -51,7 +51,7 @@ DOWNLOAD_ROOTFS(){
       for i in $(curl -sL http://images.linuxcontainers.org/images/${OS}|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
         echo $i
       done
-      read -p "CHOOSE THE VERSION TO INSTALL: " VERSION;;
+      read -p "[] CHOOSE THE VERSION TO INSTALL: " VERSION;;
   esac
   if [[ ${CROSS_ARCH} != "null" && ${CROSS_ARCH} != "" ]];then
     case ${CROSS_ARCH} in
@@ -252,7 +252,7 @@ CREATE_CHROOT_CONTAINER(){
     *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
     *) echo -e "\a\033[31m[] ERR:UNKNOW FILE FORMAT!";exit 1;;
   esac
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] WRITING CONFIGURE FILE"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] WRITING CONFIG FILE"|pv -qL 40
   sleep 1s
   for i in {1..100};do
     if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
@@ -414,12 +414,17 @@ CREATE_PROOT_CONTAINER(){
     echo -e "\a\033[31m[] ERR:CANNOT CREATE CONTAINER DIRECTORY!"
     exit 1
   fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] EXTRACTING ROOTFS"|pv -qL 40
+  sleep 1s
   ROOTFS=$(ls $PREFIX/tmp/container/)
   case $ROOTFS in
     *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
     *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
     *) echo "\a\033[31m[] ERR:UNKNOW FILE FORMAT";exit 1;;
   esac
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] REMOVING DOWNLOADED ROOTFS"|pv -qL 40
+  rm -rf $PREFIX/tmp/container/
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] WRITING CONFIG FILE"|pv -qL 40
   for i in {1..100};do
     if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
       CONTAINER=$i
@@ -437,9 +442,12 @@ CREATE_PROOT_CONTAINER(){
   export CONTAINER_BK=${CONTAINER}
   unset CONTAINER
   sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" $PREFIX/etc/container/global.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] FIXING BUGS"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] FIX DNS PROBLEM"|pv -qL 40
   rm -f ${CONTAINER_DIR}/etc/resolv.conf
   echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
   echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] ADD SYSTEM GROUPS"|pv -qL 40
   cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp/
   chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
   if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
@@ -452,6 +460,7 @@ CREATE_PROOT_CONTAINER(){
     COMMAND+=" -q qemu-${CROSS_ARCH}"
   fi
   exec ${COMMAND} /tmp/group_add.sh >> /dev/null 2&>1
+  echo -e "[] DONE"
 }
 CREATE_CONTAINER(){
   LOAD_GLOBAL_CONFIG

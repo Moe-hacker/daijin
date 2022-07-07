@@ -43,7 +43,7 @@ GET_CPU_ARCH(){
 DOWNLOAD_ROOTFS(){
   echo -e "当前支持的系统:"
   echo -e "debian,ubuntu,kali,parrot,fedora,centos,archlinux,alpine,oracle,amazonlinux,voidlinux,opensuse,almalinux,alt,apertis,rockylinux,devuan,gentoo"
-  read -p "选择要安装的系统: " OS
+  read -p "[] 选择要安装的系统: " OS
   case $OS in
     "amazonlinux"|"archlinux"|"kali"|"voidlinux"|"parrot") export VERSION=current;;
     *)
@@ -51,7 +51,7 @@ DOWNLOAD_ROOTFS(){
       for i in $(curl -sL http://images.linuxcontainers.org/images/${OS}|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
         echo $i
       done
-      read -p "选择要安装的系统版本: " VERSION;;
+      read -p "[] 选择要安装的系统版本: " VERSION;;
   esac
   if [[ ${CROSS_ARCH} != "null" && ${CROSS_ARCH} != "" ]];then
     case ${CROSS_ARCH} in
@@ -77,7 +77,7 @@ DOWNLOAD_ROOTFS(){
     fi
     TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "DIR" |sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 2|tail -n 1)
     if [[ ${TIME} = "" ]];then
-      echo -e "\e[38;5;196m\a[]错误:未找到rootfs!"
+      echo -e "\e[38;5;196m\a[] 错误:未找到rootfs!"
       exit 1
     fi
     [[ -e $PREFIX/tmp/container ]]||mkdir -p $PREFIX/tmp/container
@@ -92,7 +92,7 @@ DOWNLOAD_ROOTFS(){
     cd $PREFIX/tmp/container
     ROOTFS=$(curl -sL https://download.parrot.sh/parrot/iso/testing|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
     if [[ ${ROOTFS} = "" ]];then
-      echo -e "\e[38;5;196m\a[]错误:未找到rootfs!"
+      echo -e "\e[38;5;196m\a[] 错误:未找到rootfs!"
       exit 1
     fi
     URL="https://download.parrot.sh/parrot/iso/testing/${ROOTFS}"
@@ -414,12 +414,17 @@ CREATE_PROOT_CONTAINER(){
     rm -rf $PREFIX/tmp/container
     exit 1
   fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 解压rootfs"|pv -qL 40
+  sleep 1s
   ROOTFS=$(ls $PREFIX/tmp/container/)
   case $ROOTFS in
     *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
     *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
     *) echo "\a\033[31m[] 错误:未知文件格式";exit 1;;
   esac
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 删除已下载的rootfs"|pv -qL 40
+  rm -rf $PREFIX/tmp/container/
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
   for i in {1..100};do
     if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
       CONTAINER=$i
@@ -437,9 +442,12 @@ CREATE_PROOT_CONTAINER(){
   export CONTAINER_BK=${CONTAINER}
   unset CONTAINER
   sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" $PREFIX/etc/container/global.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复中..."|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复dns"|pv -qL 40
   rm -f ${CONTAINER_DIR}/etc/resolv.conf
   echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
   echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 添加用户组"|pv -qL 40
   cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp/
   chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
   if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
@@ -452,6 +460,7 @@ CREATE_PROOT_CONTAINER(){
     COMMAND+=" -q qemu-${CROSS_ARCH}"
   fi
   exec ${COMMAND} /tmp/group_add.sh >> /dev/null 2&>1
+  echo -e "[] 创建完毕!"
 }
 CREATE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
