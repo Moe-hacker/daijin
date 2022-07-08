@@ -147,7 +147,13 @@ CREATE_CHROOT_CONTAINER(){
   echo -e "[] 如果sudo报错无法使用，请重装sudo."
   fi
   echo -e "[] 容器绝对路径是用来存放容器的路径，例如，你可以用使用/data/container-容器名，但不要用/sdcard下的目录!!!"|pv -qL 40
-  read -p "[] 请输入容器的绝对路径，不可包含空格: " CONTAINER_DIR
+  while :
+  do
+    read -p "[] 请输入容器的绝对路径，不可包含空格: " CONTAINER_DIR
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      break
+    fi
+  done
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
     if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
       echo -e "\a\033[31m[] 错误:拒绝使用系统目录!"
@@ -355,7 +361,13 @@ CREATE_PROOT_CONTAINER(){
       fi
     done
   fi
-  read -p "[] 请输入容器绝对路径(建议放置在/data/data/com.termux/files/home下的目录中): " CONTAINER_DIR
+  while :
+  do
+    read -p "[] 请输入容器绝对路径(建议放置在/data/data/com.termux/files/home下的目录中): " CONTAINER_DIR
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      break
+    fi
+  done
   if [[ -e $CONTAINER_DIR ]];then
     echo -e "[] 警告:目录已存在!"
   fi

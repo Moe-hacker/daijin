@@ -147,7 +147,13 @@ CREATE_CHROOT_CONTAINER(){
     echo -e "[] IF SUDO IS UNUSEABLE,PLEASE REINSTALL SUDO."
   fi
   echo -e "[] THE CONTAINER ABSOLUTE PATH IS THE DIRECTORY USED TO STORE THE CONTAINER,FOR EXAMPLE,YOU CAN USE /data/container-name,BUT DO NOT USE DIRECTORY IN /sdcard!!!"|pv -qL 40
-  read -p "[] ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CONTAINER_DIR
+  while :
+  do
+    read -p "[] ENTER THE ABSOLUTE PATH OF THIS CONTAINER: " CONTAINER_DIR
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      break
+    fi
+  done
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
     if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
       echo -e "\a\033[31m[] ERR:REFUSE TO USE SYSTEM DIRECTORY!"
@@ -355,7 +361,13 @@ CREATE_PROOT_CONTAINER(){
       fi
     done
   fi
-  read -p "[] ENTER THE PATH OF THIS CONTAINER(SUGGEST TO USE DIRECTORY IN /data/data/com.termux/files/home): " CONTAINER_DIR
+  while :
+  do
+    read -p "[] ENTER THE PATH OF THIS CONTAINER(SUGGEST TO USE DIRECTORY IN /data/data/com.termux/files/home): " CONTAINER_DIR
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      break
+    fi
+  done
   if [[ -e $CONTAINER_DIR ]];then
     echo -e "[] WARNING: DIRECTORY ALREADY EXISTS!"
   fi
