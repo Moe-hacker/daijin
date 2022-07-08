@@ -1158,7 +1158,7 @@ REMOVE_CONTAINER(){
     sudo rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
   fi
 }
-REMOVE_ALL_CONTAINERS(){
+REMOVE_ALL_CONTAINERS_AND_UNINSTALL(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
@@ -1326,7 +1326,7 @@ case $1 in
   *bk)     BACKUP_CONTAINER;;
   *S)      SWITCH_CONTAINER;;
   *v)      DISPLAY_VERSION;;
-  *U)      REMOVE_ALL_CONTAINERS;;
+  *U)      REMOVE_ALL_CONTAINERS_AND_UNINSTALL;;
   *e)      EXEC_FUNCTION $2 $3;;
   "")      MENU;;
    *)      SHOW_HELPS;;
