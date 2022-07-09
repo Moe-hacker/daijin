@@ -1080,6 +1080,7 @@ RUN_PROOT_CONTAINER(){
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/partitions:/proc/partitions"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/sched_debug:/proc/sched_debug"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/softirqs:/proc/softirqs"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/stat:/proc/stat"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/timer_list:/proc/timer_list"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/uptime:/proc/uptime"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/version:/proc/version"
