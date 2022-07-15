@@ -12,6 +12,7 @@
 #`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
 ###### E-mail: moe-hacker@outlook.com ######
 ######  Blog: cnblogs.com/Moe-hacker  ######
+export WIDTH=$(($(stty size|awk '{print $2}')-8))
 LOAD_GLOBAL_CONFIG(){
   if [[ -e $PREFIX/etc/container/global.conf ]];then
     source $PREFIX/etc/container/global.conf
@@ -36,23 +37,21 @@ GET_CPU_ARCH(){
     aarch64 | arm64* | armv8* | arm*) export ARCH="arm64" ;;
     i*86 | x86) export ARCH="i386" ;;
     x86_64 | amd64) export ARCH="amd64" ;;
-    *) echo -e "\e[38;5;196m\a[]错误:未知CPU架构!"&&exit 1 ;;
+    *) whiptail --title "[] 错误" --msgbox "未知cpu架构!" 7 $WIDTH&&exit 1 ;;
   esac
   return 0
 }
 DOWNLOAD_ROOTFS(){
-  echo -e "当前支持的系统:"
-  echo -e "debian,ubuntu,kali,parrot,fedora,centos,archlinux,alpine,oracle,amazonlinux,voidlinux,opensuse,almalinux,alt,apertis,rockylinux,devuan,gentoo"
-  read -p "[] 选择要安装的系统: " OS
-  case $OS in
-    "amazonlinux"|"archlinux"|"kali"|"voidlinux"|"parrot") export VERSION=current;;
-    *)
-      echo -e "当前支持的版本号: "
-      for i in $(curl -sL http://images.linuxcontainers.org/images/${OS}|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
-        echo $i
-      done
-      read -p "[] 选择要安装的系统版本: " VERSION;;
-  esac
+  LIST="1 almalinux 2 alpine 3 alt 4 amazonlinux 5 apertis 6 archlinux 7 centos 8 debian 9 devuan 10 fedora 11 gentoo 12 kali 13 opensuse 14 oracle 15 rockylinux 16 ubuntu 17 voidlinux"
+  LIST2="almalinux alpine alt amazonlinux apertis archlinux centos debian devuan fedora gentoo kali opensuse oracle rockylinux ubuntu voidlinux"
+  NUMBER=$(whiptail --title "[] 系统" --menu "请选择要安装的系统:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  OS=$(echo $LIST2|awk "{print \$$NUMBER}")
+  unset LIST LIST2 NUMBER
+  NUMBER=0
+  for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+  unset VERSION NUMBER
+  NUMBER=$(whiptail --title "[] 版本号" --menu "请选择要安装的系统版本号:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
   if [[ ${CROSS_ARCH} != "null" && ${CROSS_ARCH} != "" ]];then
     case ${CROSS_ARCH} in
       "aarch64") export ARCH="arm64";;
@@ -77,13 +76,13 @@ DOWNLOAD_ROOTFS(){
     fi
     TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "DIR" |sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 2|tail -n 1)
     if [[ ${TIME} = "" ]];then
-      echo -e "\e[38;5;196m\a[] 错误:未找到rootfs!"
+      whiptail --title "[] 错误" --msgbox "未找到rootfs!" 7 $WIDTH
       exit 1
     fi
     [[ -e $PREFIX/tmp/container ]]||mkdir -p $PREFIX/tmp/container
     cd $PREFIX/tmp/container
     URL=${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}/${TIME}/rootfs.tar.xz
-    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 下载rootfs"|pv -qL 40
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
     axel -n16 ${URL}
     return 0
   }
@@ -92,13 +91,13 @@ DOWNLOAD_ROOTFS(){
     cd $PREFIX/tmp/container
     ROOTFS=$(curl -sL https://download.parrot.sh/parrot/iso/testing|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
     if [[ ${ROOTFS} = "" ]];then
-      echo -e "\e[38;5;196m\a[] 错误:未找到rootfs!"
+      whiptail --title "[] 错误" --msgbox "未找到rootfs!" 7 $WIDTH
       exit 1
     fi
     URL="https://download.parrot.sh/parrot/iso/testing/${ROOTFS}"
-    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 下载rootfs"|pv -qL 40
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
     axel -n16 ${URL}
-    echo "[] 正在构建parrot的rootfs，这可能需要一段时间..."
+    echo "\e[38;5;159m[] 正在构建parrot的rootfs，这可能需要一段时间..."
     sleep 2s
     tar -xvf ${ROOTFS}
     cd parrot-${ARCH}
@@ -117,106 +116,90 @@ DOWNLOAD_ROOTFS(){
 CREATE_CHROOT_CONTAINER(){
   while :
   do
-    read -p "[] 请输入容器名,不可包含空格: " NAME
+    NAME=$(whiptail --title "[] 容器名" --inputbox "请输入容器名:" 7 $WIDTH 3>&1 1>&2 2>&3)
     if [[ $NAME != "" ]];then
       break
     fi
   done
-  while :
-  do
-    read -p "[] 创建一个新的普通用户[y/n]? " CREATE_NEW_USER
-    if [[ ${CREATE_NEW_USER} = "n" || ${CREATE_NEW_USER} = "y" ]];then
-      break
-    fi
-  done
-  if [[ ${CREATE_NEW_USER} = "y" ]];then
+  if whiptail --title "[] 添加用户" --yes-button "yes" --no-button "no" --yesno "添加一个新的普通用户?" 7 $WIDTH;then
     while :
     do
-      read -p "[] 请输入用户名: " NEW_USER
+      NEW_USER=$(whiptail --title "[] 用户名" --inputbox "请输入用户名:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ ${NEW_USER} != "" ]];then
         break
       fi
     done
     while :
     do
-      read -p "[] 请输入密码: " PASSWORD
+      PASSWORD=$(whiptail --title "[] 密码" --passwordbox "请输入密码:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ ${PASSWORD} != "" ]];then
         break
       fi
     done
-  echo -e "[] 如果sudo报错无法使用，请重装sudo."
+  whiptail --title "[] 关于sudo" --msgbox "如果sudo不可用，请重新安装sudo." 7 $WIDTH
   fi
-  echo -e "[] 容器绝对路径是用来存放容器的路径，例如，你可以用使用/data/container-容器名，但不要用/sdcard下的目录!!!"|pv -qL 40
+  whiptail --title "[] 帮助信息" --msgbox "容器绝对路径是用来存放容器的路径，例如，你可以使用/data/容器名，但不要用/sdcard下的目录!" 9 $WIDTH
   while :
   do
-    read -p "[] 请输入容器的绝对路径，不可包含空格: " CONTAINER_DIR
+    CONTAINER_DIR=$(whiptail --title "[] 容器目录" --inputbox "请输入容器的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
     if [[ ${CONTAINER_DIR} != "" ]];then
       break
     fi
   done
   for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
     if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
-      echo -e "\a\033[31m[] 错误:拒绝使用系统目录!"
+      whiptail --title "[] 错误" --msgbox "拒绝使用系统目录!" 7 $WIDTH
       exit 1
     fi
   done
   if [[ -e $CONTAINER_DIR ]];then
-    echo -e "\a\033[31m[] 错误:目录已存在!"
+    whiptail --title "[] 错误" --msgbox "目录已存在!" 7 $WIDTH
     exit 1
   fi
-  while :
-  do
-    read -p "[] 你想把容器放进镜像文件吗 [y/n]? " USE_IMAGE
-    if [[ ${USE_IMAGE} = "n" || ${USE_IMAGE} = "y" ]];then
-      break
-    fi
-  done
-  if [[ ${USE_IMAGE} = "y" ]];then
-    echo -e "[] 容器镜像绝对路径是用来存放容器镜像的目录，例如，你可以使用/data"|pv -qL 40
+  if whiptail --title "[] 容器镜像" --yes-button "yes" --no-button "no" --yesno "你想把容器安装在镜像文件中吗?" 7 $WIDTH;then
+    whiptail --title "[] 帮助信息" --msgbox "容器镜像绝对路径是用来存放容器镜像的目录，例如，你可以使用/data" 9 $WIDTH
     while :
     do
-      read -p "[] 请输入容器镜像绝对路径,不可包含空格: " CONTAINER_IMG_PATH
+      CONTAINER_IMG_PATH=$(whiptail --title "[] 镜像目录" --inputbox "请输入容器镜像绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ $CONTAINER_IMG_PATH != "" ]];then
         break
       fi
     done
     if [[ $CONTAINER_IMG_PATH = $CONTAINER_DIR ]];then
-      echo -e "\a\033[31m[] 错误:拒绝使用和容器相同的目录!"
+      whiptail --title "[] 错误" --msgbox "拒绝使用和容器相同的路径!" 7 $WIDTH
       exit 1
     fi
     for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
       if [[ $CONTAINER_IMG_PATH = $BLACKLIST* ]];then
-        echo -e "\a\033[31m[] 错误:拒绝使用系统目录!"
+        whiptail --title "[] 错误" --msgbox "拒绝使用系统目录!" 7 $WIDTH
         exit 1
       fi
     done
     while :
     do
-      read -p "[] 请输入镜像文件名: " CONTAINER_IMG_NAME
+      CONTAINER_IMG_NAME=$(whiptail --title "[] 容器镜像" --inputbox "请输入镜像文件名:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ $CONTAINER_IMG_NAME != "" ]];then
         break
       fi
     done
     while :
     do
-      read -p "[] 请输入镜像文件大小(单位为GB): " SIZE
+      SIZE=$(whiptail --title "[] 容器镜像" --inputbox "请输入镜像文件大小(单位为Gb):" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ $SIZE != "" ]];then
         break
       fi
     done
   fi
-  while :
-  do
-    read -p "[] 自动获取rootfs下载链接[y/n]? " AUTO_GET_LINK
-    if [[ ${AUTO_GET_LINK} = "n" || ${AUTO_GET_LINK} = "y" ]];then
-      break
-    fi
-  done
+  if whiptail --title "[] 自动获取rootfs" --yes-button "yes" --no-button "no" --yesno "自动获取rootfs下载链接?" 7 $WIDTH;then
+    AUTO_GET_LINK=y
+  else
+    AUTO_GET_LINK=n
+  fi
   if [[ ${AUTO_GET_LINK} = "n" ]];then
-    echo -e "[] 你可以去 \033[4mhttp://mirrors.tuna.tsinghua.edu.cn/lxc-images/images\033[0m\e[38;5;159m 去获取rootfs下载链接或使用自定义rootfs"|pv -qL 40
+    whiptail --title "[] 帮助信息" --msgbox "你可以去 \033[4mhttp://mirrors.tuna.tsinghua.edu.cn/lxc-images/images\033[0m\e[38;5;159m 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
     while :
     do
-      read -p "[] 请输入rootfs下载链接或者自定义rootfs的绝对路径: " LINK
+      LINK=$(whiptail --title "[] rootfs" --inputbox "请输入rootfs下载链接或者自定义rootfs的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ $LINK != "" ]];then
         break
       fi
@@ -229,17 +212,20 @@ CREATE_CHROOT_CONTAINER(){
     DOWNLOAD_ROOTFS
   else
     [[ ${ENABLE_OUTPUT} = "false" ]]||clear
-    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 下载rootfs"|pv -qL 40
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
     wget ${LINK}||cp ${LINK} ./||exit 0
   fi
   if ! sudo mkdir -p ${CONTAINER_DIR};then
-    echo -e "\a\033[31m[] 错误:无法创建容器目录!"
+    whiptail --title "[] 错误" --msgbox "无法创建容器目录!" 7 $WIDTH
     rm -rf $PREFIX/tmp/container
     exit 1
   fi
   if [[ ${CONTAINER_IMG_NAME} != "" ]];then
-    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 创建镜像文件"|pv -qL 40
-    sudo mkdir -p ${CONTAINER_IMG_PATH}
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 创建镜像文件"|pv -qL 40
+    if ! sudo mkdir -p ${CONTAINER_IMG_PATH};then
+      whiptail --title "[] 错误" --msgbox "无法创建镜像文件目录!"  7 $WIDTH
+      exit 1
+    fi
     cd ${CONTAINER_IMG_PATH}
     sudo dd if=/dev/zero of=${CONTAINER_IMG_NAME}.img bs=1G count=${SIZE}
     [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 创建文件系统"|pv -qL 40
@@ -250,13 +236,14 @@ CREATE_CHROOT_CONTAINER(){
     sudo losetup  ${LOOPFILE} ${CONTAINER_IMG_NAME}.img  >> /dev/null 2>&1
     sudo mount ${LOOPFILE} ${CONTAINER_DIR}  >> /dev/null 2>&1
   fi
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 解压rootfs"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 解压rootfs"|pv -qL 40
   sleep 2s
   ROOTFS=$(ls $PREFIX/tmp/container/)
   case $ROOTFS in
-    *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
-    *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
-    *) echo -e "\a\033[31m[]错误:未知文件格式!";exit 1;;
+    *tar.gz|*tgz) pv $PREFIX/tmp/container/$ROOTFS|tar -xzf - -C ${CONTAINER_DIR};;
+    *tar.xz|*txz) pv $PREFIX/tmp/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR};;
+    *tar) pv $PREFIX/tmp/container/$ROOTFS|tar -xf - -C ${CONTAINER_DIR};;
+    *) whiptail --title "[] 错误" --msgbox "未知文件格式!" 7 $WIDTH;exit 1;;
   esac
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
   sleep 1s
@@ -476,27 +463,7 @@ CREATE_PROOT_CONTAINER(){
 }
 CREATE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
-  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
-  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
-  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_CREATE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
-  echo -e "如果你的设备已root,建议使用chroot-unshare容器;如果你的设备未root或者你想运行跨架构容器，请选择proot."
-  echo -e "[1] chroot-unshare   [2] proot"
-  while :
-  do
-    read -p "请选择容器运行模式: " RUN_MODE
-    if [[ ${RUN_MODE} = "1" || ${RUN_MODE} = "2" ]];then
-      break
-    fi
-  done
-  if [[ ${RUN_MODE} = "1" ]];then
+  if whiptail --title "[] 选择运行模式" --yes-button "chroot-unshare" --no-button "proot"  --yesno "如果你的手机root了，建议使用chroot-unshare模式运行容器\n如果你的手机没有root或者你想运行跨架构容器，请选择proot\n\n请选择你的运行模式:" 12 $WIDTH;then
     sudo container -e CREATE_CHROOT_CONTAINER
   else
     CREATE_PROOT_CONTAINER

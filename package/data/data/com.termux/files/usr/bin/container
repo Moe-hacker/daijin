@@ -12,6 +12,7 @@
 #`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
 ###### E-mail: moe-hacker@outlook.com ######
 ######  Blog: cnblogs.com/Moe-hacker  ######
+export WIDTH=$(($(stty size|awk '{print $2}')-8))
 LOAD_GLOBAL_CONFIG(){
   if [[ -e $PREFIX/etc/container/global.conf ]];then
     source $PREFIX/etc/container/global.conf
