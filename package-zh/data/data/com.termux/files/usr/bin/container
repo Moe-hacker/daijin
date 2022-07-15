@@ -136,7 +136,6 @@ CREATE_CHROOT_CONTAINER(){
         break
       fi
     done
-  whiptail --title "[] 关于sudo" --msgbox "如果sudo不可用，请重新安装sudo." 7 $WIDTH
   fi
   whiptail --title "[] 帮助信息" --msgbox "容器绝对路径是用来存放容器的路径，例如，你可以使用/data/容器名，但不要用/sdcard下的目录!" 9 $WIDTH
   while :
@@ -196,7 +195,7 @@ CREATE_CHROOT_CONTAINER(){
     AUTO_GET_LINK=n
   fi
   if [[ ${AUTO_GET_LINK} = "n" ]];then
-    whiptail --title "[] 帮助信息" --msgbox "你可以去 \033[4mhttp://mirrors.tuna.tsinghua.edu.cn/lxc-images/images\033[0m\e[38;5;159m 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
+    whiptail --title "[] 帮助信息" --msgbox "你可以去 http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images\033[0m 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
     while :
     do
       LINK=$(whiptail --title "[] rootfs" --inputbox "请输入rootfs下载链接或者自定义rootfs的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -320,55 +319,42 @@ CREATE_CHROOT_CONTAINER(){
 CREATE_PROOT_CONTAINER(){
   while :
   do
-    read -p "[] 请输入容器名,不可包含空格: " NAME
+    NAME=$(whiptail --title "[] 容器名" --inputbox "请输入容器名:" 7 $WIDTH 3>&1 1>&2 2>&3)
     if [[ $NAME != "" ]];then
       break
     fi
   done
-  while :
-  do
-    read -p "[] 创建一个新的普通用户[y/n]? " CREATE_NEW_USER
-    if [[ ${CREATE_NEW_USER} = "n" || ${CREATE_NEW_USER} = "y" ]];then
-      break
-    fi
-  done
-  if [[ ${CREATE_NEW_USER} = "y" ]];then
+  if whiptail --title "[] 添加用户" --yes-button "yes" --no-button "no" --yesno "添加一个新的普通用户?" 7 $WIDTH;then
     while :
     do
-      read -p "[] 请输入用户名: " NEW_USER
+      NEW_USER=$(whiptail --title "[] 用户名" --inputbox "请输入用户名:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ ${NEW_USER} != "" ]];then
         break
       fi
     done
     while :
     do
-      read -p "[] 请输入密码: " PASSWORD
+      PASSWORD=$(whiptail --title "[] 密码" --passwordbox "请输入密码:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ ${PASSWORD} != "" ]];then
         break
       fi
     done
+  whiptail --title "[] 关于sudo" --msgbox "如果sudo不可用，请重新安装sudo." 7 $WIDTH
   fi
+  whiptail --title "[] 帮助信息" --msgbox "容器绝对路径是用来存放容器的路径，建议使用/data/data/com.termux/files/home/容器名，但尽量不要用/sdcard下的目录!" 9 $WIDTH
   while :
   do
-    read -p "[] 请输入容器绝对路径(建议放置在/data/data/com.termux/files/home下的目录中): " CONTAINER_DIR
+    CONTAINER_DIR=$(whiptail --title "[] 容器目录" --inputbox "请输入容器的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
     if [[ ${CONTAINER_DIR} != "" ]];then
       break
     fi
   done
   if [[ -e $CONTAINER_DIR ]];then
-    echo -e "[] 警告:目录已存在!"
+    whiptail --title "[] 警告" --msgbox "目录已存在!" 7 $WIDTH
   fi
-  while :
-  do
-    read -p "[] 跨架构运行容器[y/n]? " CROSS
-    if [[ ${CROSS} = "n" || ${CROSS} = "y" ]];then
-      break
-    fi
-  done
-  if [[ ${CROSS} = "y" ]];then
-    echo -e "[1]aarch64 [2]arm     [3]i386    [4]m68k [5]ppc"
-    echo -e "[6]ppc64   [7]riscv32 [8]riscv64 [9]x86-64"
-    read -p "[]选择要模拟的架构:" ARCH
+  if whiptail --title "[] 跨架构" --yes-button "yes" --no-button "no" --yesno "跨架构运行容器?" 7 $WIDTH;then
+    LIST="1 aarch64 2 arm 3 i386 4 m68k 5 ppc 6 ppc64 7 riscv32 8 riscv64 9 x86-64"
+    ARCH=$(whiptail --title "[] 跨架构" --menu "请选择要模拟的架构:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
     case ${ARCH} in
       "1") apt install qemu-user-aarch64&&export CROSS_ARCH="aarch64";;
       "2") apt install qemu-user-arm&&export CROSS_ARCH="arm";;
@@ -383,18 +369,16 @@ CREATE_PROOT_CONTAINER(){
   else
     export CROSS_ARCH="null"
   fi
-  while :
-  do
-    read -p "[] 自动获取rootfs下载链接[y/n]? " AUTO_GET_LINK
-    if [[ ${AUTO_GET_LINK} = "n" || ${AUTO_GET_LINK} = "y" ]];then
-      break
-    fi
-  done
+  if whiptail --title "[] 自动获取rootfs" --yes-button "yes" --no-button "no" --yesno "自动获取rootfs下载链接?" 7 $WIDTH;then
+    AUTO_GET_LINK=y
+  else
+    AUTO_GET_LINK=n
+  fi
   if [[ ${AUTO_GET_LINK} = "n" ]];then
-    echo -e "[] 你可以去 \033[4mhttp://mirrors.tuna.tsinghua.edu.cn/lxc-images/images\033[0m\e[38;5;159m 来获取rootfs下载链接或使用自定义rootfs"|pv -qL 40
+    whiptail --title "[] 帮助信息" --msgbox "你可以去 http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
     while :
     do
-      read -p "[] 输入rootfs下载链接或自定义rootfs绝对路径: " LINK
+      LINK=$(whiptail --title "[] rootfs" --inputbox "请输入rootfs下载链接或者自定义rootfs的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
       if [[ $LINK != "" ]];then
         break
       fi
@@ -409,17 +393,18 @@ CREATE_PROOT_CONTAINER(){
     axel -n16 ${LINK}||cp ${LINK} ./||exit 0
   fi
   if ! mkdir -p ${CONTAINER_DIR};then
-    echo -e "\a\033[31m[] 错误:无法创建容器目录!"
+    whiptail --title "[] 错误" --msgbox "无法创建容器目录!" 7 $WIDTH
     rm -rf $PREFIX/tmp/container
     exit 1
   fi
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 解压rootfs"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 解压rootfs"|pv -qL 40
   sleep 1s
   ROOTFS=$(ls $PREFIX/tmp/container/)
   case $ROOTFS in
-    *tar.gz|*tgz) tar -xzvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
-    *tar.xz|*txz|*tar) tar -xvf $PREFIX/tmp/container/$ROOTFS -C ${CONTAINER_DIR};;
-    *) echo "\a\033[31m[] 错误:未知文件格式";exit 1;;
+    *tar.gz|*tgz) pv $PREFIX/tmp/container/$ROOTFS|tar -xzf - -C ${CONTAINER_DIR};;
+    *tar.xz|*txz) pv $PREFIX/tmp/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR};;
+    *tar) pv $PREFIX/tmp/container/$ROOTFS|tar -xf - -C ${CONTAINER_DIR};;
+    *) whiptail --title "[] 错误" --msgbox "未知文件格式!" 7 $WIDTH;exit 1;;
   esac
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 删除已下载的rootfs"|pv -qL 40
   rm -rf $PREFIX/tmp/container/
