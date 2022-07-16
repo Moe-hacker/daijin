@@ -463,6 +463,12 @@ BACKUP_CHROOT_CONTAINER(){
   umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
   umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
   losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+  if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]];then
+    LOOPFILE=$(sudo losetup -f)
+    sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
+    sudo mount ${LOOPFILE} ${CONTAINER_DIR}
+    SIZE=$(du ${CONTAINER_IMG})
+  fi
   echo -e "[] 选择备份文件压缩格式:"
   while :
   do
@@ -475,12 +481,15 @@ BACKUP_CHROOT_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   mkdir -p $PREFIX/tmp/container
   case ${FORMAT} in
-    1) tar -zcvPf $PREFIX/tmp/container/rootfs.tar.gz .;;
-    2) tar -JcvPf $PREFIX/tmp/container/rootfs.tar.xz .;;
-    3) tar -cvPf  $PREFIX/tmp/container/rootfs.tar .;;
+    1) tar -zPpcvf $PREFIX/tmp/container/rootfs.tar.gz .;;
+    2) tar -JPpcvf $PREFIX/tmp/container/rootfs.tar.xz .;;
+    3) tar -Ppcvf  $PREFIX/tmp/container/rootfs.tar .;;
   esac
   cp $PREFIX/etc/container/container-$1.conf $PREFIX/tmp/container/container.conf
   cd $PREFIX/tmp/container
+  if [[ ${SIZE} != "" ]];then
+    echo IMG_SIZE=${SIZE} >> $PREFIX/tmp/container/container.conf
+  fi
   TARGET="/sdcard/container-$NAME-$(date +%y%m%d%H%M%S).bk"
   tar -cvf ${TARGET} .
   rm -rf $PREFIX/tmp/container
@@ -501,9 +510,9 @@ BACKUP_PROOT_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   mkdir -p $PREFIX/tmp/container
   case ${FORMAT} in
-    1) tar -zcvPf $PREFIX/tmp/container/rootfs.tar.gz .;;
-    2) tar -JcvPf $PREFIX/tmp/container/rootfs.tar.xz .;;
-    3) tar -cvPf  $PREFIX/tmp/container/rootfs.tar .;;
+    1) tar -zPpcvf $PREFIX/tmp/container/rootfs.tar.gz .;;
+    2) tar -JPpcvf $PREFIX/tmp/container/rootfs.tar.xz .;;
+    3) tar -Ppcvf  $PREFIX/tmp/container/rootfs.tar .;;
   esac
   cp $PREFIX/etc/container/container-$1.conf $PREFIX/tmp/container/container.conf
   cd $PREFIX/tmp/container
@@ -530,12 +539,12 @@ BACKUP_CONTAINER(){
     if [[ -e container-${i}.conf ]];then
       source container-${i}.conf
       echo -e "[${i}] ${NAME} (${RUN_MODE})"
-      sleep 0.3s
+      sleep 0.1s
     fi
   done
   while :
   do
-    read -p "[] 选择要备份的文件: " CONTAINER
+    read -p "[] 选择要备份的容器: " CONTAINER
     if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
       break
     fi
@@ -561,27 +570,30 @@ RESTORE_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 1s
+  echo -e "[] 解压恢复包"
   rm -rf $PREFIX/tmp/container
   mkdir -p $PREFIX/tmp/container
-  tar -xvf $1 -C $PREFIX/tmp/container
+  pv $1|tar -xf - -C $PREFIX/tmp/container
   source $PREFIX/tmp/container/container.conf
+  echo -e "[] 解压rootfs"
   if [[ ${RUN_MODE} = "chroot-unshare" ]];then
     sudo mkdir -p ${CONTAINER_DIR}
     ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
     case ${ROOTFS} in
-      *tar) sudo tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
-      *tar.gz) sudo tar -xzvPf ${ROOTFS} -C ${CONTAINER_DIR};;
-      *tar.xz) sudo tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+      *tar)sudo bash -c "pv ${ROOTFS}|tar -Ppxf - -C ${CONTAINER_DIR}";;
+      *tar.gz)sudo bash -c "pv ${ROOTFS}|tar -Ppxzf - -C ${CONTAINER_DIR}";;
+      *tar.xz)sudo bash -c "pv ${ROOTFS}|tar -xPpJf - -C ${CONTAINER_DIR}";;
     esac
   else
     mkdir -p ${CONTAINER_DIR}
     ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
     case ${ROOTFS} in
-      *tar) tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
-      *tar.gz) tar -xzvPf ${ROOTFS} -C ${CONTAINER_DIR};;
-      *tar.xz) tar -xvPf ${ROOTFS} -C ${CONTAINER_DIR};;
+      *tar) pv ${ROOTFS}|tar -xPpf - -C ${CONTAINER_DIR};;
+      *tar.gz) pv ${ROOTFS}|tar -xPpzf - -C ${CONTAINER_DIR};;
+      *tar.xz) pv ${ROOTFS}|tar -xJPpf - -C ${CONTAINER_DIR};;
     esac
   fi
+  echo -e "\e[38;5;159m[] 写入配置文件"
   for i in {1..100};do
     if [[ ! -e $PREFIX/etc/container/container-$i.conf ]];then
       mv $PREFIX/tmp/container/container.conf $PREFIX/etc/container/container-$i.conf
