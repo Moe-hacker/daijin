@@ -467,7 +467,7 @@ BACKUP_CHROOT_CONTAINER(){
     LOOPFILE=$(sudo losetup -f)
     sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
     sudo mount ${LOOPFILE} ${CONTAINER_DIR}
-    SIZE=$(du ${CONTAINER_IMG})
+    SIZE=$(($(du --block-size=1G ${CONTAINER_IMG}|awk '{print $1}')-1))
   fi
   echo -e "[] 选择备份文件压缩格式:"
   while :
@@ -578,6 +578,13 @@ RESTORE_CONTAINER(){
   echo -e "[] 解压rootfs"
   if [[ ${RUN_MODE} = "chroot-unshare" ]];then
     sudo mkdir -p ${CONTAINER_DIR}
+    if [[ ${IMG_SIZE} != "" ]];then
+      sudo dd if=/dev/zero of=${CONTAINER_IMG} bs=1G count=${IMG_SIZE}
+      sudo mkfs.ext4 ${CONTAINER_IMG}
+      LOOPFILE=$(sudo losetup -f)
+      sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
+      sudo mount ${LOOPFILE} ${CONTAINER_DIR}
+    fi
     ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
     case ${ROOTFS} in
       *tar)sudo bash -c "pv ${ROOTFS}|tar -Ppxf - -C ${CONTAINER_DIR}";;
@@ -1104,6 +1111,8 @@ REMOVE_CONTAINER(){
   source $PREFIX/etc/container/container-${CONTAINER}.conf
   if [[ ${RUN_MODE} = "proot" ]];then
     if [[ ${CONTAINER_DIR} != "" ]];then
+      chown -R $(whoami) ${CONTAINER_DIR}
+      chmod -R 777 ${CONTAINER_DIR}
       rm -rvf ${CONTAINER_DIR}
     fi
     rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
