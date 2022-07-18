@@ -195,7 +195,7 @@ CREATE_CHROOT_CONTAINER(){
     AUTO_GET_LINK=n
   fi
   if [[ ${AUTO_GET_LINK} = "n" ]];then
-    whiptail --title "[] 帮助信息" --msgbox "你可以去 http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images\033[0m 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
+    whiptail --title "[] 帮助信息" --msgbox "你可以去 http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
     while :
     do
       LINK=$(whiptail --title "[] rootfs" --inputbox "请输入rootfs下载链接或者自定义rootfs的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -301,7 +301,7 @@ CREATE_CHROOT_CONTAINER(){
   mkdir -p ${CONTAINER_DIR}/usr/local/bin >> /dev/null 2>&1
   cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
   chmod 777 ${CONTAINER_DIR}/usr/local/bin/unshare_init
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 设置主机名"|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 设置主机名"|pv -qL 40
   echo ${HOSTNAME} > ${CONTAINER_DIR}/etc/hostname
   if [[ ${ENABLE_OUTPUT} = "y" ]];then
     touch ${CONTAINER_DIR}/etc/enable_output
@@ -743,7 +743,7 @@ RUN_CHROOT_CONTAINER(){
   fi
   if [[ ${DISABLE_SELINUX} = "true" ]];then
     if [[ $(getenforce) != "Permissive" ]];then
-      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭selinux"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭 SELinux"
       [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
       setenforce 0 >> /dev/null 2>&1
     fi
@@ -873,7 +873,7 @@ RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   fi
   if [[ ${DISABLE_SELINUX} = "true" ]];then
     if [[ $(getenforce) != "Permissive" ]];then
-      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭selinux"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭 SELinux"
       [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
       setenforce 0 >> /dev/null 2>&1
     fi
