@@ -703,7 +703,7 @@ RUN_CHROOT_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] NAME: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] CONTAINER: \e[38;5;153m${NAME}"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] ARCH: \e[38;5;153m$(uname -m)"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
@@ -833,7 +833,7 @@ RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] NAME: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] CONTAINER: \e[38;5;153m${NAME}"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] ARCH: \e[38;5;153m$(uname -m)"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
@@ -989,7 +989,7 @@ RUN_PROOT_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] NAME: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] CONTAINER: \e[38;5;153m${NAME}"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] ARCH: \e[38;5;153m$(uname -m)"
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
