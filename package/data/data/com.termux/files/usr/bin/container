@@ -1223,59 +1223,59 @@ SHOW_HELPS(){
   echo -e "\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
   echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
   echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
-  echo -e "\e[38;5;159m          「此脚本没有超级牛力!」"
+  echo -e "\e[38;5;159m   「This script has no Super Cow Powers!」"
   echo -e "Usage:"
-  echo -e " container                   #打开菜单"
-  echo -e " container -run              #运行容器"
-  echo -e " container -l                #运行容器(传统模式) *仅供chroot容器"
-  echo -e " container -c                #CREATE一个新容器"
-  echo -e " container -S                #切换容器"
-  echo -e " container -s                #设置"
-  echo -e " container -r                #删除一个容器"
-  echo -e " container -m                #MOUNT镜像文件 *仅供chroot容器"
-  echo -e " container -bk               #备份容器"
-  echo -e " container -R [备份文件]     #还原容器"
-  echo -e " container -e [函数名]       #执行内置函数 *仅供调试"
-  echo -e " container -v                #版本信息"
-  echo -e " container -U                #批量删除容器&卸载此脚本"
-  echo -e " container -h                #显示此页面\033[0m"
+  echo -e " container                   #Show menu."
+  echo -e " container -run              #Run container."
+  echo -e " container -l                #Run container(legacy mode). *only for chroot containers."
+  echo -e " container -c                #Creat a new container."
+  echo -e " container -S                #Switch container."
+  echo -e " container -s                #Settings."
+  echo -e " container -r                #Remove a container."
+  echo -e " container -m                #Mount image file. *Only for chroot-unshare containers."
+  echo -e " container -bk               #Backup container."
+  echo -e " container -R [backup file]  #Restore container."
+  echo -e " container -e [function name]#Exec function. *Only for debugging."
+  echo -e " container -v                #Display version."
+  echo -e " container -U                #Remove all containers&Uninstall."
+  echo -e " container -h                #Show this page.\033[0m"
   return 0
   exit 0
 }
 DISPLAY_VERSION(){
   printf '\e[38;5;159m'
   echo -e "[] (>_×)"
-  echo -e "[] 项目: termux-container"
-  echo -e "[] 作者: Moe-hacker"
-  echo -e "[] 许可证: APACHE-2.0"
-  echo -e "[] 此脚本*无担保*"
-  echo -e '[] 版本: 7.0\033[0m'
+  echo -e "[] NAME: TERMUX-CONTAINER"
+  echo -e "[] AUTHOR: Moe-hacker"
+  echo -e "[] LICENSE: APACHE-2.0"
+  echo -e "[] NO WARRANTY"
+  echo -e '[] VERSION: 8.0\033[0m'
   return 0
   exit 0
 }
 MENU(){
   printf '\e[38;5;159m'
   WIDTH=$(($(stty size|awk '{print $2}')-4))
-  OPTION=$(whiptail --title "termux-container" --menu "选择你的操作" 16 $WIDTH 9 \
-  "1" "运行容器" \
-  "2" "运行容器(传统模式)" \
-  "3" "CREATE容器" \
-  "4" "切换容器"  \
-  "5" "备份容器" \
-  "6" "还原容器" \
-  "7" "删除容器" \
-  "8" "设置" \
-  "9" "版本信息" \
-  "10" "批量删除容器&卸载此脚本" \
-  "11" "帮助信息" \
-  "12" "退出" 3>&1 1>&2 2>&3)
+  OPTION=$(whiptail --title "termux-container" --menu "Choose your option" 16 $WIDTH 9 \
+  "1" "Run container" \
+  "2" "Run container(legacy mode for chroot)"\
+  "3" "Create a new container" \
+  "4" "Switch container"  \
+  "5" "Backup container" \
+  "6" "Restore container" \
+  "7" "Remove container" \
+  "8" "Settings" \
+  "9" "Display version" \
+  "10" "Remove all containers&Uninstall" \
+  "11" "Show helps" \
+  "12" "Exit" 3>&1 1>&2 2>&3)
   case $OPTION in
     "1") container -run;;
     "2") container -l;;
     "3") container -c;;
     "4") container -S;;
     "5") container -bk;;
-    "6") read -p "备份文件:" BKFILE&&container -R $BKFILE;;
+    "6") read -p "Backup file:" BKFILE&&container -R $BKFILE;;
     "7") container -r;;
     "8") container -s;;
     "9") container -v;;
