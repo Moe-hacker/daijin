@@ -115,6 +115,26 @@ DOWNLOAD_ROOTFS(){
   esac
   return 0
 }
+CHECK_VARIABLES(){
+  if [[ ${RUN_MODE} = "" ]];then
+    echo -e "\e[31m\$USE_VARIABLES is set,but \$RUN_MODE is not set,set it before creating container.Abrot."
+    exit 1
+  fi
+  if [[ ${ROOTFS_URL} = "" ]];then
+    if [[ ${CONTAINER_OS} = "" ]];then
+      echo -e "\e[31m\$USE_VARIABLES is set,but \$CONTAINER_OS or \$ROOTFS_URL is not set,set it before creating container.Abrot."
+      exit 1
+    fi
+    if [[ ${CONTAINER_OS_VERSION} = "" ]];then
+      echo -e "\e[31m\$USE_VARIABLES is set,but \$CONTAINER_OS_VERSION or \$ROOTFS_URL is not set,set it before creating container.Abrot."
+      exit 1
+    fi
+  fi
+  if [[ ${CONTAINER_DIR} = "" ]];then
+    echo -e "\e[31m\$USE_VARIABLES is set,but \$CONTAINER_DIR is not set,set it before creating container.Abrot."
+    exit 1
+  fi
+}
 CREATE_CHROOT_CONTAINER(){
   while :
   do
@@ -450,10 +470,19 @@ CREATE_PROOT_CONTAINER(){
 }
 CREATE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
-  if whiptail --title "[] RUN MODE" --yes-button "chroot-unshare" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot-unshare mode\nIf your phone is not rooted or you want to run cross-arch container,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
-    sudo container -e CREATE_CHROOT_CONTAINER
+  if [[ ${USE_VARIABLES} = "y" ]];then
+    CHECK_VARIABLES
+    if [[ ${RUN_MODE} = "proot" ]];then
+      CREATE_PROOT_CONTAINER
+    else
+      sudo USE_VARIABLES=y ROOTFS_URL=${ROOTFS_URL} CONTAINER_OS=${CONTAINER_OS} CONTAINER_OS_VERSION=${CONTAINER_OS_VERSION} CONTAINER_DIR=${CONTAINER_DIR} container -e CREATE_CHROOT_CONTAINER
+    fi
   else
-    CREATE_PROOT_CONTAINER
+    if whiptail --title "[] RUN MODE" --yes-button "chroot-unshare" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot-unshare mode\nIf your phone is not rooted or you want to run cross-arch container,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
+      sudo container -e CREATE_CHROOT_CONTAINER
+    else
+      CREATE_PROOT_CONTAINER
+    fi
   fi
 }
 BACKUP_CHROOT_CONTAINER(){
