@@ -42,16 +42,18 @@ GET_CPU_ARCH(){
   return 0
 }
 DOWNLOAD_ROOTFS(){
-  LIST="1 almalinux 2 alpine 3 alt 4 amazonlinux 5 apertis 6 archlinux 7 centos 8 debian 9 devuan 10 fedora 11 gentoo 12 kali 13 opensuse 14 oracle 15 rockylinux 16 ubuntu 17 voidlinux"
-  LIST2="almalinux alpine alt amazonlinux apertis archlinux centos debian devuan fedora gentoo kali opensuse oracle rockylinux ubuntu voidlinux"
+  LIST="1 almalinux 2 alpine 3 alt 4 amazonlinux 5 apertis 6 archlinux 7 centos 8 debian 9 devuan 10 fedora 11 gentoo 12 kali 13 opensuse 14 oracle 15 parrot 16 rockylinux 17 ubuntu 18 voidlinux"
+  LIST2="almalinux alpine alt amazonlinux apertis archlinux centos debian devuan fedora gentoo kali opensuse oracle parrot rockylinux ubuntu voidlinux"
   NUMBER=$(whiptail --title "[] 系统" --menu "请选择要安装的系统:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   OS=$(echo $LIST2|awk "{print \$$NUMBER}")
   unset LIST LIST2 NUMBER
-  NUMBER=0
-  for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
-  unset VERSION NUMBER
-  NUMBER=$(whiptail --title "[] 版本号" --menu "请选择要安装的系统版本号:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
-  VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
+  if [[ ${OS} != "parrot" ]];then
+    NUMBER=0
+    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+    unset VERSION NUMBER
+    NUMBER=$(whiptail --title "[] 版本号" --menu "请选择要安装的系统版本号:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
+  fi
   if [[ ${CROSS_ARCH} != "null" && ${CROSS_ARCH} != "" ]];then
     case ${CROSS_ARCH} in
       "aarch64") export ARCH="arm64";;
@@ -89,12 +91,12 @@ DOWNLOAD_ROOTFS(){
   DOWNLOAD_PARROT_ROOTFS(){
     mkdir -p $PREFIX/tmp/container
     cd $PREFIX/tmp/container
-    ROOTFS=$(curl -sL https://download.parrot.sh/parrot/iso/testing|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
+    ROOTFS=$(curl -sL https://mirrors.bfsu.edu.cn/parrot/iso/testing/|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
     if [[ ${ROOTFS} = "" ]];then
       whiptail --title "[] 错误" --msgbox "未找到rootfs!" 7 $WIDTH
       exit 1
     fi
-    URL="https://download.parrot.sh/parrot/iso/testing/${ROOTFS}"
+    URL="https://mirrors.bfsu.edu.cn/parrot/iso/testing/${ROOTFS}"
     [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
     axel -n16 ${URL}
     echo "\e[38;5;159m[] 正在构建parrot的rootfs，这可能需要一段时间..."
