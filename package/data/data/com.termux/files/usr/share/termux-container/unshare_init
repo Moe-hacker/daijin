@@ -12,9 +12,6 @@ if [ -e /etc/enable_output ];then
 else
   export ENABLE_OUTPUT=false
 fi
-if [ -e /tmp/init_extra ];then
-  export ENABLE_OUTPUT=false
-fi
 mount -t proc proc -o rw,nosuid,nodev,noexec,relatime /proc >> /dev/null 2>&1
 [ ${ENABLE_OUTPUT} = "false" ]||/bin/echo -e "\033[38;5;159m[\033[38;5;158m\033[38;5;159m] MOUNT /proc"
 [ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
@@ -122,10 +119,4 @@ fi
 [ ${ENABLE_OUTPUT} = "false" ]||sleep 0.1s
 rm /dev/null&&mknod -m 666 /dev/null c 1 3
 printf "\033[0m"
-if [ -e /tmp/init_extra ];then
-  chmod 777 /tmp/init_extra
-  /bin/su - root -c "/tmp/init_extra"
-  rm /tmp/init_extra
-else
-  /bin/su - root
-fi
+/bin/su - root
