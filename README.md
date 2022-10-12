@@ -35,7 +35,7 @@ apt install ~/termux-container.deb
 ##### To use the released package:      
 Just download termux-container-v8.0.deb and install it by running:      
 ```
-apt install termux-container-v8.0.deb
+apt install ./termux-container-v8.0.deb
 ```
 ### Creating and running a container:      
 You can create a container by running "container -c" and run it by running "container -run". Here are the detailed steps:    
