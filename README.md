@@ -13,7 +13,8 @@
 ### About:      
 Termux-container is a script that runs Linux containers on your android phone. It's safe, easy to use and well-designed.      
 ### Screenshots:      
-
+![](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_20221012-185314_Termux.png)
+![](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_20221012-185209_Termux.png)
 ### Preparation:      
 To run it,you need:      
 - An Android phone with or without root.      
