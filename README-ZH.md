@@ -14,9 +14,10 @@
 精心设计的输出，虽然你若不喜欢可以关掉。。。。。。      
 默认开启mount namespace，就算容器未被卸载也不会删除容器中挂载的系统文件。      
 尽可能多的开启namespace隔离容器，不过大部分内核默认支持的namespaces有限。      
+在容器中创建dev,sys和proc三个目录，/dev下磁盘设备未被映射，最起码能防手贱。。。      
 rm -rf /*在/sdcard未被挂载时只会删除容器本身，宿主机由于已被隔离不会造成损坏(测试于pixel3,A12,chroot-unshare模式，不过建议别试，真寄了我也没办法)            
 ### 截图：      
-脚本大概长这样:      
+脚本大概长这样(懒得上传中文版截图了，凑活看吧):      
 ![](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_20221012-185314_Termux.png)
 ![](https://github.com/Moe-hacker/termux-container/raw/main/.Screenshots/Screenshot_20221012-185209_Termux.png)
 《关于作者为了截图特地安装了自己写的脚本这回事》      
