@@ -49,6 +49,21 @@ You can create a container by running "container -c" and run it by running "cont
 ### Customisation:      
 You can edit the global configuration of containers by running "container -s", the configuration file is written with comments. But don't edit container's configuration file if you don't know what you are doing.      
 ### Other usage:      
+```
+ container                   #Show menu.
+ container -run              #Run container.
+ container -l                #Run container(legacy mode). *only for chroot containers.
+ container -c                #Creat a new container.
+ container -S                #Switch container.
+ container -s                #Settings.
+ container -r                #Remove a container.
+ container -m                #Mount image file. *Only for chroot-unshare containers.
+ container -bk               #Backup container.
+ container -R [backup file]  #Restore container.
+ container -e [function name]#Exec function. *Only for debugging.
+ container -v                #Display version.
+ container -U                #Remove all containers&Uninstall.
+```
 ### About me:            
 I'm a senior high school student in China and dream to be a geek. If my work helps, please give me a star, thanks!       
 
