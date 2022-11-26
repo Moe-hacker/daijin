@@ -1,4 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
+#This is the main script of termux-container.
 # ██╗ ██╗  ██╗ ██████╗  █████╗   ███████╗ ██╗  ██╗
 #████████╗ ██║ ██╔══██╗ ██╔══██╗ ██╔════╝ ██║  ██║
 #╚██╔═██╔╝ ██║ ██████╔╝ ███████║ ███████╗ ███████║
@@ -12,7 +13,9 @@
 #`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
 ###### E-mail: moe-hacker@outlook.com ######
 ######  Blog: cnblogs.com/Moe-hacker  ######
+#$WIDTH is used for whiptail to adapt the screen resolution.
 export WIDTH=$(($(stty size|awk '{print $2}')-8))
+#Load global config file to define some values used by this script.
 LOAD_GLOBAL_CONFIG(){
   if [[ -e $PREFIX/etc/container/global.conf ]];then
     source $PREFIX/etc/container/global.conf
@@ -21,6 +24,7 @@ LOAD_GLOBAL_CONFIG(){
     exit 1
   fi
 }
+#Load container container for running and removing container.
 LOAD_CONTAINER_CONFIG(){
   if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
     source $PREFIX/etc/container/container-${CONTAINER}.conf
@@ -29,6 +33,7 @@ LOAD_CONTAINER_CONFIG(){
     exit 1
   fi
 }
+#Get device cpu arch for automatically downloading correct rootfs.
 GET_CPU_ARCH(){
   DPKG_ARCH=$(dpkg --print-architecture)
   case ${DPKG_ARCH} in
@@ -41,6 +46,7 @@ GET_CPU_ARCH(){
   esac
   return 0
 }
+#Automatically Download rootfs for container.
 DOWNLOAD_ROOTFS(){
   LIST="1 almalinux 2 alpine 3 alt 4 amazonlinux 5 apertis 6 archlinux 7 centos 8 debian 9 devuan 10 fedora 11 gentoo 12 kali 13 opensuse 14 oracle 15 parrot 16 rockylinux 17 ubuntu 18 voidlinux"
   LIST2="almalinux alpine alt amazonlinux apertis archlinux centos debian devuan fedora gentoo kali opensuse oracle parrot rockylinux ubuntu voidlinux"
@@ -69,6 +75,7 @@ DOWNLOAD_ROOTFS(){
   else
     GET_CPU_ARCH
   fi
+  #Automatically download latest rootfs from Lxc-image mirror.
   DOWNLOAD_COMMON_ROOTFS(){
     MIRROR="http://images.linuxcontainers.org/images"
     if [[ $OS = "gentoo" ]];then
@@ -88,6 +95,7 @@ DOWNLOAD_ROOTFS(){
     axel -n16 ${URL}
     return 0
   }
+  #Lxc-image source does not contain ParrotOS,but we can build a Parrot rootfs from ParrotOS mirror.
   DOWNLOAD_PARROT_ROOTFS(){
     mkdir -p $PREFIX/tmp/container
     cd $PREFIX/tmp/container
@@ -109,12 +117,15 @@ DOWNLOAD_ROOTFS(){
     rm -rf parrot-${ARCH}
     return 0
   }
+  #Maybe ManjaroOS will be supported later,maybe.
   case $OS in
       "parrot") DOWNLOAD_PARROT_ROOTFS;;
       *) DOWNLOAD_COMMON_ROOTFS;;
   esac
   return 0
 }
+#The creation of chroot container is defined here.
+#Legacy chroot and chroot-unshare container will use the same function to create.
 CREATE_CHROOT_CONTAINER(){
   while :
   do
@@ -318,6 +329,7 @@ CREATE_CHROOT_CONTAINER(){
   return 0
   exit 0
 }
+#The creation of proot container is defined here.
 CREATE_PROOT_CONTAINER(){
   while :
   do
@@ -448,6 +460,8 @@ CREATE_PROOT_CONTAINER(){
   ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
   echo -e "[] DONE!"
 }
+#Just judge which type of container to create and then call the relevant function.
+#This cannot make the script more fast but can make it easy to read.
 CREATE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   if whiptail --title "[] RUN MODE" --yes-button "chroot-unshare" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot-unshare mode\nIf your phone is not rooted or you want to run cross-arch container,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
@@ -456,6 +470,8 @@ CREATE_CONTAINER(){
     CREATE_PROOT_CONTAINER
   fi
 }
+#Backup function of chroot/chroot-unshare container.
+#This function is not fully tested.
 BACKUP_CHROOT_CONTAINER(){
   pkill unshare
   source $PREFIX/etc/container/container-$1.conf
@@ -497,6 +513,8 @@ BACKUP_CHROOT_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   echo -e "[] BACKUP DONE,FILE: ${TARGET}"
 }
+#Backup function of proot container.
+#This function is not fully tested.
 BACKUP_PROOT_CONTAINER(){
   pkill proot
   source $PREFIX/etc/container/container-$1.conf
@@ -523,6 +541,7 @@ BACKUP_PROOT_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   echo -e "[] BACKUP DONE,FILE: ${TARGET}"
 }
+#This function gets the container information and call the backup function.
 BACKUP_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -558,6 +577,7 @@ BACKUP_CONTAINER(){
     BACKUP_PROOT_CONTAINER ${CONTAINER}
   fi
 }
+#Restore containers,not fully tested,especially for proot.
 RESTORE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -613,6 +633,7 @@ RESTORE_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   echo -e "[] DONE!"
 }
+#May be removed in later updates.
 SWITCH_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -655,6 +676,7 @@ SWITCH_CONTAINER(){
   return 0
   exit 0
 }
+#May be very useless,so I will remove it.
 MOUNT_IMAGE_FILE(){
   if [[ $(whoami) != "root" ]];then
     sudo container -e MOUNT_IMAGE_FILE
@@ -689,6 +711,7 @@ MOUNT_IMAGE_FILE(){
   return 0
   exit 0
 }
+#Run chroot-unshare container.
 RUN_CHROOT_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -808,6 +831,8 @@ RUN_CHROOT_CONTAINER(){
   return 0
   exit 0
 }
+#此处架构需要优化
+#Legacy mode for chroot,because some device will crash after running unshare.
 LEGACY_MODE(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -819,6 +844,7 @@ LEGACY_MODE(){
   return 0
   exit 0
 }
+#Legacy mode for chroot,because some device will crash after running unshare.
 RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -977,6 +1003,7 @@ RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   unset LD_PRELOAD
   chroot ${CONTAINER_DIR} /bin/su - root
 }
+#Run proot container.
 RUN_PROOT_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
   [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
@@ -1073,6 +1100,8 @@ RUN_PROOT_CONTAINER(){
   return 0
   exit 0
 }
+#架构需要优化
+#Get the container information and call the relevant function.
 RUN_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -1082,6 +1111,7 @@ RUN_CONTAINER(){
     RUN_PROOT_CONTAINER
   fi
 }
+#Safest way to remove a container.
 REMOVE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -1135,6 +1165,7 @@ REMOVE_CONTAINER(){
     sudo rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
   fi
 }
+#Uninstallation.
 REMOVE_ALL_CONTAINERS_AND_UNINSTALL(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -1187,6 +1218,7 @@ REMOVE_ALL_CONTAINERS_AND_UNINSTALL(){
   return 0
   exit 0
 }
+#Global settings.
 SETTINGS(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -1212,6 +1244,7 @@ SETTINGS(){
   return 0
   exit 0
 }
+#Help page.
 SHOW_HELPS(){
   echo -e "              \e[38;5;157m┌───────────┐"
   echo -e "              │ ┌───────┐ │"
@@ -1244,6 +1277,7 @@ SHOW_HELPS(){
   return 0
   exit 0
 }
+#Useless function,just for fun.
 DISPLAY_VERSION(){
   printf '\e[38;5;159m'
   echo -e "[] (>_×)"
@@ -1255,6 +1289,7 @@ DISPLAY_VERSION(){
   return 0
   exit 0
 }
+#TUI menu.
 MENU(){
   printf '\e[38;5;159m'
   WIDTH=$(($(stty size|awk '{print $2}')-4))
@@ -1288,9 +1323,11 @@ MENU(){
   return 0
   exit 0
 }
+#*Only for debugging.
 EXEC_FUNCTION(){
   $1 $2
 }
+#The `main` entrypoint of the script.
 case $1 in
   *run)    RUN_CONTAINER;;
   *l)      LEGACY_MODE;;
@@ -1308,7 +1345,6 @@ case $1 in
   "")      MENU;;
    *)      SHOW_HELPS;;
 esac
-#copyright 2022 Moe-hacker (Author)
 # ██╗ ██╗  ███████╗   ████╗   ███████╗
 #████████╗ ██╔════╝ ██╔═══██╗ ██╔════╝
 #╚██╔═██╔╝ █████╗   ██║   ██║ █████╗
