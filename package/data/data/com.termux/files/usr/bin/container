@@ -1032,7 +1032,7 @@ RUN_PROOT_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] ANDROID: \e[38;5;153m$(getprop ro.build.version.release)"
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] CONTAINER_DIR: \e[38;5;153m${CONTAINER_DIR}"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] VERSION: \e[38;5;153m8.0"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] VERSION: \e[38;5;153m8.1-nya"
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
   [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
@@ -1285,7 +1285,7 @@ DISPLAY_VERSION(){
   echo -e "[] AUTHOR: Moe-hacker"
   echo -e "[] LICENSE: APACHE-2.0"
   echo -e "[] NO WARRANTY"
-  echo -e '[] VERSION: 8.0\033[0m'
+  echo -e '[] VERSION: 8.1-nya\033[0m'
   return 0
   exit 0
 }
