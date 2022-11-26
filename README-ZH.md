@@ -73,7 +73,7 @@ apt install ~/termux-container.deb
 ```
 ### 关于作者：      
 两个号，逝精神分裂。         
-后续小号猫猫负责提交和测试，主人来进行合并。          
+后续猫猫负责提交和测试，主人来进行合并。          
 
 -------     
 <p align="center">Do Great Things</p>       
