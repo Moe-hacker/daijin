@@ -2,7 +2,7 @@ Package: termux-container
 Architecture: all
 Installed-Size: 24904
 Maintainer: Moe-hacker
-Version: 8.0
+Version: 8.1-nya
 Homepage: https://github.com/Moe-hacker/termux-container
 Depends: tsu, coreutils, p7zip, tar, unzip, zip, git, wget, dpkg, curl, e2fsprogs, nano, whiptail, proot, axel, termux-tools, util-linux, pv, gawk
 Description: 在手机中运行chroot-unshare/proot容器，简单安全。

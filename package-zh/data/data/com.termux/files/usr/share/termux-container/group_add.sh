@@ -1,13 +1,19 @@
 #!/bin/sh
+#使用sh来提供更好兼容性
+#可惜alpine是默认不带libuser和shadow的
 # ██╗ ██╗  ██  ███████╗ ██╗  ██╗
 #████████╗ ██║ ██╔════╝ ██║  ██║
 #╚██╔═██╔╝ ██║ ███████╗ ███████║
 #████████╗ ╚═╝ ╚════██║ ██╔══██║
 #╚██╔═██╔╝ ██╗ ███████║ ██║  ██║
 # ╚═╝ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+#此处变量值会被自动替换，请勿改动
 NEW_USER=""
 PASSWORD=""
-PATH="/bin:/sbin:/usr/bin"
+#尝试修复`未找到命令`
+PATH=$PATH:"/bin:/sbin:/usr/bin"
+#添加系统用户组以向用户授予网络等权限
+#由于安卓内核的专用性，很多硬件就算有用户组也无法通过容器调用
 groupadd aid_system -g 1000 || groupadd aid_system -g 1074
 groupadd aid_radio -g 1001
 groupadd aid_bluetooth -g 1002
@@ -111,13 +117,21 @@ groupadd aid_shared_gid_end -g 59999
 groupadd aid_isolated_start -g 99000
 groupadd aid_isolated_end -g 99999
 groupadd aid_user_offset -g 100000
+#为root用户授权
 usermod -a -G aid_system,aid_radio,aid_bluetooth,aid_graphics,aid_input,aid_audio,aid_camera,aid_log,aid_compass,aid_mount,aid_wifi,aid_adb,aid_install,aid_media,aid_dhcp,aid_sdcard_rw,aid_vpn,aid_keystore,aid_usb,aid_drm,aid_mdnsr,aid_gps,aid_media_rw,aid_mtp,aid_drmrpc,aid_nfc,aid_sdcard_r,aid_clat,aid_loop_radio,aid_media_drm,aid_package_info,aid_sdcard_pics,aid_sdcard_av,aid_sdcard_all,aid_logd,aid_shared_relro,aid_dbus,aid_tlsdate,aid_media_ex,aid_audioserver,aid_metrics_coll,aid_metricsd,aid_webserv,aid_debuggerd,aid_media_codec,aid_cameraserver,aid_firewall,aid_trunks,aid_nvram,aid_dns,aid_dns_tether,aid_webview_zygote,aid_vehicle_network,aid_media_audio,aid_media_video,aid_media_image,aid_tombstoned,aid_media_obb,aid_ese,aid_ota_update,aid_automotive_evs,aid_lowpan,aid_hsm,aid_reserved_disk,aid_statsd,aid_incidentd,aid_secure_element,aid_lmkd,aid_llkd,aid_iorapd,aid_gpu_service,aid_network_stack,aid_shell,aid_cache,aid_diag,aid_oem_reserved_start,aid_oem_reserved_end,aid_net_bt_admin,aid_net_bt,aid_inet,aid_net_raw,aid_net_admin,aid_net_bw_stats,aid_net_bw_acct,aid_readproc,aid_wakelock,aid_uhid,aid_everybody,aid_misc,aid_nobody,aid_app_start,aid_app_end,aid_cache_gid_start,aid_cache_gid_end,aid_ext_gid_start,aid_ext_gid_end,aid_ext_cache_gid_start,aid_ext_cache_gid_end,aid_shared_gid_start,aid_shared_gid_end,aid_isolated_start,aid_isolated_end,aid_user_offset root
+#修复apt联网，是一只不会将自己直接提权的小可爱呢
 usermod -g aid_inet _apt 2>/dev/null
+#portage，gentoo用的，估计没几个人会拿手机跑这个了
+#事实上我用火龙888跑过好几天，最后搞出桌面和浏览器了，后来由于实在搞不太明白放弃了
 usermod -a -G aid_inet,aid_net_raw portage 2>/dev/null
 if [ ${NEW_USER} != "" ] && [ ${PASSWORD} != "" ];then
   useradd -m ${NEW_USER}
+  #为普通用户授权
   usermod -a -G aid_system,aid_radio,aid_bluetooth,aid_graphics,aid_input,aid_audio,aid_camera,aid_log,aid_compass,aid_mount,aid_wifi,aid_adb,aid_install,aid_media,aid_dhcp,aid_sdcard_rw,aid_vpn,aid_keystore,aid_usb,aid_drm,aid_mdnsr,aid_gps,aid_media_rw,aid_mtp,aid_drmrpc,aid_nfc,aid_sdcard_r,aid_clat,aid_loop_radio,aid_media_drm,aid_package_info,aid_sdcard_pics,aid_sdcard_av,aid_sdcard_all,aid_logd,aid_shared_relro,aid_dbus,aid_tlsdate,aid_media_ex,aid_audioserver,aid_metrics_coll,aid_metricsd,aid_webserv,aid_debuggerd,aid_media_codec,aid_cameraserver,aid_firewall,aid_trunks,aid_nvram,aid_dns,aid_dns_tether,aid_webview_zygote,aid_vehicle_network,aid_media_audio,aid_media_video,aid_media_image,aid_tombstoned,aid_media_obb,aid_ese,aid_ota_update,aid_automotive_evs,aid_lowpan,aid_hsm,aid_reserved_disk,aid_statsd,aid_incidentd,aid_secure_element,aid_lmkd,aid_llkd,aid_iorapd,aid_gpu_service,aid_network_stack,aid_shell,aid_cache,aid_diag,aid_oem_reserved_start,aid_oem_reserved_end,aid_net_bt_admin,aid_net_bt,aid_inet,aid_net_raw,aid_net_admin,aid_net_bw_stats,aid_net_bw_acct,aid_readproc,aid_wakelock,aid_uhid,aid_everybody,aid_misc,aid_nobody,aid_app_start,aid_app_end,aid_cache_gid_start,aid_cache_gid_end,aid_ext_gid_start,aid_ext_gid_end,aid_ext_cache_gid_start,aid_ext_cache_gid_end,aid_shared_gid_start,aid_shared_gid_end,aid_isolated_start,aid_isolated_end,aid_user_offset ${NEW_USER}
+  #修改密码
   echo ${NEW_USER}:${PASSWORD}|chpasswd
+  #授予sudo权限
   echo "${NEW_USER} ALL=(ALL:ALL) ALL" >> /etc/sudoers
 fi
+#没用，但优雅
 exit 0

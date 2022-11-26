@@ -1902,6 +1902,8 @@ echo "cp \$PREFIX/share/termux-container/font.ttf ~/.termux"
 sleep 0.05s
 echo "termux-reload-settings"
 sleep 0.05s
+echo "若chroot-unshare容器导致系统崩溃，请换用传统模式，性能不变，安全性稍差"
+sleep 0.05s
 echo
 sleep 0.05s
 echo -e "Enjoy!\033[0m"

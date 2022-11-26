@@ -5,6 +5,9 @@
 #████████╗ ╚═╝ ██╔══██╗ ██╔══██║ ╚════██║ ██╔══██║
 #╚██╔═██╔╝ ██╗ ██████╔╝ ██║  ██║ ███████║ ██║  ██║
 # ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+#本脚本将会被重构
+#可能包含：
+#屎山逻辑，空壳函数，没用的反复调用，没用的功能，脑溢血设计
 ###### Github@Moe-hacker ######
 #•.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
 #`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
@@ -12,7 +15,10 @@
 #`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
 ###### E-mail: moe-hacker@outlook.com ######
 ######  Blog: cnblogs.com/Moe-hacker  ######
+#用于使whiptail适应屏幕分辨率
+#这个变量的作用我甚至翻了下调用才想起来
 export WIDTH=$(($(stty size|awk '{print $2}')-8))
+#加载全局配置
 LOAD_GLOBAL_CONFIG(){
   if [[ -e $PREFIX/etc/container/global.conf ]];then
     source $PREFIX/etc/container/global.conf
@@ -21,6 +27,7 @@ LOAD_GLOBAL_CONFIG(){
     exit 1
   fi
 }
+#加载容器配置
 LOAD_CONTAINER_CONFIG(){
   if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
     source $PREFIX/etc/container/container-${CONTAINER}.conf
@@ -29,6 +36,8 @@ LOAD_CONTAINER_CONFIG(){
     exit 1
   fi
 }
+#获取手机架构
+#虽然真没听说过amd64的手机
 GET_CPU_ARCH(){
   DPKG_ARCH=$(dpkg --print-architecture)
   case ${DPKG_ARCH} in
@@ -41,6 +50,7 @@ GET_CPU_ARCH(){
   esac
   return 0
 }
+#自动获取rootfs下载链接
 DOWNLOAD_ROOTFS(){
   LIST="1 almalinux 2 alpine 3 alt 4 amazonlinux 5 apertis 6 archlinux 7 centos 8 debian 9 devuan 10 fedora 11 gentoo 12 kali 13 opensuse 14 oracle 15 parrot 16 rockylinux 17 ubuntu 18 voidlinux"
   LIST2="almalinux alpine alt amazonlinux apertis archlinux centos debian devuan fedora gentoo kali opensuse oracle parrot rockylinux ubuntu voidlinux"
@@ -109,12 +119,15 @@ DOWNLOAD_ROOTFS(){
     rm -rf parrot-${ARCH}
     return 0
   }
+  #或许加入Manjaro支持？
   case $OS in
       "parrot") DOWNLOAD_PARROT_ROOTFS;;
       *) DOWNLOAD_COMMON_ROOTFS;;
   esac
   return 0
 }
+#创建chroot容器
+#传统chroot容器和chroot-unshare容器共享创建过程
 CREATE_CHROOT_CONTAINER(){
   while :
   do
@@ -318,6 +331,9 @@ CREATE_CHROOT_CONTAINER(){
   return 0
   exit 0
 }
+#创建proot容器
+#本人用不到，但是会有人用的上，不是吗？
+#真说用途，目前整个项目对我没太大用途，因为早就开始在手机上跑docker了
 CREATE_PROOT_CONTAINER(){
   while :
   do
@@ -448,6 +464,8 @@ CREATE_PROOT_CONTAINER(){
   ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
   echo -e "[] 创建完毕!"
 }
+#空壳，仅进行调用
+#这种基本只剩空壳的函数并不是好文明，但是好用啊
 CREATE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   if whiptail --title "[] 选择运行模式" --yes-button "chroot-unshare" --no-button "proot"  --yesno "如果你的手机root了，建议使用chroot-unshare模式运行容器\n如果你的手机没有root或者你想运行跨架构容器，请选择proot\n\n请选择你的运行模式:" 12 $WIDTH;then
@@ -456,6 +474,7 @@ CREATE_CONTAINER(){
     CREATE_PROOT_CONTAINER
   fi
 }
+#chroot容器备份 *未充分测试特性
 BACKUP_CHROOT_CONTAINER(){
   pkill unshare
   source $PREFIX/etc/container/container-$1.conf
@@ -497,6 +516,7 @@ BACKUP_CHROOT_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   echo -e "[] 备份完成,备份文件: ${TARGET}"
 }
+#proot容器备份 *需修复硬链接权限
 BACKUP_PROOT_CONTAINER(){
   pkill proot
   source $PREFIX/etc/container/container-$1.conf
@@ -523,6 +543,8 @@ BACKUP_PROOT_CONTAINER(){
   rm -rf $PREFIX/tmp/container
   echo -e "[] 备份完成,备份文件: ${TARGET}"
 }
+#又一个空壳，获取容器信息然后调用上边那两个函数
+#这还是重构过的结构，很难想象这种架构是怎么被设计出来的
 BACKUP_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -558,6 +580,7 @@ BACKUP_CONTAINER(){
     BACKUP_PROOT_CONTAINER ${CONTAINER}
   fi
 }
+#容器还原 *未充分测试特性
 RESTORE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -612,6 +635,8 @@ RESTORE_CONTAINER(){
   done
   rm -rf $PREFIX/tmp/container
 }
+#容器切换，switch准确不准确我也不知道
+#后续更新一定移除
 SWITCH_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -654,6 +679,9 @@ SWITCH_CONTAINER(){
   return 0
   exit 0
 }
+#后续更新一定砍了
+#自从出来就没用过这功能，还得专门测试bug烦死了
+#绝对是屎山遗留
 MOUNT_IMAGE_FILE(){
   if [[ $(whoami) != "root" ]];then
     sudo container -e MOUNT_IMAGE_FILE
@@ -688,6 +716,8 @@ MOUNT_IMAGE_FILE(){
   return 0
   exit 0
 }
+#事实上应该叫chroot-unshare container
+#又一个分体式设计，另一部分用于初始化系统，位于容器内，被unshare fork出来单独的进程执行
 RUN_CHROOT_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -807,6 +837,8 @@ RUN_CHROOT_CONTAINER(){
   return 0
   exit 0
 }
+#这个空壳简直是脑溢血设计
+#怕是泛着困写的
 LEGACY_MODE(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -818,6 +850,8 @@ LEGACY_MODE(){
   return 0
   exit 0
 }
+#这段必须在root下执行
+#但是你在调用LEGACY_MODE前加个sudo不比这强
 RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -976,6 +1010,7 @@ RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   unset LD_PRELOAD
   chroot ${CONTAINER_DIR} /bin/su - root
 }
+#好唉，是rootless容器！
 RUN_PROOT_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
   [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
@@ -1004,7 +1039,7 @@ RUN_PROOT_CONTAINER(){
   [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] 安卓版本: \e[38;5;153m$(getprop ro.build.version.release)"
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] 容器目录: \e[38;5;153m${CONTAINER_DIR}"
-  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 当前版本: \e[38;5;153m8.0"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 当前版本: \e[38;5;153m8.1-nya"
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
   [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
   [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
@@ -1072,6 +1107,7 @@ RUN_PROOT_CONTAINER(){
   return 0
   exit 0
 }
+#好吧，这个脚本究竟会被重复执行几次这个问题，在我写的时候我和上帝知道，现在只有上帝知道了
 RUN_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -1081,6 +1117,8 @@ RUN_CONTAINER(){
     RUN_PROOT_CONTAINER
   fi
 }
+#移除容器
+#安全性未经充分测试，但本人测试和网友反馈均未见文件误删
 REMOVE_CONTAINER(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -1134,6 +1172,7 @@ REMOVE_CONTAINER(){
     sudo rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
   fi
 }
+#卸载程序，连脚本都知道写个卸载程序，某些软件自己细品
 REMOVE_ALL_CONTAINERS_AND_UNINSTALL(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -1186,6 +1225,7 @@ REMOVE_ALL_CONTAINERS_AND_UNINSTALL(){
   return 0
   exit 0
 }
+#后续可能需要构思一个更好的实现
 SETTINGS(){
   LOAD_GLOBAL_CONFIG
   [[ ${ENABLE_OUTPUT} = "false" ]]||clear
@@ -1211,6 +1251,7 @@ SETTINGS(){
   return 0
   exit 0
 }
+#帮助页面
 SHOW_HELPS(){
   echo -e "              \e[38;5;157m┌───────────┐"
   echo -e "              │ ┌───────┐ │"
@@ -1243,6 +1284,7 @@ SHOW_HELPS(){
   return 0
   exit 0
 }
+#简直不能再没用
 DISPLAY_VERSION(){
   printf '\e[38;5;159m'
   echo -e "[] (>_×)"
@@ -1250,10 +1292,11 @@ DISPLAY_VERSION(){
   echo -e "[] 作者: Moe-hacker"
   echo -e "[] 许可证: APACHE-2.0"
   echo -e "[] 此脚本*无担保*"
-  echo -e '[] 版本: 8.0\033[0m'
+  echo -e '[] 版本: 8.1-nya\033[0m'
   return 0
   exit 0
 }
+#whiptail菜单，但是为什么二次调用container我也不知道，就好像函数白定义了一样
 MENU(){
   printf '\e[38;5;159m'
   WIDTH=$(($(stty size|awk '{print $2}')-4))
@@ -1287,9 +1330,14 @@ MENU(){
   return 0
   exit 0
 }
+#调试接口
+#说实话我本人也基本没用过
+#但是部分提权靠这个接口实现
+#典型的屎山
 EXEC_FUNCTION(){
   $1 $2
 }
+#主入口？终于开始执行一条命令了
 case $1 in
   *run)    RUN_CONTAINER;;
   *l)      LEGACY_MODE;;

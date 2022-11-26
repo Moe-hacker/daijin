@@ -1894,14 +1894,21 @@ echo
 sleep 0.05s
 echo "termux-container by Moe-hacker"
 sleep 0.05s
-echo "NOTE: If some characters cannot be displayed,please run:"
+echo "Tips: "
+sleep 0.05s
+echo "If some characters cannot be displayed,please run:"
 sleep 0.05s
 echo "mkdir -p ~/.termux"
 sleep 0.05s
 echo "cp \$PREFIX/share/termux-container/font.ttf ~/.termux"
 sleep 0.05s
 echo "termux-reload-settings"
+echo
 sleep 0.05s
+echo "If chroot-unshare container makes your system crash,please use legacy mode instead."
+sleep 0.05s
+echo
+echo "If you are using chroot-unshare container,you may find that some files in /proc is unreadable for common user in containers,the easiest way to fix this is to disable SELinux,but that will cause your device unsafe."
 echo
 sleep 0.05s
 echo -e "Enjoy!\033[0m"
