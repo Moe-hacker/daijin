@@ -1,0 +1,43 @@
+ 93 wlan
+ 94 mtp_usb
+ 95 usb_accessory
+ 96 mali0
+234 btrfs-control
+ 97 memory_bandwidth
+ 98 network_throughput
+ 99 network_latency
+100 cpu_dma_latency
+101 usip
+102 alarm
+103 ashmem
+239 uhid
+104 misc-sd
+236 device-mapper
+105 aw8624_haptic
+223 uinput
+200 tun
+106 mtk-perf
+107 vow
+108 gbe
+109 cpu_loading
+110 mdp_sync
+111 RT_Monitor
+112 aed1
+113 aed0
+114 audio_ipi
+115 scp
+116 mcupm
+117 sspm
+118 atf_raw_buf
+119 atf_log
+120 gz_kree
+121 mmp
+237 loop-control
+183 hw_random
+229 fuse
+122 ion
+123 xiaomi-touch
+124 adsp_1
+125 adsp_0
+126 adsp
+127 mtfreqhopping

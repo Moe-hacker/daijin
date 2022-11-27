@@ -1,0 +1,27 @@
+Page block order: 9
+Pages per block:  512
+
+Free pages count per migrate type at order       0      1      2      3      4      5      6      7      8      9     10 
+Node    0, zone      DMA, type    Unmovable    242    202    161     53     68     26     13      7      2      1      0 
+Node    0, zone      DMA, type      Movable    274    255   2597   1569    363    159    130     71      6      0      0 
+Node    0, zone      DMA, type  Reclaimable     47    104     38     31      6      0      2      1      0      0      0 
+Node    0, zone      DMA, type   HighAtomic    146     89     35     32     25     10      7      5      0      1      0 
+Node    0, zone      DMA, type          CMA      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone      DMA, type      Isolate      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone   Normal, type    Unmovable      1      0      0      0      1      0      0      0      0      0      0 
+Node    0, zone   Normal, type      Movable      1    412   1469     15    116     26      0      0      0      0      0 
+Node    0, zone   Normal, type  Reclaimable    284    167     14      5      1      0      0      0      0      0      0 
+Node    0, zone   Normal, type   HighAtomic    227    123     42     51     76      7      8      5      2      0      0 
+Node    0, zone   Normal, type          CMA      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone   Normal, type      Isolate      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone  Movable, type    Unmovable      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone  Movable, type      Movable      1      1      0      1      1      1      0      0      0      0      0 
+Node    0, zone  Movable, type  Reclaimable      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone  Movable, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0 
+Node    0, zone  Movable, type          CMA   1013    844    370    156     94     48     32     19      5      1      1 
+Node    0, zone  Movable, type      Isolate      0      0      0      0      0      0      0      0      0      0      0 
+
+Number of blocks type     Unmovable      Movable  Reclaimable   HighAtomic          CMA      Isolate 
+Node 0, zone      DMA          123         1221           25           14            0            0 
+Node 0, zone   Normal          328         2031           40           25            0            0 
+Node 0, zone  Movable            0            0            0            0          136            0 

@@ -1,0 +1,1369 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# ██╗ ██╗  ██╗ ██████╗  █████╗   ███████╗ ██╗  ██╗
+#████████╗ ██║ ██╔══██╗ ██╔══██╗ ██╔════╝ ██║  ██║
+#╚██╔═██╔╝ ██║ ██████╔╝ ███████║ ███████╗ ███████║
+#████████╗ ╚═╝ ██╔══██╗ ██╔══██║ ╚════██║ ██╔══██║
+#╚██╔═██╔╝ ██╗ ██████╔╝ ██║  ██║ ███████║ ██║  ██║
+# ╚═╝ ╚═╝  ╚═╝ ╚═════╝  ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
+#本脚本将会被重构
+#可能包含：
+#屎山逻辑，空壳函数，没用的反复调用，没用的功能，脑溢血设计
+###### Github@Moe-hacker ######
+#•.,¸,.•*¯`•.,¸,.•....╭━━━━━━━━━╮
+#`•.,¸,.•*¯`•.,¸,.•*¯.|::::::::::/\__/\
+#`•.,¸,.•*¯`•.,¸,.•* <|:::::::::(｡ ●ω●｡)
+#`•.,¸,.•*¯`•.,¸,.•*  ╰し--し--Ｊ･ﾟ
+###### E-mail: moe-hacker@outlook.com ######
+######  Blog: cnblogs.com/Moe-hacker  ######
+#用于使whiptail适应屏幕分辨率
+#这个变量的作用我甚至翻了下调用才想起来
+export WIDTH=$(($(stty size|awk '{print $2}')-8))
+#加载全局配置
+LOAD_GLOBAL_CONFIG(){
+  if [[ -e $PREFIX/etc/container/global.conf ]];then
+    source $PREFIX/etc/container/global.conf
+  else
+    echo -e "\a\033[31m[]错误:未找到全局配置!"
+    exit 1
+  fi
+}
+#加载容器配置
+LOAD_CONTAINER_CONFIG(){
+  if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+    source $PREFIX/etc/container/container-${CONTAINER}.conf
+  else
+    echo -e "\a\033[31m[]错误:未找到容器，你可能需要执行container -S来切换容器或container -c来创建一个容器"
+    exit 1
+  fi
+}
+#获取手机架构
+#虽然真没听说过amd64的手机
+GET_CPU_ARCH(){
+  DPKG_ARCH=$(dpkg --print-architecture)
+  case ${DPKG_ARCH} in
+    armel) export ARCH="armel" ;;
+    armv7* | armv8l | armhf | arm) export ARCH="armhf" ;;
+    aarch64 | arm64* | armv8* | arm*) export ARCH="arm64" ;;
+    i*86 | x86) export ARCH="i386" ;;
+    x86_64 | amd64) export ARCH="amd64" ;;
+    *) whiptail --title "[] 错误" --msgbox "未知cpu架构!" 7 $WIDTH&&exit 1 ;;
+  esac
+  return 0
+}
+#自动获取rootfs下载链接
+DOWNLOAD_ROOTFS(){
+  LIST="1 almalinux 2 alpine 3 alt 4 amazonlinux 5 apertis 6 archlinux 7 centos 8 debian 9 devuan 10 fedora 11 gentoo 12 kali 13 opensuse 14 oracle 15 parrot 16 rockylinux 17 ubuntu 18 voidlinux"
+  LIST2="almalinux alpine alt amazonlinux apertis archlinux centos debian devuan fedora gentoo kali opensuse oracle parrot rockylinux ubuntu voidlinux"
+  NUMBER=$(whiptail --title "[] 系统" --menu "请选择要安装的系统:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  OS=$(echo $LIST2|awk "{print \$$NUMBER}")
+  unset LIST LIST2 NUMBER
+  if [[ ${OS} != "parrot" ]];then
+    NUMBER=0
+    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+    unset VERSION NUMBER
+    NUMBER=$(whiptail --title "[] 版本号" --menu "请选择要安装的系统版本号:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
+  fi
+  if [[ ${CROSS_ARCH} != "null" && ${CROSS_ARCH} != "" ]];then
+    case ${CROSS_ARCH} in
+      "aarch64") export ARCH="arm64";;
+      "arm") export ARCH="armhf";;
+      "i386") export ARCH="i386";;
+      "m68k") export ARCH="m68k";;
+      "ppc") export ARCH="ppc";;
+      "ppc64") export ARCH="ppc64";;
+      "riscv32") export ARCH="riscv32";;
+      "riscv64") export ARCH="riscv64";;
+      "x86_64") export ARCH="amd64";;
+    esac
+  else
+    GET_CPU_ARCH
+  fi
+  DOWNLOAD_COMMON_ROOTFS(){
+    MIRROR="http://images.linuxcontainers.org/images"
+    if [[ $OS = "gentoo" ]];then
+      VERSION2="openrc"
+    else
+      VERSION2="default"
+    fi
+    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "DIR" |sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 2|tail -n 1)
+    if [[ ${TIME} = "" ]];then
+      whiptail --title "[] 错误" --msgbox "未找到rootfs!" 7 $WIDTH
+      exit 1
+    fi
+    [[ -e $PREFIX/tmp/container ]]||mkdir -p $PREFIX/tmp/container
+    cd $PREFIX/tmp/container
+    URL=${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}/${TIME}/rootfs.tar.xz
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
+    axel -n16 ${URL}
+    return 0
+  }
+  DOWNLOAD_PARROT_ROOTFS(){
+    mkdir -p $PREFIX/tmp/container
+    cd $PREFIX/tmp/container
+    ROOTFS=$(curl -sL https://mirrors.bfsu.edu.cn/parrot/iso/testing/|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
+    if [[ ${ROOTFS} = "" ]];then
+      whiptail --title "[] 错误" --msgbox "未找到rootfs!" 7 $WIDTH
+      exit 1
+    fi
+    URL="https://mirrors.bfsu.edu.cn/parrot/iso/testing/${ROOTFS}"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
+    axel -n16 ${URL}
+    echo "\e[38;5;159m[] 正在构建parrot的rootfs，这可能需要一段时间..."
+    sleep 2s
+    tar -xvf ${ROOTFS}
+    cd parrot-${ARCH}
+    tar -cvJf ../rootfs.tar.xz .
+    cd ..
+    rm ${ROOTFS}
+    rm -rf parrot-${ARCH}
+    return 0
+  }
+  #或许加入Manjaro支持？
+  case $OS in
+      "parrot") DOWNLOAD_PARROT_ROOTFS;;
+      *) DOWNLOAD_COMMON_ROOTFS;;
+  esac
+  return 0
+}
+#创建chroot容器
+#传统chroot容器和chroot-unshare容器共享创建过程
+CREATE_CHROOT_CONTAINER(){
+  while :
+  do
+    NAME=$(whiptail --title "[] 容器名" --inputbox "请输入容器名:" 7 $WIDTH 3>&1 1>&2 2>&3)
+    if [[ $NAME != "" ]];then
+      break
+    fi
+  done
+  if whiptail --title "[] 添加用户" --yes-button "yes" --no-button "no" --yesno "添加一个新的普通用户?" 7 $WIDTH;then
+    while :
+    do
+      NEW_USER=$(whiptail --title "[] 用户名" --inputbox "请输入用户名:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ ${NEW_USER} != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      PASSWORD=$(whiptail --title "[] 密码" --passwordbox "请输入密码:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  fi
+  whiptail --title "[] 帮助信息" --msgbox "容器绝对路径是用来存放容器的路径，例如，你可以使用/data/容器名，但不要用/sdcard下的目录!" 9 $WIDTH
+  while :
+  do
+    CONTAINER_DIR=$(whiptail --title "[] 容器目录" --inputbox "请输入容器的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      break
+    fi
+  done
+  for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
+    if [[ $CONTAINER_DIR = $BLACKLIST* ]];then
+      whiptail --title "[] 错误" --msgbox "拒绝使用系统目录!" 7 $WIDTH
+      exit 1
+    fi
+  done
+  if [[ -e $CONTAINER_DIR ]];then
+    whiptail --title "[] 错误" --msgbox "目录已存在!" 7 $WIDTH
+    exit 1
+  fi
+  if whiptail --title "[] 容器镜像" --yes-button "yes" --no-button "no" --yesno "你想把容器安装在镜像文件中吗?" 7 $WIDTH;then
+    whiptail --title "[] 帮助信息" --msgbox "容器镜像绝对路径是用来存放容器镜像的目录，例如，你可以使用/data" 9 $WIDTH
+    while :
+    do
+      CONTAINER_IMG_PATH=$(whiptail --title "[] 镜像目录" --inputbox "请输入容器镜像绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ $CONTAINER_IMG_PATH != "" ]];then
+        break
+      fi
+    done
+    if [[ $CONTAINER_IMG_PATH = $CONTAINER_DIR ]];then
+      whiptail --title "[] 错误" --msgbox "拒绝使用和容器相同的路径!" 7 $WIDTH
+      exit 1
+    fi
+    for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
+      if [[ $CONTAINER_IMG_PATH = $BLACKLIST* ]];then
+        whiptail --title "[] 错误" --msgbox "拒绝使用系统目录!" 7 $WIDTH
+        exit 1
+      fi
+    done
+    while :
+    do
+      CONTAINER_IMG_NAME=$(whiptail --title "[] 容器镜像" --inputbox "请输入镜像文件名:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ $CONTAINER_IMG_NAME != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      SIZE=$(whiptail --title "[] 容器镜像" --inputbox "请输入镜像文件大小(单位为Gb):" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ $SIZE != "" ]];then
+        break
+      fi
+    done
+  fi
+  if whiptail --title "[] 自动获取rootfs" --yes-button "yes" --no-button "no" --yesno "自动获取rootfs下载链接?" 7 $WIDTH;then
+    AUTO_GET_LINK=y
+  else
+    AUTO_GET_LINK=n
+  fi
+  if [[ ${AUTO_GET_LINK} = "n" ]];then
+    whiptail --title "[] 帮助信息" --msgbox "你可以去 http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
+    while :
+    do
+      LINK=$(whiptail --title "[] rootfs" --inputbox "请输入rootfs下载链接或者自定义rootfs的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ $LINK != "" ]];then
+        break
+      fi
+    done
+  fi
+  rm -rf $PREFIX/tmp/container >> /dev/null 2>&1
+  mkdir -p $PREFIX/tmp/container >> /dev/null 2>&1
+  cd $PREFIX/tmp/container
+  if [[ ${AUTO_GET_LINK} = "y" ]];then
+    DOWNLOAD_ROOTFS
+  else
+    [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 下载rootfs"|pv -qL 40
+    wget ${LINK}||cp ${LINK} ./||exit 0
+  fi
+  if ! sudo mkdir -p ${CONTAINER_DIR};then
+    whiptail --title "[] 错误" --msgbox "无法创建容器目录!" 7 $WIDTH
+    rm -rf $PREFIX/tmp/container
+    exit 1
+  fi
+  if [[ ${CONTAINER_IMG_NAME} != "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 创建镜像文件"|pv -qL 40
+    if ! sudo mkdir -p ${CONTAINER_IMG_PATH};then
+      whiptail --title "[] 错误" --msgbox "无法创建镜像文件目录!"  7 $WIDTH
+      exit 1
+    fi
+    cd ${CONTAINER_IMG_PATH}
+    sudo dd if=/dev/zero of=${CONTAINER_IMG_NAME}.img bs=1G count=${SIZE}
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 创建文件系统"|pv -qL 40
+    sudo mkfs.ext4 ${CONTAINER_IMG_NAME}.img
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 挂载镜像文件"|pv -qL 40
+    sleep 1s
+    LOOPFILE=$(sudo losetup -f)
+    sudo losetup  ${LOOPFILE} ${CONTAINER_IMG_NAME}.img  >> /dev/null 2>&1
+    sudo mount ${LOOPFILE} ${CONTAINER_DIR}  >> /dev/null 2>&1
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 解压rootfs"|pv -qL 40
+  sleep 2s
+  ROOTFS=$(ls $PREFIX/tmp/container/)
+  case $ROOTFS in
+    *tar.gz|*tgz) pv $PREFIX/tmp/container/$ROOTFS|tar -xzf - -C ${CONTAINER_DIR};;
+    *tar.xz|*txz) pv $PREFIX/tmp/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR};;
+    *tar) pv $PREFIX/tmp/container/$ROOTFS|tar -xf - -C ${CONTAINER_DIR};;
+    *) whiptail --title "[] 错误" --msgbox "未知文件格式!" 7 $WIDTH;exit 1;;
+  esac
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
+  sleep 1s
+  for i in {1..100};do
+    if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
+      CONTAINER=$i
+      break
+    fi
+  done
+  echo "#此文件为termux-container自动创建" >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo "#如果你不知道自己在做什么,不要编辑此文件!" >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo RUN_MODE=chroot-unshare >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo NAME=${NAME} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo CONTAINER_DIR=${CONTAINER_DIR} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  if [[ ${CONTAINER_IMG_NAME} != "" ]];then
+    echo CONTAINER_IMG=${CONTAINER_IMG_PATH}/${CONTAINER_IMG_NAME}.img >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  else
+    echo CONTAINER_IMG=null >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  fi
+  export NEW_CONTAINER=${CONTAINER}
+  LOAD_GLOBAL_CONFIG
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" $PREFIX/etc/container/global.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 删除已下载的rootfs"|pv -qL 40
+  sleep 1s
+  rm -rf $PREFIX/tmp/container
+  cd /data/data/com.termux/files/home
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复中..."|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 创建系统目录"|pv -qL 40
+  [[ -e ${CONTAINER_DIR}/dev ]]||mkdir ${CONTAINER_DIR}/dev
+  [[ -e ${CONTAINER_DIR}/proc ]]||mkdir ${CONTAINER_DIR}/proc
+  [[ -e ${CONTAINER_DIR}/sys ]]||mkdir ${CONTAINER_DIR}/sys
+  [[ -e ${CONTAINER_DIR}/sdcard ]]||mkdir ${CONTAINER_DIR}/sdcard
+  if [[ $(cat ${CONTAINER_DIR}/etc/hosts|grep ${HOSTNAME}) = "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复sudo"|pv -qL 40
+    echo 127.0.0.1 ${HOSTNAME} >> ${CONTAINER_DIR}/etc/hosts
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复dns"|pv -qL 40
+  rm -f ${CONTAINER_DIR}/etc/resolv.conf >> /dev/null 2>&1
+  echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 添加用户组"|pv -qL 40
+  cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp
+  chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
+  if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
+    sed -i "s/NEW_USER=\"\"/NEW_USER=${NEW_USER}/" ${CONTAINER_DIR}/tmp/group_add.sh
+    sed -i "s/PASSWORD=\"\"/PASSWORD=${PASSWORD}/" ${CONTAINER_DIR}/tmp/group_add.sh
+  fi
+  mount -t proc proc  ${CONTAINER_DIR}/proc/
+  mount --rbind /dev ${CONTAINER_DIR}/dev/
+  mount --rbind /sys ${CONTAINER_DIR}/sys/
+  unset LD_PRELOAD
+  $PREFIX/bin/chroot ${CONTAINER_DIR} /tmp/group_add.sh >> /dev/null 2>&1
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 复制初始化脚本"|pv -qL 40
+  mkdir -p ${CONTAINER_DIR}/usr/local/bin >> /dev/null 2>&1
+  cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
+  chmod 777 ${CONTAINER_DIR}/usr/local/bin/unshare_init
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 设置主机名"|pv -qL 40
+  echo ${HOSTNAME} > ${CONTAINER_DIR}/etc/hostname
+  if [[ ${ENABLE_OUTPUT} = "y" ]];then
+    touch ${CONTAINER_DIR}/etc/enable_output
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 解除容器挂载"|pv -qL 40
+  umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+  losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+  echo -e "[] 创建完毕!"
+  return 0
+  exit 0
+}
+#创建proot容器
+#本人用不到，但是会有人用的上，不是吗？
+#真说用途，目前整个项目对我没太大用途，因为早就开始在手机上跑docker了
+CREATE_PROOT_CONTAINER(){
+  while :
+  do
+    NAME=$(whiptail --title "[] 容器名" --inputbox "请输入容器名:" 7 $WIDTH 3>&1 1>&2 2>&3)
+    if [[ $NAME != "" ]];then
+      break
+    fi
+  done
+  if whiptail --title "[] 添加用户" --yes-button "yes" --no-button "no" --yesno "添加一个新的普通用户?" 7 $WIDTH;then
+    while :
+    do
+      NEW_USER=$(whiptail --title "[] 用户名" --inputbox "请输入用户名:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ ${NEW_USER} != "" ]];then
+        break
+      fi
+    done
+    while :
+    do
+      PASSWORD=$(whiptail --title "[] 密码" --passwordbox "请输入密码:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ ${PASSWORD} != "" ]];then
+        break
+      fi
+    done
+  whiptail --title "[] 关于sudo" --msgbox "如果sudo不可用，请重新安装sudo." 7 $WIDTH
+  fi
+  whiptail --title "[] 帮助信息" --msgbox "容器绝对路径是用来存放容器的路径，建议使用/data/data/com.termux/files/home/容器名，但尽量不要用/sdcard下的目录!" 9 $WIDTH
+  while :
+  do
+    CONTAINER_DIR=$(whiptail --title "[] 容器目录" --inputbox "请输入容器的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      break
+    fi
+  done
+  if [[ -e $CONTAINER_DIR ]];then
+    whiptail --title "[] 警告" --msgbox "目录已存在!" 7 $WIDTH
+  fi
+  if whiptail --title "[] 跨架构" --yes-button "yes" --no-button "no" --yesno "跨架构运行容器?" 7 $WIDTH;then
+    LIST="1 aarch64 2 arm 3 i386 4 m68k 5 ppc 6 ppc64 7 riscv32 8 riscv64 9 x86-64"
+    ARCH=$(whiptail --title "[] 跨架构" --menu "请选择要模拟的架构:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    case ${ARCH} in
+      "1") apt install qemu-user-aarch64&&export CROSS_ARCH="aarch64";;
+      "2") apt install qemu-user-arm&&export CROSS_ARCH="arm";;
+      "3") apt install qemu-user-i386&&export CROSS_ARCH="i386";;
+      "4") apt install qemu-user-m68k&&export CROSS_ARCH="m68k";;
+      "5") apt install qemu-user-ppc&&export CROSS_ARCH="ppc";;
+      "6") apt install qemu-user-ppc64&&export CROSS_ARCH="ppc64";;
+      "7") apt install qemu-user-riscv32&&export CROSS_ARCH="riscv32";;
+      "8") apt install qemu-user-riscv64&&export CROSS_ARCH="riscv64";;
+      "9") apt install qemu-user-x86-64&&export CROSS_ARCH="x86_64";;
+    esac
+  else
+    export CROSS_ARCH="null"
+  fi
+  if whiptail --title "[] 自动获取rootfs" --yes-button "yes" --no-button "no" --yesno "自动获取rootfs下载链接?" 7 $WIDTH;then
+    AUTO_GET_LINK=y
+  else
+    AUTO_GET_LINK=n
+  fi
+  if [[ ${AUTO_GET_LINK} = "n" ]];then
+    whiptail --title "[] 帮助信息" --msgbox "你可以去 http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images 去获取rootfs下载链接或使用自定义rootfs" 9 $WIDTH
+    while :
+    do
+      LINK=$(whiptail --title "[] rootfs" --inputbox "请输入rootfs下载链接或者自定义rootfs的绝对路径:" 7 $WIDTH 3>&1 1>&2 2>&3)
+      if [[ $LINK != "" ]];then
+        break
+      fi
+    done
+  fi
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  cd $PREFIX/tmp/container
+  if [[ ${AUTO_GET_LINK} = "y" ]];then
+    DOWNLOAD_ROOTFS
+  else
+    axel -n16 ${LINK}||cp ${LINK} ./||exit 0
+  fi
+  if ! mkdir -p ${CONTAINER_DIR};then
+    whiptail --title "[] 错误" --msgbox "无法创建容器目录!" 7 $WIDTH
+    rm -rf $PREFIX/tmp/container
+    exit 1
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 解压rootfs"|pv -qL 40
+  sleep 1s
+  ROOTFS=$(ls $PREFIX/tmp/container/)
+  case $ROOTFS in
+    *tar.gz|*tgz) pv $PREFIX/tmp/container/$ROOTFS|tar -xzf - -C ${CONTAINER_DIR};;
+    *tar.xz|*txz) pv $PREFIX/tmp/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR};;
+    *tar) pv $PREFIX/tmp/container/$ROOTFS|tar -xf - -C ${CONTAINER_DIR};;
+    *) whiptail --title "[] 错误" --msgbox "未知文件格式!" 7 $WIDTH;exit 1;;
+  esac
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 删除已下载的rootfs"|pv -qL 40
+  rm -rf $PREFIX/tmp/container/
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 写入配置文件"|pv -qL 40
+  for i in {1..100};do
+    if [[ ! -e $PREFIX/etc/container/container-${i}.conf ]];then
+      CONTAINER=$i
+      break
+    fi
+  done
+  echo "#此文件为termux-container自动创建" >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo "#如果你不知道你在干什么,不要编辑此文件!" >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo RUN_MODE=proot >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo NAME=${NAME} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo CONTAINER_DIR=${CONTAINER_DIR} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  echo CROSS_ARCH=${CROSS_ARCH} >> $PREFIX/etc/container/container-${CONTAINER}.conf
+  export NEW_CONTAINER=${CONTAINER}
+  LOAD_GLOBAL_CONFIG
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$NEW_CONTAINER/" $PREFIX/etc/container/global.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复中..."|pv -qL 40
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 修复dns"|pv -qL 40
+  rm -f ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 8.8.8.8 >> ${CONTAINER_DIR}/etc/resolv.conf
+  echo nameserver 114.114.114.114 >> ${CONTAINER_DIR}/etc/resolv.conf
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "[] 添加用户组"|pv -qL 40
+  cp $PREFIX/share/termux-container/group_add.sh ${CONTAINER_DIR}/tmp/
+  chmod 777 ${CONTAINER_DIR}/tmp/group_add.sh
+  if [[ ${NEW_USER} != "" && ${PASSWORD} != "" ]];then
+    sed -i "s/NEW_USER=\"\"/NEW_USER=${NEW_USER}/" ${CONTAINER_DIR}/tmp/group_add.sh
+    sed -i "s/PASSWORD=\"\"/PASSWORD=${PASSWORD}/" ${CONTAINER_DIR}/tmp/group_add.sh
+  fi
+  unset LD_PRELOAD
+  COMMAND="proot --link2symlink --sysvipc -0 -r ${CONTAINER_DIR} -b /dev -b /sys -b /proc -w /root"
+  if [[ ${CROSS_ARCH} != "null" ]];then
+    COMMAND+=" -q qemu-${CROSS_ARCH}"
+  fi
+  ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
+  echo -e "[] 创建完毕!"
+}
+#空壳，仅进行调用
+#这种基本只剩空壳的函数并不是好文明，但是好用啊
+CREATE_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  if whiptail --title "[] 选择运行模式" --yes-button "chroot-unshare" --no-button "proot"  --yesno "如果你的手机root了，建议使用chroot-unshare模式运行容器\n如果你的手机没有root或者你想运行跨架构容器，请选择proot\n\n请选择你的运行模式:" 12 $WIDTH;then
+    sudo container -e CREATE_CHROOT_CONTAINER
+  else
+    CREATE_PROOT_CONTAINER
+  fi
+}
+#chroot容器备份 *未充分测试特性
+BACKUP_CHROOT_CONTAINER(){
+  pkill unshare
+  source $PREFIX/etc/container/container-$1.conf
+  umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+  umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+  umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+  losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+  if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]];then
+    LOOPFILE=$(sudo losetup -f)
+    sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
+    sudo mount ${LOOPFILE} ${CONTAINER_DIR}
+    SIZE=$(($(du --block-size=1G ${CONTAINER_IMG}|awk '{print $1}')-1))
+  fi
+  echo -e "[] 选择备份文件压缩格式:"
+  while :
+  do
+    read -p "[1]tar.gz [2]tar.xz [3]tar " FORMAT
+    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" ]];then
+      break
+    fi
+  done
+  cd ${CONTAINER_DIR}
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  case ${FORMAT} in
+    1) tar -zPpcvf $PREFIX/tmp/container/rootfs.tar.gz .;;
+    2) tar -JPpcvf $PREFIX/tmp/container/rootfs.tar.xz .;;
+    3) tar -Ppcvf  $PREFIX/tmp/container/rootfs.tar .;;
+  esac
+  cp $PREFIX/etc/container/container-$1.conf $PREFIX/tmp/container/container.conf
+  cd $PREFIX/tmp/container
+  if [[ ${SIZE} != "" ]];then
+    echo IMG_SIZE=${SIZE} >> $PREFIX/tmp/container/container.conf
+  fi
+  TARGET="/sdcard/container-$NAME-$(date +%y%m%d%H%M%S).bk"
+  tar -cvf ${TARGET} .
+  rm -rf $PREFIX/tmp/container
+  echo -e "[] 备份完成,备份文件: ${TARGET}"
+}
+#proot容器备份 *需修复硬链接权限
+BACKUP_PROOT_CONTAINER(){
+  pkill proot
+  source $PREFIX/etc/container/container-$1.conf
+  echo -e "[] 选择备份文件压缩格式:"
+  while :
+  do
+    read -p "[1]tar.gz [2]tar.xz [3]tar " FORMAT
+    if [[ $FORMAT = "1" || $FORMAT = "2" || $FORMAT = "3" ]];then
+      break
+    fi
+  done
+  cd ${CONTAINER_DIR}
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  case ${FORMAT} in
+    1) tar -zPpcvf $PREFIX/tmp/container/rootfs.tar.gz .;;
+    2) tar -JPpcvf $PREFIX/tmp/container/rootfs.tar.xz .;;
+    3) tar -Ppcvf  $PREFIX/tmp/container/rootfs.tar .;;
+  esac
+  cp $PREFIX/etc/container/container-$1.conf $PREFIX/tmp/container/container.conf
+  cd $PREFIX/tmp/container
+  TARGET="/sdcard/container-$NAME-$(date +%y%m%d%H%M%S).bk"
+  tar -cvf ${TARGET} .
+  rm -rf $PREFIX/tmp/container
+  echo -e "[] 备份完成,备份文件: ${TARGET}"
+}
+#又一个空壳，获取容器信息然后调用上边那两个函数
+#这还是重构过的结构，很难想象这种架构是怎么被设计出来的
+BACKUP_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_BACKUP$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      source container-${i}.conf
+      echo -e "[${i}] ${NAME} (${RUN_MODE})"
+      sleep 0.1s
+    fi
+  done
+  while :
+  do
+    read -p "[] 选择要备份的容器: " CONTAINER
+    if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+      break
+    fi
+  done
+  source $PREFIX/etc/container/container-${CONTAINER}.conf
+  if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+    sudo container -e BACKUP_CHROOT_CONTAINER ${CONTAINER}
+  else
+    BACKUP_PROOT_CONTAINER ${CONTAINER}
+  fi
+}
+#容器还原 *未充分测试特性
+RESTORE_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-17))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RESTORE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 1s
+  echo -e "[] 解压恢复包"
+  rm -rf $PREFIX/tmp/container
+  mkdir -p $PREFIX/tmp/container
+  pv $1|tar -xf - -C $PREFIX/tmp/container
+  source $PREFIX/tmp/container/container.conf
+  echo -e "[] 解压rootfs"
+  if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+    sudo mkdir -p ${CONTAINER_DIR}
+    if [[ ${IMG_SIZE} != "" ]];then
+      sudo dd if=/dev/zero of=${CONTAINER_IMG} bs=1G count=${IMG_SIZE}
+      sudo mkfs.ext4 ${CONTAINER_IMG}
+      LOOPFILE=$(sudo losetup -f)
+      sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
+      sudo mount ${LOOPFILE} ${CONTAINER_DIR}
+    fi
+    ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
+    case ${ROOTFS} in
+      *tar)sudo bash -c "pv ${ROOTFS}|tar -Ppxf - -C ${CONTAINER_DIR}";;
+      *tar.gz)sudo bash -c "pv ${ROOTFS}|tar -Ppxzf - -C ${CONTAINER_DIR}";;
+      *tar.xz)sudo bash -c "pv ${ROOTFS}|tar -xPpJf - -C ${CONTAINER_DIR}";;
+    esac
+  else
+    mkdir -p ${CONTAINER_DIR}
+    ROOTFS=$(ls $PREFIX/tmp/container/rootfs*)
+    case ${ROOTFS} in
+      *tar) pv ${ROOTFS}|tar -xPpf - -C ${CONTAINER_DIR};;
+      *tar.gz) pv ${ROOTFS}|tar -xPpzf - -C ${CONTAINER_DIR};;
+      *tar.xz) pv ${ROOTFS}|tar -xJPpf - -C ${CONTAINER_DIR};;
+    esac
+  fi
+  echo -e "\e[38;5;159m[] 写入配置文件"
+  for i in {1..100};do
+    if [[ ! -e $PREFIX/etc/container/container-$i.conf ]];then
+      mv $PREFIX/tmp/container/container.conf $PREFIX/etc/container/container-$i.conf
+      sed -i "s/CONTAINER=$CONTAINER/CONTAINER=$i/" $PREFIX/etc/container/global.conf
+      break
+    fi
+  done
+  rm -rf $PREFIX/tmp/container
+}
+#容器切换，switch准确不准确我也不知道
+#后续更新一定移除
+SWITCH_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_SWITCH$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      source container-${i}.conf
+      echo -e "\e[38;5;159m[$i] ${NAME} (${RUN_MODE})"
+    fi
+  done
+  #变量CONTAINER由LOAD_GLOBAL_CONFIG创建
+  #当时刚接触shell没多久，根本不会用正则，sed都是为了完成这个功能现学的    +  #当时我居然用export $(cat /path/to/configfile)来加载配置，现在想来确实有点傻
+  #事实上[0-9]*就能匹配容器编号，根本用不到获取原来的值
+  #检查代码时老觉得这个变量不对，还以为是从其他函数移植过来时忘了删🤣👉
+  #幸好没删，要不然准得寄
+  export CONTAINER_BK=${CONTAINER}
+  unset CONTAINER
+  while :
+  do
+    read -p "[] 选择要运行的容器: " CONTAINER
+    if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+      source $PREFIX/etc/termux-container/container-${CONTAINER_BK}.conf >> /dev/null 2>&1
+      if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+        sudo umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+        sudo umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+        sudo umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+        sudo umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+        sudo umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+        sudo losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+      fi
+      break
+    fi
+  done
+  sed -i "s/CONTAINER=$CONTAINER_BK/CONTAINER=$CONTAINER/" $PREFIX/etc/container/global.conf
+  return 0
+  exit 0
+}
+#后续更新一定砍了
+#自从出来就没用过这功能，还得专门测试bug烦死了
+#绝对是屎山遗留
+MOUNT_IMAGE_FILE(){
+  if [[ $(whoami) != "root" ]];then
+    sudo container -e MOUNT_IMAGE_FILE
+    exit 0
+  fi
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-15))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_MOUNT$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  if [[ ${CONTAINER_IMG} = "" ]];then
+    echo -e "\a\033[31m[] 错误:未使用镜像文件!\033[0m"
+    exit 1
+  fi
+  if [[ ! -e ${CONTAINER_IMG} ]];then
+    echo -e "\a\033[31m[] 错误:镜像文件不存在!\033[0m"
+    exit 1
+  fi
+  LOOPFILE=$(sudo losetup -f)
+  sudo losetup ${LOOPFILE} ${CONTAINER_IMG}
+  sudo mount ${LOOPFILE} ${CONTAINER_DIR}
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] ${CONTAINER_IMG} 已被挂载到 ${CONTAINER_DIR} \033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[] 完毕!\033[0m"
+  return 0
+  exit 0
+}
+#事实上应该叫chroot-unshare container
+#又一个分体式设计，另一部分用于初始化系统，位于容器内，被unshare fork出来单独的进程执行
+RUN_CHROOT_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-13))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] 容器名: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] CPU架构: \e[38;5;153m$(uname -m)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  if [[ $DISABLE_SELINUX = "true" ]];then
+    SELINUX=Permissive
+  else
+    SELINUX=Enforcing
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  /        /  \\    [\e[38;5;153m\e[38;5;159m] SELinux状态: \e[38;5;153m${SELINUX}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m /        /    \\   [\e[38;5;153m\e[38;5;159m] 内核版本: \e[38;5;153m$(uname -r)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m/________/      \\  [\e[38;5;153m\e[38;5;159m] 当前时间: \e[38;5;153m$(date|awk '{print $4}')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m\\        \\      /  [\e[38;5;153m\e[38;5;159m] 主机名: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] 安卓版本: \e[38;5;153m$(getprop ro.build.version.release)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] 容器目录: \e[38;5;153m${CONTAINER_DIR}"
+  if [[ $CONTAINER_IMG != "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 容器镜像: \e[38;5;153m${CONTAINER_IMG}"
+  else
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 容器镜像: \e[38;5;153mnull"
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//////"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  if [[ ! -e ${CONTAINER_DIR} ]];then
+    echo -e "\033[31m\a[] 错误:容器目录不存在!"&&printf "\033[?25h"
+    exit 1
+  fi
+  if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]] && [[ ! -e ${CONTAINER_IMG} ]];then
+    echo -e "\a\033[31m[] 错误:镜像文件不存在!"&&printf "\033[?25h"
+    exit 1
+  fi
+  if [[ ${DISABLE_SELINUX} = "true" ]];then
+    if [[ $(getenforce) != "Permissive" ]];then
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭 SELinux"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      setenforce 0 >> /dev/null 2>&1
+    fi
+  fi
+  if [[ $(mount|grep ${CONTAINER_DIR}) =  "" ]];then
+    if [[ ${CONTAINER_IMG} = "" || ${CONTAINER_IMG} = "null" ]];then
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 重挂载 /data"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      mount -o remount,suid /data  >> /dev/null 2>&1
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 ${CONTAINER_DIR}"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      mount --rbind ${CONTAINER_DIR} ${CONTAINER_DIR} >> /dev/null 2>&1
+    else
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 运行 fsck"
+      fsck.ext4 -a -f  ${CONTAINER_IMG} >> /dev/null 2>&1
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 ${CONTAINER_IMG}"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      LOOPFILE=$(losetup -f)
+      losetup  ${LOOPFILE} ${CONTAINER_IMG}  >> /dev/null 2>&1
+      mount  ${LOOPFILE} ${CONTAINER_DIR}  >> /dev/null 2>&1
+    fi
+  fi
+  if [[ $(mount|grep ${CONTAINER_DIR}|grep /sdcard) =  "" && ${MOUNT_SDCARD} = "true" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /sdacrd"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount -o ro,bind /sdcard ${CONTAINER_DIR}/sdcard/ >> /dev/null 2>&1
+  fi
+  case $CURSOR in
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  if [[ ! -e ${CONTAINER_DIR}/usr/local/bin/unshare_init ]];then
+    mkdir -p ${CONTAINER_DIR}/usr/local/bin/ >> /dev/null 2>&1
+    cp $PREFIX/share/termux-container/unshare_init ${CONTAINER_DIR}/usr/local/bin/
+    chmod 777 ${CONTAINER_DIR}/usr/local/bin/unshare_init
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||touch ${CONTAINER_DIR}/etc/enable_output
+  [[ ${ENABLE_OUTPUT} = "true" ]]||rm ${CONTAINER_DIR}/etc/enable_output >> /dev/null 2>&1
+  echo ${HOSTNAME} > ${CONTAINER_DIR}/etc/hostname
+  UNSHARE_PARAMETER="--fork"
+  if [[ -e  /proc/$$/ns/ipc ]];then
+    UNSHARE_PARAMETER+=" -i"
+  fi
+  if [[ -e /proc/$$/ns/mnt ]];then
+    UNSHARE_PARAMETER+=" -m"
+  fi
+  if [[ -e /proc/$$/ns/pid ]];then
+    UNSHARE_PARAMETER+=" -p"
+  fi
+  if [[ -e /proc/$$/ns/uts ]];then
+    UNSHARE_PARAMETER+=" -u"
+  fi
+  printf "\033[?25h\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 运行 unshare"
+  unset LD_PRELOAD
+  /bin/unshare ${UNSHARE_PARAMETER} $PREFIX/bin/chroot ${CONTAINER_DIR} /usr/local/bin/unshare_init
+  printf '\e[2 q\033[0m'
+  return 0
+  exit 0
+}
+#这个空壳简直是脑溢血设计
+#怕是犯着困写的
+LEGACY_MODE(){
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  if [[ ${RUN_MODE} = "proot" ]];then
+    echo -e "\a\033[31m[] 错误:传统模式仅供chroot容器使用!"
+    exit 1
+  fi
+  sudo container -e RUN_CHROOT_CONTAINER_LEGACY_MODE
+  return 0
+  exit 0
+}
+#这段必须在root下执行
+#确实挺草
+RUN_CHROOT_CONTAINER_LEGACY_MODE(){
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-13))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] 容器名: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] CPU架构: \e[38;5;153m$(uname -m)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  if [[ $DISABLE_SELINUX = "true" ]];then
+    SELINUX=Permissive
+  else
+    SELINUX=Enforcing
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  /        /  \\    [\e[38;5;153m\e[38;5;159m] SELinux状态: \e[38;5;153m${SELINUX}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m /        /    \\   [\e[38;5;153m\e[38;5;159m] 内核版本: \e[38;5;153m$(uname -r)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m/________/      \\  [\e[38;5;153m\e[38;5;159m] 当前时间: \e[38;5;153m$(date|awk '{print $4}')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m\\        \\      /  [\e[38;5;153m\e[38;5;159m] 主机名: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] 安卓版本: \e[38;5;153m$(getprop ro.build.version.release)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] 容器目录: \e[38;5;153m${CONTAINER_DIR}"
+  if [[ $CONTAINER_IMG != "" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 容器镜像: \e[38;5;153m${CONTAINER_IMG}"
+  else
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 容器镜像: \e[38;5;153mnull"
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//////"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  if [[ ! -e ${CONTAINER_DIR} ]];then
+    echo -e "\033[31m\a[] 错误:容器目录不存在!"&&printf "\033[?25h"
+    exit 1
+  fi
+  if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]] && [[ ! -e ${CONTAINER_IMG} ]];then
+    echo -e "\a\033[31m[] 错误:镜像文件不存在!"&&printf "\033[?25h"
+    exit 1
+  fi
+  if [[ ${DISABLE_SELINUX} = "true" ]];then
+    if [[ $(getenforce) != "Permissive" ]];then
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 关闭 SELinux"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      setenforce 0 >> /dev/null 2>&1
+    fi
+  fi
+  if [[ $(mount|grep ${CONTAINER_DIR}) =  "" ]];then
+    if [[ ${CONTAINER_IMG} = "" || ${CONTAINER_IMG} = "null" ]];then
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 重挂载 /data"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      mount -o remount,suid /data  >> /dev/null 2>&1
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 ${CONTAINER_DIR}"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      mount --rbind ${CONTAINER_DIR} ${CONTAINER_DIR} >> /dev/null 2>&1
+    else
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 运行 fsck"
+      fsck.ext4 -a -f  ${CONTAINER_IMG} >> /dev/null 2>&1
+      [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 ${CONTAINER_IMG}"
+      [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+      LOOPFILE=$(losetup -f)
+      losetup  ${LOOPFILE} ${CONTAINER_IMG}  >> /dev/null 2>&1
+      mount  ${LOOPFILE} ${CONTAINER_DIR}  >> /dev/null 2>&1
+    fi
+  fi
+  if [[ $(mount|grep ${CONTAINER_DIR}|grep /sdcard) =  "" && ${MOUNT_SDCARD} = "true" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /sdacrd"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount -o ro,bind /sdcard ${CONTAINER_DIR}/sdcard/ >> /dev/null 2>&1
+  fi
+  if [[ ! -e /dev/fd ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/fd"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    ln -s /proc/self/fd /dev/ >> /dev/null 2>&1
+  fi
+  if [[ ! -e /dev/stdin ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/stdin"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    ln -s /proc/self/fd/0 /dev/stdin >> /dev/null 2>&1
+  fi
+  if [[ ! -e /dev/stdout ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/stdout"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    ln -s /proc/self/fd/1 /dev/stdout >> /dev/null 2>&1
+  fi
+  if [[ ! -e /dev/stderr ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/stderr"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    ln -s /proc/self/fd/2 /dev/stderr >> /dev/null 2>&1
+  fi
+  if [[ ! -e /dev/tty0 ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/tty0"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    ln -s /dev/null /dev/tty0 >> /dev/null 2>&1
+  fi
+  if [[ ! -e "/dev/net/tun" ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/net/tun"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    [[ -d /dev/net ]] || mkdir -p /dev/net >> /dev/null 2>&1
+    mknod /dev/net/tun c 10 200 >> /dev/null 2>&1
+  fi
+  if [[ ! -e /dev/shm ]];then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 创建 /dev/shm"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mkdir -p /dev/shm >> /dev/null 2>&1
+    mount -o rw,nosuid,nodev,mode=1777 -t tmpfs tmpfs /dev/shm >> /dev/null 2>&1
+  fi
+  if ! mountpoint -q ${CONTAINER_DIR}/proc;then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /proc"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount --bind /proc ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+  fi
+  if ! mountpoint -q ${CONTAINER_DIR}/sys;then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /sys"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount --bind /sys ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+  fi
+  if ! mountpoint -q ${CONTAINER_DIR}/dev;then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /dev"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount --bind /dev ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+  fi
+  if ! mountpoint -q ${CONTAINER_DIR}/dev/shm;then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /dev/shm"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount -o bind /dev/shm ${CONTAINER_DIR}/dev/shm >> /dev/null 2>&1
+  fi
+  if ! mountpoint -q ${CONTAINER_DIR}/dev/pts;then
+    [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 挂载 /dev/pts"
+    [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+    mount -o bind /dev/pts ${CONTAINER_DIR}/dev/pts >> /dev/null 2>&1
+  fi
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m[\e[38;5;158m\e[38;5;159m] 运行容器"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  case ${CURSOR} in
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  printf "\033[?25h\033[0m"
+  unset LD_PRELOAD
+  chroot ${CONTAINER_DIR} /bin/su - root
+}
+#好唉，是rootless容器！
+RUN_PROOT_CONTAINER(){
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||printf '\e[38;5;159m\033[?25l'
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-13))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_RUN$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m    _________      [\e[38;5;153m\e[38;5;159m] 容器名: \e[38;5;153m${NAME}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   /        /\\     [\e[38;5;153m\e[38;5;159m] CPU架构: \e[38;5;153m$(uname -m)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  /        /  \\    [\e[38;5;153m\e[38;5;159m] 跨架构: \e[38;5;153m${CROSS_ARCH}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m /        /    \\   [\e[38;5;153m\e[38;5;159m] 内核版本: \e[38;5;153m$(uname -r)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m/________/      \\  [\e[38;5;153m\e[38;5;159m] 当前时间: \e[38;5;153m$(date|awk '{print $4}')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m\\        \\      /  [\e[38;5;153m\e[38;5;159m] 主机名: \e[38;5;153m$(hostname)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||sleep 0.1s
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m \\        \\    /   [\e[38;5;153m\e[38;5;159m] 安卓版本: \e[38;5;153m$(getprop ro.build.version.release)"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m  \\        \\  /    [\e[38;5;153m\e[38;5;159m] 容器目录: \e[38;5;153m${CONTAINER_DIR}"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m   \\________\\/     [\e[38;5;153m\e[38;5;159m] 当前版本: \e[38;5;153m8.1-nya"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m〉\e[38;5;153mTERMUX-CONTAINER"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m$(yes "─"|sed $i1'q'|tr -d '\n')"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "//////"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  unset LD_PRELOAD
+  COMMAND="proot"
+  COMMAND+=" --link2symlink"
+  COMMAND+=" --kill-on-exit"
+  COMMAND+=" --sysvipc"
+  COMMAND+=" -0"
+  COMMAND+=" -r ${CONTAINER_DIR}"
+  COMMAND+=" -b /dev"
+  COMMAND+=" -b /sys"
+  COMMAND+=" -b /proc"
+  COMMAND+=" -w /root"
+  if [[ ${MOUNT_SDCARD} = "true" ]];then
+    COMMAND+=" -b /sdcard"
+  fi
+  if [[ ${CROSS_ARCH} != "null" ]];then
+    COMMAND+=" -q qemu-${CROSS_ARCH}"
+  fi
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/buddyinfo:/proc/buddyinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/cgroups:/proc/cgroups"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/consoles:/proc/consoles"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/crypto:/proc/crypto"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/devices:/proc/devices"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/diskstats:/proc/diskstats"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/execdomains:/proc/execdomains"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/fb:/proc/fb"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/filesystems:/proc/filesystems"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/interrupts:/proc/interrupts"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/iomem:/proc/iomem"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/ioports:/proc/ioports"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kallsyms:/proc/kallsyms"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/key-users:/proc/key-users"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/keys:/proc/keys"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/kpageflags:/proc/kpageflags"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/loadavg:/proc/loadavg"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/locks:/proc/locks"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/misc:/proc/misc"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/modules:/proc/modules"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/pagetypeinfo:/proc/pagetypeinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/partitions:/proc/partitions"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/sched_debug:/proc/sched_debug"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/softirqs:/proc/softirqs"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/stat:/proc/stat"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/timer_list:/proc/timer_list"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/uptime:/proc/uptime"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/version:/proc/version"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmallocinfo:/proc/vmallocinfo"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmstat:/proc/vmstat"
+  COMMAND+=" --mount=$PREFIX/share/termux-container/proc/zoneinfo:/proc/zoneinfo"
+  COMMAND+=" /bin/su - root"
+  case ${CURSOR} in
+    block)     printf '\e[2 q';;
+    bar)       printf '\e[6 q';;
+    underline) printf '\e[4 q';;
+  esac
+  printf "\033[?25h\033[0m"
+  ${COMMAND}
+  printf '\e[2 q'
+  return 0
+  exit 0
+}
+#好吧，这个脚本究竟会被重复执行几次这个问题，在我写的时候我和上帝知道，现在只有上帝知道了
+RUN_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  LOAD_CONTAINER_CONFIG
+  if [[ ${RUN_MODE} = "chroot-unshare" ]];then
+    sudo container -e RUN_CHROOT_CONTAINER
+  else
+    RUN_PROOT_CONTAINER
+  fi
+}
+#移除容器
+#安全性未经充分测试，但本人测试和网友反馈均未见文件误删
+REMOVE_CONTAINER(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-16))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_REMOVE$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+    if [[ -e container-${i}.conf ]];then
+      source container-${i}.conf
+      echo -e "[$i] $NAME (${RUN_MODE})"
+    fi
+  done
+  while :
+  do
+    read -p "[] 选择要删除的容器: " CONTAINER
+    if [[ -e $PREFIX/etc/container/container-${CONTAINER}.conf ]];then
+      break
+     fi
+  done
+  echo -e "\a[] 容器中所有文件将被删除"|pv -qL 40
+  read -p "[] 按回车键继续或按ctrl-c退出" NULL
+  source $PREFIX/etc/container/container-${CONTAINER}.conf
+  if [[ ${RUN_MODE} = "proot" ]];then
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      chown -R $(whoami) ${CONTAINER_DIR}
+      chmod -R 777 ${CONTAINER_DIR}
+      rm -rvf ${CONTAINER_DIR}
+    fi
+    rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
+  else
+    if [[ ${CONTAINER_DIR} != "" ]];then
+      sudo umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+      sudo umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+      sudo umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+      sudo umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+      sudo umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+      sudo losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+      sudo rm -rvf ${CONTAINER_DIR}
+    fi
+    if [[ ${CONTAINER_IMG} != "" && ${CONTAINER_IMG} != "null" ]];then
+      sudo rm -v ${CONTAINER_IMG}
+    fi
+    sudo rm -v $PREFIX/etc/container/container-${CONTAINER}.conf
+  fi
+}
+#卸载程序，连脚本都知道写个卸载程序，某些软件自己细品
+REMOVE_ALL_CONTAINERS_AND_UNINSTALL(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-19))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_UNINSTALL$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  cd $PREFIX/etc/container
+  for i in {1..100};do
+      if [[ -e container-${i}.conf ]];then
+        source $PREFIX/etc/container/container-${i}.conf
+        read -p "[] 删除容器 ${NAME}[y/n]? " REMOVE
+        if [[ $REMOVE = "n" ]];then
+          continue
+        fi
+        sleep 1s
+        if [[ ${RUN_MODE} = "proot" ]];then
+          if [[ ${CONTAINER_DIR} != "" ]];then
+            rm -rvf ${CONTAINER_DIR}
+            rm -v $PREFIX/etc/container/container-${i}.conf
+          fi
+        else
+          if [[ ! ${CONTAINER_DIR} = "" ]];then
+            sudo umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
+            sudo umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
+            sudo umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
+            sudo umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+            sudo umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+            sudo losetup -d ${CONTAINER_IMG} >> /dev/null 2>&1
+            if [[ ${CONTAINER_DIR} != "" ]];then
+              sudo rm -rfv ${CONTAINER_DIR}
+            fi
+            if [[ ${CONTAINER_IMG} != "" ]];then
+              sudo rm -rfv ${CONTAINER_IMG}
+            fi
+            sudo rm -v $PREFIX/etc/container/container-${i}.conf
+          fi
+        fi
+        unset REMOVE
+      fi
+  done
+  apt purge termux-container
+  echo -e "\e[38;5;159m[] 卸载完成!"
+  return 0
+  exit 0
+}
+#后续可能需要构思一个更好的实现
+SETTINGS(){
+  LOAD_GLOBAL_CONFIG
+  [[ ${ENABLE_OUTPUT} = "false" ]]||clear
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($(stty size|awk '{print $2}')))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||let i1=$(($i1))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||i1=$(($i1-18))
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[30;48;5;159mCONTAINER_SETTINGS$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e "\e[38;5;159m//"
+  [[ ${ENABLE_OUTPUT} = "false" ]]||echo -e ""
+  echo -e "------SETTINGS------"
+  echo -e "[] 启用输出:${ENABLE_OUTPUT}"
+  echo -e "[] 挂载/sdcard:${MOUNT_SDCARD}"
+  echo -e "[] 主机名:${HOSTNAME}"
+  echo -e "[] 光标:${CURSOR}"
+  echo -e "[] 禁用selinux:${DISABLE_SELINUX}"
+  echo -e "[] 容器编号:${CONTAINER}"
+  read -p "按回车键编辑文件或按ctrl-c取消" NULL
+  nano $PREFIX/etc/container/global.conf
+  return 0
+  exit 0
+}
+#帮助页面
+SHOW_HELPS(){
+  echo -e "              \e[38;5;157m┌───────────┐"
+  echo -e "              │ ┌───────┐ │"
+  echo -e "              │ │  \e[38;5;227m┌───────────┐"
+  echo -e "              \e[38;5;157m│ │  \e[38;5;227m│ ┌───────┐ │"
+  echo -e "              \e[38;5;157m│ │  \e[38;5;227m│ │  \e[38;5;157m│ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;157m│ └──\e[38;5;227m│ │\e[38;5;157m──┘ │  \e[38;5;227m│ │"
+  echo -e "              \e[38;5;157m└────\e[38;5;227m│ │\e[38;5;157m────┘  \e[38;5;227m│ │"
+  echo -e "                   \e[38;5;227m│ └───────┘ │"
+  echo -e "                   \e[38;5;227m└───────────┘"
+  echo -e "\e[38;5;153m═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  echo -e "\e[38;5;159m          「此脚本没有超级牛力!」"
+  echo -e "Usage:"
+  echo -e " container                   #打开菜单"
+  echo -e " container -run              #运行容器"
+  echo -e " container -l                #运行容器(传统模式) *仅供chroot容器"
+  echo -e " container -c                #创建一个新容器"
+  echo -e " container -S                #切换容器"
+  echo -e " container -s                #设置"
+  echo -e " container -r                #删除一个容器"
+  echo -e " container -m                #挂载镜像文件 *仅供chroot容器"
+  echo -e " container -bk               #备份容器"
+  echo -e " container -R [备份文件]     #还原容器"
+  echo -e " container -e [函数名]       #执行内置函数 *仅供调试"
+  echo -e " container -v                #版本信息"
+  echo -e " container -U                #批量删除容器&卸载此脚本"
+  echo -e " container -h                #显示此页面\033[0m"
+  return 0
+  exit 0
+}
+#简直不能再没用
+DISPLAY_VERSION(){
+  printf '\e[38;5;159m'
+  echo -e "[] (>_×)"
+  echo -e "[] 项目: termux-container"
+  echo -e "[] 作者: Moe-hacker"
+  echo -e "[] 许可证: APACHE-2.0"
+  echo -e "[] 此脚本*无担保*"
+  echo -e '[] 版本: 8.1-nya\033[0m'
+  return 0
+  exit 0
+}
+#whiptail菜单，但是为什么二次调用container我也不知道，就好像函数白定义了一样
+MENU(){
+  printf '\e[38;5;159m'
+  WIDTH=$(($(stty size|awk '{print $2}')-4))
+  OPTION=$(whiptail --title "termux-container" --menu "选择你的操作" 16 $WIDTH 9 \
+  "1" "运行容器" \
+  "2" "运行容器(传统模式)" \
+  "3" "创建容器" \
+  "4" "切换容器"  \
+  "5" "备份容器" \
+  "6" "还原容器" \
+  "7" "删除容器" \
+  "8" "设置" \
+  "9" "版本信息" \
+  "10" "批量删除容器&卸载此脚本" \
+  "11" "帮助信息" \
+  "12" "退出" 3>&1 1>&2 2>&3)
+  case $OPTION in
+    "1") container -run;;
+    "2") container -l;;
+    "3") container -c;;
+    "4") container -S;;
+    "5") container -bk;;
+    "6") read -p "备份文件:" BKFILE&&container -R $BKFILE;;
+    "7") container -r;;
+    "8") container -s;;
+    "9") container -v;;
+    "10") container -U;;
+    "11") container -h;;
+    "12") exit;;
+  esac
+  return 0
+  exit 0
+}
+#调试接口
+#说实话我本人也基本没用过
+#但是部分提权靠这个接口实现
+#典型的屎山
+EXEC_FUNCTION(){
+  $1 $2
+}
+#主入口？终于开始执行一条命令了
+case $1 in
+  *run)    RUN_CONTAINER;;
+  *l)      LEGACY_MODE;;
+  *h)      SHOW_HELPS;;
+  *s)      SETTINGS;;
+  *c)      CREATE_CONTAINER;;
+  *m)      MOUNT_IMAGE_FILE;;
+  *r)      REMOVE_CONTAINER;;
+  *R)      RESTORE_CONTAINER $2;;
+  *bk)     BACKUP_CONTAINER;;
+  *S)      SWITCH_CONTAINER;;
+  *v)      DISPLAY_VERSION;;
+  *U)      REMOVE_ALL_CONTAINERS_AND_UNINSTALL;;
+  *e)      EXEC_FUNCTION $2 $3;;
+  "")      MENU;;
+   *)      SHOW_HELPS;;
+esac
+#copyright 2022 Moe-hacker (Author)
+# ██╗ ██╗  ███████╗   ████╗   ███████╗
+#████████╗ ██╔════╝ ██╔═══██╗ ██╔════╝
+#╚██╔═██╔╝ █████╗   ██║   ██║ █████╗
+#████████╗ ██╔══╝   ██║   ██║ ██╔══╝
+#╚██╔═██╔╝ ███████╗ ╚██████╔╝ ██║
+# ╚═╝ ╚═╝  ╚══════╝  ╚═════╝  ╚═╝
