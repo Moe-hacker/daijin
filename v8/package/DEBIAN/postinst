@@ -1,0 +1,1916 @@
+#!/data/data/com.termux/files/usr/bin/bash
+printf '\e[38;5;159m\e[?25l'
+export HEIGH=$(($(($(stty size|awk '{print $1}')))/2-12))
+HEIGHT(){
+  i=0
+  while (($i<=$HEIGH));do echo;i=$(($i+1));done
+}
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m               ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m             ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m       ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m       ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m                 ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m        ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m      ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m       ░░"
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m       ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m       ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m        ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m        ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m                 ░░"
+clear
+sleep 0.05s
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m             ░░"
+clear
+HEIGHT
+sleep 0.05s
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C           ░░"
+clear
+HEIGHT
+sleep 0.05s
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+clear
+HEIGHT
+sleep 0.05s
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C          ░░"
+clear
+HEIGHT
+export LINE=$(($(($(stty size|awk '{print $2}')))/2-22))
+echo
+echo
+echo -e "\033[${LINE}C       \e[5;34m.hddddddddddddddddddddddh."
+echo -e "\033[${LINE}C      :dddddddddddddddddddddddddd:"
+echo -e "\033[${LINE}C     /dddddddddddddddddddddddddddd/"
+echo -e "\033[${LINE}C    +dddddddddddddddddddddddddddddd+"
+echo -e "\033[${LINE}C  \`sdddddddddddddddddddddddddddddddds\`"
+echo -e "\033[${LINE}C \`ydddddddddddd++hdddddddddddddddddddy\`"
+echo -e "\033[${LINE}C.hddddddddddd+\`  \`+ddddh:-sdddddddddddh."
+echo -e "\033[${LINE}Chdddddddddd+\`      \`+y:    .sddddddddddh"
+echo -e "\033[${LINE}Cddddddddh+\`   \`//\`   \`.\`     -sddddddddd"
+echo -e "\033[${LINE}Cddddddh+\`   \`/hddh/\`   \`:s-    -sddddddd"
+echo -e "\033[${LINE}Cddddh+\`   \`/+/dddddh/\`   \`+s-    -sddddd"
+echo -e "\033[${LINE}Cddd+\`   \`/o\` :dddddddh/\`   \`oy-    .yddd"
+echo -e "\033[${LINE}Chdddyo+ohddyosdddddddddho+oydddy++ohdddh"
+echo -e "\033[${LINE}C.hddddddddddddddddddddddddddddddddddddh."
+echo -e "\033[${LINE}C \`yddddddddddddddddddddddddddddddddddy\`"
+echo -e "\033[${LINE}C  \`sdddddddddddddddddddddddddddddddds\`"
+echo -e "\033[${LINE}C    +dddddddddddddddddddddddddddddd+"
+echo -e "\033[${LINE}C     /dddddddddddddddddddddddddddd/"
+echo -e "\033[${LINE}C      :dddddddddddddddddddddddddd:"
+echo -e "\033[${LINE}C       .hddddddddddddddddddddddh."
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo -e "\033[${LINE}C\e[5;36m                   -\`"
+echo -e "\033[${LINE}C                  .o+\`"
+echo -e "\033[${LINE}C                 \`ooo/"
+echo -e "\033[${LINE}C                \`+oooo:"
+echo -e "\033[${LINE}C               \`+oooooo:"
+echo -e "\033[${LINE}C               -+oooooo+:"
+echo -e "\033[${LINE}C             \`/:-:++oooo+:"
+echo -e "\033[${LINE}C            \`/++++/+++++++:"
+echo -e "\033[${LINE}C           \`/++++++++++++++:"
+echo -e "\033[${LINE}C          \`/+++ooooooooooooo/\`"
+echo -e "\033[${LINE}C         ./ooosssso++osssssso+\`"
+echo -e "\033[${LINE}C        .oossssso-\`\`\`\`/ossssss+\`"
+echo -e "\033[${LINE}C       -osssssso.      :ssssssso."
+echo -e "\033[${LINE}C      :osssssss/        osssso+++."
+echo -e "\033[${LINE}C     /ossssssss/        +ssssooo/-"
+echo -e "\033[${LINE}C   \`/ossssso+/:-        -:/+osssso+-"
+echo -e "\033[${LINE}C  \`+sso+:-\`                 \`.-/+oso:"
+echo -e "\033[${LINE}C \`++:.                           \`-/+/"
+echo -e "\033[${LINE}C .\`                                 \`/"
+sleep 0.7s
+clear
+HEIGHT
+echo
+echo
+echo -e "\033[${LINE}C\e[5;33m                 .."
+echo -e "\033[${LINE}C              .PLTJ."
+echo -e "\033[${LINE}C              <><><><>"
+echo -e "\033[${LINE}C     \e[5;32mKKSSV' 4KKK \e[5;33mLJ\e[5;35m KKKL.'VSSKK"
+echo -e "\033[${LINE}C     \e[5;32mKKV' 4KKKKK \e[5;33mLJ\e[5;35m KKKKAL 'VKK"
+echo -e "\033[${LINE}C     \e[5;32mV' ' 'VKKKK \e[5;33mLJ\e[5;35m KKKKV' ' 'V"
+echo -e "\033[${LINE}C     \e[5;32m.4MA.' 'VKK \e[5;33mLJ\e[5;35m KKV' '.4Mb."
+echo -e "\033[${LINE}C\e[5;35m   . \e[5;32mKKKKKA.' 'V \e[5;33mLJ\e[5;35m V' '.4KKKKK \e[5;34m."
+echo -e "\033[${LINE}C\e[5;35m .4D \e[5;32mKKKKKKKA.'' \e[5;33mLJ\e[5;35m ''.4KKKKKKK \e[5;34mFA."
+echo -e "\033[${LINE}C\e[5;35m<QDD ++++++++++++  \e[5;34m++++++++++++ GFD>"
+echo -e "\033[${LINE}C\e[5;35m 'VD \e[5;34mKKKKKKKK'.. \e[5;32mLJ \e[5;33m..'KKKKKKKK \e[5;34mFV"
+echo -e "\033[${LINE}C\e[5;35m   ' \e[5;34mVKKKKK'. .4 \e[5;32mLJ \e[5;33mK. .'KKKKKV \e[5;34m'"
+echo -e "\033[${LINE}C     \e[5;34m 'VK'. .4KK \e[5;32mLJ \e[5;33mKKA. .'KV'"
+echo -e "\033[${LINE}C     \e[5;34mA. . .4KKKK \e[5;32mLJ \e[5;33mKKKKA. . .4"
+echo -e "\033[${LINE}C     \e[5;34mKKA. 'KKKKK \e[5;32mLJ \e[5;33mKKKKK' .4KK"
+echo -e "\033[${LINE}C     \e[5;34mKKSSA. VKKK \e[5;32mLJ \e[5;33mKKKV .4SSKK"
+echo -e "\033[${LINE}C\e[5;32m              \<>\<>\<>\<>"
+echo -e "\033[${LINE}C               'MKKM"
+echo -e "\033[${LINE}C                 ''"
+sleep 0.7s
+clear
+HEIGHT
+echo
+echo
+echo
+echo -e "   \033[${LINE}C\e[5;37m       _,met\$\$\$\$\$gg."
+echo -e "   \033[${LINE}C    ,g\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$P."
+echo -e "   \033[${LINE}C  ,g\$\$P""           """"""Y\$\$.\"."
+echo -e "   \033[${LINE}C ,\$\$P'              \`\$\$\$."
+echo -e "   \033[${LINE}C',\$\$P       ,ggs.     \`\$\$b:"
+echo -e "   \033[${LINE}C\`d\$\$'     ,\$P""'   \e[5;31m.\e[5;37m     \$\$\$"
+echo -e "   \033[${LINE}C \$\$P      d\$'     \e[5;31m,\e[5;37m    \$\$P"
+echo -e "   \033[${LINE}C \$\$:      \$\$.   \e[5;31m-\e[5;37m    ,d\$\$'"
+echo -e "   \033[${LINE}C \$\$;      Y\$b._   _,d\$P'"
+echo -e "   \033[${LINE}C Y\$\$.    \e[5;31m\`.\e[5;37m\`\"\\Y\$\$\$\$P\"\"'"
+echo -e "   \033[${LINE}C\e[5;37m \`\$\$b      \e[5;31m\"\"-.__"
+echo -e "   \033[${LINE}C\e[5;37m  \`Y\$\$"
+echo -e "   \033[${LINE}C   \`Y\$\$."
+echo -e "   \033[${LINE}C    \`\$\$b."
+echo -e "   \033[${LINE}C      \`Y\$\$b."
+echo -e "   \033[${LINE}C          \`\"Y\$b._"
+echo -e "   \033[${LINE}C            \`"""""""
+sleep 0.7s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo -e "\033[${LINE}C\e[5;34m             .',;::::;,'."
+echo -e "\033[${LINE}C         .';:cccccccccccc:;,."
+echo -e "\033[${LINE}C      .;cccccccccccccccccccccc;."
+echo -e "\033[${LINE}C    .:cccccccccccccccccccccccccc:."
+echo -e "\033[${LINE}C  .;ccccccccccccc;\e[5;37m.:dddl:.\e[5;34m;ccccccc;."
+echo -e "\033[${LINE}C .:ccccccccccccc;\e[5;37mOWMKOOXMWd\e[5;34m;ccccccc:."
+echo -e "\033[${LINE}C.:ccccccccccccc;\e[5;37mKMMc\e[5;34m;cc;\e[5;37mxMMc\e[5;34m;ccccccc:."
+echo -e "\033[${LINE}C,cccccccccccccc;\e[5;37mMMM.\e[5;34m;cc;\e[5;37m;WW:\e[5;34m;cccccccc,"
+echo -e "\033[${LINE}C:cccccccccccccc;\e[5;37mMMM.\e[5;34m;cccccccccccccccc:"
+echo -e "\033[${LINE}C:ccccccc;\e[5;37moxOOOo\e[5;34m;\e[5;37mMMM0OOk.\e[5;34m;cccccccccccc:"
+echo -e "\033[${LINE}Ccccccc;\e[5;37m0MMKxdd:\e[5;34m;\e[5;37mMMMkddc.\e[5;34m;cccccccccccc;"
+echo -e "\033[${LINE}Cccccc;\e[5;37mXM0'\e[5;34m;cccc;\e[5;37mMMM.\e[5;34m;cccccccccccccccc'"
+echo -e "\033[${LINE}Cccccc;\e[5;37mMMo\e[5;34m;ccccc;\e[5;37mMMW.\e[5;34m;ccccccccccccccc;"
+echo -e "\033[${LINE}Cccccc;\e[5;37m0MNc.\e[5;34mccc\e[5;37m.xMMd\e[5;34m;ccccccccccccccc;"
+echo -e "\033[${LINE}Ccccccc;\e[5;37mdNMWXXXWM0:\e[5;34m;cccccccccccccc:,"
+echo -e "\033[${LINE}Ccccccccc;\e[5;37m.:odl:.\e[5;34m;cccccccccccccc:,."
+echo -e "\033[${LINE}C:cccccccccccccccccccccccccccc:'."
+echo -e "\033[${LINE}C.:cccccccccccccccccccccc:;,.."
+echo -e "\033[${LINE}C  '::cccccccccccccc::;,."
+sleep 0.7s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo -e "\033[${LINE}C\e[5;35m         -/oyddmdhs+:."
+echo -e "\033[${LINE}C     -o\e[5;37mdNMMMMMMMMNNmhy+\e[5;35m-\`"
+echo -e "\033[${LINE}C   -y\e[5;37mNMMMMMMMMMMMNNNmmdhy\e[5;35m+-"
+echo -e "\033[${LINE}C \`o\e[5;37mmMMMMMMMMMMMMNmdmmmmddhhy\e[5;35m/\`"
+echo -e "\033[${LINE}C om\e[5;37mMMMMMMMMMMMN\e[5;35mhhyyyo\e[5;37mhmdddhhhd\e[5;35mo\`"
+echo -e "\033[${LINE}C.y\e[5;37mdMMMMMMMMMMd\e[5;35mhs++so/s\e[5;37mmdddhhhhdm\e[5;35m+\`"
+echo -e "\033[${LINE}C oy\e[5;37mhdmNMMMMMMMN\e[5;35mdyooy\e[5;37mdmddddhhhhyhN\e[5;35md."
+echo -e "\033[${LINE}C  :o\e[5;37myhhdNNMMMMMMMNNNmmdddhhhhhyym\e[5;35mMh"
+echo -e "\033[${LINE}C    .:\e[5;37m+sydNMMMMMNNNmmmdddhhhhhhmM\e[5;35mmy"
+echo -e "\033[${LINE}C       /m\e[5;37mMMMMMMNNNmmmdddhhhhhmMNh\e[5;35ms:"
+echo -e "\033[${LINE}C    \`o\e[5;37mNMMMMMMMNNNmmmddddhhdmMNhs\e[5;35m+\`"
+echo -e "\033[${LINE}C  \`s\e[5;37mNMMMMMMMMNNNmmmdddddmNMmhs\e[5;35m/."
+echo -e "\033[${LINE}C /N\e[5;37mMMMMMMMMNNNNmmmdddmNMNdso\e[5;35m:\`"
+echo -e "\033[${LINE}C+M\e[5;37mMMMMMMNNNNNmmmmdmNMNdso\e[5;35m/-"
+echo -e "\033[${LINE}CyM\e[5;37mMNNNNNNNmmmmmNNMmhs+/\e[5;35m-\`"
+echo -e "\033[${LINE}C/h\e[5;37mMMNNNNNNNNMNdhs++/\e[5;35m-\`"
+echo -e "\033[${LINE}C\`/\e[5;37mohdmmddhys+++/:\e[5;35m.\`"
+echo -e "\033[${LINE}C \`-//////:--."
+sleep 0.7s
+clear
+HEIGHT
+echo -e "\033[${LINE}C\e[5;34m.............."
+echo -e "\033[${LINE}C            ..,;:ccc,."
+echo -e "\033[${LINE}C          ......''';lxO."
+echo -e "\033[${LINE}C.....''''..........,:ld;"
+echo -e "\033[${LINE}C           .';;;:::;,,.x,"
+echo -e "\033[${LINE}C      ..'''.            0Xxoc:,.  ..."
+echo -e "\033[${LINE}C  ....                ,ONkc;,;cokOdc',."
+echo -e "\033[${LINE}C.                   OMo           ':\e[5;37mdd\e[5;34mo."
+echo -e "\033[${LINE}C                   dMc               :OO;"
+echo -e "\033[${LINE}C                   0M.                 .:o."
+echo -e "\033[${LINE}C                   ;Wd"
+echo -e "\033[${LINE}C                    ;XO,"
+echo -e "\033[${LINE}C                      ,d0Odlc;,.."
+echo -e "\033[${LINE}C                         ..',;:cdOOd::,."
+echo -e "\033[${LINE}C                                   .:d;.':;."
+echo -e "\033[${LINE}C                                      'd,  .'"
+echo -e "\033[${LINE}C                                        ;l   .."
+echo -e "\033[${LINE}C                                         .o"
+echo -e "\033[${LINE}C                                           c"
+echo -e "\033[${LINE}C                                           .'"
+echo -e "\033[${LINE}C                                            ."
+sleep 0.7s
+clear
+HEIGHT
+echo -e "\033[${LINE}C\e[5;36m  \`:oho/-\`"
+echo -e "\033[${LINE}C\`mMMMMMMMMMMMNmmdhy-"
+echo -e "\033[${LINE}C dMMMMMMMMMMMMMMMMMMs\`"
+echo -e "\033[${LINE}C +MMsohNMMMMMMMMMMMMMm/"
+echo -e "\033[${LINE}C .My   .+dMMMMMMMMMMMMMh."
+echo -e "\033[${LINE}C  +       :NMMMMMMMMMMMMNo"
+echo -e "\033[${LINE}C           \`yMMMMMMMMMMMMMm:"
+echo -e "\033[${LINE}C             /NMMMMMMMMMMMMMy\`"
+echo -e "\033[${LINE}C              .hMMMMMMMMMMMMMN+"
+echo -e "\033[${LINE}C                  \`\`-NMMMMMMMMMd-"
+echo -e "\033[${LINE}C                     /MMMMMMMMMMMs\`"
+echo -e "\033[${LINE}C                      mMMMMMMMsyNMN/"
+echo -e "\033[${LINE}C                      +MMMMMMMo  :sNh."
+echo -e "\033[${LINE}C                      \`NMMMMMMm     -o/"
+echo -e "\033[${LINE}C                       oMMMMMMM."
+echo -e "\033[${LINE}C                       \`NMMMMMM+"
+echo -e "\033[${LINE}C                        +MMd/NMh"
+echo -e "\033[${LINE}C                         mMm -mN\`"
+echo -e "\033[${LINE}C                         /MM  \`h:"
+echo -e "\033[${LINE}C                          dM\`   ."
+echo -e "\033[${LINE}C                          :M-"
+echo -e "\033[${LINE}C                           d:"
+echo -e "\033[${LINE}C                           -+"
+echo -e "\033[${LINE}C                            -"
+sleep 0.7s
+clear
+HEIGHT
+echo -e "\033[${LINE}C\e[5;31m            .-/+oossssoo+/-."
+echo -e "\033[${LINE}C        \`:+ssssssssssssssssss+:\`"
+echo -e "\033[${LINE}C      -+ssssssssssssssssssyyssss+-"
+echo -e "\033[${LINE}C    .ossssssssssssssssss\e[5;37mdMMMNy\e[5;31msssso."
+echo -e "\033[${LINE}C   /sssssssssss\e[5;37mhdmmNNmmyNMMMMh\e[5;31mssssss/"
+echo -e "\033[${LINE}C  +sssssssss\e[5;37mhm\e[5;31myd\e[5;37mMMMMMMMNddddy\e[5;31mssssssss+"
+echo -e "\033[${LINE}C /ssssssss\e[5;37mhNMMM\e[5;31myh\e[5;37mhyyyyhmNMMMNh\e[5;31mssssssss/"
+echo -e "\033[${LINE}C.ssssssss\e[5;37mdMMMNh\e[5;31mssssssssss\e[5;37mhNMMMd\e[5;31mssssssss."
+echo -e "\033[${LINE}C+ssss\e[5;37mhhhyNMMNy\e[5;31mssssssssssss\e[5;37myNMMMy\e[5;31msssssss+"
+echo -e "\033[${LINE}Coss\e[5;37myNMMMNyMMh\e[5;31mssssssssssssss\e[5;37mhmmmh\e[5;31mssssssso"
+echo -e "\033[${LINE}Coss\e[5;37myNMMMNyMMh\e[5;31msssssssssssssshmmmh\e[5;31mssssssso"
+echo -e "\033[${LINE}C+ssss\e[5;37mhhhyNMMNy\e[5;31mssssssssssss\e[5;37myNMMMy\e[5;31msssssss+"
+echo -e "\033[${LINE}C.ssssssss\e[5;37mdMMMNh\e[5;31mssssssssss\e[5;37mhNMMMd\e[5;31mssssssss."
+echo -e "\033[${LINE}C /ssssssss\e[5;37mhNMMM\e[5;31myh\e[5;37mhyyyyhdNMMMNh\e[5;31mssssssss/"
+echo -e "\033[${LINE}C  +sssssssss\e[5;37mdm\e[5;31myd\e[5;37mMMMMMMMMddddy\e[5;31mssssssss+"
+echo -e "\033[${LINE}C   /sssssssssss\e[5;37mhdmNNNNmyNMMMMh\e[5;31mssssss/"
+echo -e "\033[${LINE}C    .ossssssssssssssssss\e[5;37mdMMMNy\e[5;31msssso."
+echo -e "\033[${LINE}C      -+sssssssssssssssss\e[5;37myyy\e[5;31mssss+-"
+echo -e "\033[${LINE}C        \`:+ssssssssssssssssss+:\`"
+echo -e "\033[${LINE}C            .-/+oossssoo+/-."
+sleep 0.7s
+clear
+HEIGHT
+echo -e "           \033[${LINE}C\e[5;30m        #####"
+echo -e "           \033[${LINE}C\e[5;30m       #######"
+echo -e "           \033[${LINE}C\e[5;30m       ##\e[5;37mO\e[5;30m#\e[5;37mO\e[5;30m##"
+echo -e "           \033[${LINE}C\e[5;30m       #\e[5;33m#####\e[5;30m#"
+echo -e "           \033[${LINE}C\e[5;30m     ##\e[5;37m##\e[5;33m###\e[5;37m##\e[5;30m##"
+echo -e "           \033[${LINE}C\e[5;30m    #\e[5;37m##########\e[5;30m##"
+echo -e "           \033[${LINE}C\e[5;30m   #\e[5;37m############\e[5;30m##"
+echo -e "           \033[${LINE}C\e[5;30m   #\e[5;37m############\e[5;30m###"
+echo -e "           \033[${LINE}C\e[5;33m  ##\e[5;30m#\e[5;37m###########\e[5;30m##\e[5;33m#"
+echo -e "           \033[${LINE}C\e[5;33m######\e[5;30m#\e[5;37m#######\e[5;30m#\e[5;33m######"
+echo -e "           \033[${LINE}C\e[5;33m#######\e[5;30m#\e[5;37m#####\e[5;30m#\e[5;33m#######"
+echo -e "           \033[${LINE}C\e[5;33m  #####\e[5;30m#######\e[5;33m#####"
+echo
+echo -e "           \033[${LINE}C\e[5;33m  ████╗   ███████╗"
+echo -e "           \033[${LINE}C██╔═══██╗ ██╔══██║"
+echo -e "           \033[${LINE}C██║   ██║ ██║  ██║"
+echo -e "           \033[${LINE}C██║   ██║ ██║  ██║"
+echo -e "           \033[${LINE}C╚██████╔╝ ██║  ██║"
+echo -e "           \033[${LINE}C ╚═════╝  ╚═╝  ╚═╝"
+echo
+echo -e "           \033[${LINE}C\e[5;32m    -o          o-"
+echo -e "           \033[${LINE}C     +hydNNNNdyh+"
+echo -e "           \033[${LINE}C   +mMMMMMMMMMMMMm+"
+echo -e "           \033[${LINE}C \`dMM\e[5;37mm:\e[5;32mNMMMMMMN\e[5;37m:m\e[5;32mMMd\`"
+echo -e "           \033[${LINE}C hMMMMMMMMMMMMMMMMMMh"
+sleep 2s
+clear
+export LINE=$(($(($(stty size|awk '{print $2}')))/2-12))
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C\e[5;37m ░░"
+clear
+HEIGHT
+sleep 0.05s
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C           ░░"
+clear
+HEIGHT
+sleep 0.1s
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+clear
+HEIGHT
+sleep 0.1s
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C          ░░"
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     X"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     X"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     █"
+echo -e "\e[${LINE}C     █"
+echo -e "\e[${LINE}C     █"
+sleep 0.04s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██"
+echo -e "\e[${LINE}C     ██"
+echo -e "\e[${LINE}C     ██"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ███"
+echo -e "\e[${LINE}C     ███"
+echo -e "\e[${LINE}C     ███"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ████"
+echo -e "\e[${LINE}C     ████"
+echo -e "\e[${LINE}C     ████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ████XXXXXX"
+echo -e "\e[${LINE}C     ████XXXXXX"
+echo -e "\e[${LINE}C     ████XXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████"
+echo -e "\e[${LINE}C     ██████"
+echo -e "\e[${LINE}C     ██████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ███████"
+echo -e "\e[${LINE}C     ███████"
+echo -e "\e[${LINE}C     ███████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ███████XXX"
+echo -e "\e[${LINE}C     ███████XXX"
+echo -e "\e[${LINE}C     ███████XXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ████████"
+echo -e "\e[${LINE}C     ████████"
+echo -e "\e[${LINE}C     ████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     █████████"
+echo -e "\e[${LINE}C     █████████"
+echo -e "\e[${LINE}C     █████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C     ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C       ██████████"
+echo -e "\e[${LINE}C      ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C        ██████████"
+echo -e "\e[${LINE}C       ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C        ██████████"
+echo -e "\e[${LINE}C       ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C         ██████████"
+echo -e "\e[${LINE}C       ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C          ██████████"
+echo -e "\e[${LINE}C       ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C           ██████████"
+echo -e "\e[${LINE}C       ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C          ██████████"
+echo -e "\e[${LINE}C      ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C         ██████████"
+echo -e "\e[${LINE}C     ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C        ██████████"
+echo -e "\e[${LINE}C     ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C       ██████████"
+echo -e "\e[${LINE}C     ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C      ██████████"
+echo -e "\e[${LINE}C     ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C     ██████████"
+echo -e "\e[${LINE}C     ██████████"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+sleep 0.1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+sleep 0.1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+sleep 0.1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+sleep 0.1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     ░░"
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     X"
+echo -e "\e[${LINE}C     XXX"
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     XXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+sleep 2s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.5s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXXX"
+sleep 0.01s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C     XXXXX"
+echo -e "\e[${LINE}C     XXXXXXXX"
+echo -e "\e[${LINE}C     XXXXXX"
+echo -e "\e[${LINE}C     XXXXXXXXX"
+sleep 0.01s
+clear
+export LINE=$(($(($(stty size|awk '{print $2}')))/2-24))
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /\\        \\"
+echo -e "\e[${LINE}C                /  \\        \\"
+echo -e "\e[${LINE}C               /    \\        \\"
+echo -e "\e[${LINE}C              /      \\________\\"
+echo -e "\e[${LINE}C              \\      /        /"
+echo -e "\e[${LINE}C               \\    /        /"
+echo -e "\e[${LINE}C                \\  /        /"
+echo -e "\e[${LINE}C                 \\/________/"
+sleep 0.05s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /\\        \\"
+echo -e "\e[${LINE}C                /  \\        \\"
+echo -e "\e[${LINE}C               /    \\        \\"
+echo -e "\e[${LINE}C              /      \\________\\"
+echo -e "\e[${LINE}C              \\      /        /"
+echo -e "\e[${LINE}C               \\    /        /"
+echo -e "\e[${LINE}C                \\  /        /"
+echo -e "\e[${LINE}C                 \\/________/"
+sleep 0.05s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /\\        \\"
+echo -e "\e[${LINE}C                /  \\        \\"
+echo -e "\e[${LINE}C               /    \\        \\"
+echo -e "\e[${LINE}C              /      \\________\\"
+echo -e "\e[${LINE}C              \\      /        /"
+echo -e "\e[${LINE}C               \\    /        /"
+echo -e "\e[${LINE}C                \\  /        /"
+echo -e "\e[${LINE}C                 \\/________/"
+sleep 0.05s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /\\        \\"
+echo -e "\e[${LINE}C                /  \\        \\"
+echo -e "\e[${LINE}C               /    \\        \\"
+echo -e "\e[${LINE}C              /      \\________\\"
+echo -e "\e[${LINE}C              \\      /        /"
+echo -e "\e[${LINE}C               \\    /        /"
+echo -e "\e[${LINE}C                \\  /        /"
+echo -e "\e[${LINE}C                 \\/________/"
+sleep 0.05s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /\\        \\"
+echo -e "\e[${LINE}C                /  \\        \\"
+echo -e "\e[${LINE}C               /    \\        \\"
+echo -e "\e[${LINE}C              /      \\________\\"
+echo -e "\e[${LINE}C              \\      /        /"
+echo -e "\e[${LINE}C               \\    /        /"
+echo -e "\e[${LINE}C                \\  /        /"
+echo -e "\e[${LINE}C                 \\/________/"
+sleep 0.05s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /\\        \\"
+echo -e "\e[${LINE}C                /  \\        \\"
+echo -e "\e[${LINE}C               /    \\        \\"
+echo -e "\e[${LINE}C              /      \\________\\"
+echo -e "\e[${LINE}C              \\      /        /"
+echo -e "\e[${LINE}C               \\    /        /"
+echo -e "\e[${LINE}C                \\  /        /"
+echo -e "\e[${LINE}C                 \\/________/"
+sleep 0.05s
+clear
+HEIGHT
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo
+echo -e "\e[${LINE}C                  _________"
+echo -e "\e[${LINE}C                 /        /\\"
+echo -e "\e[${LINE}C                /        /  \\"
+echo -e "\e[${LINE}C               /        /    \\"
+echo -e "\e[${LINE}C              /________/      \\"
+echo -e "\e[${LINE}C              \\        \\      /"
+echo -e "\e[${LINE}C               \\        \\    /"
+echo -e "\e[${LINE}C                \\        \\  /"
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 1s
+clear
+sleep 0.25s
+export LINE=$(($(($(stty size|awk '{print $2}')))/2-24))
+echo -e "\e[38;5;123m\e[${LINE}C                  _________"
+sleep 0.05s
+echo -e "\e[${LINE}C                 /        /\\"
+sleep 0.05s
+echo -e "\e[${LINE}C                /        /  \\"
+sleep 0.05s
+echo -e "\e[${LINE}C               /        /    \\"
+sleep 0.05s
+echo -e "\e[${LINE}C              /________/      \\"
+sleep 0.05s
+echo -e "\e[${LINE}C              \\        \\      /"
+sleep 0.05s
+echo -e "\e[${LINE}C               \\        \\    /"
+sleep 0.05s
+echo -e "\e[${LINE}C                \\        \\  /"
+sleep 0.05s
+echo -e "\e[${LINE}C                 \\________\\/"
+sleep 0.05s
+echo -e "\e[${LINE}C═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+sleep 0.05s
+echo -e "\e[${LINE}C ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+sleep 0.05s
+echo -e "\e[${LINE}C ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+SIZE=$(stty size|awk '{print $2}')
+let SIZE=$(($SIZE))
+echo -e "\e[48;5;123m$(yes " "|sed $SIZE'q'|tr -d '\n')\033[0m"
+sleep 0.05s
+echo -e "\e[${LINE}C\e[38;5;123m   「This script has no Super Cow Powers!」"
+sleep 0.05s
+echo -e "Usage:"
+sleep 0.05s
+echo -e " container                   #Show menu"
+sleep 0.05s
+echo -e " container -run              #Run container"
+sleep 0.05s
+echo -e " container -l                #Run container(legacy mode) *only for chroot containers"
+sleep 0.05s
+echo -e " container -c                #Creat a new container"
+sleep 0.05s
+echo -e " container -S                #Switch container"
+sleep 0.05s
+echo -e " container -s                #Settings"
+sleep 0.05s
+echo -e " container -r                #Remove a container"
+sleep 0.05s
+echo -e " container -m                #Mount image file *only for chroot containers"
+sleep 0.05s
+echo -e " container -bk               #Backup container"
+sleep 0.05s
+echo -e " container -R [backup file]  #Restore container"
+sleep 0.05s
+echo -e " container -e [function name]#Exec function *only for debugging"
+sleep 0.05s
+echo -e " container -v                #Display version"
+sleep 0.05s
+echo -e " container -U                #Remove all containers&Uninstall"
+sleep 0.05s
+echo -e " container -h                #Show this page"
+sleep 0.05s
+echo
+sleep 0.05s
+echo "termux-container by Moe-hacker"
+sleep 0.05s
+echo "Tips: "
+sleep 0.05s
+echo "If some characters cannot be displayed,please run:"
+sleep 0.05s
+echo "mkdir -p ~/.termux"
+sleep 0.05s
+echo "cp \$PREFIX/share/termux-container/font.ttf ~/.termux"
+sleep 0.05s
+echo "termux-reload-settings"
+echo
+sleep 0.05s
+echo "If chroot-unshare container makes your system crash,please use legacy mode instead."
+sleep 0.05s
+echo
+echo "If you are using chroot-unshare container,you may find that some files in /proc is unreadable for common user in containers,the easiest way to fix this is to disable SELinux,but that will cause your device unsafe."
+echo
+sleep 0.05s
+echo -e "Enjoy!\033[0m"
+sleep 0.05s
+printf "\e[?25h\e[0m"

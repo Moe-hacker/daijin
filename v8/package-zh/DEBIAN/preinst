@@ -1,0 +1,33 @@
+#!/data/data/com.termux/files/usr/bin/bash
+if [[ -e /data/data/com.termux/files/usr/etc/proot-container ]];then
+  echo -e "发现旧的proot容器配置，正在转换..."
+  for i in {1..100};do
+    if [[ -e /data/data/com.termux/files/usr/etc/proot-container/container-$i.conf ]];then
+      echo RUN_MODE=proot >> /data/data/com.termux/files/usr/etc/proot-container/container-$i.conf
+      mv /data/data/com.termux/files/usr/etc/proot-container/container-$i.conf /data/data/com.termux/files/usr/etc/container/
+    fi
+  done
+  rm -rf /data/data/com.termux/files/usr/etc/proot-container
+fi
+if [[ -e /data/data/com.termux/files/usr/etc/container/global.conf ]];then
+  if [[ $(cat /data/data/com.termux/files/usr/etc/container/global.conf|grep -E "true|false") = "" ]];then
+    echo -e "发现旧的全局配置，正在转换..."
+    sed -i "s/=y/=true/" /data/data/com.termux/files/usr/etc/container/global.conf
+    sed -i "s/=n/=false/" /data/data/com.termux/files/usr/etc/container/global.conf
+  fi
+fi
+if [[ -e /data/data/com.termux/files/usr/etc/container/ ]];then
+  if [[ $(cat /data/data/com.termux/files/usr/etc/container/*|grep RUN_MODE) = "" ]];then
+    echo -e "发现旧的chroot-unshare容器配置，正在转换..."
+    for i in {1..100};do
+      if [[ -e /data/data/com.termux/files/usr/etc/container/container-$i.conf ]];then
+        echo RUN_MODE=chroot-unshare >> /data/data/com.termux/files/usr/etc/container/container-$i.conf
+      fi
+    done
+  fi
+fi
+if [[ -e /data/data/com.termux/files/usr/etc/container/ ]];then
+  sed -i "s/CHROOT_DIR/CONTAINER_DIR/" /data/data/com.termux/files/usr/etc/container/container*
+  sed -i "s/PROOT_DIR/CONTAINER_DIR/" /data/data/com.termux/files/usr/etc/container/container*
+  sed -i "s/CHROOT_IMG/CONTAINER_IMG/" /data/data/com.termux/files/usr/etc/container/container*
+fi

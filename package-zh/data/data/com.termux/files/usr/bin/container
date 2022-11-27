@@ -657,6 +657,11 @@ SWITCH_CONTAINER(){
       echo -e "\e[38;5;159m[$i] ${NAME} (${RUN_MODE})"
     fi
   done
+  #变量CONTAINER由LOAD_GLOBAL_CONFIG创建
+  #当时刚接触shell没多久，根本不会用正则，sed都是为了完成这个功能现学的    +  #当时我居然用export $(cat /path/to/configfile)来加载配置，现在想来确实有点傻
+  #事实上[0-9]*就能匹配容器编号，根本用不到获取原来的值
+  #检查代码时老觉得这个变量不对，还以为是从其他函数移植过来时忘了删🤣👉
+  #幸好没删，要不然准得寄
   export CONTAINER_BK=${CONTAINER}
   unset CONTAINER
   while :
@@ -838,7 +843,7 @@ RUN_CHROOT_CONTAINER(){
   exit 0
 }
 #这个空壳简直是脑溢血设计
-#怕是泛着困写的
+#怕是犯着困写的
 LEGACY_MODE(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
@@ -851,7 +856,7 @@ LEGACY_MODE(){
   exit 0
 }
 #这段必须在root下执行
-#但是你在调用LEGACY_MODE前加个sudo不比这强
+#确实挺草
 RUN_CHROOT_CONTAINER_LEGACY_MODE(){
   LOAD_GLOBAL_CONFIG
   LOAD_CONTAINER_CONFIG
