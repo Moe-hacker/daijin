@@ -150,7 +150,7 @@ CREATE_CHROOT_CONTAINER(){
       fi
     done
   fi
-  whiptail --title "[] NOTE" --msgbox "The container absolute path is the directory used to store the container,for example,you can use /data/container-name,but do not use directory in /sdcard!" 9 $WIDTH
+  whiptail --title "[] NOTE" --msgbox "The container absolute path is the directory used to store the container,for example,you can use /data/container-name,but do not use directory in /sdcard!" 11 $WIDTH
   while :
   do
     CONTAINER_DIR=$(whiptail --title "[] CONTAINER PATH" --inputbox "Enter the absolute path of this container:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -169,7 +169,7 @@ CREATE_CHROOT_CONTAINER(){
     exit 1
   fi
   if whiptail --title "[] IMAGE FILE" --yes-button "yes" --no-button "no" --yesno "Do you want to install this container in an image file?" 7 $WIDTH;then
-    whiptail --title "[] NOTE" --msgbox "The image file absolute path is the directory used to store the image file,for example,you can use /data." 9 $WIDTH
+    whiptail --title "[] NOTE" --msgbox "The image file absolute path is the directory used to store the image file,for example,you can use /data." 11 $WIDTH
     while :
     do
       CONTAINER_IMG_PATH=$(whiptail --title "[] IMAGE" --inputbox "Enter the absolute path of image file:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -208,7 +208,7 @@ CREATE_CHROOT_CONTAINER(){
     AUTO_GET_LINK=n
   fi
   if [[ ${AUTO_GET_LINK} = "n" ]];then
-    whiptail --title "[] NOTE" --msgbox "You can go to http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images to get the rootfs download link or use custom rootfs." 9 $WIDTH
+    whiptail --title "[] NOTE" --msgbox "You can go to http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images to get the rootfs download link or use custom rootfs." 11 $WIDTH
     while :
     do
       LINK=$(whiptail --title "[] ROOTFS" --inputbox "Enter the rootfs download link or the path of your custom rootfs:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -355,7 +355,7 @@ CREATE_PROOT_CONTAINER(){
     done
   whiptail --title "[] ABOUT SUDO" --msgbox "If sudo is unuseable,please reinstall it." 7 $WIDTH
   fi
-  whiptail --title "[] NOTE" --msgbox "The container absolute path is the path used to store the container,suggest to use /data/data/com.termux/files/home/container-name,but donot use directory in /sdcard!" 9 $WIDTH
+  whiptail --title "[] NOTE" --msgbox "The container absolute path is the path used to store the container,suggest to use /data/data/com.termux/files/home/container-name,but donot use directory in /sdcard!" 11 $WIDTH
   while :
   do
     CONTAINER_DIR=$(whiptail --title "[] CONTAINER PATH" --inputbox "Enter the absolute path of this container:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -389,7 +389,7 @@ CREATE_PROOT_CONTAINER(){
     AUTO_GET_LINK=n
   fi
   if [[ ${AUTO_GET_LINK} = "n" ]];then
-    whiptail --title "[] NOTE" --msgbox "You can go to  http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images to get the rootfs download link or use custom rootfs." 9 $WIDTH
+    whiptail --title "[] NOTE" --msgbox "You can go to  http://mirrors.tuna.tsinghua.edu.cn/lxc-images/images to get the rootfs download link or use custom rootfs." 11 $WIDTH
     while :
     do
       LINK=$(whiptail --title "[] ROOTFS" --inputbox "Enter the rootfs download link or the path of your custom rootfs:" 7 $WIDTH 3>&1 1>&2 2>&3)
@@ -654,6 +654,8 @@ SWITCH_CONTAINER(){
       echo -e "\e[38;5;159m[$i] ${NAME} (${RUN_MODE})"
     fi
   done
+  #$CONTAINER is defined in LOAD_GLOBAL_CONFIG
+  #When I was writing this,I didn't know that I can use [0-9]* instead of the real value of $CONTAINER when running sed.
   export CONTAINER_BK=${CONTAINER}
   unset CONTAINER
   while :
