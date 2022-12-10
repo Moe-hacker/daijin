@@ -800,7 +800,7 @@ CONTAINER_CONSOLE_MAIN(){
     "rm") REMOVE_CONTAINER $2;;
     "cp") CONTAINER_CP $2 $3;;
     "") return;;
-    *) echo -e "\033[31mError: Unknow command,type \`help\` to show helps.\033[0m${COLOR}"
+    *) echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
   esac
 }
 CONTAINER_BUILD(){
@@ -943,8 +943,11 @@ CONTAINER_CONSOLE(){
     fi
     if [[ $(echo $COMMAND0|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ $COMMAND0 != " " ]];then
       if [[ ${HISTORY} != 0 ]];then
+        echo
         CONTAINER_CONSOLE_MAIN $(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
         HISTORY=0
+      else
+        echo
       fi
       continue
     fi
