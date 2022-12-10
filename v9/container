@@ -936,7 +936,7 @@ CONTAINER_CONSOLE(){
       read -N 1 -s COMMAND0
     fi
     if [[ ${COMMAND0} == $(echo -e "\004") ]];then
-      echo -e "\nExit"&&exit
+      echo -e "\n\nExit.\033[0m"&&exit
     fi
     if [[ $(echo $COMMAND0|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
       echo&&HISTORY=0&&continue
@@ -955,7 +955,11 @@ CONTAINER_CONSOLE(){
       read -s -N 2 COMMAND1
       if [[ ${COMMAND1} == "[A" ]];then
         printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
-        HISTORY=$(($HISTORY+1))
+        HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
+        HISTORY_LINES=$(( ${HISTORY_LINES}-2 ))
+        if (($HISTORY <= ${HISTORY_LINES} ));then
+          HISTORY=$(($HISTORY+1))
+        fi
         printf "\033[1GConsole > $(cat $HOME/.container_history|tail -${HISTORY}|head -n1)"
         continue
       elif [[ ${COMMAND1} == "[B" ]];then
