@@ -931,9 +931,9 @@ CONTAINER_CONSOLE(){
     stty erase '^?'
     printf "${COLOR}"
     if [[ ${HISTORY} == 0 ]];then
-      read -N 1 -p "Console > " COMMAND0
+      read -N 1 -s -p "Console > " COMMAND0
     else
-      read -N 1 COMMAND0
+      read -N 1 -s COMMAND0
     fi
     if [[ ${COMMAND0} == $(echo -e "\004") ]];then
       echo -e "\nExit"&&exit
@@ -966,6 +966,7 @@ CONTAINER_CONSOLE(){
         echo&&continue
       fi
     else
+      printf "\033[1GConsole > ${COMMAND0}"
       read COMMAND1
     fi
     CONTAINER_CONSOLE_MAIN ${COMMAND0}${COMMAND1}
