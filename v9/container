@@ -100,8 +100,17 @@ echo ""
 }
 SHOW_HELPS(){
   echo "Usage:"
-  echo "  help :show this page."
-  echo "  exit/CTRL-D :exit containershell."
+  echo "  help                       :Show this page."
+  echo "  exit                       :Exit console."
+  echo "  new                        :Create a new container."
+  echo "  search [OS] (Arch)         :Search for images."
+  echo "  pull [OS] [Version] (Arch) :Download image,just save."
+  echo "  cp [Name:Path] [Path]      :Copy files,like docker cp."
+  echo "  ls                         :List containers and images."
+  echo "  rm [Name]                  :Remove a container."
+  echo "  login [Name]               :Login to the container."
+  echo "  import [Image File]        :Import an image."
+  echo "  export [Name]              :Export a container as an image."
 }
 GET_CPU_ARCH(){
   DPKG_ARCH=$(dpkg --print-architecture)
@@ -852,7 +861,7 @@ CONTAINER_BUILD(){
       "armhf") export CROSS_ARCH=arm&&apt install qemu-user-${CROSS_ARCH};;
       "amd64") export CROSS_ARCH=x86_64&&apt install qemu-user-x86-64;;
       "ppc64el") export CROSS_ARCH=ppc64&&apt install qemu-user-${CROSS_ARCH};;
-      "") export CROSS_ARCH=null;;
+      "") GET_CPU_ARCH&&export CROSS_ARCH=null;;
     esac
   elif  [[ ${TYPE} == "chroot" ]];then
     GET_CPU_ARCH
@@ -1089,12 +1098,19 @@ SHOW_USAGE(){
   echo -e "\033[${LINE}C ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
   SIZE=$(stty size|awk '{print $2}')
   let SIZE=$(($SIZE))
-  echo -e "\e[1;48;5;2;${RGB}m$(yes " "|sed $SIZE'q'|tr -d '\n')\033[0m"
-  echo -e "${COLOR}Usage:"
+  echo "//"
+  echo
+  echo -e "\e[1;48;2;${RGB}m$(yes " "|sed $SIZE'q'|tr -d '\n')\033[0m"
+  echo
+  echo -e "${COLOR}//"
+  echo
+  echo -e "Usage:"
   echo -e " container                       #Start container console."
-  echo -e " container -h                    #Show this page"
+  echo -e " container -h                    #Show this page."
   echo -e " container -b [Containerfile]    #Build a container using Containerfile."
-  echo -e " container -e [function]         #exec function in this script *NOT for user."
+  echo -e " container cp [Name:Path] [Path] #Copy files,like docker cp."
+  echo -e " container -i [Image File]       #Import an image."
+  echo -e " container -e [Function]         #Exec function in this script *NOT for user."
 }
 case $1 in
     "-h") SHOW_USAGE;;
