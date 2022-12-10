@@ -304,6 +304,7 @@ CREATE_CHROOT_CONTAINER(){
   umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
   umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
   umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
+  echo -e "\nCreation done.\n"
   return 0
 }
 CREATE_PROOT_CONTAINER(){
@@ -337,6 +338,7 @@ CREATE_PROOT_CONTAINER(){
     COMMAND+=" -q qemu-${CROSS_ARCH}"
   fi
   ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
+  echo -e "\nCreation done.\n"
   return 0
 }
 RUN_CHROOT_CONTAINER(){
@@ -692,7 +694,7 @@ CONTAINER_NEW(){
       break
     fi
   done
-  echo -e "\nChoose the OS and the version to install,you can use search command here."
+  echo -e "\nChoose the OS and the version to install,you can use \`search\` command here."
   while :
   do
     read -p "[] OS > " OS
@@ -856,7 +858,7 @@ EXEC_FUNCTION(){
   $@
 }
 EASTER_EGG(){
-LINE=$(($(($(stty size|awk '{print $2}')))/2-26))
+LINE=$(($(($(stty size|awk '{print $2}')))/2-27))
 SIGNATURE="\033[${LINE}C       00                                  00
 \033[${LINE}C      01                                    00
 \033[${LINE}C     00      000                100  001     10
