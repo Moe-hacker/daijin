@@ -927,7 +927,6 @@ CONTAINER_CONSOLE(){
   while :
   do
     SIZE=$(stty size|awk '{printf $2}')
-    printf "${COLOR}"
     stty erase '^?'
     printf "${COLOR}"
     if [[ ${HISTORY} == 0 ]];then
@@ -973,10 +972,24 @@ CONTAINER_CONSOLE(){
         echo&&continue
       fi
     else
-      printf "\033[1GConsole > ${COMMAND0}"
-      read COMMAND1
+      COMMAND=${COMMAND0}
+      printf "\033[1GConsole > ${COMMAND}"
+      while :
+      do
+        read -N1 -s COMMAND1
+        if [[ $(echo $COMMAND1|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ $COMMAND0 != " " ]];then
+          echo&&break
+        else
+          if [[ $(echo $COMMAND1|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
+            COMMAND=${COMMAND%?}
+          else
+            COMMAND+=${COMMAND1}
+          fi
+          printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"&&printf "\033[1GConsole > ${COMMAND}"
+        fi
+      done
     fi
-    CONTAINER_CONSOLE_MAIN ${COMMAND0}${COMMAND1}
+    CONTAINER_CONSOLE_MAIN ${COMMAND}
   done
 }
 SHOW_USAGE(){
