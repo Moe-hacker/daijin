@@ -93,7 +93,8 @@ kernelMinor="${kernelMinor%%.*}"
 kernelPatch="${kernelVersion#*$kernelMinor.}"
 kernelPatch="${kernelPatch%%-*}"
 echo -e "Linux kernel version: $kernelMajor.$kernelMinor.$kernelPatch"
-echo -e "Copyright 2022 Moe-hacker"
+echo -e "Made with  by Moe-hacker"
+echo -e "         (>_)"
 echo -e "WARNING: NO WARRANTY HERE"
 echo -e "For usage,just type \`help\`"
 echo ""
@@ -111,6 +112,64 @@ SHOW_HELPS(){
   echo "  login [Name]               :Login to the container."
   echo "  import [Image File]        :Import an image."
   echo "  export [Name]              :Export a container as an image."
+  echo "  info                       :Show version info."
+}
+SHOW_INFO(){
+  echo
+  echo -e "    _________"
+  echo -e "   /\\        \\"
+  echo -e "  /  \\        \\"
+  echo -e " /    \\        \\   ═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "/      \\________\\   ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
+  echo -e "\\      /        /   ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
+  echo -e " \\    /        /"
+  echo -e "  \\  /        /"
+  echo -e "   \\/________/"
+  echo -e "\nScript Info :"
+  echo -e "[] Project               : termux-container"
+  echo -e "[] Author                : Moe-hacker"
+  echo -e "[] Signature             : (>_)"
+  echo -e "[] License               : APACHE-2.0"
+  echo -e "[] Legal Information     : NO WARRANTY"
+  echo -e '[] Version               : 9.0-dev'
+  if [[ -e $PREFIX/bin/moe-container ]];then
+    echo -e "[] Moe-container Version : $(moe-container -v|head -1|awk '{print $2}')"
+    echo -e "[] Moe-container License : MIT"
+  else
+    echo -e "\033[33m Warning: moe-container not installed !${COLOR}"
+  fi
+  kernelVersion="$(uname -r)"
+  kernelMajor="${kernelVersion%%.*}"
+  kernelMinor="${kernelVersion#$kernelMajor.}"
+  kernelMinor="${kernelMinor%%.*}"
+  kernelPatch="${kernelVersion#*$kernelMinor.}"
+  kernelPatch="${kernelPatch%%-*}"
+  echo -e "\nSystem info :"
+  echo -e "[] Kernel Version        : $kernelMajor.$kernelMinor.$kernelPatch"
+  if [[ ${TERMUX_VERSION} != "" ]];then
+    echo -e "[] Termux Version        : ${TERMUX_VERSION}"
+  fi
+  echo -e "[] Username              : $(whoami)"
+  echo -e "[] Android Version       : $(getprop ro.build.version.release)"
+  echo -e "[] Cpu Architecture      : $(uname -m)"
+  echo -e "[] Hostname              : $(hostname)"
+  echo -e "[] Uptime                : $(uptime -p)"
+  if [[ -e /bin/magisk ]];then
+    echo -e "[] Magisk version        : $(su -c /bin/magisk -V)"
+  fi
+  echo -e "\nHardware info :"
+  echo -e "[] Brand                 : $(getprop ro.product.brand)"
+  echo -e "[] Model                 : $(getprop ro.product.model)"
+  echo -e "[] Model Codename        : $(getprop ro.product.board)"
+  echo -e "[] Platform Codename     : $(getprop ro.board.platform)"
+  echo -e "[] Cpu Model             : $(cat /proc/cpuinfo|grep "Hardware"|awk '{print $NF}')"
+  echo -e "[] Cpus                  : $(lscpu|grep CPU\(s\)\:|awk '{print $2}')"
+  echo -e "[] Total Memory          : $(free -g --si | grep "Mem" | awk {'print $2'})GB"
+  _temp=$(cat /sys/class/thermal/thermal_zone0/temp)
+  temp=$(echo $_temp|cut -c 1-2)
+  temp+=".$(echo $_temp|cut -c 3)"
+  echo -e "[] Temperature           : ${temp}°C"
+  echo
 }
 GET_CPU_ARCH(){
   DPKG_ARCH=$(dpkg --print-architecture)
@@ -796,6 +855,27 @@ IMPORT_ROOTFS(){
 EXEC_FUNCTION(){
   $@
 }
+EASTER_EGG(){
+LINE=$(($(($(stty size|awk '{print $2}')))/2-26))
+SIGNATURE="\033[${LINE}C       00                                  00
+\033[${LINE}C      01                                    00
+\033[${LINE}C     00      000                100  001     10
+\033[${LINE}C     01        1010               0\\\/0       11
+\033[${LINE}C     10           001             0000       01
+\033[${LINE}C     00        1110              00/\\\00      00
+\033[${LINE}C      10     000                111  111    01
+\033[${LINE}C       11                                  10
+\033[${LINE}C                    ^^^^^^^^^^^
+
+\033[${LINE}C 0    0                          1             1
+\033[${LINE}C 11  11   000     000            1     .000.   1 _
+\033[${LINE}C 1 \\\/ 1  1   1   1...1           1      ___1   11 11
+\033[${LINE}C 1    1  1   1   1   ,   11111   1     0   1   1   1
+\033[${LINE}C 1    1   101     100             001   0001   0101^
+"
+printf "\033[1;38;2;135;206;250m${SIGNATURE}"
+return
+}
 CONTAINER_CONSOLE_MAIN(){
   if [[ $1 != "" ]];then
     echo $@ >> $HOME/.container_history
@@ -812,6 +892,7 @@ CONTAINER_CONSOLE_MAIN(){
     "exit") echo -e "\nExit.\033[0m"&&exit;;
     "rm") REMOVE_CONTAINER $2;;
     "cp") CONTAINER_CP $2 $3;;
+    "info") SHOW_INFO;;
     "") return;;
     *) echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
   esac
@@ -936,6 +1017,9 @@ REMOVE_CONTAINER(){
 }
 CONTAINER_CONSOLE(){
   [[ -e $HOME/.container_history ]]||touch $HOME/.container_history
+  if [[ $(whoami) == "root" ]];then
+    echo -e "\033[33mWarning: This script should not be run with root privileges !${COLOR}\n"
+  fi
   HISTORY=0
   while :
   do
@@ -1117,6 +1201,7 @@ case $1 in
     "-e") EXEC_FUNCTION ${@:2};;
     "-b") CONTAINER_BUILD $2;;
     "cp") CONTAINER_CP $2 $3;;
+    "-v") EASTER_EGG;;
     "") CONSOLE_GREETING&&CONTAINER_CONSOLE;;
     *) SHOW_USAGE&&exit 1;;
 esac
