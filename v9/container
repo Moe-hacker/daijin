@@ -1032,9 +1032,11 @@ CONTAINER_CONSOLE(){
     SIZE=$(stty size|awk '{printf $2}')
     stty erase '^?'
     printf "${COLOR}"
+    printf "\033[?25l"
     printf "\r"
     printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
     printf "\033[1GConsole > ${COMMAND}"
+    printf "\033[?25h"
     read -s -N1 COMMAND0
     if [[ ${COMMAND0} == $(echo -e "\004") ]];then
       echo -e "\n\nExit.\033[0m"&&exit
