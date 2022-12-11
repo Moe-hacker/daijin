@@ -398,6 +398,7 @@ RUN_CHROOT_CONTAINER(){
   if [[ ${MOUNT_SDCARD} == "true" ]];then
     mount --bind -o ro /sdcard ${CONTAINER_DIR}/sdcard
   fi
+  mount -o remount,suid /data  >> /dev/null 2>&1
   CONTAINER_PARAMETER=${CONTAINER_DIR}
   if [[ ${ENABLE_UNSHARE} == "true" ]];then
     CONTAINER_PARAMETER+=" -u"
