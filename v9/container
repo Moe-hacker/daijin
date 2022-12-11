@@ -1024,149 +1024,54 @@ CONTAINER_CONSOLE(){
     echo -e "\033[33mWarning: This script should not be run with root privileges !${COLOR}\n"
   fi
   HISTORY=0
+  COMMAND=""
   while :
   do
+    HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
+    HISTORY_LINES=$(( ${HISTORY_LINES}-1))
     SIZE=$(stty size|awk '{printf $2}')
     stty erase '^?'
     printf "${COLOR}"
-    read -N 1 -s -p "Console > " COMMAND0
+    printf "\r"
+    printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
+    printf "\033[1GConsole > ${COMMAND}"
+    read -s -N1 COMMAND0
     if [[ ${COMMAND0} == $(echo -e "\004") ]];then
       echo -e "\n\nExit.\033[0m"&&exit
     fi
-    if [[ $(echo $COMMAND0|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ $COMMAND0 != " " ]];then
+    if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ ${COMMAND0} != " " ]];then
       echo
+      CONTAINER_CONSOLE_MAIN ${COMMAND}
+      COMMAND=""
       continue
     fi
-    if [[ $COMMAND0 == $(printf "\033") ]];then
+    if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
+      COMMAND=${COMMAND%?}
+      continue
+    elif [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a08" ]];then
+      COMMAND=${COMMAND%?}
+      continue
+    elif [[ ${COMMAND0} == $(printf "\033") ]];then
       read -s -N 2 COMMAND1
-      HISTORY=0
       if [[ ${COMMAND1} == "[A" ]];then
-        HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
-        HISTORY_LINES=$(( ${HISTORY_LINES}-1))
-        if (($HISTORY <= ${HISTORY_LINES} ));then
+        if (($HISTORY <= ${HISTORY_LINES}));then
           HISTORY=$(($HISTORY+1))
         fi
         COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-        while :
-        do
-          printf "\r"
-          printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
-          printf "\033[1GConsole > ${COMMAND}"
-          read -s -N1 COMMAND2
-          if [[ ${COMMAND2} == $(echo -e "\004") ]];then
-            echo -e "\n\nExit.\033[0m"&&exit
-          fi
-          if [[ $(echo $COMMAND2|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ ${COMMAND2} != " " ]];then
-            echo
-            CONTAINER_CONSOLE_MAIN ${COMMAND}
-            HISTORY=0
-            break
-          fi
-          if [[ $(echo $COMMAND2|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
-            COMMAND=${COMMAND%?}
-            continue
-          elif [[ $COMMAND2 == $(printf "\033") ]];then
-            read -s -N 2 COMMAND3
-            if [[ ${COMMAND3} == "[A" ]];then
-              if (($HISTORY <= ${HISTORY_LINES}));then
-                HISTORY=$(($HISTORY+1))
-              fi
-              COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-              continue
-            elif [[ ${COMMAND3} == "[B" ]];then
-              if (($HISTORY >= 2));then
-                HISTORY=$(($HISTORY-1))
-              fi
-              COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-              continue
-           else
-             continue
-           fi
-          else
-             COMMAND+=${COMMAND2}
-             continue
-          fi
-        done
+        continue
+      elif [[ ${COMMAND1} == "[B" ]];then
+        if (($HISTORY >= 2));then
+          HISTORY=$(($HISTORY-1))
+        fi
+        COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
         continue
       else
-        echo&&continue
+        continue
       fi
     else
-      COMMAND=${COMMAND0}
-      printf "\033[1GConsole > ${COMMAND}"
-      while :
-      do
-        read -N1 -s COMMAND1
-        if [[ ${COMMAND1} == $(printf "\033") ]];then
-          read -s -N 2 COMMAND1
-          HISTORY=0
-          if [[ ${COMMAND1} == "[A" ]];then
-            HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
-            HISTORY_LINES=$(( ${HISTORY_LINES}-1))
-            if (($HISTORY <= ${HISTORY_LINES} ));then
-              HISTORY=$(($HISTORY+1))
-            fi
-            COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-            while :
-            do
-              printf "\r"
-              printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
-              printf "\033[1GConsole > ${COMMAND}"
-              read -s -N1 COMMAND2
-              if [[ ${COMMAND2} == $(echo -e "\004") ]];then
-                echo -e "\n\nExit.\033[0m"&&exit
-              fi
-              if [[ $(echo $COMMAND2|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ ${COMMAND2} != " " ]];then
-                echo
-                CONTAINER_CONSOLE_MAIN ${COMMAND}
-                continue 3
-              fi
-              if [[ $(echo $COMMAND2|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
-                COMMAND=${COMMAND%?}
-                continue
-              elif [[ $COMMAND2 == $(printf "\033") ]];then
-                read -s -N 2 COMMAND3
-                if [[ ${COMMAND3} == "[A" ]];then
-                  if (($HISTORY <= ${HISTORY_LINES}));then
-                    HISTORY=$(($HISTORY+1))
-                  fi
-                  COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-                  continue
-              elif [[ ${COMMAND3} == "[B" ]];then
-                if (($HISTORY >= 2));then
-                  HISTORY=$(($HISTORY-1))
-                fi
-                  COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-                  continue
-               else
-                 continue
-               fi
-              else
-               COMMAND+=${COMMAND2}
-               continue
-              fi
-            done
-            continue
-          else
-            echo&&continue
-          fi
-        fi
-        if [[ ${COMMAND1} == $(echo -e "\004") ]];then
-          echo -e "\n\nExit.\033[0m"&&exit
-        fi
-        if [[ $(echo $COMMAND1|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ $COMMAND1 != " " ]];then
-          echo&&break
-        else
-          if [[ $(echo $COMMAND1|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
-            COMMAND=${COMMAND%?}
-          else
-            COMMAND+=${COMMAND1}
-          fi
-          printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"&&printf "\033[1GConsole > ${COMMAND}"
-        fi
-      done
+      COMMAND+=${COMMAND0}
+      continue
     fi
-    CONTAINER_CONSOLE_MAIN ${COMMAND}
   done
 }
 SHOW_USAGE(){
