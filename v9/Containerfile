@@ -1,12 +1,11 @@
-MAINTAINER Moe-hacker <moe-hacker@outlook.com>
-#*
+#必填参数
 NAME test
-DESC test containerfile for termux-container
-#*
-TYPE proot
-ARCH arm64
-#*
 FROM alpine:edge
+TYPE proot
+#可选参数
+DESC test containerfile for termux-container
+MAINTAINER Moe-hacker <moe-hacker@outlook.com>
+ARCH arm64
 ADD "https://example.com/example" /tmp/example
 RUN ls
 RUN echo hello
