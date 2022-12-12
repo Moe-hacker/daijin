@@ -1,5 +1,0 @@
-#!/data/data/com.termux/files/usr/bin/bash
-if [[ ! -e $PREFIX/bin/moe-container ]];then
-  echo -e "\033[33m请安装moe-container以运行chroot容器。"
-  echo -e "\033[4mhttps://github.com/Moe-hacker/moe-container\033[0m"
-fi
