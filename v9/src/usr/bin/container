@@ -58,6 +58,7 @@ SHOW_HELPS(){
   echo "  new                        :Create a new container."
   echo "  search [OS] (Arch)         :Search for images."
   echo "  pull [OS] [Version] (Arch) :Download image,just save."
+  echo "  rmi [OS] [Version] (Arch)  :Remove an image."
   echo "  cp [Name:Path] [Path]      :Copy files,like docker cp."
   echo "  ls                         :List containers and images."
   echo "  rm [Name]                  :Remove a container."
@@ -109,6 +110,7 @@ SHOW_INFO(){
   echo -e "[] Uptime                : $(uptime -p)"
   if [[ -e /bin/magisk ]];then
     echo -e "[] Magisk version        : $(su -c /bin/magisk -V)"
+    echo -e "[] SELinux               : $(sudo getenforce)"
   fi
   echo -e "\nHardware info :"
   echo -e "[] Brand                 : $(getprop ro.product.brand)"
@@ -327,6 +329,20 @@ Include = /etc/pacman.d/mirrorlist
     rm -rf $PREFIX/tmp/container
   fi
   return 0
+}
+#镜像删除
+REMOVE_IMAGE(){
+  OS=$1
+  VERSION=$2
+  ARCH=$3
+  if [[ ${ARCH} == "" ]];then
+    GET_CPU_ARCH
+  fi
+  if [[ -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
+    rm -fv $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
+  else
+    echo -e "\033[31mError: Rootfs does not exist !${COLOR}"
+  fi
 }
 #chroot容器创建
 #此函数被-e接口以root权限调用
@@ -946,12 +962,6 @@ SIGNATURE="\033[${LINE}C       00                                  00
 \033[${LINE}C      10     000                111  111    01
 \033[${LINE}C       11                                  10
 \033[${LINE}C                    ^^^^^^^^^^^
-
-\033[${LINE}C 0    0                          1             1
-\033[${LINE}C 11  11   000     000            1     .000.   1 _
-\033[${LINE}C 1 \\\/ 1  1   1   1...1           1      ___1   11 11
-\033[${LINE}C 1    1  1   1   1   ,   11111   1     0   1   1   1
-\033[${LINE}C 1    1   101     100             001   0001   0101^
 "
 printf "\033[1;38;2;135;206;250m${SIGNATURE}"
 return
@@ -1174,7 +1184,7 @@ CONTAINER_CONSOLE(){
     if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
       COMMAND=${COMMAND%?}
       continue
-    #也是删除键捕获
+    #也是删除键捕获,为方便调试，兼容作者笔记本
     elif [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a08" ]];then
       COMMAND=${COMMAND%?}
       continue
@@ -1243,5 +1253,5 @@ case $1 in
     "cp") CONTAINER_CP $2 $3;;
     "-v") EASTER_EGG;;
     "") CONSOLE_GREETING&&CONTAINER_CONSOLE;;
-    *) SHOW_USAGE&&exit 1;;
+    *) CONTAINER_CONSOLE_MAIN ${@:1};;
 esac
