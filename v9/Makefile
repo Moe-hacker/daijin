@@ -1,7 +1,19 @@
 all :
 	@printf "\033[1;38;2;254;228;208m"
-	@printf "\033[1;38;2;254;228;208m[+] Install depends.\033[0m\n"&&sleep 1s
-	@pkg install tsu coreutils p7zip tar unzip zip git wget dpkg curl nano proot axel termux-tools util-linux pv gawk clang ndk-sysroot ndk-multilib libc-client-static libcap-static
+	@printf "                  _________\n"
+	@printf "                 /        /\\ \n"
+	@printf "                /        /  \\ \n"
+	@printf "               /        /    \\ \n"
+	@printf "              /________/      \\ \n"
+	@printf "              \\        \\      /\n"
+	@printf "               \\        \\    /\n"
+	@printf "                \\        \\  /\n"
+	@printf "                 \\________\\/\n"
+	@printf "═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║\n"
+	@printf " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝\n"
+	@printf " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝\n\n"
+	@printf "\033[1;38;2;254;228;208m[+] Install dependents.\033[0m\n"&&sleep 1s
+	@pkg install tsu coreutils p7zip tar unzip zip git wget dpkg curl nano proot axel termux-tools util-linux pv gawk clang ndk-sysroot ndk-multilib libc-client-static libcap-static binutils
 	@printf "\033[1;38;2;254;228;208m[+] Copy source code.\033[0m\n"&&sleep 1s
 	@mkdir -pv build&&sleep 0.5s
 	@cd build&&mkdir -pv data/data/com.termux/files
@@ -16,6 +28,7 @@ all :
 	@cd build&&dpkg -b . ../termux-container.deb
 	@printf "\033[1;38;2;254;228;208m[+] Clean.\033[0m\n"&&sleep 1s
 	@rm -rfv build
+	@printf "\033[1;38;2;254;228;208m[*] Build done,package: ./termux-container.deb\033[0m\n"
 help :
 	@echo "Makefile is not for common user here,please use released .deb file instead."
 	@echo "(>_)"
