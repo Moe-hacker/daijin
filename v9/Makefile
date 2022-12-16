@@ -31,4 +31,4 @@ all :
 	@printf "\033[1;38;2;254;228;208m[*] Build done,package: ./termux-container.deb\033[0m\n"
 help :
 	@echo "Makefile is not for common user here,please use released .deb file instead."
-	@echo "(>_)"
+	@echo "(>_) Moe-hacker"
