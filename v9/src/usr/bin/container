@@ -56,7 +56,7 @@ SHOW_HELPS(){
   echo "  help                       :Show this page."
   echo "  exit                       :Exit console."
   echo "  new                        :Create a new container."
-  echo "  search [OS] (Arch)         :Search for images."
+  echo "  search [all/OS] (Arch)     :Search for images."
   echo "  pull [OS] [Version] (Arch) :Download image,just save."
   echo "  rmi [OS] [Version] (Arch)  :Remove an image."
   echo "  cp [Name:Path] [Path]      :Copy files,like docker cp."
@@ -613,6 +613,10 @@ RUN_CONTAINER(){
 #镜像查找，仅获取并输出信息
 SEARCH_IMAGES(){
   OS=$1
+  if [[ $1 == "all" ]];then
+    LIST_IMAGES $2
+    return 0
+  fi
   if [[ $2 = "" ]];then
     GET_CPU_ARCH
   else
@@ -634,6 +638,28 @@ SEARCH_IMAGES(){
     echo -e "\033[33mCould not found image for current cpu architecture,maybe you should choose another cpu architecture and use proot to run cross-arch container.\033[0m"
     return 1
   fi
+  return 0
+}
+LIST_IMAGES(){
+  if [[ $1 = "" ]];then
+    GET_CPU_ARCH
+  else
+    ARCH=$1
+  fi
+  echo "For ParrotOS and Manjaro,please just use version \"current\"."
+  echo "Searching for images,this might take a while......"
+  echo
+  for i in $(curl -sL http://images.linuxcontainers.org/images/|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
+  do
+    for j in $(curl -sL "http://images.linuxcontainers.org/images/$i"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+      if [[ $(curl -sL "http://images.linuxcontainers.org/images/$i/$j/$ARCH"|grep "404 Not Found") = "" ]];then
+        echo -e "\033[34m$i [$ARCH] : $j"
+      else
+        continue
+      fi
+    done
+    echo
+  done
   return 0
 }
 #新建容器，含有大量循环以确保获取到的值合法
