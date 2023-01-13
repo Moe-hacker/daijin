@@ -1,10 +1,14 @@
 <p align="center">May The Force Be With You</p>
 <p align="center">(>_×)</p>         
 
------------                   
+-----------  
+
 <p align="center">
     <img src="https://stars.medv.io/Moe-hacker/termux-container.svg", title="commits"/>
  </p>
+<p align="center">
+Run linux with chroot&unshare/proot on your Android phone,safely and easy 
+</p>
 
 ![](https://img.shields.io/github/stars/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=instatus&logoColor=fee4d0)
 ![](https://img.shields.io/github/forks/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=git&logoColor=fee4d0)
@@ -13,7 +17,7 @@
 ![](https://img.shields.io/github/last-commit/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=codeigniter&logoColor=fee4d0)
 ![](https://img.shields.io/badge/language-shell-green?style=for-the-badge&color=fee4d0&logo=sharp&logoColor=fee4d0)
 
-[[简体中文]](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)
+You can read this doc in : &emsp;**[<kbd> <br> 简体中文 <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)**&emsp;**[<kbd> <br> English <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README.md)**
 
 ### About:      
 Termux-container is a script that runs Linux containers on your android phone. It's safe, easy to use and well-designed.      
