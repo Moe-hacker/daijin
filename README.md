@@ -6,7 +6,13 @@
     <img src="https://github.com/Moe-hacker/termux-container/raw/main/logo.png", title="logo"/>
 </p>
 <p align="center">
-    <img src="https://stars.medv.io/Moe-hacker/termux-container.svg", title="commits"/>
+    <img src="https://stars.medv.io/Moe-hacker/termux-container.svg", title="commits" width="50%"/>
+</p>
+<p align="center">
+ 「この胸が脈打つうちは君をまだ守っていたい」
+ </p>
+ <p align="center">
+    &emsp;
  </p>
 <p align="center">
 Run linux with chroot&unshare/proot on your Android phone,safely and easy 
