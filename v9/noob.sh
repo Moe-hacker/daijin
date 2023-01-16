@@ -1,5 +1,5 @@
 #####proot -0
-
+#######################
 export WIDTH=$(($(stty size|awk '{print $2}')-8))
 INSTALL(){
   if whiptail --title "[] RUN MODE" --yes-button "chroot" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then

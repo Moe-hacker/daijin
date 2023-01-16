@@ -221,9 +221,9 @@ PULL_ROOTFS(){
     [[ -e $PREFIX/var/container ]]||mkdir -p $PREFIX/var/container
     cd $PREFIX/tmp/container
     axel -n16 ${URL}
-    proot -l tar -xvf ${ROOTFS}
+    proot -0 -l tar -xvf ${ROOTFS}
     cd parrot-${ARCH}
-    tar -cvJf ../rootfs.tar.xz .
+    proot -l -0 tar -cvJf ../rootfs.tar.xz .
     cd ..
     rm ${ROOTFS}
     rm -rf parrot-${ARCH}
@@ -235,7 +235,7 @@ PULL_ROOTFS(){
     cd $PREFIX/tmp/container
     wget https://osdn.net/projects/manjaro-arm/storage/.rootfs/Manjaro-ARM-aarch64-latest.tar.gz
     mkdir manjaro
-    proot -l tar -xvf Manjaro-ARM-aarch64-latest.tar.gz -C manjaro
+    proot -0 -l tar -xvf Manjaro-ARM-aarch64-latest.tar.gz -C manjaro
     echo "Server = https://mirrors.bfsu.edu.cn/manjaro/arm-stable/\$repo/\$arch" > manjaro/etc/pacman.d/mirrorlist
     pacmanconf="
 [options]
@@ -323,7 +323,7 @@ Include = /etc/pacman.d/mirrorlist
     unset LD_PRELOAD
     ${COMMAND}
     cd manjaro
-    proot -l tar -cvJf ../rootfs.tar.xz .
+    proot -0 -l tar -cvJf ../rootfs.tar.xz .
     mv ../rootfs.tar.xz $PREFIX/var/container/manjaro-current-arm64.tar.xz
     cd ~
     rm -rf $PREFIX/tmp/container
@@ -396,7 +396,7 @@ CREATE_PROOT_CONTAINER(){
     echo -e "\033[31mFailed to create container directory !${COLOR}"
     return 1
   fi
-  pv $PREFIX/var/container/$ROOTFS|proot -l tar -xJf - -C ${CONTAINER_DIR}
+  pv $PREFIX/var/container/$ROOTFS|proot -0 -l tar -xJf - -C ${CONTAINER_DIR}
   [[ -e ${CONTAINER_DIR}/dev ]]||mkdir ${CONTAINER_DIR}/dev
   [[ -e ${CONTAINER_DIR}/proc ]]||mkdir ${CONTAINER_DIR}/proc
   [[ -e ${CONTAINER_DIR}/sys ]]||mkdir ${CONTAINER_DIR}/sys
