@@ -25,7 +25,9 @@ Run linux with chroot&unshare/proot on your Android phone,safely and easy
 ![](https://img.shields.io/github/last-commit/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=codeigniter&logoColor=fee4d0)
 ![](https://img.shields.io/badge/language-shell-green?style=for-the-badge&color=fee4d0&logo=sharp&logoColor=fee4d0)
 
-You can read this doc in : &emsp;**[<kbd> <br> 简体中文 <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)**&emsp;**[<kbd> <br> English <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README.md)**
+You can read this doc in :
+
+**[<kbd> <br> 简体中文 <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)**&emsp;**[<kbd> <br> English <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README.md)**
 
 ### About:      
 Termux-container is a script that runs Linux containers on your android phone. It's safe, easy to use and well-designed.      

@@ -216,7 +216,7 @@ PULL_ROOTFS(){
       return 1
     fi
     URL="https://mirrors.bfsu.edu.cn/parrot/iso/testing/${ROOTFS}"
-    rm -rf $PREFIX/tmp/container
+    proot -0 rm -rf $PREFIX/tmp/container
     mkdir -p $PREFIX/tmp/container
     [[ -e $PREFIX/var/container ]]||mkdir -p $PREFIX/var/container
     cd $PREFIX/tmp/container
@@ -229,7 +229,7 @@ PULL_ROOTFS(){
     rm -rf parrot-${ARCH}
     mv rootfs.tar.xz $PREFIX/var/container/parrot-current-${ARCH}.tar.xz
   else
-    rm -rf $PREFIX/tmp/container
+    proot -0 rm -rf $PREFIX/tmp/container
     mkdir -p $PREFIX/tmp/container
     [[ -e $PREFIX/var/container ]]||mkdir -p $PREFIX/var/container
     cd $PREFIX/tmp/container
@@ -326,7 +326,7 @@ Include = /etc/pacman.d/mirrorlist
     proot -0 -l tar -cvJf ../rootfs.tar.xz .
     mv ../rootfs.tar.xz $PREFIX/var/container/manjaro-current-arm64.tar.xz
     cd ~
-    rm -rf $PREFIX/tmp/container
+    proot -0 rm -rf $PREFIX/tmp/container
   fi
   return 0
 }
@@ -1015,6 +1015,14 @@ CONTAINER_CONSOLE_MAIN(){
   esac
 }
 
+
+
+
+
+
+
+
+
 #未稳定实现特性，containerfile支持
 CONTAINER_BUILD(){
   CONTAINERFILE=$1
@@ -1270,6 +1278,98 @@ SHOW_USAGE(){
   echo -e " container cp [Name:Path] [Path] #Copy files,like docker cp."
   echo -e " container -i [Image File]       #Import an image."
   echo -e " container -e [Function]         #Exec function in this script *NOT for user."
+}
+
+
+
+
+###########################
+##仍未实现（懒）
+NOOB_INSTALL(){
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  if whiptail --title "[] RUN MODE" --yes-button "chroot" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
+    TYPE=chroot
+  else
+    TYPE=proot
+  fi
+  LIST="1 alpine 2 archlinux 3 centos 4 debian 5 fedora 6 kali 7 manjaro 8 opensuse 9 parrot 10 ubuntu"
+  LIST2="alpine archlinux centos debian fedora kali manjaro opensuse parrot ubuntu"
+  NUMBER=$(whiptail --title "[] OS" --menu "Choose the OS to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  OS=$(echo $LIST2|awk "{print \$$NUMBER}")
+  unset LIST LIST2 NUMBER
+  if [[ ${OS} != "parrot" ]]&&[[ ${OS} != "manjaro" ]];then
+    NUMBER=0
+    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+    unset VERSION NUMBER
+    NUMBER=$(whiptail --title "[] VERSION" --menu "Choose the version to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
+  fi
+  echo $OS $VERSION
+}
+NOOB_REMOVE(){
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  NUMBER=0
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for i in $(ls $PREFIX/etc/container/proot);do
+      NAME=${i#*-}
+      NAME=${NAME%%.*}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(proot) "
+      LIST2+="$NAME "
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for i in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${i#*-}
+      NAME=${NAME%%.*}
+      LIST+="$NUMBER $NAME(chroot) "
+      LIST2+="$NAME "
+    done
+  fi
+  unset i NUMBER
+  if [[ $LIST == "" ]];then
+    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    return 1
+  fi
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to remove:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+}
+NOOB_RUN(){
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  NUMBER=0
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for i in $(ls $PREFIX/etc/container/proot);do
+      NAME=${i#*-}
+      NAME=${NAME%%.*}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(proot) "
+      LIST2+="$NAME "
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for i in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${i#*-}
+      NAME=${NAME%%.*}
+      LIST+="$NUMBER $NAME(chroot) "
+      LIST2+="$NAME "
+    done
+  fi
+  unset i NUMBER
+  if [[ $LIST == "" ]];then
+    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    return 1
+  fi
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to run:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+}
+NOOB_MODE(){
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "Choose an operation:" 15 $WIDTH 6 1 install 2 remove 3 run 3>&1 1>&2 2>&3)
+  case $OPTION in
+    1) NOOB_INSTALL;;
+    2) NOOB_REMOVE;;
+    3) NOOB_RUN;;
+  esac
 }
 #函数从这里开始被调用
 case $1 in
