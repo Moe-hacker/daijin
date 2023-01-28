@@ -989,7 +989,7 @@ SIGNATURE="\033[${LINE}C       00                                  00
 \033[${LINE}C       11                                  10
 \033[${LINE}C                    ^^^^^^^^^^^
 "
-printf "\033[1;38;2;135;206;250m${SIGNATURE}"
+printf "\033[1;38;2;135;206;250m${SIGNATURE}\033[0m"
 return
 }
 #console获取到的命令在这里被解析
@@ -1023,7 +1023,7 @@ CONTAINER_CONSOLE_MAIN(){
 
 
 
-#未稳定实现特性，containerfile支持
+#未实现特性，containerfile支持
 CONTAINER_BUILD(){
   CONTAINERFILE=$1
   if [[ ! -e ${CONTAINERFILE} ]];then
