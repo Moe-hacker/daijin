@@ -482,7 +482,7 @@ RUN_CHROOT_CONTAINER(){
   mount -o remount,suid /data  >> /dev/null 2>&1
   CONTAINER_PARAMETER=${CONTAINER_DIR}
   if [[ ${ENABLE_UNSHARE} == "true" ]];then
-    CONTAINER_PARAMETER+=" -u"
+    CONTAINER_PARAMETER+=" -u -w"
   fi
   if [[ ${PRIVAGE_LEVEL} == "0" ]];then
     CONTAINER_PARAMETER+=" -D"
@@ -1025,6 +1025,7 @@ CONTAINER_CONSOLE_MAIN(){
 
 #未实现特性，containerfile支持
 CONTAINER_BUILD(){
+  return 1
   CONTAINERFILE=$1
   if [[ ! -e ${CONTAINERFILE} ]];then
     echo -e "\033[31mError: containerfile does not exist !${COLOR}"
