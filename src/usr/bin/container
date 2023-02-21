@@ -1,6 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #事实上你不应该去研究这段代码的，因为作者仅能保证它能跑
 #跟着沨鸾学shell，学到最后只会喵喵喵
+##################################
+###############TODO###############
+#换源
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
 RGB="254;228;208"
 COLOR="\033[1;38;2;${RGB}m"
@@ -37,6 +40,7 @@ printf "${HOPPOU}"
 #无聊的开场白
 echo -e "${COLOR}Console of Termux-container"
 echo -e "$(date)"
+#学习自docker的check-config.sh
 kernelVersion="$(uname -r)"
 kernelMajor="${kernelVersion%%.*}"
 kernelMinor="${kernelVersion#$kernelMajor.}"
@@ -108,6 +112,7 @@ SHOW_INFO(){
   echo -e "[] Cpu Architecture      : $(uname -m)"
   echo -e "[] Hostname              : $(hostname)"
   echo -e "[] Uptime                : $(uptime -p)"
+  #与ksu貌似冲突，不过一般没人装俩
   if [[ -e /bin/magisk ]];then
     echo -e "[] Magisk version        : $(su -c /bin/magisk -V)"
     echo -e "[] SELinux               : $(sudo getenforce)"
@@ -141,6 +146,7 @@ GET_CPU_ARCH(){
   return 0
 }
 #类docker cp命令支持
+#貌似不太优雅
 CONTAINER_CP(){
   if [[ $1 == *:/* ]];then
     CONTAINER_NAME=$(echo $1|cut -d ":" -f 1)
@@ -356,8 +362,10 @@ CREATE_CHROOT_CONTAINER(){
     return 1
   fi
   pv $PREFIX/var/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR}
+  #修复su二进制的文件权限
   chown root:root ${CONTAINER_DIR}/bin/su
   chmod 777 ${CONTAINER_DIR}/bin/su
+  #创建不存在的系统目录
   [[ -e ${CONTAINER_DIR}/dev ]]||mkdir ${CONTAINER_DIR}/dev
   [[ -e ${CONTAINER_DIR}/proc ]]||mkdir ${CONTAINER_DIR}/proc
   [[ -e ${CONTAINER_DIR}/sys ]]||mkdir ${CONTAINER_DIR}/sys
@@ -478,6 +486,8 @@ RUN_CHROOT_CONTAINER(){
   if [[ ${MOUNT_SDCARD} == "true" ]];then
     mount --bind -o ro /sdcard ${CONTAINER_DIR}/sdcard
   fi
+  #直接挂载termux的tmp
+  mount --bind ${PREFIX}/tmp ${CONTAINER_DIR}/tmp
   #解决sudo提示nosuid挂载无法使用
   mount -o remount,suid /data  >> /dev/null 2>&1
   CONTAINER_PARAMETER=${CONTAINER_DIR}
@@ -491,6 +501,7 @@ RUN_CHROOT_CONTAINER(){
   fi
   printf "\033[0m"
   unset LD_PRELOAD
+  #调用moe-container二进制代替chroot/unshare
   moe-container ${CONTAINER_PARAMETER} ${CONTAINER_DIR}
   return 0
 }
@@ -640,6 +651,7 @@ SEARCH_IMAGES(){
   fi
   return 0
 }
+#镜像列表
 LIST_IMAGES(){
   if [[ $1 = "" ]];then
     GET_CPU_ARCH
@@ -874,7 +886,7 @@ CONTAINER_NEW(){
     echo -e "CONTAINER_NAME=${CONTAINER_NAME}\nOS=${OS}\nCONTAINER_DIR=${CONTAINER_DIR}\nCROSS_ARCH=${CROSSARCH}\nMOUNT_SDCARD=${MOUNT_SDCARD}" >> $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
   fi
 }
-#镜像与容器列表
+#本地镜像与容器列表
 LIST(){
   echo
   echo -e "Images:"
