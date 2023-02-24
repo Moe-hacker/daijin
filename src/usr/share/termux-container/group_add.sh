@@ -1,12 +1,12 @@
 #!/bin/sh
-#Use sh instead of bash here to make this script more compatible,especially for alpine linux.
+#采用sh而非bash以提供更好兼容性
 # ██╗ ██╗  ██  ███████╗ ██╗  ██╗
 #████████╗ ██║ ██╔════╝ ██║  ██║
 #╚██╔═██╔╝ ██║ ███████╗ ███████║
 #████████╗ ╚═╝ ╚════██║ ██╔══██║
 #╚██╔═██╔╝ ██╗ ███████║ ██║  ██║
 # ╚═╝ ╚═╝  ╚═╝ ╚══════╝ ╚═╝  ╚═╝
-#The value will automatically set by termux-container,do not edit.
+#此处值会被自动替换
 NEW_USER=""
 PASSWORD=""
 #Try to fix `command not found` error.
