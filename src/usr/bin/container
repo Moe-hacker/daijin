@@ -1,5 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #事实上你不应该去研究这段代码的，因为作者仅能保证它能跑
+#有些东西如ijk变量命名啥的，作者本人也没法解释到底是个啥
 #跟着沨鸾学shell，学到最后只会喵喵喵
 
 
@@ -8,10 +9,8 @@
 ###############TODO###############
 #换源
 #中文
-#字体自动安装
 ##################################
-
-
+TERMUX_CONTAINER_VERSION="9.0-dev"
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
 RGB="254;228;208"
 COLOR="\033[1;38;2;${RGB}m"
@@ -97,7 +96,7 @@ SHOW_INFO(){
   echo -e "[] Signature             : (>_)"
   echo -e "[] License               : APACHE-2.0"
   echo -e "[] Legal Information     : NO WARRANTY"
-  echo -e '[] Version               : 9.0-dev'
+  echo -e '[] Version               : ${TERMUX_CONTAINER_VERSION}'
   if [[ -e $PREFIX/bin/moe-container ]];then
     echo -e "[] Moe-container Version : $(moe-container -v|head -1|awk '{print $2}')"
     echo -e "[] Moe-container License : MIT"
@@ -1039,118 +1038,6 @@ CONTAINER_CONSOLE_MAIN(){
     *) echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
   esac
 }
-
-
-
-
-
-
-
-
-
-#未实现特性，containerfile支持
-CONTAINER_BUILD(){
-  return 1
-  CONTAINERFILE=$1
-  if [[ ! -e ${CONTAINERFILE} ]];then
-    echo -e "\033[31mError: containerfile does not exist !${COLOR}"
-    return 1
-  fi
-  CONFFILE=$PREFIX/tmp/container.tmp
-  TMPDIR=$PREFIX/tmp/container-$(date +%y%m%d%H%M%S)
-  TMPGET=$PREFIX/tmp/container-tmpget.sh
-  TMPEXEC=$PREFIX/tmp/container-tmpexec.sh
-  rm=$(rm ${TMPGET} 2>&1 3>&1 >/dev/null)
-  touch ${TMPGET}||return
-  rm=$(rm ${TMPEXEC} 2>&1 3>&1 >/dev/null)
-  touch ${TMPEXEC}||return
-  echo "#!/bin/sh" >> ${TMPEXEC}
-  echo "export PATH=\$PATH:\"/sbin:/bin:/usr/bin:/usr/local/bin\"" >> ${TMPEXEC}
-  rm=$(rm ${CONFFILE} 2>&1 3>&1 >/dev/null)
-  touch ${CONFFILE}
-  cat ${CONTAINERFILE}|while read COMMAND
-  do
-    case ${COMMAND} in
-      "#"*) continue;;
-      "DESC"*) echo "DESC=\"${COMMAND#DESC\ }\"" >> ${CONFFILE};;
-      "NAME"*) echo "NAME=\"${COMMAND#NAME\ }\"" >> ${CONFFILE};;
-      "MAINTAINER"*) echo "MAINTAINER=\"${COMMAND#MAINTAINER\ }\"" >> ${CONFFILE}&&continue;;
-      "TYPE"*) echo "TYPE=\"${COMMAND#TYPE\ }\"" >> ${CONFFILE}&&continue;;
-      "ARCH"*) echo "ARCH=\"${COMMAND#ARCH\ }\"" >> ${CONFFILE}&&continue;;
-      "FROM"*) OS_=${COMMAND#FROM\ }&&OS="$(echo ${OS_}|cut -d ":" -f 1)"&&VERSION="$(echo ${OS_}|cut -d ":" -f 2)"&&echo -e "OS=\"${OS}\"\nVERSION=\"${VERSION}\"" >> ${CONFFILE}&&continue;;
-      "ADD"*) echo "wget $(echo ${COMMAND}|awk '{print $2}') -O ${TMPDIR}$(echo ${COMMAND}|awk '{print $3}')" >> ${TMPGET}&&continue;;
-      "RUN"*) EXEC_COMMAND=${COMMAND#RUN\ }&&echo "${EXEC_COMMAND}" >> ${TMPEXEC}&&continue;;
-      *) echo -e "\033[33mWarning: unknow syntax \`${COMMAND}\`${COLOR}"&&continue;;
-    esac
-  done
-  source ${CONFFILE}
-  if [[ ${NAME} == "" ]]||[[ ${TYPE} == "" ]]||[[ ${OS} == "" ]]||[[ ${VERSION} == "" ]];then
-    echo -e "\033[31mError: incomplete containerfile !${COLOR}"
-    return 1
-  fi
-  if [[ ${MAINTAINER} != "" ]];then
-    echo "Maintainer info : ${MAINTAINER}"
-  fi
-  if [[ ${DESC} != "" ]];then
-    echo "Description     : ${DESC}"
-  fi
-  echo "OS              : ${OS}"
-  echo "Version         : ${VERSION}"
-  read -p "Press Enter to continue."
-  if [[ ${TYPE} == "proot" ]];then
-    case ${ARCH} in
-      "i386"|"m68k"|"ppc"|"riscv32"|"riscv64") export ARCH=${CROSS_ARCH}&&apt install qemu-user-${CROSS_ARCH};;
-      "arm64") export CROSS_ARCH=aarch64&&apt install qemu-user-${CROSS_ARCH};;
-      "armhf") export CROSS_ARCH=arm&&apt install qemu-user-${CROSS_ARCH};;
-      "amd64") export CROSS_ARCH=x86_64&&apt install qemu-user-x86-64;;
-      "ppc64el") export CROSS_ARCH=ppc64&&apt install qemu-user-${CROSS_ARCH};;
-      "") GET_CPU_ARCH&&export CROSS_ARCH=null;;
-    esac
-  elif  [[ ${TYPE} == "chroot" ]];then
-    GET_CPU_ARCH
-  else
-    echo -e "\033[31mError: Unknow container type !${COLOR}"
-    return 1
-  fi
-  if [[ ! -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
-    PULL_ROOTFS ${OS} ${VERSION} ${ARCH}||return 1
-  fi
-  echo ""
-  if [[ ${CONTAINER_TYPE} == "chroot" ]];then
-    sudo container -e CREATE_CHROOT_CONTAINER ${OS}-${VERSION}-${ARCH}.tar.xz ${TMPDIR}
-    sudo bash ${TMPGET}
-    sudo cp ${TMPEXEC} ${TMPDIR}/tmp/exec.sh
-    sudo chmod 777 ${TMPDIR}/tmp/exec.sh
-    mount -t proc proc  ${CONTAINER_DIR}/proc/
-    mount --rbind /dev ${CONTAINER_DIR}/dev/
-    mount --rbind /sys ${CONTAINER_DIR}/sys/
-    unset LD_PRELOAD
-    $PREFIX/bin/chroot ${CONTAINER_DIR} /tmp/exec.sh
-    umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
-    umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
-    umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
-    umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
-
-
-
-
-
-  else
-    CREATE_PROOT_CONTAINER ${OS}-${VERSION}-${ARCH}.tar.xz ${TMPDIR} ${CROSS_ARCH}
-    bash ${TMPGET}
-    cp ${TMPEXEC} ${TMPDIR}/tmp/exec.sh
-    sudo chmod 777 ${TMPDIR}/tmp/exec.sh
-
-
-  fi
-  rm -rf ${TMPDIR}
-  rm ${TMPEXEC}
-  rm ${TMPGET}
-  rm ${CONFFILE}
-}
-
-
-
 #容器删除
 REMOVE_CONTAINER(){
   CONTAINER_NAME=$1
@@ -1300,30 +1187,29 @@ CONTAINER_CONSOLE(){
 #外部-h参数的帮助信息输出
 SHOW_USAGE(){
   LINE=$(($(($(stty size|awk '{print $2}')))/2-23))
-  echo -e "\033[${LINE}C              \e[38;5;157m┌───────────┐"
-  echo -e "\033[${LINE}C              │ ┌───────┐ │"
-  echo -e "\033[${LINE}C              │ │  \e[38;5;227m┌───────────┐"
-  echo -e "\033[${LINE}C              \e[38;5;157m│ │  \e[38;5;227m│ ┌───────┐ │"
-  echo -e "\033[${LINE}C              \e[38;5;157m│ │  \e[38;5;227m│ │  \e[38;5;157m│ │  \e[38;5;227m│ │"
-  echo -e "\033[${LINE}C              \e[38;5;157m│ └──\e[38;5;227m│ │\e[38;5;157m──┘ │  \e[38;5;227m│ │"
-  echo -e "\033[${LINE}C              \e[38;5;157m└────\e[38;5;227m│ │\e[38;5;157m────┘  \e[38;5;227m│ │"
-  echo -e "\033[${LINE}C                   \e[38;5;227m│ └───────┘ │"
-  echo -e "\033[${LINE}C                   \e[38;5;227m└───────────┘"
+  echo -e "\033[${LINE}C                   _________"
+  echo -e "\033[${LINE}C                  /\\        \\"
+  echo -e "\033[${LINE}C                 /  \\        \\"
+  echo -e "\033[${LINE}C                /    \\        \\"
+  echo -e "\033[${LINE}C               /      \\________\\"
+  echo -e "\033[${LINE}C               \\      /        / "
+  echo -e "\033[${LINE}C                \\    /        /"
+  echo -e "\033[${LINE}C                 \\  /        /"
+  echo -e "\033[${LINE}C                  \\/________/"
   echo -e "\033[${LINE}C${COLOR}═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
   echo -e "\033[${LINE}C ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
   echo -e "\033[${LINE}C ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
   SIZE=$(stty size|awk '{print $2}')
-  let SIZE=$(($SIZE))
+  let SIZE=$(($SIZE-16))
   echo "//"
   echo
-  echo -e "\e[1;48;2;${RGB}m$(yes " "|sed $SIZE'q'|tr -d '\n')\033[0m"
+  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed $SIZE'q'|tr -d '\n')\033[0m"
   echo
   echo -e "${COLOR}//"
   echo
   echo -e "Usage:"
   echo -e " container                       #Start container console."
   echo -e " container -h                    #Show this page."
-  echo -e " container -b [Containerfile]    #Build a container using Containerfile."
   echo -e " container cp [Name:Path] [Path] #Copy files,like docker cp."
   echo -e " container -i [Image File]       #Import an image."
   echo -e " container -n                    #Noob mode."
