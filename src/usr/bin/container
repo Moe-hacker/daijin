@@ -186,7 +186,11 @@ CONTAINER_CP(){
     return
   fi
 }
+
+
+
 #rootfs获取，manjaro与parrot需要重新打包
+#记得换源
 PULL_ROOTFS(){
   OS=$1
   VERSION=$2
