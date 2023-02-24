@@ -1072,9 +1072,14 @@ REMOVE_CONTAINER(){
       umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
       umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
       umount ${CONTAINER_DIR}/sdcard >> /dev/null 2>&1
+      umount ${CONTAINER_DIR}/tmp >> /dev/null 2>&1
       umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
     done
     if mountpoint -q ${CONTAINER_DIR}/sdcard;then
+      echo -e "\033[31mError: can not umount container at this time !${COLOR}"
+      return 1
+    fi
+     if mountpoint -q ${CONTAINER_DIR}/tmp;then
       echo -e "\033[31mError: can not umount container at this time !${COLOR}"
       return 1
     fi
