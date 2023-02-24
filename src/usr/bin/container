@@ -1187,16 +1187,17 @@ CONTAINER_CONSOLE(){
 #外部-h参数的帮助信息输出
 SHOW_USAGE(){
   LINE=$(($(($(stty size|awk '{print $2}')))/2-23))
-  echo -e "\033[${LINE}C                   _________"
-  echo -e "\033[${LINE}C                  /\\        \\"
-  echo -e "\033[${LINE}C                 /  \\        \\"
-  echo -e "\033[${LINE}C                /    \\        \\"
-  echo -e "\033[${LINE}C               /      \\________\\"
-  echo -e "\033[${LINE}C               \\      /        / "
-  echo -e "\033[${LINE}C                \\    /        /"
-  echo -e "\033[${LINE}C                 \\  /        /"
-  echo -e "\033[${LINE}C                  \\/________/"
-  echo -e "\033[${LINE}C${COLOR}═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
+  echo -e "\033[${LINE}C${COLOR}                  _________"
+  echo -e "\033[${LINE}C                 /\\        \\"
+  echo -e "\033[${LINE}C                /  \\        \\"
+  echo -e "\033[${LINE}C               /    \\        \\"
+  echo -e "\033[${LINE}C              /      \\________\\"
+  echo -e "\033[${LINE}C              \\      /        / "
+  echo -e "\033[${LINE}C               \\    /        /"
+  echo -e "\033[${LINE}C                \\  /        /"
+  echo -e "\033[${LINE}C                 \\/________/"
+  echo
+  echo -e "\033[${LINE}C═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
   echo -e "\033[${LINE}C ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝"
   echo -e "\033[${LINE}C ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝"
   SIZE=$(stty size|awk '{print $2}')
