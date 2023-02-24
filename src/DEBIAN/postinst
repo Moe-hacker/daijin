@@ -1,7 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 if [[ ! -e ~/.termux/font.ttf ]];then
   echo -e "Installing fonts....."
-  wget https://github.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/font.ttf -o ~/.termux/font.ttf
+  wget https://github.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/font.ttf -O ~/.termux/font.ttf||wget https://kgithub.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/font.ttf -O ~/.termux/font.ttf||exit 1
   termux-reload-settings
 fi
 if [[ ! -e $PREFIX/share/termux-container/licenses.allowed ]];then
