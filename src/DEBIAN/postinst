@@ -114,7 +114,8 @@ if [[ -e $PREFIX/etc/container/global.conf ]];then
   rm $PREFIX/etc/container/global.conf
   rm $PREFIX/etc/container/container-*.conf
 fi
-echo -e "\033[0m[] If this is not a ubuntu logo,please run:"
+echo -e "\033[33mWarning:"
+echo -e "[] If this is not a ubuntu logo,please run:"
 echo "mkdir -p ~/.termux"
 echo "cp \$PREFIX/share/termux-container/font.ttf ~/.termux"
 echo "termux-reload-settings"
