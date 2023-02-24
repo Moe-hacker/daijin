@@ -59,6 +59,7 @@ if [[ -e $PREFIX/etc/container/global.conf ]];then
   echo -e "\033[1;38;2;254;228;208mUpgrade script for termux-container v8 to v9."
   echo -e "This script will automatically detecte the old config file and try to convert them to the new version."
   read -p "Press Enter to continue." x
+  cp -rf $PREFIX/etc/container/ $PREFIX/etc/container.bk
   source $PREFIX/etc/container/global.conf
   for i in $(ls $PREFIX/etc/container/container-*.conf)
   do

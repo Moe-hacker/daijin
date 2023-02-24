@@ -1,9 +1,17 @@
 #!/data/data/com.termux/files/usr/bin/bash
 #事实上你不应该去研究这段代码的，因为作者仅能保证它能跑
 #跟着沨鸾学shell，学到最后只会喵喵喵
+
+
+
 ##################################
 ###############TODO###############
 #换源
+#中文
+#字体自动安装
+##################################
+
+
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
 RGB="254;228;208"
 COLOR="\033[1;38;2;${RGB}m"
@@ -146,7 +154,7 @@ GET_CPU_ARCH(){
   return 0
 }
 #类docker cp命令支持
-#貌似不太优雅
+#貌似不太优雅?
 CONTAINER_CP(){
   if [[ $1 == *:/* ]];then
     CONTAINER_NAME=$(echo $1|cut -d ":" -f 1)
@@ -600,6 +608,7 @@ RUN_PROOT_CONTAINER(){
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmallocinfo:/proc/vmallocinfo"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/vmstat:/proc/vmstat"
   COMMAND+=" --mount=$PREFIX/share/termux-container/proc/zoneinfo:/proc/zoneinfo"
+  #挂载termux的tmp目录
   COMMAND+=" --mount=$PREFIX/tmp:/tmp"
   COMMAND+=" /bin/su - root"
   printf "\033[0m"
@@ -1205,8 +1214,27 @@ CONTAINER_CONSOLE(){
   fi
   HISTORY=0
   COMMAND=""
+  ALL_COMMANDS="help exit new search pull rmi cp ls rm login import export info"
   while :
   do
+    while [[ $(printf "${COMMAND}"|cut -c 1-1) == " " ]];
+    do
+      COMMAND=${COMMAND#?}
+    done
+    for i in $ALL_COMMANDS
+    do
+      if [[ $(printf "${COMMAND}"|cut -d " " -f 1) == "$i" ]];then
+        if [[ $(printf "${COMMAND}"|grep " ") != "" ]];then
+          j=" $(printf "${COMMAND}"|cut -d " " -f 2)"
+        else
+          j=""
+        fi
+        COMMAND_SHOW="\033[1;38;2;166;227;161m${i}${COLOR}${j}"
+        break
+      else
+        COMMAND_SHOW="${COMMAND}"
+      fi
+    done
     HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
     HISTORY_LINES=$(( ${HISTORY_LINES}-1))
     SIZE=$(stty size|awk '{printf $2}')
@@ -1215,7 +1243,7 @@ CONTAINER_CONSOLE(){
     printf "\033[?25l"
     printf "\r"
     printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
-    printf "\033[1GConsole > ${COMMAND}"
+    printf "\033[1GConsole > ${COMMAND_SHOW}"
     printf "\033[?25h"
     #每次读取一字符内容并解析
     read -s -N1 COMMAND0
@@ -1228,6 +1256,7 @@ CONTAINER_CONSOLE(){
       echo
       CONTAINER_CONSOLE_MAIN ${COMMAND}
       COMMAND=""
+      COMMAND_SHOW=""
       continue
     fi
     #删除键捕获
