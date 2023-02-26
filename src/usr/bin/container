@@ -63,7 +63,7 @@ echo ""
 }
 #很明显是帮助信息，这里是给console准备的
 SHOW_HELPS(){
-  echo "${COLOR}Usage:"
+  echo -e "${COLOR}Usage:"
   echo "  help                       :Show this page."
   echo "  exit                       :Exit console."
   echo "  new                        :Create a new container."
@@ -649,7 +649,7 @@ SEARCH_IMAGES(){
   else
     ARCH=$2
   fi
-  echo "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
+  echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "404 Not Found") != "" ]];then
     echo -e "\033[33mOS distro not found.\033[0m"
@@ -674,7 +674,7 @@ LIST_IMAGES(){
   else
     ARCH=$1
   fi
-  echo "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
+  echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   echo
   for i in $(curl -sL http://images.linuxcontainers.org/images/|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
@@ -967,6 +967,7 @@ EXPORT_CONTAINER(){
   else
     proot -l tar -JPpcvf ${FILE} .
   fi
+  echo -e "Export done, file: ${FILE}"
 }
 #还原
 IMPORT_ROOTFS(){
@@ -1329,6 +1330,43 @@ EASY_RUN(){
   NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to run:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
   RUN_CONTAINER $CONTAINER
+}
+EASY_BACKUP(){
+  trap "exit" SIGINT
+  WIDTH=$(($(stty size|awk '{print $2}')-8))
+  NUMBER=0
+  if [[ -e $PREFIX/etc/container/proot ]];then
+    for i in $(ls $PREFIX/etc/container/proot);do
+      NAME=${i#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(proot) "
+      LIST2+="$NAME "
+    done
+  fi
+  if [[ -e $PREFIX/etc/container/chroot ]];then
+    for i in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${i#container-}
+      NAME=${NAME%%.conf}
+      NUMBER=$(($NUMBER+1))
+      LIST+="$NUMBER $NAME(chroot) "
+      LIST2+="$NAME "
+    done
+  fi
+  unset i NUMBER
+  if [[ $LIST == "" ]];then
+    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    return 1
+  fi
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to backup:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+  EXPORT_CONTAINER $CONTAINER
+}
+
+
+
+EASY_RESTORE(){
+  return 0
 }
 EASY_MODE(){
   trap "exit" SIGINT
