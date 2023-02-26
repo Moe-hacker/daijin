@@ -1223,11 +1223,11 @@ SHOW_USAGE(){
   echo -e " container -h                    #Show this page."
   echo -e " container cp [Name:Path] [Path] #Copy files,like docker cp."
   echo -e " container -i [Image File]       #Import an image."
-  echo -e " container -n                    #Noob mode."
+  echo -e " container -n                    #Easy mode."
   echo -e " container -e [Function]         #Exec function in this script *NOT for user."
 }
 #萌新模式
-NOOB_INSTALL(){
+EASY_INSTALL(){
   trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   if whiptail --title "[] RUN MODE" --yes-button "chroot" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
@@ -1268,7 +1268,7 @@ NOOB_INSTALL(){
     echo -e "OS=${OS}\nCONTAINER_DIR=/data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH}\nCROSS_ARCH=${CROSSARCH}\nMOUNT_SDCARD=${MOUNT_SDCARD}" >> $PREFIX/etc/container/proot/container-${TYPE}-${OS}-${VERSION}_${ARCH}.conf
   fi
 }
-NOOB_REMOVE(){
+EASY_REMOVE(){
   trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
@@ -1299,7 +1299,7 @@ NOOB_REMOVE(){
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
   REMOVE_CONTAINER "$CONTAINER"
 }
-NOOB_RUN(){
+EASY_RUN(){
   trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
@@ -1330,20 +1330,20 @@ NOOB_RUN(){
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
   RUN_CONTAINER $CONTAINER
 }
-NOOB_MODE(){
+EASY_MODE(){
   trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "Choose an operation:" 15 $WIDTH 6 1 install 2 remove 3 run 3>&1 1>&2 2>&3)
   case $OPTION in
-    1) NOOB_INSTALL;;
-    2) NOOB_REMOVE;;
-    3) NOOB_RUN;;
+    1) EASY_INSTALL;;
+    2) EASY_REMOVE;;
+    3) EASY_RUN;;
   esac
 }
 #函数从这里开始被调用
 case $1 in
     "-h") SHOW_USAGE;;
-    "-n") NOOB_MODE;;
+    "-n") EASY_MODE;;
     "-e") EXEC_FUNCTION ${@:2};;
     "-b") CONTAINER_BUILD $2;;
     "cp") CONTAINER_CP $2 $3;;
