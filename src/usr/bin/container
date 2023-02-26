@@ -1223,7 +1223,7 @@ SHOW_USAGE(){
   echo -e " container -h                    #Show this page."
   echo -e " container cp [Name:Path] [Path] #Copy files,like docker cp."
   echo -e " container -i [Image File]       #Import an image."
-  echo -e " container -n                    #Easy mode."
+  echo -e " container -E                    #Easy mode."
   echo -e " container -e [Function]         #Exec function in this script *NOT for user."
 }
 #萌新模式
@@ -1343,7 +1343,7 @@ EASY_MODE(){
 #函数从这里开始被调用
 case $1 in
     "-h") SHOW_USAGE;;
-    "-n") EASY_MODE;;
+    "-E") EASY_MODE;;
     "-e") EXEC_FUNCTION ${@:2};;
     "-b") CONTAINER_BUILD $2;;
     "cp") CONTAINER_CP $2 $3;;
