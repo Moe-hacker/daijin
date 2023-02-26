@@ -12,8 +12,8 @@
 ##################################
 TERMUX_CONTAINER_VERSION="9.0-dev"
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
-RGB="254;228;208"
-COLOR="\033[1;38;2;${RGB}m"
+RGB_COLOR="254;228;208"
+COLOR="\033[1;38;2;${RGB_COLOR}m"
 #确保脚本不会被ctrl-c直接杀死，接到ctrl-c信号会自动跳转回console
 trap "echo&&CONTAINER_CONSOLE" SIGINT
 #小彩蛋，这个北方酱可能是我的第一个作品，原作品事实上诞生于我github大号刚注册时期
@@ -470,10 +470,9 @@ RUN_CHROOT_CONTAINER(){
   echo -e ""
   echo -e "//"
   echo -e ""
-  i1=$(($(stty size|awk '{print $2}')))
-  let i1=$(($i1))
-  i1=$(($i1-16))
-  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  LINE=$(($(stty size|awk '{print $2}')))
+  LINE=$(($LINE-16))
+  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed ${LINE}'q'|tr -d '\n')\033[0m"
   echo -e "${COLOR}"
   echo -e "//"
   echo -e ""
@@ -488,9 +487,8 @@ RUN_CHROOT_CONTAINER(){
   echo -e "   \\________\\/     [] PRIVAGE LEVEL: ${PRIVAGE_LEVEL}"
   echo -e ""
   echo -e "〉TERMUX-CONTAINER"
-  i1=$(($(stty size|awk '{print $2}')))
-  let i1=$(($i1))
-  echo -e "$(yes "─"|sed $i1'q'|tr -d '\n')"
+  LINE=$(($(stty size|awk '{print $2}')))
+  echo -e "$(yes "─"|sed ${LINE}'q'|tr -d '\n')"
   echo -e "//////"
   echo -e ""
   if [[ ! -e ${CONTAINER_DIR} ]];then
@@ -539,10 +537,9 @@ RUN_PROOT_CONTAINER(){
   echo -e ""
   echo -e "//"
   echo -e ""
-  i1=$(($(stty size|awk '{print $2}')))
-  let i1=$(($i1))
-  i1=$(($i1-16))
-  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed $i1'q'|tr -d '\n')\033[0m"
+  LINE=$(($(stty size|awk '{print $2}')))
+  LINE=$(($LINE-16))
+  echo -e "\e[30;1;48;2;254;228;208;38;2;0;0;0mTERMUX-CONTAINER$(yes " "|sed ${LINE}'q'|tr -d '\n')\033[0m"
   echo -e "${COLOR}"
   echo -e "//"
   echo -e ""
@@ -557,9 +554,8 @@ RUN_PROOT_CONTAINER(){
   echo -e "   \\________\\/     [] VERSION: 9.0-dev"
   echo -e ""
   echo -e "〉TERMUX-CONTAINER"
-  i1=$(($(stty size|awk '{print $2}')))
-  let i1=$(($i1))
-  echo -e "$(yes "─"|sed $i1'q'|tr -d '\n')"
+  LINE=$(($(stty size|awk '{print $2}')))
+  echo -e "$(yes "─"|sed ${LINE}'q'|tr -d '\n')"
   echo -e "//////"
   echo -e ""
   if [[ ! -e ${CONTAINER_DIR} ]];then
@@ -655,10 +651,10 @@ SEARCH_IMAGES(){
     echo -e "\033[33mOS distro not found.\033[0m"
     return 1
   fi
-  for i in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
-    if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$i/$ARCH"|grep "404 Not Found") = "" ]];then
+  for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+    if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
       found_arch=1
-      echo -e "\033[34m$OS [$ARCH] : $i"
+      echo -e "\033[34m$OS [$ARCH] : $VERSION"
     fi
   done
   if [[ $found_arch != 1 ]];then
@@ -677,11 +673,11 @@ LIST_IMAGES(){
   echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   echo
-  for i in $(curl -sL http://images.linuxcontainers.org/images/|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
+  for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
   do
-    for j in $(curl -sL "http://images.linuxcontainers.org/images/$i"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
-      if [[ $(curl -sL "http://images.linuxcontainers.org/images/$i/$j/$ARCH"|grep "404 Not Found") = "" ]];then
-        echo -e "\033[34m$i [$ARCH] : $j"
+    for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+      if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
+        echo -e "\033[34m$OS [$ARCH] : $VERSION"
       else
         continue
       fi
@@ -909,11 +905,11 @@ LIST(){
   echo -e "OS:Version:Arch"
   echo -e "================"
   if [[ -e $PREFIX/var/container ]];then
-    for i in $(ls $PREFIX/var/container);do
-      OS=${i%%-*}
-      VERSION=${i#$OS-}
+    for IMAGE in $(ls $PREFIX/var/container);do
+      OS=${IMAGE%%-*}
+      VERSION=${IMAGE#$OS-}
       VERSION=${VERSION%-*}
-      ARCH=${i#*$VERSION-}
+      ARCH=${IMAGE#*$VERSION-}
       ARCH=${ARCH%%.*}
       echo "$OS:$VERSION:$ARCH"
     done
@@ -924,16 +920,16 @@ LIST(){
   echo -e "Type:Name"
   echo -e "================"
   if [[ -e $PREFIX/etc/container/proot ]];then
-    for i in $(ls $PREFIX/etc/container/proot);do
-      NAME=${i#*-}
-      NAME=${NAME%%.*}
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
       echo "proot:$NAME"
     done
   fi
   if [[ -e $PREFIX/etc/container/chroot ]];then
-    for i in $(ls $PREFIX/etc/container/chroot);do
-      NAME=${i#*-}
-      NAME=${NAME%%.*}
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
+      NAME=${NAME%%.conf}
       echo "chroot:$NAME"
     done
   fi
@@ -1119,19 +1115,21 @@ CONTAINER_CONSOLE(){
   ALL_COMMANDS="help exit new search pull rmi cp ls rm login import export info"
   while :
   do
+    #删除行首空格
     while [[ $(printf "${COMMAND}"|cut -c 1-1) == " " ]];
     do
       COMMAND=${COMMAND#?}
     done
-    for i in $ALL_COMMANDS
+    #内置命令高亮
+    for GREEN in $ALL_COMMANDS
     do
-      if [[ $(printf "${COMMAND}"|cut -d " " -f 1) == "$i" ]];then
+      if [[ $(printf "${COMMAND}"|cut -d " " -f 1) == "${GREEN}" ]];then
         if [[ $(printf "${COMMAND}"|grep " ") != "" ]];then
-          j=" $(printf "${COMMAND}"|cut -d " " -f 2)"
+          OTHER=" $(printf "${COMMAND}"|cut -d " " -f 2)"
         else
-          j=""
+          OTHER=""
         fi
-        COMMAND_SHOW="\033[1;38;2;166;227;161m${i}${COLOR}${j}"
+        COMMAND_SHOW="\033[1;38;2;166;227;161m${GREEN}${COLOR}${OTHER}"
         break
       else
         COMMAND_SHOW="${COMMAND}"
@@ -1169,7 +1167,7 @@ CONTAINER_CONSOLE(){
     elif [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a08" ]];then
       COMMAND=${COMMAND%?}
       continue
-    #上下键捕获
+    #上下键捕获，用于历史命令显示
     elif [[ ${COMMAND0} == $(printf "\033") ]];then
       read -s -N 2 COMMAND1
       #上键捕获
@@ -1274,8 +1272,8 @@ EASY_REMOVE(){
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
   if [[ -e $PREFIX/etc/container/proot ]];then
-    for i in $(ls $PREFIX/etc/container/proot);do
-      NAME=${i#container-}
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
       NAME=${NAME%%.conf}
       NUMBER=$(($NUMBER+1))
       LIST+="$NUMBER $NAME(proot) "
@@ -1283,15 +1281,15 @@ EASY_REMOVE(){
     done
   fi
   if [[ -e $PREFIX/etc/container/chroot ]];then
-    for i in $(ls $PREFIX/etc/container/chroot);do
-      NAME=${i#container-}
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
       NAME=${NAME%%.conf}
       NUMBER=$(($NUMBER+1))
       LIST+="$NUMBER $NAME(chroot) "
       LIST2+="$NAME "
     done
   fi
-  unset i NUMBER
+  unset CONTAINER NUMBER
   if [[ $LIST == "" ]];then
     whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
     return 1
@@ -1305,8 +1303,8 @@ EASY_RUN(){
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
   if [[ -e $PREFIX/etc/container/proot ]];then
-    for i in $(ls $PREFIX/etc/container/proot);do
-      NAME=${i#container-}
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
       NAME=${NAME%%.conf}
       NUMBER=$(($NUMBER+1))
       LIST+="$NUMBER $NAME(proot) "
@@ -1314,15 +1312,15 @@ EASY_RUN(){
     done
   fi
   if [[ -e $PREFIX/etc/container/chroot ]];then
-    for i in $(ls $PREFIX/etc/container/chroot);do
-      NAME=${i#container-}
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
       NAME=${NAME%%.conf}
       NUMBER=$(($NUMBER+1))
       LIST+="$NUMBER $NAME(chroot) "
       LIST2+="$NAME "
     done
   fi
-  unset i NUMBER
+  unset CONTAINER NUMBER
   if [[ $LIST == "" ]];then
     whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
     return 1
@@ -1336,8 +1334,8 @@ EASY_BACKUP(){
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
   if [[ -e $PREFIX/etc/container/proot ]];then
-    for i in $(ls $PREFIX/etc/container/proot);do
-      NAME=${i#container-}
+    for CONTAINER in $(ls $PREFIX/etc/container/proot);do
+      NAME=${CONTAINER#container-}
       NAME=${NAME%%.conf}
       NUMBER=$(($NUMBER+1))
       LIST+="$NUMBER $NAME(proot) "
@@ -1345,15 +1343,15 @@ EASY_BACKUP(){
     done
   fi
   if [[ -e $PREFIX/etc/container/chroot ]];then
-    for i in $(ls $PREFIX/etc/container/chroot);do
-      NAME=${i#container-}
+    for CONTAINER in $(ls $PREFIX/etc/container/chroot);do
+      NAME=${CONTAINER#container-}
       NAME=${NAME%%.conf}
       NUMBER=$(($NUMBER+1))
       LIST+="$NUMBER $NAME(chroot) "
       LIST2+="$NAME "
     done
   fi
-  unset i NUMBER
+  unset CONTAINER NUMBER
   if [[ $LIST == "" ]];then
     whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
     return 1
