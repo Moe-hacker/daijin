@@ -63,7 +63,7 @@ echo ""
 }
 #很明显是帮助信息，这里是给console准备的
 SHOW_HELPS(){
-  echo "Usage:"
+  echo "${COLOR}Usage:"
   echo "  help                       :Show this page."
   echo "  exit                       :Exit console."
   echo "  new                        :Create a new container."
@@ -81,7 +81,7 @@ SHOW_HELPS(){
 #事实上几乎没啥大用
 SHOW_INFO(){
   echo
-  echo -e "    _________"
+  echo -e "${COLOR}    _________"
   echo -e "   /\\        \\"
   echo -e "  /  \\        \\"
   echo -e " /    \\        \\   ═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║"
@@ -155,6 +155,7 @@ GET_CPU_ARCH(){
 #类docker cp命令支持
 #貌似不太优雅?
 CONTAINER_CP(){
+  printf "${COLOR}"
   if [[ $1 == *:/* ]];then
     CONTAINER_NAME=$(echo $1|cut -d ":" -f 1)
     CONTAINER_PATH=$(echo $1|cut -d ":" -f 2)
@@ -193,6 +194,7 @@ CONTAINER_CP(){
 PULL_ROOTFS(){
   OS=$1
   VERSION=$2
+  printf "${COLOR}"
   if [[ $3 = "" ]];then
     GET_CPU_ARCH
   else
@@ -368,6 +370,7 @@ CREATE_CHROOT_CONTAINER(){
   CONTAINER_DIR=$2
   NEW_USER=$3
   PASSWORD=$4
+  printf "${COLOR}"
   if ! mkdir -p ${CONTAINER_DIR};then
     echo -e "\033[31mError: Failed to create container directory !${COLOR}"
     return 1
@@ -411,6 +414,7 @@ CREATE_PROOT_CONTAINER(){
   CROSS_ARCH=$3
   NEW_USER=$4
   PASSWORD=$5
+  printf "${COLOR}"
   if ! mkdir -p ${CONTAINER_DIR};then
     echo -e "\033[31mFailed to create container directory !${COLOR}"
     return 1
@@ -645,7 +649,7 @@ SEARCH_IMAGES(){
   else
     ARCH=$2
   fi
-  echo "For ParrotOS and Manjaro,please just use version \"current\"."
+  echo "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "404 Not Found") != "" ]];then
     echo -e "\033[33mOS distro not found.\033[0m"
@@ -670,7 +674,7 @@ LIST_IMAGES(){
   else
     ARCH=$1
   fi
-  echo "For ParrotOS and Manjaro,please just use version \"current\"."
+  echo "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   echo
   for i in $(curl -sL http://images.linuxcontainers.org/images/|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
@@ -690,7 +694,7 @@ LIST_IMAGES(){
 CONTAINER_NEW(){
   GET_CPU_ARCH
   echo
-  echo -e "Enter the name of this container."
+  echo -e "${COLOR}Enter the name of this container."
   while :
   do
     read -p "[] Name > "  CONTAINER_NAME
@@ -901,7 +905,7 @@ CONTAINER_NEW(){
 #本地镜像与容器列表
 LIST(){
   echo
-  echo -e "Images:"
+  echo -e "${COLOR}Images:"
   echo -e "OS:Version:Arch"
   echo -e "================"
   if [[ -e $PREFIX/var/container ]];then
@@ -957,6 +961,7 @@ EXPORT_CONTAINER(){
     echo -e "\033[31mError: container directory does not exist !${COLOR}"
     return
   fi
+  printf "${COLOR}"
   if [[ ${TYPE} == "chroot" ]];then
     tar -JPpcvf ${FILE} .
   else
@@ -1043,7 +1048,7 @@ REMOVE_CONTAINER(){
   CONTAINER_NAME=$1
   if [[ -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
     source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
-    echo -e "======================================="
+    echo -e "${COLOR}======================================="
     echo -e "Name                : ${CONTAINER_NAME}"
     echo -e "OS                  : ${OS}"
     echo -e "TYPE                : proot"
@@ -1223,6 +1228,7 @@ SHOW_USAGE(){
 }
 #萌新模式
 NOOB_INSTALL(){
+  trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   if whiptail --title "[] RUN MODE" --yes-button "chroot" --no-button "proot"  --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH;then
     TYPE=chroot
@@ -1263,6 +1269,7 @@ NOOB_INSTALL(){
   fi
 }
 NOOB_REMOVE(){
+  trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
   if [[ -e $PREFIX/etc/container/proot ]];then
@@ -1293,6 +1300,7 @@ NOOB_REMOVE(){
   REMOVE_CONTAINER "$CONTAINER"
 }
 NOOB_RUN(){
+  trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   NUMBER=0
   if [[ -e $PREFIX/etc/container/proot ]];then
@@ -1323,6 +1331,7 @@ NOOB_RUN(){
   RUN_CONTAINER $CONTAINER
 }
 NOOB_MODE(){
+  trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
   OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "Choose an operation:" 15 $WIDTH 6 1 install 2 remove 3 run 3>&1 1>&2 2>&3)
   case $OPTION in
