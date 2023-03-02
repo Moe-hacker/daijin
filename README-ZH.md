@@ -15,7 +15,7 @@
     &emsp;
  </p>
 <p align="center">
-Run linux with chroot&unshare/proot on your Android phone,safely and easy 
+更加简单而安全地于安卓手机中部署Linux容器
 </p>
 
 ![](https://img.shields.io/github/stars/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=instatus&logoColor=fee4d0)
@@ -25,27 +25,26 @@ Run linux with chroot&unshare/proot on your Android phone,safely and easy
 ![](https://img.shields.io/github/last-commit/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=codeigniter&logoColor=fee4d0)
 ![](https://img.shields.io/badge/language-shell-green?style=for-the-badge&color=fee4d0&logo=sharp&logoColor=fee4d0)
 
-You can read this doc in :
-
-**[<kbd> <br> 简体中文 <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)**&emsp;**[<kbd> <br> English <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README.md)**
-
-### WARNING:      
+### 警告:      
 ```
-* Your warranty is now void.
-* I am not responsible for anything that may happen to your device by using this script.
-* You do it at your own risk and take the responsibility upon yourself.
-```
-### About:      
-Termux-container is a script that runs Linux containers on your android phone. It's safe, easy to use and well-designed.      
-### About moe-container:      
-Moe-container runs a linux container with namespaces and dropped capabilities in your system.      
-It's like `chroot` and `unshare`,but it can reduse the container's capability set for more security.       
-It's published with MIT license, everyone is free to use it.      
-### WARNING:      
-Here's only the new version of termux-container and it might not be stable.      
-For any bugs,please report at Discussions.      
-### Getting start:      
-The new version hasn't been released,if you want to try it, please remove the old version and run:      
+* 本项目`无担保`。      
+* 项目作者对可能因使用此脚本发生在您手机上的`任何`事情概不负责。      
+* 您自愿使用此脚本，并将自行承担`任何`风险与责任。      
+```       
+### 关于:      
+此脚本用于在安卓手机中部署ch/proot的linux容器。      
+特性：      
+- 一个好看的终端界面。      
+- 可以使用proot以提供非特权容器。      
+- chroot容器可自行开启unshare，并且可通过控制容器权限级别以提供更更好的安全性。      
+- 更简洁的新手模式。      
+### 关于moe-container:      
+集chroot/unshare/libcap为一体的特权容器实现，采用libcap清理容器中的不必要特权以在兼容性有限的安卓默认内核下提供更好的安全性。            
+以MIT许可证发布，萌新第一次写C，有大佬帮忙清理下屎山就更好了。            
+### 警告:      
+此版本尚未达到稳定！！！      
+### 开始使用:      
+新版本尚未发布，若想使用请手动使用make打包。      
 ```sh
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
@@ -53,11 +52,10 @@ pkg install make
 make
 apt install ./termux-container.deb
 ```
-### Usage:     
-See `container -h` and `help` in container console.
-### About me:            
-A noob,want to be a geek.            
-If my work helps,please give me a star !             
+### 用法:     
+参照 `container -h` 和container控制台的 `help` 界面。      
+### 关于作者:            
+逝个鸽子，勿催，快了。。。。。。             
 
 --------
 <p align="center">「生きてて良かった そんなこと思える日を,</p>
