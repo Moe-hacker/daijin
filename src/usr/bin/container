@@ -11,6 +11,7 @@
 #简易模式
 #完善postinst/preinst脚本
 ##################################
+#版本号定义，建议直接改成114514(雾)
 TERMUX_CONTAINER_VERSION="9.0-dev"
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
 RGB_COLOR="254;228;208"
@@ -120,7 +121,7 @@ SHOW_INFO(){
   echo -e "[] Cpu Architecture      : $(uname -m)"
   echo -e "[] Hostname              : $(hostname)"
   echo -e "[] Uptime                : $(uptime -p)"
-  #与ksu的su -c貌似冲突，不过一般没人装俩
+  #与ksu的su -c语法貌似冲突，不过一般没人装俩
   if [[ -e /bin/magisk ]];then
     echo -e "[] Magisk version        : $(su -c /bin/magisk -V)"
     echo -e "[] SELinux               : $(sudo getenforce)"
