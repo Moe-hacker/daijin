@@ -505,14 +505,14 @@ RUN_CHROOT_CONTAINER(){
   mount --bind ${PREFIX}/tmp ${CONTAINER_DIR}/tmp
   #解决sudo提示nosuid挂载无法使用
   mount -o remount,suid /data  >> /dev/null 2>&1
-  CONTAINER_PARAMETER=${CONTAINER_DIR}
+  CONTAINER_PARAMETER="-w"
   if [[ ${ENABLE_UNSHARE} == "true" ]];then
-    CONTAINER_PARAMETER+=" -u -w"
+    CONTAINER_PARAMETER+=" -u"
   fi
   if [[ ${PRIVAGE_LEVEL} == "0" ]];then
-    CONTAINER_PARAMETER+=" -D"
-  elif [[ ${PRIVAGE_LEVEL} == "1" ]];then
     CONTAINER_PARAMETER+=" -d"
+  elif [[ ${PRIVAGE_LEVEL} == "2" ]];then
+    CONTAINER_PARAMETER+=" -p"
   fi
   printf "\033[0m"
   unset LD_PRELOAD
@@ -1117,7 +1117,7 @@ CONTAINER_CONSOLE(){
   ALL_COMMANDS="help exit new search pull rmi cp ls rm login import export info"
   while :
   do
-    #删除行首空格
+    #删除行首空格选项
     while [[ $(printf "${COMMAND}"|cut -c 1-1) == " " ]];
     do
       COMMAND=${COMMAND#?}
