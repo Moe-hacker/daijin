@@ -1117,7 +1117,7 @@ CONTAINER_CONSOLE(){
   ALL_COMMANDS="help exit new search pull rmi cp ls rm login import export info"
   while :
   do
-    #删除行首空格选项
+    #删除行首空格
     while [[ $(printf "${COMMAND}"|cut -c 1-1) == " " ]];
     do
       COMMAND=${COMMAND#?}
