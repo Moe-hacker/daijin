@@ -214,7 +214,7 @@ PULL_ROOTFS(){
       VERSION2="default"
     fi
     #来自tmoe的url解析
-    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "DIR" |sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 2|tail -n 1)
+    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "href" |cut -d ">" -f 2|cut -d "/" -f 1|tail -n 1)
     if [[ ${TIME} = "" ]];then
       echo -e "\033[31mError: Can not find rootfs !${COLOR}"
       return 1
@@ -653,7 +653,7 @@ SEARCH_IMAGES(){
     echo -e "\033[33mOS distro not found.\033[0m"
     return 1
   fi
-  for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+  for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
     if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
       found_arch=1
       echo -e "\033[34m$OS [$ARCH] : $VERSION"
@@ -675,9 +675,9 @@ LIST_IMAGES(){
   echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   echo
-  for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
+  for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
   do
-    for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+    for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
       if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
         echo -e "\033[34m$OS [$ARCH] : $VERSION"
       else
@@ -1035,6 +1035,7 @@ CONTAINER_CONSOLE_MAIN(){
     "new") CONTAINER_NEW;;
     "ls") LIST;;
     "exit") echo -e "\nExit.\033[0m"&&exit;;
+    "rmi") REMOVE_IMAGE $2 $3 $4;;
     "rm") REMOVE_CONTAINER $2;;
     "cp") CONTAINER_CP $2 $3;;
     "info") SHOW_INFO;;
@@ -1127,7 +1128,7 @@ CONTAINER_CONSOLE(){
     do
       if [[ $(printf "${COMMAND}"|cut -d " " -f 1) == "${GREEN}" ]];then
         if [[ $(printf "${COMMAND}"|grep " ") != "" ]];then
-          OTHER=" $(printf "${COMMAND}"|cut -d " " -f 2)"
+          OTHER=" $(printf "${COMMAND}"|cut -d " " -f 2-10)"
         else
           OTHER=""
         fi
@@ -1140,7 +1141,7 @@ CONTAINER_CONSOLE(){
     HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
     HISTORY_LINES=$(( ${HISTORY_LINES}-1))
     SIZE=$(stty size|awk '{printf $2}')
-    stty erase '^?'
+#    stty erase '^?'
     printf "${COLOR}"
     printf "\033[?25l"
     printf "\r"
@@ -1243,7 +1244,7 @@ EASY_INSTALL(){
   unset LIST LIST2 NUMBER
   if [[ ${OS} != "parrot" ]]&&[[ ${OS} != "manjaro" ]];then
     NUMBER=0
-    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "DIR"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
     unset VERSION NUMBER
     NUMBER=$(whiptail --title "[] VERSION" --menu "Choose the version to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
     VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
