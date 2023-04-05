@@ -40,7 +40,7 @@ Termux-container is a script that runs Linux containers on your android phone. I
 ### About moe-container:      
 Moe-container runs a linux container with unshare namespaces and dropped capabilities in your system.      
 It's like `chroot` and `unshare`, but it can reduce the container's capability set for more security.       
-It's published with MIT license, everyone is free to use it.      
+It's published under the MIT license, everyone is free to use it.      
 ### WARNING:      
 Here's only the new version of termux-container and it might not be stable.      
 For any bugs, please report at Discussions.      
