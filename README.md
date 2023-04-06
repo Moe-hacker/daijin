@@ -39,13 +39,13 @@ You can read this doc in :
 Termux-container is a script that runs Linux containers on your android phone. It's safe, easy to use and well-designed.      
 ### About moe-container:      
 Moe-container runs a linux container with unshare namespaces and dropped capabilities in your system.      
-It's like `chroot` and `unshare`,but it can reduse the container's capability set for more security.       
-It's published with MIT license, everyone is free to use it.      
+It's like `chroot` and `unshare`, but it can reduce the container's capability set for more security.       
+It's published under the MIT license, everyone is free to use it.      
 ### WARNING:      
 Here's only the new version of termux-container and it might not be stable.      
-For any bugs,please report at Discussions.      
+For any bugs, please report at Discussions.      
 ### Getting start:      
-The new version hasn't been released,if you want to try it, please remove the old version and run:      
+The new version hasn't been released yet, if you want to try it, please remove the old version and run:      
 ```sh
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
@@ -56,8 +56,8 @@ apt install ./termux-container.deb
 ### Usage:     
 See `container -h` and `help` in container console.
 ### About me:            
-A noob,want to be a geek.            
-If my work helps,please give me a star !             
+A noob, want to be a geek.            
+If my work helps, please give me a star !             
 
 --------
 <p align="center">「生きてて良かった そんなこと思える日を,</p>
