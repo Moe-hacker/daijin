@@ -16,13 +16,11 @@ TERMUX_CONTAINER_VERSION="9.0-dev"
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
 RGB_COLOR="254;228;208"
 COLOR="\033[1;38;2;${RGB_COLOR}m"
-#确保脚本不会被ctrl-c直接杀死，接到ctrl-c信号会自动跳转回console
-trap "echo&&CONTAINER_CONSOLE" SIGINT
 #小彩蛋，这个北方酱可能是我的第一个作品，原作品事实上诞生于我github大号刚注册时期
 #为了字符画显示正常，此处不进行缩进
 CONSOLE_GREETING(){
 LINE=$(($(($(stty size|awk '{print $2}')))/2-22))
-HOPPOU="\033[30m\033[${LINE}C               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅
+HOPPOU="\033[1;38;2;66;66;66m\033[${LINE}C               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅
 \033[${LINE}C          ▅▅▀▀▀               ▀▀▅▅
 \033[${LINE}C     ▅▅▅▀▀            ▅           ▀▅
 \033[${LINE}C      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅
@@ -31,8 +29,8 @@ HOPPOU="\033[30m\033[${LINE}C               ▅▅▀▀▀▀▀▀▀▀▀▀
 \033[${LINE}C  ▅▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █
 \033[${LINE}C      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █
 \033[${LINE}C      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █
-\033[${LINE}C      █ █ █\033[40;31m█▀█\033[0m\033[30m█        █\033[40;31m█▀█\033[0m\033[30m█ █   █     █
-\033[${LINE}C     █  █ █\033[31m███\033[30m█        █\033[31m███\033[30m█ █   █     ▀▅
+\033[${LINE}C      █ █ █\033[40;31m█▀█\033[0m\033[1;38;2;66;66;66m█        █\033[40;31m█▀█\033[0m\033[1;38;2;66;66;66m█ █   █     █
+\033[${LINE}C     █  █ █\033[31m███\033[1;38;2;66;66;66m█        █\033[31m███\033[1;38;2;66;66;66m█ █   █     ▀▅
 \033[${LINE}C    ▅▀  █  ▀▀▀          ▀▀▀  █   █      █
 \033[${LINE}C  ▅▀▅▀ █                     █   █      █
 \033[${LINE}C █   █ ▀▅ ▅▀▅   ▅▀▅   ▅▅     █   █      ▀▅
@@ -1022,9 +1020,6 @@ return
 }
 #console获取到的命令在这里被解析
 CONTAINER_CONSOLE_MAIN(){
-  if [[ $1 != "" ]];then
-    echo $@ >> $HOME/.container_history
-  fi
   case $1 in
     "help") SHOW_HELPS;;
     "search") SEARCH_IMAGES $2 $3;;
@@ -1109,92 +1104,8 @@ REMOVE_CONTAINER(){
 }
 #用于获取命令并交由console_main函数解析
 CONTAINER_CONSOLE(){
-  [[ -e $HOME/.container_history ]]||touch $HOME/.container_history
-  if [[ $(whoami) == "root" ]];then
-    echo -e "\033[33mWarning: This script should not be run with root privileges !${COLOR}\n"
-  fi
-  HISTORY=0
-  COMMAND=""
-  ALL_COMMANDS="help exit new search pull rmi cp ls rm login import export info"
-  while :
-  do
-    #删除行首空格
-    while [[ $(printf "${COMMAND}"|cut -c 1-1) == " " ]];
-    do
-      COMMAND=${COMMAND#?}
-    done
-    #内置命令高亮
-    for GREEN in $ALL_COMMANDS
-    do
-      if [[ $(printf "${COMMAND}"|cut -d " " -f 1) == "${GREEN}" ]];then
-        if [[ $(printf "${COMMAND}"|grep " ") != "" ]];then
-          OTHER=" $(printf "${COMMAND}"|cut -d " " -f 2-10)"
-        else
-          OTHER=""
-        fi
-        COMMAND_SHOW="\033[1;38;2;166;227;161m${GREEN}${COLOR}${OTHER}"
-        break
-      else
-        COMMAND_SHOW="${COMMAND}"
-      fi
-    done
-    HISTORY_LINES=$(awk 'END{print NR}' $HOME/.container_history)
-    HISTORY_LINES=$(( ${HISTORY_LINES}-1))
-    SIZE=$(stty size|awk '{printf $2}')
-#    stty erase '^?'
-    printf "${COLOR}"
-    printf "\033[?25l"
-    printf "\r"
-    printf "\033[1G$(yes " "|sed $SIZE'q'|tr -d '\n')"
-    printf "\033[1GConsole > ${COMMAND_SHOW}"
-    printf "\033[?25h"
-    #每次读取一字符内容并解析
-    read -s -N1 COMMAND0
-    #ctrl-d捕获
-    if [[ ${COMMAND0} == $(echo -e "\004") ]];then
-      echo -e "\n\nExit.\033[0m"&&exit
-    fi
-    #回车捕获
-    if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "000a" ]]&&[[ ${COMMAND0} != " " ]];then
-      echo
-      CONTAINER_CONSOLE_MAIN ${COMMAND}
-      COMMAND=""
-      COMMAND_SHOW=""
-      continue
-    fi
-    #删除键捕获
-    if [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a7f" ]];then
-      COMMAND=${COMMAND%?}
-      continue
-    #也是删除键捕获,为方便调试，兼容作者笔记本
-    elif [[ $(echo ${COMMAND0}|hexdump|head -n1|awk '{print $2}') == "0a08" ]];then
-      COMMAND=${COMMAND%?}
-      continue
-    #上下键捕获，用于历史命令显示
-    elif [[ ${COMMAND0} == $(printf "\033") ]];then
-      read -s -N 2 COMMAND1
-      #上键捕获
-      if [[ ${COMMAND1} == "[A" ]];then
-        if (($HISTORY <= ${HISTORY_LINES}));then
-          HISTORY=$(($HISTORY+1))
-        fi
-        COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-        continue
-      #下键捕获
-      elif [[ ${COMMAND1} == "[B" ]];then
-        if (($HISTORY >= 2));then
-          HISTORY=$(($HISTORY-1))
-        fi
-        COMMAND=$(cat $HOME/.container_history|tail -${HISTORY}|head -n1)
-        continue
-      else
-        continue
-      fi
-    else
-      COMMAND+=${COMMAND0}
-      continue
-    fi
-  done
+  #此部分已被c语言重构
+  container-console
 }
 #外部-h参数的帮助信息输出
 SHOW_USAGE(){
@@ -1387,6 +1298,8 @@ case $1 in
     "-b") CONTAINER_BUILD $2;;
     "cp") CONTAINER_CP $2 $3;;
     "-v") EASTER_EGG;;
+    #无效参数，用作和console的接口
+    "-t") exit 0;;
     "") CONSOLE_GREETING&&CONTAINER_CONSOLE;;
     *) CONTAINER_CONSOLE_MAIN ${@:1};;
 esac

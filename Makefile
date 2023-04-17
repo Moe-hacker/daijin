@@ -23,6 +23,9 @@ all :
 	@cd build&&git clone https://github.com/Moe-hacker/moe-container
 	@cd build&&cd moe-container&&make static&&mv -v container ../data/data/com.termux/files/usr/bin/moe-container
 	@cd build&&rm -rfv moe-container
+	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
+	@cd src&&make
+	@cd build&&cp ../src/container-console ./data/data/com.termux/files/usr/bin/ -v
 	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
 	@cd build&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
 	@cd build&&dpkg -b . ../termux-container.deb
