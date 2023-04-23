@@ -20,8 +20,8 @@ all :
 	@cd build&&cp ../src/usr data/data/com.termux/files/ -rv
 	@cd build&&cp ../src/DEBIAN . -rv
 	@printf "\033[1;38;2;254;228;208m[+] Compile moe-container.\033[0m\n"&&sleep 1s
-	@cd build&&git clone https://github.com/Moe-hacker/moe-container
-	@cd build&&cd moe-container&&make static&&mv -v container ../data/data/com.termux/files/usr/bin/moe-container
+	@git submodule update --init
+	@cd build&&cp ../src/moe-container . -rv&&cd moe-container&&make static&&mv -v container ../data/data/com.termux/files/usr/bin/moe-container
 	@cd build&&rm -rfv moe-container
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
 	@cd src&&make
@@ -31,6 +31,12 @@ all :
 	@cd build&&dpkg -b . ../termux-container.deb
 	@printf "\033[1;38;2;254;228;208m[+] Clean.\033[0m\n"&&sleep 1s
 	@rm -rfv build
+	@printf "\033[1;38;2;254;228;208m    .^.   .^.\n"
+	@printf "    /⋀\\_ﾉ_/⋀\\ \n"
+	@printf "   /ﾉｿﾉ\\ﾉｿ丶)|\n"
+	@printf "  |ﾙﾘﾘ >   )ﾘ\n"
+	@printf "  ﾉノ㇏ Ｖ ﾉ|ﾉ\n"
+	@printf "        ⠁⠁\n"
 	@printf "\033[1;38;2;254;228;208m[*] Build done,package: ./termux-container.deb\033[0m\n"
 help :
 	@echo "Makefile is not for common user here,please use released .deb file instead."

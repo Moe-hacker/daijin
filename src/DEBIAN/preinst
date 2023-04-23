@@ -1,15 +1,25 @@
 #!/data/data/com.termux/files/usr/bin/bash
 ############################
-#TODO：
-#安装配色
-#判断屏幕大小
-#判断字体支持
 if [[ ! -e ~/.termux/font.ttf ]];then
   echo -e "Installing fonts....."
   wget https://github.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/font.ttf -O ~/.termux/font.ttf||wget https://kgithub.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/font.ttf -O ~/.termux/font.ttf||exit 1
   termux-reload-settings
 fi
+if [[ ! -e ~/.termux/colors.properties ]];then
+  echo -e "Installing color settings....."
+  wget https://github.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/colors.properties -O ~/.termux/colors.properties||wget https://kgithub.com/Moe-hacker/termux-container/raw/main/src/usr/share/termux-container/colors.properties -O ~/.termux/colors.properties||exit 1
+  termux-reload-settings
+fi
 if [[ ! -e $PREFIX/share/termux-container/licenses.allowed ]];then
+  while :
+  do
+    if [[ (($(($(stty size|awk '{print $1}')))<44)) ]];then
+      echo -e "Error:Your display is too small to show licenses!\nIt must be at least 45 lines by 70 columns."
+      sleep 1s
+    else
+      break
+    fi
+  done
   trap "printf '\033[?25h'&&exit" SIGINT
   RGB="254;228;208"
   COLOR="\033[1;38;2;${RGB}m"
@@ -55,7 +65,7 @@ if [[ ! -e $PREFIX/share/termux-container/licenses.allowed ]];then
   echo -e "\033[19;7H  ● 您应当在遵守当地法律规定的前提下使用本程序。"
   echo -e "\033[20;7H  ● \`任何\`由本程序带来的\`任何形式的\`法律责任，作者概不负责。"
   echo -e "\033[21;7H  ● 本程序作者保留其著作权，严禁在不遵循其许可的情况下二次分发。"
-  echo -e "\033[${HEIGHT};7H Copyright 2022 Moe-hacker"
+  echo -e "\033[${HEIGHT};7H Copyright 2021-2023 Moe-hacker"
   HEIGHT=$(($HEIGHT+5))
   echo -e "\033[${HEIGHT};7H \033[1;32m[✓]\033[0m${COLOR} 我已阅读并接受许可条款， 按回车键同意"
   HEIGHT=$(($HEIGHT+2))

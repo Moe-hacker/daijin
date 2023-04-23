@@ -10,6 +10,7 @@
 #中文
 #简易模式
 #完善postinst/preinst脚本
+#加入表情
 ##################################
 #版本号定义，建议直接改成114514(雾)
 TERMUX_CONTAINER_VERSION="9.0-dev"
@@ -96,7 +97,7 @@ SHOW_INFO(){
   echo -e "[] Signature             : (>_)"
   echo -e "[] License               : APACHE-2.0"
   echo -e "[] Legal Information     : NO WARRANTY"
-  echo -e '[] Version               : ${TERMUX_CONTAINER_VERSION}'
+  echo -e "[] Version               : ${TERMUX_CONTAINER_VERSION}"
   if [[ -e $PREFIX/bin/moe-container ]];then
     echo -e "[] Moe-container Version : $(moe-container -v|head -1|awk '{print $2}')"
     echo -e "[] Moe-container License : MIT"
@@ -129,7 +130,6 @@ SHOW_INFO(){
   echo -e "[] Model                 : $(getprop ro.product.model)"
   echo -e "[] Model Codename        : $(getprop ro.product.board)"
   echo -e "[] Platform Codename     : $(getprop ro.board.platform)"
-  echo -e "[] Cpu Model             : $(cat /proc/cpuinfo|grep "Hardware"|awk '{print $NF}')"
   echo -e "[] Cpus                  : $(lscpu|grep CPU\(s\)\:|awk '{print $2}')"
   echo -e "[] Total Memory          : $(free -g --si | grep "Mem" | awk {'print $2'})GB"
   _temp=$(cat /sys/class/thermal/thermal_zone0/temp)
@@ -1035,7 +1035,15 @@ CONTAINER_CONSOLE_MAIN(){
     "cp") CONTAINER_CP $2 $3;;
     "info") SHOW_INFO;;
     "") return;;
-    *) echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
+    *)
+x="${COLOR}  .^.   .^.
+  /⋀\_._/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏  ^ ﾉ|ﾉ
+      ⠁⠁"
+    printf "$x\n"
+    echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
   esac
 }
 #容器删除
