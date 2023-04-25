@@ -23,7 +23,7 @@ Run linux with chroot&unshare/proot on your Android phone,safely and easy
 ![](https://img.shields.io/github/license/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=apache&logoColor=fee4d0)
 ![](https://img.shields.io/github/repo-size/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=files&logoColor=fee4d0)
 ![](https://img.shields.io/github/last-commit/Moe-hacker/termux-container?style=for-the-badge&color=fee4d0&logo=codeigniter&logoColor=fee4d0)
-![](https://img.shields.io/badge/language-shell-green?style=for-the-badge&color=fee4d0&logo=sharp&logoColor=fee4d0)
+![](https://img.shields.io/badge/language-shell\&c-green?style=for-the-badge&color=fee4d0&logo=sharp&logoColor=fee4d0)
 
 You can read this doc in :
 
@@ -60,5 +60,5 @@ A noob, want to be a geek.
 If my work helps, please give me a star !             
 
 --------
-<p align="center">「生きてて良かった そんなこと思える日を,</p>
+<p align="center">「生きてて良かった、そんなこと思える日を,</p>
 <p align="center">願ってしまうんだ」</p>         

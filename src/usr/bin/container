@@ -9,7 +9,7 @@
 #换源
 #中文
 #简易模式
-#完善postinst/preinst脚本
+#完善postinst脚本
 #加入表情
 ##################################
 #版本号定义，建议直接改成114514(雾)
@@ -17,34 +17,14 @@ TERMUX_CONTAINER_VERSION="9.0-dev"
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
 RGB_COLOR="254;228;208"
 COLOR="\033[1;38;2;${RGB_COLOR}m"
-#小彩蛋，这个北方酱可能是我的第一个作品，原作品事实上诞生于我github大号刚注册时期
-#为了字符画显示正常，此处不进行缩进
 CONSOLE_GREETING(){
-LINE=$(($(($(stty size|awk '{print $2}')))/2-22))
-HOPPOU="\033[1;38;2;66;66;66m\033[${LINE}C               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅
-\033[${LINE}C          ▅▅▀▀▀               ▀▀▅▅
-\033[${LINE}C     ▅▅▅▀▀            ▅           ▀▅
-\033[${LINE}C      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅
-\033[${LINE}C     ▅▀   █▅▀▀  ▀     ▀ ▀▀▅▅    █ ▀▀▅ █
-\033[${LINE}C    ▅▀   ▅▀  ▅▀      ▀▅    ▀▅   █▅███▀█
-\033[${LINE}C  ▅▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █
-\033[${LINE}C      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █
-\033[${LINE}C      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █
-\033[${LINE}C      █ █ █\033[40;31m█▀█\033[0m\033[1;38;2;66;66;66m█        █\033[40;31m█▀█\033[0m\033[1;38;2;66;66;66m█ █   █     █
-\033[${LINE}C     █  █ █\033[31m███\033[1;38;2;66;66;66m█        █\033[31m███\033[1;38;2;66;66;66m█ █   █     ▀▅
-\033[${LINE}C    ▅▀  █  ▀▀▀          ▀▀▀  █   █      █
-\033[${LINE}C  ▅▀▅▀ █                     █   █      █
-\033[${LINE}C █   █ ▀▅ ▅▀▅   ▅▀▅   ▅▅     █   █      ▀▅
-\033[${LINE}C▅█▅▅██▅ ▅██  ▀███ ▅████ ▀▅█▀▅▀   █       ▀▅
-\033[${LINE}C███████ ▀██████████████████▀▀             █
-\033[${LINE}C █    ▀▅  ██▀ ▀██▀▀██▀▀██▀█     █▀         █
-\033[${LINE}C ▀▅     ▀▀█              ▅▀     █          █
-\033[${LINE}C   ▀▅    █               █     ██        ▅▀
-\033[${LINE}C     ▀▅▅▅▀                ▀▀▀▀▀ █        █
-\033[${LINE}C        ▀                       ▀        ▀
-\033[${LINE}C           「Keep moe,keep cool」
-"
-printf "${HOPPOU}"
+x="\n${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ Ｖ ﾉ|ﾉ
+      ⠁⠁"
+printf "$x\n"
 #无聊的开场白
 echo -e "${COLOR}Console of Termux-container"
 echo -e "$(date)"
@@ -212,7 +192,7 @@ PULL_ROOTFS(){
       VERSION2="default"
     fi
     #来自tmoe的url解析
-    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "href" |cut -d ">" -f 2|cut -d "/" -f 1|tail -n 1)
+    TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "href" |cut -d ">" -f 2|cut -d "/" -f 1|tail -n 1|grep -v '\.\.')
     if [[ ${TIME} = "" ]];then
       echo -e "\033[31mError: Can not find rootfs !${COLOR}"
       return 1
@@ -404,7 +384,14 @@ CREATE_CHROOT_CONTAINER(){
   umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
   umount -lvf ${CONTAINER_DIR}/proc >> /dev/null 2>&1
   umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
-  echo -e "\nCreation done.\n"
+  x="\n${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ Ｖ ﾉ|ﾉ
+      ⠁⠁"
+  printf "$x\n"
+  echo -e "Creation done.\n"
   return 0
 }
 #proot容器创建
@@ -439,7 +426,14 @@ CREATE_PROOT_CONTAINER(){
     COMMAND+=" -q qemu-${CROSS_ARCH}"
   fi
   ${COMMAND} /tmp/group_add.sh >> /dev/null 2>&1
-  echo -e "\nCreation done.\n"
+  x="\n${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ Ｖ ﾉ|ﾉ
+      ⠁⠁"
+  printf "$x\n"
+  echo -e "Creation done.\n"
   return 0
 }
 #chroot容器运行，调用moe-container以提供unshare与capability移除支持
@@ -455,6 +449,7 @@ RUN_CHROOT_CONTAINER(){
     return 1
   fi
   source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
+  if [[ ${BE_SILENT} != 'true' ]];then
   kernelVersion="$(uname -r)"
   kernelMajor="${kernelVersion%%.*}"
   kernelMinor="${kernelVersion#$kernelMajor.}"
@@ -491,6 +486,7 @@ RUN_CHROOT_CONTAINER(){
   echo -e "$(yes "─"|sed ${LINE}'q'|tr -d '\n')"
   echo -e "//////"
   echo -e ""
+  fi
   if [[ ! -e ${CONTAINER_DIR} ]];then
     echo -e "\033[31mError: Container directory does not exist !${COLOR}"
     return 1
@@ -526,6 +522,7 @@ RUN_PROOT_CONTAINER(){
     return 1
   fi
   source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
+  if [[ ${BE_SILENT} != 'true' ]];then
   kernelVersion="$(uname -r)"
   kernelMajor="${kernelVersion%%.*}"
   kernelMinor="${kernelVersion#$kernelMajor.}"
@@ -558,6 +555,7 @@ RUN_PROOT_CONTAINER(){
   echo -e "$(yes "─"|sed ${LINE}'q'|tr -d '\n')"
   echo -e "//////"
   echo -e ""
+  fi
   if [[ ! -e ${CONTAINER_DIR} ]];then
     echo -e "\033[31mError: Container directory does not exist !${COLOR}"
     return 1
@@ -651,7 +649,7 @@ SEARCH_IMAGES(){
     echo -e "\033[33mOS distro not found.\033[0m"
     return 1
   fi
-  for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+  for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.');do
     if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
       found_arch=1
       echo -e "\033[34m$OS [$ARCH] : $VERSION"
@@ -673,9 +671,9 @@ LIST_IMAGES(){
   echo -e "${COLOR}For ParrotOS and Manjaro,please just use version \"current\"."
   echo "Searching for images,this might take a while......"
   echo
-  for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1)
+  for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.')
   do
-    for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do
+    for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.');do
       if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS/$VERSION/$ARCH"|grep "404 Not Found") = "" ]];then
         echo -e "\033[34m$OS [$ARCH] : $VERSION"
       else
@@ -1002,20 +1000,34 @@ IMPORT_ROOTFS(){
 EXEC_FUNCTION(){
   $@
 }
-#又一个小彩蛋，但我不说
+#小彩蛋，这个北方酱可能是我的第一个作品，原作品事实上诞生于我github大号刚注册时期
+#为了字符画显示正常，此处不进行缩进
 EASTER_EGG(){
-LINE=$(($(($(stty size|awk '{print $2}')))/2-27))
-SIGNATURE="\033[${LINE}C       00                                  00
-\033[${LINE}C      01                                    00
-\033[${LINE}C     00      000                100  001     10
-\033[${LINE}C     01        1010               0\\\/0       11
-\033[${LINE}C     10           001             0000       01
-\033[${LINE}C     00        1110              00/\\\00      00
-\033[${LINE}C      10     000                111  111    01
-\033[${LINE}C       11                                  10
-\033[${LINE}C                    ^^^^^^^^^^^
+LINE=$(($(($(stty size|awk '{print $2}')))/2-22))
+HOPPOU="\033[1;38;2;66;66;66m\033[${LINE}C               ▅▅▀▀▀▀▀▀▀▀▀▀▀▀▅
+\033[${LINE}C          ▅▅▀▀▀               ▀▀▅▅
+\033[${LINE}C     ▅▅▅▀▀            ▅           ▀▅
+\033[${LINE}C      ▅▀      ▅▀█▅▅▀▀▅▀▅        ▅▅  ▀▅
+\033[${LINE}C     ▅▀   █▅▀▀  ▀     ▀ ▀▀▅▅    █ ▀▀▅ █
+\033[${LINE}C    ▅▀   ▅▀  ▅▀      ▀▅    ▀▅   █▅███▀█
+\033[${LINE}C  ▅▅█▀▅ █ ▅▅▀          ▀▀   █   ████   █
+\033[${LINE}C      █ █ ▅▅▅▅▅        ▅▅▅▅▅ █  ▀█▀    █
+\033[${LINE}C      █ █▀ ▅▅▅ ▀      ▀ ▅▅▅ ▀█   █     █
+\033[${LINE}C      █ █ █\033[40;31m█▀█\033[0m\033[1;38;2;66;66;66m█        █\033[40;31m█▀█\033[0m\033[1;38;2;66;66;66m█ █   █     █
+\033[${LINE}C     █  █ █\033[31m███\033[1;38;2;66;66;66m█        █\033[31m███\033[1;38;2;66;66;66m█ █   █     ▀▅
+\033[${LINE}C    ▅▀  █  ▀▀▀          ▀▀▀  █   █      █
+\033[${LINE}C  ▅▀▅▀ █                     █   █      █
+\033[${LINE}C █   █ ▀▅ ▅▀▅   ▅▀▅   ▅▅     █   █      ▀▅
+\033[${LINE}C▅█▅▅██▅ ▅██  ▀███ ▅████ ▀▅█▀▅▀   █       ▀▅
+\033[${LINE}C███████ ▀██████████████████▀▀             █
+\033[${LINE}C █    ▀▅  ██▀ ▀██▀▀██▀▀██▀█     █▀         █
+\033[${LINE}C ▀▅     ▀▀█              ▅▀     █          █
+\033[${LINE}C   ▀▅    █               █     ██        ▅▀
+\033[${LINE}C     ▀▅▅▅▀                ▀▀▀▀▀ █        █
+\033[${LINE}C        ▀                       ▀        ▀
+\033[${LINE}C           「Keep moe,keep cool」
 "
-printf "\033[1;38;2;135;206;250m${SIGNATURE}\033[0m"
+printf "${HOPPOU}"
 return
 }
 #console获取到的命令在这里被解析
@@ -1036,12 +1048,58 @@ CONTAINER_CONSOLE_MAIN(){
     "info") SHOW_INFO;;
     "") return;;
     *)
+    RANDOM_NUM=$RANDOM
+    RANDOM_NUM=$(((RANDOM_NUM%6)))
+    case $RANDOM_NUM in
+    "1")
 x="${COLOR}  .^.   .^.
-  /⋀\_._/⋀\\
+  /⋀\_ﾉ_/⋀\\
  /ﾉｿﾉ\ﾉｿ丶)|
 |ﾙﾘﾘ >   )ﾘ
 ﾉノ㇏  ^ ﾉ|ﾉ
       ⠁⠁"
+      ;;
+     "2")
+x="${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ ぁ ﾉ|ﾉ
+      ⠁⠁"
+      ;;
+     "3")
+x="${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ の ﾉ|ﾉ
+      ⠁⠁"
+      ;;
+     "4")
+x="${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ ヮ ﾉ|ﾉ
+      ⠁⠁"
+      ;;
+     "5")
+x="${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ ++ ﾉ|ﾉ
+      ⠁⠁"
+      ;;
+     "0")
+x="${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ xx ﾉ|ﾉ
+      ⠁⠁"
+      ;;
+    esac
     printf "$x\n"
     echo -e "\033[31mError: Unknow command \`$@\`,type \`help\` to show helps.\033[0m${COLOR}"
   esac
@@ -1114,6 +1172,14 @@ REMOVE_CONTAINER(){
 CONTAINER_CONSOLE(){
   #此部分已被c语言重构
   container-console
+  x="${COLOR}  .^.   .^.
+  /⋀\_ﾉ_/⋀\\
+ /ﾉｿﾉ\ﾉｿ丶)|
+|ﾙﾘﾘ >   )ﾘ
+ﾉノ㇏ ひ ﾉ|ﾉ
+      ⠁⠁
+Bye, nya~"
+  printf "$x\n"
 }
 #外部-h参数的帮助信息输出
 SHOW_USAGE(){
@@ -1163,7 +1229,7 @@ EASY_INSTALL(){
   unset LIST LIST2 NUMBER
   if [[ ${OS} != "parrot" ]]&&[[ ${OS} != "manjaro" ]];then
     NUMBER=0
-    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1);do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
+    for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.');do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
     unset VERSION NUMBER
     NUMBER=$(whiptail --title "[] VERSION" --menu "Choose the version to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
     VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
@@ -1249,6 +1315,7 @@ EASY_RUN(){
   fi
   NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to run:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
+  export BE_SILENT=true
   RUN_CONTAINER $CONTAINER
 }
 EASY_BACKUP(){
