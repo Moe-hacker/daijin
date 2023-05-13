@@ -1,0 +1,566 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-13 20:48+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: container:48
+msgid "Console of Termux-container"
+msgstr ""
+
+#: container:57
+msgid "Linux kernel version:"
+msgstr ""
+
+#: container:58
+msgid "Made with  by Moe-hacker"
+msgstr ""
+
+#: container:60
+msgid "WARNING: NO WARRANTY HERE"
+msgstr ""
+
+#: container:61
+msgid "For usage,just type `help`"
+msgstr ""
+
+#: container:66 container:1194
+msgid "Usage:"
+msgstr ""
+
+#: container:67
+msgid "help                       :Show this page."
+msgstr ""
+
+#: container:68
+msgid "exit                       :Exit console."
+msgstr ""
+
+#: container:69
+msgid "new                        :Create a new container."
+msgstr ""
+
+#: container:70
+msgid "search [all/OS] (Arch)     :Search for images."
+msgstr ""
+
+#: container:71
+msgid "pull [OS] [Version] (Arch) :Download image,just save."
+msgstr ""
+
+#: container:72
+msgid "rmi [OS] [Version] (Arch)  :Remove an image."
+msgstr ""
+
+#: container:73
+msgid "cp [Name:Path] [Path]      :Copy files,like docker cp."
+msgstr ""
+
+#: container:74
+msgid "ls                         :List containers and images."
+msgstr ""
+
+#: container:75
+msgid "rm [Name]                  :Remove a container."
+msgstr ""
+
+#: container:76
+msgid "login [Name]               :Login to the container."
+msgstr ""
+
+#: container:77
+msgid "import [Image File]        :Import an image."
+msgstr ""
+
+#: container:78
+msgid "export [Name]              :Export a container as an image."
+msgstr ""
+
+#: container:79
+msgid "info                       :Show version info."
+msgstr ""
+
+#: container:93
+msgid "Script Info :"
+msgstr ""
+
+#: container:94
+msgid "Author"
+msgstr ""
+
+#: container:95
+msgid "License"
+msgstr ""
+
+#: container:96 container:896
+msgid "Version"
+msgstr ""
+
+#: container:98
+msgid "Moe-container Version"
+msgstr ""
+
+#: container:99
+msgid "Moe-container License"
+msgstr ""
+
+#: container:101
+msgid "Warning: moe-container not installed !"
+msgstr ""
+
+#: container:109
+msgid "System info"
+msgstr ""
+
+#: container:110
+msgid "Kernel Version"
+msgstr ""
+
+#: container:112
+msgid "Termux Version"
+msgstr ""
+
+#: container:114 container:800
+msgid "Username"
+msgstr ""
+
+#: container:115
+msgid "Android Version"
+msgstr ""
+
+#: container:116
+msgid "Cpu Architecture"
+msgstr ""
+
+#: container:117
+msgid "Hostname"
+msgstr ""
+
+#: container:118
+msgid "Uptime"
+msgstr ""
+
+#: container:121
+msgid "Magisk version"
+msgstr ""
+
+#: container:122
+msgid "SELinux"
+msgstr ""
+
+#: container:124
+msgid "Hardware info"
+msgstr ""
+
+#: container:125
+msgid "Brand"
+msgstr ""
+
+#: container:126
+msgid "Model"
+msgstr ""
+
+#: container:127
+msgid "Model Codename"
+msgstr ""
+
+#: container:128
+msgid "Platform Codename"
+msgstr ""
+
+#: container:129
+msgid "Cpus"
+msgstr ""
+
+#: container:130
+msgid "Total Memory"
+msgstr ""
+
+#: container:134
+msgid "Temperature"
+msgstr ""
+
+#: container:147
+msgid "Unknow cpu architecture for this device !"
+msgstr ""
+
+#: container:181 container:646 container:966 container:1153
+msgid "Error: container does not exist !"
+msgstr ""
+
+#: container:200
+msgid "Error: Rootfs already exists !"
+msgstr ""
+
+#: container:213 container:230
+msgid "Error: Can not find rootfs !"
+msgstr ""
+
+#: container:223
+msgid "Error: Failed to download rootfs !"
+msgstr ""
+
+#: container:359
+msgid "Error: Rootfs does not exist !"
+msgstr ""
+
+#: container:371
+msgid "Error: Failed to create container directory !"
+msgstr ""
+
+#: container:410 container:452
+msgid "Creation done."
+msgstr ""
+
+#: container:422
+msgid "Failed to create container directory !"
+msgstr ""
+
+#: container:459
+msgid "Error: Can not find moe-container installed !"
+msgstr ""
+
+#: container:464 container:537
+msgid "Error: Container does not exist !"
+msgstr ""
+
+#: container:507 container:576
+msgid "Error: Container directory does not exist !"
+msgstr ""
+
+#: container:662 container:687
+msgid "For ParrotOS and Manjaro,please just use version \"current\"."
+msgstr ""
+
+#: container:663 container:688
+msgid "Searching for images,this might take a while......"
+msgstr ""
+
+#: container:665
+msgid "OS distro not found."
+msgstr ""
+
+#: container:675
+msgid ""
+"Could not found image for current cpu architecture,maybe you should choose "
+"another cpu architecture and use proot to run cross-arch container."
+msgstr ""
+
+#: container:707
+msgid "Enter the name of this container."
+msgstr ""
+
+#: container:710
+msgid "Name > "
+msgstr ""
+
+#: container:720
+msgid "Error: container name already in use !"
+msgstr ""
+
+#: container:724
+msgid ""
+"If your phone is rooted,it is recommand to run container with chroot mode.If "
+"not or you want to run cross-arch container,please choose proot."
+msgstr ""
+
+#: container:727
+msgid "Enter the type of this container."
+msgstr ""
+
+#: container:730
+msgid "Type [chroot/proot] > "
+msgstr ""
+
+#: container:740
+msgid ""
+"Unshare mode will use namespace features of Linux kernel to provide more "
+"security,but some devices may crash after using it."
+msgstr ""
+
+#: container:743
+msgid "Enable unshare [true/false] > "
+msgstr ""
+
+#: container:752
+msgid ""
+"The privilege level determines the privileges that the container can get. 0 "
+"is the lowest and 2 is the highest.Lower privileges can make the container "
+"more secure,but operations like mount will not be authorized in the "
+"container.It's recommended to set it to 1."
+msgstr ""
+
+#: container:755
+msgid "Privilege level [0-2] > "
+msgstr ""
+
+#: container:765
+msgid ""
+"You can use qemu to simulate another CPU architecture to run containers,"
+"however,the performance is not ideal."
+msgstr ""
+
+#: container:766
+msgid "Available CPU architectures are:"
+msgstr ""
+
+#: container:767
+msgid "If you don't want to use qemu,just press Enter here."
+msgstr ""
+
+#: container:770
+msgid "CPU architecture"
+msgstr ""
+
+#: container:785
+msgid ""
+"You can mount /sdcard to the container to share files in your phone.However,"
+"it's not a secure way.It's recommended to use `container cp` instead."
+msgstr ""
+
+#: container:788
+msgid "Mount sdcard [true/false]"
+msgstr ""
+
+#: container:797
+msgid ""
+"You can create a new common user in the container.If you don't want it,just "
+"press Enter here."
+msgstr ""
+
+#: container:810 container:894
+msgid "Password"
+msgstr ""
+
+#: container:820
+msgid ""
+"The container absolute path is the directory used to store the container,for "
+"chroot,you can use /data/container-name,and for proot,you can use /data/data/"
+"com.termux/files/home/container-name,but do not use directory in /sdcard,or "
+"you might run into problems !"
+msgstr ""
+
+#: container:821
+msgid "Enter the absolute path of container."
+msgstr ""
+
+#: container:824 container:892
+msgid "Container path"
+msgstr ""
+
+#: container:830
+msgid "Error: container directory already exist !"
+msgstr ""
+
+#: container:835
+msgid "Error: refuse to use system directory !"
+msgstr ""
+
+#: container:843
+msgid "Error: please use absolute path !"
+msgstr ""
+
+#: container:849
+msgid ""
+"Choose the OS and the version to install,you can use `search` command here."
+msgstr ""
+
+#: container:852 container:895 container:1100 container:1117 container:1213
+msgid "OS"
+msgstr ""
+
+#: container:866
+msgid "Vesion"
+msgstr ""
+
+#: container:882
+msgid ""
+"Before creating the container,you need to make sure the config is all right:"
+msgstr ""
+
+#: container:884 container:888
+msgid "Type"
+msgstr ""
+
+#: container:885
+msgid "Enable unshare"
+msgstr ""
+
+#: container:886
+msgid "Privilege level"
+msgstr ""
+
+#: container:889
+msgid "Cross-arch"
+msgstr ""
+
+#: container:891 container:1099 container:1116
+msgid "Name"
+msgstr ""
+
+#: container:893
+msgid "New user"
+msgstr ""
+
+#: container:897
+msgid "Mount sdcard"
+msgstr ""
+
+#: container:898
+msgid "Continue"
+msgstr ""
+
+#: container:918
+msgid "Images:"
+msgstr ""
+
+#: container:919
+msgid "OS:Version:Arch"
+msgstr ""
+
+#: container:933
+msgid "Containers:"
+msgstr ""
+
+#: container:934
+msgid "Type:Name"
+msgstr ""
+
+#: container:971
+msgid "Error: container directory does not exist !"
+msgstr ""
+
+#: container:980
+msgid "Export done, file:"
+msgstr ""
+
+#: container:986
+msgid "Error: rootfs file does not exist !"
+msgstr ""
+
+#: container:1009
+msgid "Error: OS version already in use !"
+msgstr ""
+
+#: container:1101 container:1118
+msgid "TYPE"
+msgstr ""
+
+#: container:1102 container:1119
+msgid "Container directory"
+msgstr ""
+
+#: container:1104 container:1121
+msgid "Press Enter to remove this container or CTRL-C to exit."
+msgstr ""
+
+#: container:1131 container:1135 container:1139 container:1143 container:1147
+msgid "Error: can not umount container at this time !"
+msgstr ""
+
+#: container:1195
+msgid "container                       #Start container console."
+msgstr ""
+
+#: container:1196
+msgid "container -h                    #Show this page."
+msgstr ""
+
+#: container:1197
+msgid "container cp [Name:Path] [Path] #Copy files,like docker cp."
+msgstr ""
+
+#: container:1198
+msgid "container -i [Image File]       #Import an image."
+msgstr ""
+
+#: container:1199
+msgid "container -E                    #Easy mode."
+msgstr ""
+
+#: container:1200
+msgid ""
+"container -e [Function]         #Exec function in this script *NOT for user."
+msgstr ""
+
+#: container:1206
+msgid "RUN MODE"
+msgstr ""
+
+#: container:1206
+msgid ""
+"if your phone is rooted,it is recommand to run container with chroot mode"
+msgstr ""
+
+#: container:1206
+msgid "If not ,please choose proot"
+msgstr ""
+
+#: container:1206
+msgid "Please choose your run mode:"
+msgstr ""
+
+#: container:1213
+msgid "Choose the OS to install:"
+msgstr ""
+
+#: container:1220
+msgid "VERSION"
+msgstr ""
+
+#: container:1220
+msgid "Choose the version to install:"
+msgstr ""
+
+#: container:1228
+msgid "Error: container already installed"
+msgstr ""
+
+#: container:1268 container:1299 container:1331
+msgid "ERROR"
+msgstr ""
+
+#: container:1268 container:1299 container:1331
+msgid "No container created!"
+msgstr ""
+
+#: container:1271
+msgid "Choose the container to remove:"
+msgstr ""
+
+#: container:1302
+msgid "Choose the container to run:"
+msgstr ""
+
+#: container:1334
+msgid "Choose the container to backup:"
+msgstr ""
+
+#: container:1347
+msgid "Choose an operation:"
+msgstr ""
+
+#: container:1347
+msgid "install"
+msgstr ""
+
+#: container:1347
+msgid "remove"
+msgstr ""
+
+#: container:1347
+msgid "run"
+msgstr ""
