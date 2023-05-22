@@ -13,7 +13,7 @@
 #加入表情
 ##################################
 #用于国际化
-alias GETTEXT='gettext termux-container'
+export GETTEXT='gettext termux-container'
 #版本号定义，建议直接改成114514(雾)
 TERMUX_CONTAINER_VERSION="9.0-dev"
 #此处定义输出rgb色彩值，据说是鹿乃的应援色呢！
@@ -45,7 +45,7 @@ HOPPOU="\033[1;38;2;88;88;88m\033[${LINE}C                   ▅▅▀▀▀▀�
 "
 printf "${HOPPOU}"
 #无聊的开场白
-echo -e "\033[${LINE}C            ${COLOR}$(GETTEXT "Console of Termux-container")"
+echo -e "\033[${LINE}C            ${COLOR}$(${GETTEXT} "Console of Termux-container")"
 echo -e "\033[${LINE}C         $(date)"
 #学习自docker的check-config.sh
 kernelVersion="$(uname -r)"
@@ -54,29 +54,29 @@ kernelMinor="${kernelVersion#$kernelMajor.}"
 kernelMinor="${kernelMinor%%.*}"
 kernelPatch="${kernelVersion#*$kernelMinor.}"
 kernelPatch="${kernelPatch%%-*}"
-echo -e "\033[${LINE}C            $(GETTEXT "Linux kernel version:") $kernelMajor.$kernelMinor.$kernelPatch"
+echo -e "\033[${LINE}C            $(${GETTEXT} "Linux kernel version:") $kernelMajor.$kernelMinor.$kernelPatch"
 echo -e "\033[${LINE}C             Made with  by Moe-hacker"
 echo -e "\033[${LINE}C                      (>_)"
-echo -e "\033[${LINE}C             $(GETTEXT "WARNING: NO WARRANTY HERE")"
-echo -e "\033[${LINE}C             $(GETTEXT "For usage,just type \`help\`")"
+echo -e "\033[${LINE}C             $(${GETTEXT} "WARNING: NO WARRANTY HERE")"
+echo -e "\033[${LINE}C             $(${GETTEXT} "For usage,just type \`help\`")"
 echo ""
 }
 #很明显是帮助信息，这里是给console准备的
 SHOW_HELPS(){
-  echo -e "${COLOR}$(GETTEXT "Usage:")"
-  echo "  $(GETTEXT "help                       :Show this page.")"
-  echo "  $(GETTEXT "exit                       :Exit console.")"
-  echo "  $(GETTEXT "new                        :Create a new container.")"
-  echo "  $(GETTEXT "search [all/OS] (Arch)     :Search for images.")"
-  echo "  $(GETTEXT "pull [OS] [Version] (Arch) :Download image,just save.")"
-  echo "  $(GETTEXT "rmi [OS] [Version] (Arch)  :Remove an image.")"
-  echo "  $(GETTEXT "cp [Name:Path] [Path]      :Copy files,like docker cp.")"
-  echo "  $(GETTEXT "ls                         :List containers and images.")"
-  echo "  $(GETTEXT "rm [Name]                  :Remove a container.")"
-  echo "  $(GETTEXT "login [Name]               :Login to the container.")"
-  echo "  $(GETTEXT "import [Image File]        :Import an image.")"
-  echo "  $(GETTEXT "export [Name]              :Export a container as an image.")"
-  echo "  $(GETTEXT "info                       :Show version info.")"
+  echo -e "${COLOR}$(${GETTEXT} "Usage:")"
+  echo "  $(${GETTEXT} "help                       :Show this page.")"
+  echo "  $(${GETTEXT} "exit                       :Exit console.")"
+  echo "  $(${GETTEXT} "new                        :Create a new container.")"
+  echo "  $(${GETTEXT} "search [all/OS] (Arch)     :Search for images.")"
+  echo "  $(${GETTEXT} "pull [OS] [Version] (Arch) :Download image,just save.")"
+  echo "  $(${GETTEXT} "rmi [OS] [Version] (Arch)  :Remove an image.")"
+  echo "  $(${GETTEXT} "cp [Name:Path] [Path]      :Copy files,like docker cp.")"
+  echo "  $(${GETTEXT} "ls                         :List containers and images.")"
+  echo "  $(${GETTEXT} "rm [Name]                  :Remove a container.")"
+  echo "  $(${GETTEXT} "login [Name]               :Login to the container.")"
+  echo "  $(${GETTEXT} "import [Image File]        :Import an image.")"
+  echo "  $(${GETTEXT} "export [Name]              :Export a container as an image.")"
+  echo "  $(${GETTEXT} "info                       :Show version info.")"
 }
 #事实上几乎没啥大用
 SHOW_INFO(){
@@ -90,15 +90,15 @@ SHOW_INFO(){
   echo -e " \\    /        /"
   echo -e "  \\  /        /"
   echo -e "   \\/________/"
-  echo -e "\n$(GETTEXT "Script Info :")"
-  echo -e "[] $(GETTEXT "Author")                : Moe-hacker"
-  echo -e "[] $(GETTEXT "License")               : APACHE-2.0"
-  echo -e "[] $(GETTEXT "Version")               : ${TERMUX_CONTAINER_VERSION}"
+  echo -e "\n$(${GETTEXT} "Script Info :")"
+  echo -e "[] $(${GETTEXT} "Author")                : Moe-hacker"
+  echo -e "[] $(${GETTEXT} "License")               : APACHE-2.0"
+  echo -e "[] $(${GETTEXT} "Version")               : ${TERMUX_CONTAINER_VERSION}"
   if [[ -e $PREFIX/bin/moe-container ]];then
-    echo -e "[] $(GETTEXT "Moe-container Version") : $(moe-container -v|head -1|awk '{print $2}')"
-    echo -e "[] $(GETTEXT "Moe-container License") : MIT"
+    echo -e "[] $(${GETTEXT} "Moe-container Version") : $(moe-container -v|head -1|awk '{print $2}')"
+    echo -e "[] $(${GETTEXT} "Moe-container License") : MIT"
   else
-    echo -e "\033[33m $(GETTEXT "Warning: moe-container not installed !")${COLOR}"
+    echo -e "\033[33m $(${GETTEXT} "Warning: moe-container not installed !")${COLOR}"
   fi
   kernelVersion="$(uname -r)"
   kernelMajor="${kernelVersion%%.*}"
@@ -106,32 +106,32 @@ SHOW_INFO(){
   kernelMinor="${kernelMinor%%.*}"
   kernelPatch="${kernelVersion#*$kernelMinor.}"
   kernelPatch="${kernelPatch%%-*}"
-  echo -e "\n$(GETTEXT "System info") :"
-  echo -e "[] $(GETTEXT "Kernel Version")        : $kernelMajor.$kernelMinor.$kernelPatch"
+  echo -e "\n$(${GETTEXT} "System info") :"
+  echo -e "[] $(${GETTEXT} "Kernel Version")        : $kernelMajor.$kernelMinor.$kernelPatch"
   if [[ ${TERMUX_VERSION} != "" ]];then
-    echo -e "[] $(GETTEXT "Termux Version")        : ${TERMUX_VERSION}"
+    echo -e "[] $(${GETTEXT} "Termux Version")        : ${TERMUX_VERSION}"
   fi
-  echo -e "[] $(GETTEXT "Username")              : $(whoami)"
-  echo -e "[] $(GETTEXT "Android Version")       : $(getprop ro.build.version.release)"
-  echo -e "[] $(GETTEXT "Cpu Architecture")      : $(uname -m)"
-  echo -e "[] $(GETTEXT "Hostname")              : $(hostname)"
-  echo -e "[] $(GETTEXT "Uptime")                : $(uptime -p)"
+  echo -e "[] $(${GETTEXT} "Username")              : $(whoami)"
+  echo -e "[] $(${GETTEXT} "Android Version")       : $(getprop ro.build.version.release)"
+  echo -e "[] $(${GETTEXT} "Cpu Architecture")      : $(uname -m)"
+  echo -e "[] $(${GETTEXT} "Hostname")              : $(hostname)"
+  echo -e "[] $(${GETTEXT} "Uptime")                : $(uptime -p)"
   #与ksu的su -c语法貌似冲突，不过一般没人装俩
   if [[ -e /bin/magisk ]];then
-    echo -e "[] $(GETTEXT "Magisk version")        : $(su -c /bin/magisk -V)"
-    echo -e "[] $(GETTEXT "SELinux")               : $(sudo getenforce)"
+    echo -e "[] $(${GETTEXT} "Magisk version")        : $(su -c /bin/magisk -V)"
+    echo -e "[] $(${GETTEXT} "SELinux")               : $(sudo getenforce)"
   fi
-  echo -e "\n$(GETTEXT "Hardware info") :"
-  echo -e "[] $(GETTEXT "Brand")                 : $(getprop ro.product.brand)"
-  echo -e "[] $(GETTEXT "Model")                 : $(getprop ro.product.model)"
-  echo -e "[] $(GETTEXT "Model Codename")        : $(getprop ro.product.board)"
-  echo -e "[] $(GETTEXT "Platform Codename")     : $(getprop ro.board.platform)"
-  echo -e "[] $(GETTEXT "Cpus")                  : $(lscpu|grep CPU\(s\)\:|awk '{print $2}')"
-  echo -e "[] $(GETTEXT "Total Memory")          : $(free -g --si | grep "Mem" | awk {'print $2'})GB"
+  echo -e "\n$(${GETTEXT} "Hardware info") :"
+  echo -e "[] $(${GETTEXT} "Brand")                 : $(getprop ro.product.brand)"
+  echo -e "[] $(${GETTEXT} "Model")                 : $(getprop ro.product.model)"
+  echo -e "[] $(${GETTEXT} "Model Codename")        : $(getprop ro.product.board)"
+  echo -e "[] $(${GETTEXT} "Platform Codename")     : $(getprop ro.board.platform)"
+  echo -e "[] $(${GETTEXT} "Cpus")                  : $(lscpu|grep CPU\(s\)\:|awk '{print $2}')"
+  echo -e "[] $(${GETTEXT} "Total Memory")          : $(free -g --si | grep "Mem" | awk {'print $2'})GB"
   _temp=$(cat /sys/class/thermal/thermal_zone0/temp)
   temp=$(echo $_temp|cut -c 1-2)
   temp+=".$(echo $_temp|cut -c 3)"
-  echo -e "[] $(GETTEXT "Temperature")           : ${temp}°C"
+  echo -e "[] $(${GETTEXT} "Temperature")           : ${temp}°C"
   echo
 }
 #来自tmoe的cpu架构判断，许可证相同因此借用下也不过分吧
@@ -144,7 +144,7 @@ GET_CPU_ARCH(){
     aarch64 | arm64* | armv8* | arm*) export ARCH="arm64" ;;
     i*86 | x86) export ARCH="i386" ;;
     x86_64 | amd64) export ARCH="amd64" ;;
-    *) echo -e "\033[31m$(GETTEXT "Unknow cpu architecture for this device !")\033[0m"&&exit 1 ;;
+    *) echo -e "\033[31m$(${GETTEXT} "Unknow cpu architecture for this device !")\033[0m"&&exit 1 ;;
   esac
   return 0
 }
@@ -178,7 +178,7 @@ CONTAINER_CP(){
       sudo cp ${HOST_PATH} ${CONTAINER_DIR}${CONTAINER_PATH}
     fi
   else
-    echo -e "\033[31m$(GETTEXT "Error: container does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: container does not exist !")${COLOR}"
     return
   fi
 }
@@ -197,7 +197,7 @@ PULL_ROOTFS(){
     ARCH=$3
   fi
   if [[ -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
-    echo -e "\033[31m$(GETTEXT "Error: Rootfs already exists !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Rootfs already exists !")${COLOR}"
     return 1
   fi
   if [[ $OS != "parrot" ]]&&[[ $OS != "manjaro" ]];then
@@ -210,7 +210,7 @@ PULL_ROOTFS(){
     #来自tmoe的url解析
     TIME=$(curl -sL ${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}|grep "href" |cut -d ">" -f 2|cut -d "/" -f 1|tail -n 1|grep -v '\.\.')
     if [[ ${TIME} = "" ]];then
-      echo -e "\033[31m$(GETTEXT "Error: Can not find rootfs !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: Can not find rootfs !")${COLOR}"
       return 1
     fi
     URL=${MIRROR}/${OS}/${VERSION}/${ARCH}/${VERSION2}/${TIME}/rootfs.tar.xz
@@ -220,14 +220,14 @@ PULL_ROOTFS(){
     cd $PREFIX/tmp/container
     axel -n16 ${URL}
     if [[ $? != 0 ]];then
-      echo -e "\033[31m$(GETTEXT "Error: Failed to download rootfs !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: Failed to download rootfs !")${COLOR}"
       return 1
     fi
     mv rootfs.tar.xz $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
   elif [[ $OS == "parrot" ]];then
     ROOTFS=$(curl -sL https://mirrors.bfsu.edu.cn/parrot/iso/testing/|grep title|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2|tail -n +5|grep ".tar.xz"|grep ${ARCH}|head -n 1)
     if [[ ${ROOTFS} = "" ]];then
-      echo -e "\033[31m$(GETTEXT "Error: Can not find rootfs !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: Can not find rootfs !")${COLOR}"
       return 1
     fi
     URL="https://mirrors.bfsu.edu.cn/parrot/iso/testing/${ROOTFS}"
@@ -356,7 +356,7 @@ REMOVE_IMAGE(){
   if [[ -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
     rm -fv $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
   else
-    echo -e "\033[31m$(GETTEXT "Error: Rootfs does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Rootfs does not exist !")${COLOR}"
   fi
 }
 #chroot容器创建
@@ -368,7 +368,7 @@ CREATE_CHROOT_CONTAINER(){
   PASSWORD=$4
   printf "${COLOR}"
   if ! mkdir -p ${CONTAINER_DIR};then
-    echo -e "\033[31m$(GETTEXT "Error: Failed to create container directory !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Failed to create container directory !")${COLOR}"
     return 1
   fi
   pv $PREFIX/var/container/$ROOTFS|tar -xJf - -C ${CONTAINER_DIR}
@@ -407,7 +407,7 @@ CREATE_CHROOT_CONTAINER(){
 ﾉノ㇏ Ｖ ﾉ|ﾉ
       ⠁⠁"
   printf "$x\n"
-  echo -e "$(GETTEXT "Creation done.")\n"
+  echo -e "$(${GETTEXT} "Creation done.")\n"
   return 0
 }
 #proot容器创建
@@ -419,7 +419,7 @@ CREATE_PROOT_CONTAINER(){
   PASSWORD=$5
   printf "${COLOR}"
   if ! mkdir -p ${CONTAINER_DIR};then
-    echo -e "\033[31m$(GETTEXT "Failed to create container directory !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Failed to create container directory !")${COLOR}"
     return 1
   fi
   pv $PREFIX/var/container/$ROOTFS|proot -0 -l tar -xJf - -C ${CONTAINER_DIR}
@@ -449,19 +449,19 @@ CREATE_PROOT_CONTAINER(){
 ﾉノ㇏ Ｖ ﾉ|ﾉ
       ⠁⠁"
   printf "$x\n"
-  echo -e "$(GETTEXT "Creation done.")\n"
+  echo -e "$(${GETTEXT} "Creation done.")\n"
   return 0
 }
 #chroot容器运行，调用moe-container以提供unshare与capability移除支持
 #同样被以root权限调用
 RUN_CHROOT_CONTAINER(){
   if [[ ! -e $PREFIX/bin/moe-container ]];then
-    echo -e "\033[31m$(GETTEXT "Error: Can not find moe-container installed !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Can not find moe-container installed !")${COLOR}"
     return 1
   fi
   CONTAINER_NAME=$1
   if [[ ! -e $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf ]];then
-    echo -e "\033[31m$(GETTEXT "Error: Container does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Container does not exist !")${COLOR}"
     return 1
   fi
   source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
@@ -504,7 +504,7 @@ RUN_CHROOT_CONTAINER(){
   echo -e ""
   fi
   if [[ ! -e ${CONTAINER_DIR} ]];then
-    echo -e "\033[31m$(GETTEXT "Error: Container directory does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Container directory does not exist !")${COLOR}"
     return 1
   fi
   [[ -e ${CONTAINER_DIR}/sdcard ]]||mkdir -p ${CONTAINER_DIR}/sdcard
@@ -534,7 +534,7 @@ RUN_CHROOT_CONTAINER(){
 RUN_PROOT_CONTAINER(){
   CONTAINER_NAME=$1
   if [[ ! -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
-    echo -e "\033[31m$(GETTEXT "Error: Container does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Container does not exist !")${COLOR}"
     return 1
   fi
   source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
@@ -573,7 +573,7 @@ RUN_PROOT_CONTAINER(){
   echo -e ""
   fi
   if [[ ! -e ${CONTAINER_DIR} ]];then
-    echo -e "\033[31m$(GETTEXT "Error: Container directory does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Container directory does not exist !")${COLOR}"
     return 1
   fi
   unset LD_PRELOAD
@@ -643,7 +643,7 @@ RUN_CONTAINER(){
       return
     fi
   else
-    echo -e "\033[31m$(GETTEXT "Error: container does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: container does not exist !")${COLOR}"
     return
   fi
 }
@@ -659,10 +659,10 @@ SEARCH_IMAGES(){
   else
     ARCH=$2
   fi
-  echo -e "${COLOR}$(GETTEXT "For ParrotOS and Manjaro,please just use version \"current\".")"
-  echo "$(GETTEXT "Searching for images,this might take a while......")"
+  echo -e "${COLOR}$(${GETTEXT} "For ParrotOS and Manjaro,please just use version \"current\".")"
+  echo "$(${GETTEXT} "Searching for images,this might take a while......")"
   if [[ $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "404 Not Found") != "" ]];then
-    echo -e "\033[33m$(GETTEXT "OS distro not found.")\033[0m"
+    echo -e "\033[33m$(${GETTEXT} "OS distro not found.")\033[0m"
     return 1
   fi
   for VERSION in $(curl -sL "http://images.linuxcontainers.org/images/$OS"|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.');do
@@ -672,7 +672,7 @@ SEARCH_IMAGES(){
     fi
   done
   if [[ $found_arch != 1 ]];then
-    echo -e "\033[33m$(GETTEXT "Could not found image for current cpu architecture,maybe you should choose another cpu architecture and use proot to run cross-arch container.")\033[0m"
+    echo -e "\033[33m$(${GETTEXT} "Could not found image for current cpu architecture,maybe you should choose another cpu architecture and use proot to run cross-arch container.")\033[0m"
     return 1
   fi
   return 0
@@ -684,8 +684,8 @@ LIST_IMAGES(){
   else
     ARCH=$1
   fi
-  echo -e "${COLOR}$(GETTEXT "For ParrotOS and Manjaro,please just use version \"current\".")"
-  echo "$(GETTEXT "Searching for images,this might take a while......")"
+  echo -e "${COLOR}$(${GETTEXT} "For ParrotOS and Manjaro,please just use version \"current\".")"
+  echo "$(${GETTEXT} "Searching for images,this might take a while......")"
   echo
   for OS in $(curl -sL http://images.linuxcontainers.org/images/|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.')
   do
@@ -704,10 +704,10 @@ LIST_IMAGES(){
 CONTAINER_NEW(){
   GET_CPU_ARCH
   echo
-  echo -e "${COLOR}$(GETTEXT "Enter the name of this container.")"
+  echo -e "${COLOR}$(${GETTEXT} "Enter the name of this container.")"
   while :
   do
-    read -p "[] $(GETTEXT "Name > ")"  CONTAINER_NAME
+    read -p "[] $(${GETTEXT} "Name > ")"  CONTAINER_NAME
     if [[ $? != 0 ]];then
       echo
       return 1
@@ -717,17 +717,17 @@ CONTAINER_NEW(){
         echo
         break
       else
-        echo -e "\033[31m$(GETTEXT "Error: container name already in use !")${COLOR}"
+        echo -e "\033[31m$(${GETTEXT} "Error: container name already in use !")${COLOR}"
       fi
     fi
   done
-  echo -e "$(GETTEXT "If your phone is rooted,it is recommand to run container with chroot mode.If not or you want to run cross-arch container,please choose proot.")"
-  echo -e "$(GETTEXT "Chroot mode will use moe-container for unshare feature and capability reduse to make the container more secure,see:\n\033[4mhttps://github.com/Moe-hacker/moe-container\033[0m${COLOR}")"
-  echo -e "$(GETTEXT "Before you use it,you should allow the MIT License of it:\n\033[4mhttps://github.com/Moe-hacker/moe-container/blob/main/LICENSE\033[0m${COLOR}")"
-  echo -e "\n$(GETTEXT "Enter the type of this container.")"
+  echo -e "$(${GETTEXT} "If your phone is rooted,it is recommand to run container with chroot mode.If not or you want to run cross-arch container,please choose proot.")"
+  echo -e "$(${GETTEXT} "Chroot mode will use moe-container for unshare feature and capability reduse to make the container more secure,see:\n\033[4mhttps://github.com/Moe-hacker/moe-container\033[0m${COLOR}")"
+  echo -e "$(${GETTEXT} "Before you use it,you should allow the MIT License of it:\n\033[4mhttps://github.com/Moe-hacker/moe-container/blob/main/LICENSE\033[0m${COLOR}")"
+  echo -e "\n$(${GETTEXT} "Enter the type of this container.")"
   while :
   do
-    read -p "[] $(GETTEXT "Type [chroot/proot] > ")"  CONTAINER_TYPE
+    read -p "[] $(${GETTEXT} "Type [chroot/proot] > ")"  CONTAINER_TYPE
     if [[ $? != 0 ]];then
       echo
       return 1
@@ -737,10 +737,10 @@ CONTAINER_NEW(){
     fi
   done
   if [[ ${CONTAINER_TYPE} == "chroot" ]];then
-    echo -e "\n$(GETTEXT "Unshare mode will use namespace features of Linux kernel to provide more security,but some devices may crash after using it.")\n"
+    echo -e "\n$(${GETTEXT} "Unshare mode will use namespace features of Linux kernel to provide more security,but some devices may crash after using it.")\n"
     while :
     do
-      read -p "[] $(GETTEXT "Enable unshare [true/false] > ")" ENABLE_UNSHARE
+      read -p "[] $(${GETTEXT} "Enable unshare [true/false] > ")" ENABLE_UNSHARE
       if [[ $? != 0 ]];then
         echo
         return 1
@@ -749,10 +749,10 @@ CONTAINER_NEW(){
         break
       fi
     done
-    echo -e "\n$(GETTEXT "The privilege level determines the privileges that the container can get. 0 is the lowest and 2 is the highest.Lower privileges can make the container more secure,but operations like mount will not be authorized in the container.It's recommended to set it to 1.")\n"
+    echo -e "\n$(${GETTEXT} "The privilege level determines the privileges that the container can get. 0 is the lowest and 2 is the highest.Lower privileges can make the container more secure,but operations like mount will not be authorized in the container.It's recommended to set it to 1.")\n"
     while :
     do
-      read -p "[] $(GETTEXT "Privilege level [0-2] > ")" PRIVAGE_LEVEL
+      read -p "[] $(${GETTEXT} "Privilege level [0-2] > ")" PRIVAGE_LEVEL
       if [[ $? != 0 ]];then
         echo
         return 1
@@ -762,12 +762,12 @@ CONTAINER_NEW(){
       fi
     done
   else
-    echo -e "\n$(GETTEXT "You can use qemu to simulate another CPU architecture to run containers,however,the performance is not ideal.")"
-    echo -e "$(GETTEXT "Available CPU architectures are:") arm64 armhf amd64 i386 m68k ppc ppc64el riscv32 riscv64"
-    echo -e "$(GETTEXT "If you don't want to use qemu,just press Enter here.")\n"
+    echo -e "\n$(${GETTEXT} "You can use qemu to simulate another CPU architecture to run containers,however,the performance is not ideal.")"
+    echo -e "$(${GETTEXT} "Available CPU architectures are:") arm64 armhf amd64 i386 m68k ppc ppc64el riscv32 riscv64"
+    echo -e "$(${GETTEXT} "If you don't want to use qemu,just press Enter here.")\n"
     while :
     do
-      read -p "[] $(GETTEXT "CPU architecture") > " ARCH
+      read -p "[] $(${GETTEXT} "CPU architecture") > " ARCH
       if [[ $? != 0 ]];then
         echo
         return 1
@@ -782,10 +782,10 @@ CONTAINER_NEW(){
       esac
     done
   fi
-  echo -e "\n$(GETTEXT "You can mount /sdcard to the container to share files in your phone.However,it's not a secure way.It's recommended to use \`container cp\` instead.")\n"
+  echo -e "\n$(${GETTEXT} "You can mount /sdcard to the container to share files in your phone.However,it's not a secure way.It's recommended to use \`container cp\` instead.")\n"
   while :
   do
-    read -p "[] $(GETTEXT "Mount sdcard [true/false]") > " MOUNT_SDCARD
+    read -p "[] $(${GETTEXT} "Mount sdcard [true/false]") > " MOUNT_SDCARD
     if [[ $? != 0 ]];then
       echo
       return 1
@@ -794,10 +794,10 @@ CONTAINER_NEW(){
       break
     fi
   done
-  echo -e "\n$(GETTEXT "You can create a new common user in the container.If you don't want it,just press Enter here.")\n"
+  echo -e "\n$(${GETTEXT} "You can create a new common user in the container.If you don't want it,just press Enter here.")\n"
   while :
   do
-    read -p "[] $(GETTEXT "Username") > " NEW_USER
+    read -p "[] $(${GETTEXT} "Username") > " NEW_USER
     if [[ $? != 0 ]];then
       echo
       return 1
@@ -807,7 +807,7 @@ CONTAINER_NEW(){
   if [[ ${NEW_USER} != "" ]];then
     while :
     do
-      read -p "[] $(GETTEXT "Password") > " PASSWORD
+      read -p "[] $(${GETTEXT} "Password") > " PASSWORD
       if [[ $? != 0 ]];then
         echo
         return 1
@@ -817,22 +817,22 @@ CONTAINER_NEW(){
       fi
     done
   fi
-  echo -e "\n$(GETTEXT "The container absolute path is the directory used to store the container,for chroot,you can use /data/container-name,and for proot,you can use /data/data/com.termux/files/home/container-name,but do not use directory in /sdcard,or you might run into problems !")\n"
-  echo -e "$(GETTEXT "Enter the absolute path of container.")"
+  echo -e "\n$(${GETTEXT} "The container absolute path is the directory used to store the container,for chroot,you can use /data/container-name,and for proot,you can use /data/data/com.termux/files/home/container-name,but do not use directory in /sdcard,or you might run into problems !")\n"
+  echo -e "$(${GETTEXT} "Enter the absolute path of container.")"
   while :
   do
-    read -p "[] $(GETTEXT "Container path") > " CONTAINER_DIR
+    read -p "[] $(${GETTEXT} "Container path") > " CONTAINER_DIR
     if [[ $? != 0 ]];then
       echo
       return 1
     fi
     if [[ -e ${CONTAINER_DIR} ]];then
-      echo -e "\033[31m$(GETTEXT "Error: container directory already exist !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: container directory already exist !")${COLOR}"
       continue
     fi
     for BLACKLIST in {/bin/,/dev/,/odm/,/oem/,/proc/,/product/,/sys/,/system/,/vendor/};do
       if [[ ${CONTAINER_DIR} = $BLACKLIST* ]];then
-        echo -e "\033[31m$(GETTEXT "Error: refuse to use system directory !")${COLOR}"
+        echo -e "\033[31m$(${GETTEXT} "Error: refuse to use system directory !")${COLOR}"
         CONTINUE=true
       fi
     done
@@ -840,16 +840,16 @@ CONTAINER_NEW(){
       continue
     fi
     if [[ ${CONTAINER_DIR:0:1} != "/" ]];then
-      echo -e "\033[31m$(GETTEXT "Error: please use absolute path !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: please use absolute path !")${COLOR}"
       continue
     else
       break
     fi
   done
-  echo -e "\n$(GETTEXT "Choose the OS and the version to install,you can use \`search\` command here.")"
+  echo -e "\n$(${GETTEXT} "Choose the OS and the version to install,you can use \`search\` command here.")"
   while :
   do
-    read -p "[] $(GETTEXT "OS") > " OS
+    read -p "[] $(${GETTEXT} "OS") > " OS
     if [[ $? != 0 ]];then
       echo
       return 1
@@ -863,7 +863,7 @@ CONTAINER_NEW(){
       while :
       do
         printf "${COLOR}"
-        read -p "[] $(GETTEXT "Vesion") > " VERSION
+        read -p "[] $(${GETTEXT} "Vesion") > " VERSION
         if [[ $? != 0 ]];then
           echo
           return 1
@@ -879,23 +879,23 @@ CONTAINER_NEW(){
       break
     fi
   done
-  echo -e "$(GETTEXT "Before creating the container,you need to make sure the config is all right:")"
+  echo -e "$(${GETTEXT} "Before creating the container,you need to make sure the config is all right:")"
   if [[ ${CONTAINER_TYPE} == "chroot" ]];then
-    echo -e "$(GETTEXT "Type")            : chroot"
-    echo -e "$(GETTEXT "Enable unshare")  : ${ENABLE_UNSHARE}"
-    echo -e "$(GETTEXT "Privilege level") : ${PRIVAGE_LEVEL}"
+    echo -e "$(${GETTEXT} "Type")            : chroot"
+    echo -e "$(${GETTEXT} "Enable unshare")  : ${ENABLE_UNSHARE}"
+    echo -e "$(${GETTEXT} "Privilege level") : ${PRIVAGE_LEVEL}"
   else
-    echo -e "$(GETTEXT "Type")            : proot"
-    echo -e "$(GETTEXT "Cross-arch")      : ${CROSS_ARCH}"
+    echo -e "$(${GETTEXT} "Type")            : proot"
+    echo -e "$(${GETTEXT} "Cross-arch")      : ${CROSS_ARCH}"
   fi
-  echo -e "$(GETTEXT "Name")            : ${CONTAINER_NAME}"
-  echo -e "$(GETTEXT "Container path")  : ${CONTAINER_DIR}"
-  echo -e "$(GETTEXT "New user")        : ${NEW_USER}"
-  echo -e "$(GETTEXT "Password")        : ${PASSWORD}"
-  echo -e "$(GETTEXT "OS")              : ${OS}"
-  echo -e "$(GETTEXT "Version")         : ${VERSION}"
-  echo -e "$(GETTEXT "Mount sdcard")    : ${MOUNT_SDCARD}"
-  read -p "$(GETTEXT "Continue") [y/n] " CONTINUE
+  echo -e "$(${GETTEXT} "Name")            : ${CONTAINER_NAME}"
+  echo -e "$(${GETTEXT} "Container path")  : ${CONTAINER_DIR}"
+  echo -e "$(${GETTEXT} "New user")        : ${NEW_USER}"
+  echo -e "$(${GETTEXT} "Password")        : ${PASSWORD}"
+  echo -e "$(${GETTEXT} "OS")              : ${OS}"
+  echo -e "$(${GETTEXT} "Version")         : ${VERSION}"
+  echo -e "$(${GETTEXT} "Mount sdcard")    : ${MOUNT_SDCARD}"
+  read -p "$(${GETTEXT} "Continue") [y/n] " CONTINUE
   if [[ ${CONTINUE} == "n" ]];then
     return 1
   fi
@@ -915,8 +915,8 @@ CONTAINER_NEW(){
 #本地镜像与容器列表
 LIST(){
   echo
-  echo -e "${COLOR}$(GETTEXT "Images:")"
-  echo -e "$(GETTEXT "OS:Version:Arch")"
+  echo -e "${COLOR}$(${GETTEXT} "Images:")"
+  echo -e "$(${GETTEXT} "OS:Version:Arch")"
   echo -e "================"
   if [[ -e $PREFIX/var/container ]];then
     for IMAGE in $(ls $PREFIX/var/container);do
@@ -930,8 +930,8 @@ LIST(){
   fi
   echo
   echo
-  echo -e "$(GETTEXT "Containers:")"
-  echo -e "$(GETTEXT "Type:Name")"
+  echo -e "$(${GETTEXT} "Containers:")"
+  echo -e "$(${GETTEXT} "Type:Name")"
   echo -e "================"
   if [[ -e $PREFIX/etc/container/proot ]];then
     for CONTAINER in $(ls $PREFIX/etc/container/proot);do
@@ -963,12 +963,12 @@ EXPORT_CONTAINER(){
       return
     fi
   else
-    echo -e "\033[31m$(GETTEXT "Error: container does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: container does not exist !")${COLOR}"
     return
   fi
   FILE=/sdcard/${OS}-${ARCH}-${CROSS_ARCH}-${CONTAINER_NAME}-$(date +%y%m%d%H%M%S).tar.xz
   if ! cd ${CONTAINER_DIR};then
-    echo -e "\033[31m$(GETTEXT "Error: container directory does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: container directory does not exist !")${COLOR}"
     return
   fi
   printf "${COLOR}"
@@ -977,13 +977,13 @@ EXPORT_CONTAINER(){
   else
     proot -l tar -JPpcvf ${FILE} .
   fi
-  echo -e "$(GETTEXT "Export done, file:") ${FILE}"
+  echo -e "$(${GETTEXT} "Export done, file:") ${FILE}"
 }
 #还原
 IMPORT_ROOTFS(){
   FILE=$1
   if [[ ! -e ${FILE} ]];then
-    echo -e "\033[31m$(GETTEXT "Error: rootfs file does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: rootfs file does not exist !")${COLOR}"
     return 1
   fi
   while :
@@ -1006,7 +1006,7 @@ IMPORT_ROOTFS(){
     if [[ ${VERSION} != "" ]]&&[[ ! -e $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz ]];then
       break
     else
-      echo -e "\033[31m$(GETTEXT "Error: OS version already in use !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: OS version already in use !")${COLOR}"
     fi
   done
   cp ${FILE} $PREFIX/var/container/${OS}-${VERSION}-${ARCH}.tar.xz
@@ -1087,7 +1087,7 @@ x="${COLOR}  .^.   .^.
       ;;
     esac
     printf "$x\n"
-    echo -e "\033[31m$(GETTEXT "Error: Unknow command \`$@\`,type \`help\` to show helps.")\033[0m${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: Unknow command \`$@\`,type \`help\` to show helps.")\033[0m${COLOR}"
   esac
 }
 #容器删除
@@ -1096,12 +1096,12 @@ REMOVE_CONTAINER(){
   if [[ -e $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf ]];then
     source $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
     echo -e "${COLOR}======================================="
-    echo -e "$(GETTEXT "Name")                : ${CONTAINER_NAME}"
-    echo -e "$(GETTEXT "OS")                  : ${OS}"
-    echo -e "$(GETTEXT "TYPE")                : proot"
-    echo -e "$(GETTEXT "Container directory") : ${CONTAINER_DIR}"
+    echo -e "$(${GETTEXT} "Name")                : ${CONTAINER_NAME}"
+    echo -e "$(${GETTEXT} "OS")                  : ${OS}"
+    echo -e "$(${GETTEXT} "TYPE")                : proot"
+    echo -e "$(${GETTEXT} "Container directory") : ${CONTAINER_DIR}"
     echo
-    read -p "$(GETTEXT "Press Enter to remove this container or CTRL-C to exit.")"
+    read -p "$(${GETTEXT} "Press Enter to remove this container or CTRL-C to exit.")"
     chmod -Rv 777 ${CONTAINER_DIR}
     rm -rfv ${CONTAINER_DIR}
     rm -v $PREFIX/etc/container/proot/container-${CONTAINER_NAME}.conf
@@ -1113,12 +1113,12 @@ REMOVE_CONTAINER(){
     fi
     source $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
     echo -e "======================================="
-    echo -e "$(GETTEXT "Name")                : ${CONTAINER_NAME}"
-    echo -e "$(GETTEXT "OS")                  : ${OS}"
-    echo -e "$(GETTEXT "TYPE")                : chroot"
-    echo -e "$(GETTEXT "Container directory") : ${CONTAINER_DIR}"
+    echo -e "$(${GETTEXT} "Name")                : ${CONTAINER_NAME}"
+    echo -e "$(${GETTEXT} "OS")                  : ${OS}"
+    echo -e "$(${GETTEXT} "TYPE")                : chroot"
+    echo -e "$(${GETTEXT} "Container directory") : ${CONTAINER_DIR}"
     echo
-    read -p "$(GETTEXT "Press Enter to remove this container or CTRL-C to exit.")"
+    read -p "$(${GETTEXT} "Press Enter to remove this container or CTRL-C to exit.")"
     for i in {0..10};do
       umount -lvf ${CONTAINER_DIR}/dev >> /dev/null 2>&1
       umount -lvf ${CONTAINER_DIR}/sys >> /dev/null 2>&1
@@ -1128,29 +1128,29 @@ REMOVE_CONTAINER(){
       umount -lvf ${CONTAINER_DIR} >> /dev/null 2>&1
     done
     if mountpoint -q ${CONTAINER_DIR}/sdcard;then
-      echo -e "\033[31m$(GETTEXT "Error: can not umount container at this time !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: can not umount container at this time !")${COLOR}"
       return 1
     fi
      if mountpoint -q ${CONTAINER_DIR}/tmp;then
-      echo -e "\033[31m$(GETTEXT "Error: can not umount container at this time !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: can not umount container at this time !")${COLOR}"
       return 1
     fi
     if mountpoint -q ${CONTAINER_DIR}/dev;then
-      echo -e "\033[31m$(GETTEXT "Error: can not umount container at this time !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: can not umount container at this time !")${COLOR}"
       return 1
     fi
     if mountpoint -q ${CONTAINER_DIR}/sys;then
-      echo -e "\033[31m$(GETTEXT "Error: can not umount container at this time !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: can not umount container at this time !")${COLOR}"
       return 1
     fi
     if mountpoint -q ${CONTAINER_DIR}/proc;then
-      echo -e "\033[31m$(GETTEXT "Error: can not umount container at this time !")${COLOR}"
+      echo -e "\033[31m$(${GETTEXT} "Error: can not umount container at this time !")${COLOR}"
       return 1
     fi
     rm -rvf ${CONTAINER_DIR}
     rm -v $PREFIX/etc/container/chroot/container-${CONTAINER_NAME}.conf
   else
-    echo -e "\033[31m$(GETTEXT "Error: container does not exist !")${COLOR}"
+    echo -e "\033[31m$(${GETTEXT} "Error: container does not exist !")${COLOR}"
     return
   fi
 }
@@ -1191,33 +1191,33 @@ SHOW_USAGE(){
   echo
   echo -e "${COLOR}//"
   echo
-  echo -e "$(GETTEXT "Usage:")"
-  echo -e " $(GETTEXT "container                       #Start container console.")"
-  echo -e " $(GETTEXT "container -h                    #Show this page.")"
-  echo -e " $(GETTEXT "container cp [Name:Path] [Path] #Copy files,like docker cp.")"
-  echo -e " $(GETTEXT "container -i [Image File]       #Import an image.")"
-  echo -e " $(GETTEXT "container -E                    #Easy mode.")"
-  echo -e " $(GETTEXT "container -e [Function]         #Exec function in this script *NOT for user.")"
+  echo -e "$(${GETTEXT} "Usage:")"
+  echo -e " $(${GETTEXT} "container                       #Start container console.")"
+  echo -e " $(${GETTEXT} "container -h                    #Show this page.")"
+  echo -e " $(${GETTEXT} "container cp [Name:Path] [Path] #Copy files,like docker cp.")"
+  echo -e " $(${GETTEXT} "container -i [Image File]       #Import an image.")"
+  echo -e " $(${GETTEXT} "container -E                    #Easy mode.")"
+  echo -e " $(${GETTEXT} "container -e [Function]         #Exec function in this script *NOT for user.")"
 }
 #萌新模式
 EASY_INSTALL(){
   trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
-  if whiptail --title "[] $(GETTEXT "RUN MODE")" --yes-button "chroot" --no-button "proot"  --yesno "$(GETTEXT "if your phone is rooted,it is recommand to run container with chroot mode")\n$(GETTEXT "If not ,please choose proot")\n\n$(GETTEXT "Please choose your run mode:")" 12 $WIDTH;then
+  if whiptail --title "[] $(${GETTEXT} "RUN MODE")" --yes-button "chroot" --no-button "proot"  --yesno "$(${GETTEXT} "if your phone is rooted,it is recommand to run container with chroot mode")\n$(${GETTEXT} "If not ,please choose proot")\n\n$(${GETTEXT} "Please choose your run mode:")" 12 $WIDTH;then
     TYPE=chroot
   else
     TYPE=proot
   fi
   LIST="1 alpine 2 archlinux 3 centos 4 debian 5 fedora 6 kali 7 manjaro 8 opensuse 9 parrot 10 ubuntu"
   LIST2="alpine archlinux centos debian fedora kali manjaro opensuse parrot ubuntu"
-  NUMBER=$(whiptail --title "[] $(GETTEXT "OS")" --menu "$(GETTEXT "Choose the OS to install:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(whiptail --title "[] $(${GETTEXT} "OS")" --menu "$(${GETTEXT} "Choose the OS to install:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   OS=$(echo $LIST2|awk "{print \$$NUMBER}")
   unset LIST LIST2 NUMBER
   if [[ ${OS} != "parrot" ]]&&[[ ${OS} != "manjaro" ]];then
     NUMBER=0
     for VERSION in $(curl -sL http://images.linuxcontainers.org/images/$OS|grep "href"|sed -E 's@<a (href)@\n\1@g'| awk -F 'href=' '{print $2}' | cut -d '"' -f 2 |cut -d "/" -f 1|grep -v '\.\.');do NUMBER=$(($NUMBER+1));LIST+="$NUMBER $VERSION ";LIST2+="$VERSION ";done
     unset VERSION NUMBER
-    NUMBER=$(whiptail --title "[] $(GETTEXT "VERSION")" --menu "$(GETTEXT "Choose the version to install:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    NUMBER=$(whiptail --title "[] $(${GETTEXT} "VERSION")" --menu "$(${GETTEXT} "Choose the version to install:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
     VERSION=$(echo $LIST2|awk "{print \$$NUMBER}")
   fi
   GET_CPU_ARCH
@@ -1225,7 +1225,7 @@ EASY_INSTALL(){
     PULL_ROOTFS ${OS} ${VERSION} ${ARCH}
   fi
   if [[ -e /data/data/com.termux/files/home/${TYPE}-${OS}-${VERSION}_${ARCH} ]];then
-    echo -e "$(GETTEXT "Error: container already installed")"
+    echo -e "$(${GETTEXT} "Error: container already installed")"
     return 1
   fi
   if [[ ${TYPE} == "chroot" ]];then
@@ -1265,10 +1265,10 @@ EASY_REMOVE(){
   fi
   unset CONTAINER NUMBER
   if [[ $LIST == "" ]];then
-    whiptail --title "[] $(GETTEXT "ERROR")" --msgbox "$(GETTEXT "No container created!")" 7 $WIDTH
+    whiptail --title "[] $(${GETTEXT} "ERROR")" --msgbox "$(${GETTEXT} "No container created!")" 7 $WIDTH
     return 1
   fi
-  NUMBER=$(whiptail --title "[] CONTAINER" --menu "$(GETTEXT "Choose the container to remove:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "$(${GETTEXT} "Choose the container to remove:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
   REMOVE_CONTAINER "$CONTAINER"
 }
@@ -1296,10 +1296,10 @@ EASY_RUN(){
   fi
   unset CONTAINER NUMBER
   if [[ $LIST == "" ]];then
-    whiptail --title "[] $(GETTEXT "ERROR")" --msgbox "$(GETTEXT "No container created!")" 7 $WIDTH
+    whiptail --title "[] $(${GETTEXT} "ERROR")" --msgbox "$(${GETTEXT} "No container created!")" 7 $WIDTH
     return 1
   fi
-  NUMBER=$(whiptail --title "[] CONTAINER" --menu "$(GETTEXT "Choose the container to run:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "$(${GETTEXT} "Choose the container to run:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
   export BE_SILENT=true
   RUN_CONTAINER $CONTAINER
@@ -1328,10 +1328,10 @@ EASY_BACKUP(){
   fi
   unset CONTAINER NUMBER
   if [[ $LIST == "" ]];then
-    whiptail --title "[] $(GETTEXT "ERROR")" --msgbox "$(GETTEXT "No container created!")" 7 $WIDTH
+    whiptail --title "[] $(${GETTEXT} "ERROR")" --msgbox "$(${GETTEXT} "No container created!")" 7 $WIDTH
     return 1
   fi
-  NUMBER=$(whiptail --title "[] CONTAINER" --menu "$(GETTEXT "Choose the container to backup:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(whiptail --title "[] CONTAINER" --menu "$(${GETTEXT} "Choose the container to backup:")" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2|awk "{print \$$NUMBER}")
   EXPORT_CONTAINER $CONTAINER
 }
@@ -1344,7 +1344,7 @@ EASY_RESTORE(){
 EASY_MODE(){
   trap "exit" SIGINT
   WIDTH=$(($(stty size|awk '{print $2}')-8))
-  OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "$(GETTEXT "Choose an operation:")" 15 $WIDTH 6 1 "$(GETTEXT "install")" 2 "$(GETTEXT "remove")" 3 "$(GETTEXT "run")" 3>&1 1>&2 2>&3)
+  OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "$(${GETTEXT} "Choose an operation:")" 15 $WIDTH 6 1 "$(${GETTEXT} "install")" 2 "$(${GETTEXT} "remove")" 3 "$(${GETTEXT} "run")" 3>&1 1>&2 2>&3)
   case $OPTION in
     1) EASY_INSTALL;;
     2) EASY_REMOVE;;
