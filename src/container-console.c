@@ -106,8 +106,9 @@ int main(void)
             linec++;
           }
         }
-        //修复空文件读取
-        if(linec==0){
+        // 修复空文件读取
+        if (linec == 0)
+        {
           goto end;
         }
         // 设置要读的行号
@@ -203,8 +204,9 @@ int main(void)
             linec++;
           }
         }
-        //修复空文件读取
-        if(linec==0){
+        // 修复空文件读取
+        if (linec == 0)
+        {
           goto end1;
         }
         // 设置要读的行号
@@ -238,7 +240,7 @@ int main(void)
               if (arg0[0] != '\000')
               {
                 // 判断是否需要切换到arg1
-                if (arg1[0]=='\000')
+                if (arg1[0] == '\000')
                 {
                   output = arg1;
                 }
@@ -263,7 +265,7 @@ int main(void)
     // 删除键
     case 127:
       // 判断是否写入arg1
-      if (arg1[0]=='\000')
+      if (arg1[0] == '\000')
       {
         if (strlen(output) > 0)
         {
@@ -336,7 +338,7 @@ int main(void)
       if (arg0[0] != '\000')
       {
         // 判断是否需要切换到arg1
-        if (arg1[0]=='\000')
+        if (arg1[0] == '\000')
         {
           output = arg1;
           strcat(output, &input);
