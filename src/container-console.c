@@ -32,8 +32,6 @@ int main(void)
   arg1[0] = '\000';
   // 最终调用的命令
   char command[2048];
-  // 用于从arg0向arg1切换
-  bool output_to_arg1 = false;
   char *output;
   output = arg0;
   // 历史记录文件定义
@@ -99,7 +97,6 @@ int main(void)
         arg0[0] = '\000';
         arg1[0] = '\000';
         output = arg0;
-        output_to_arg1 = false;
         // 统计行数
         linec = 0;
         for (int i; (i = fgetc(history)) != EOF;)
@@ -109,8 +106,9 @@ int main(void)
             linec++;
           }
         }
-        //修复空文件读取
-        if(linec==0){
+        // 修复空文件读取
+        if (linec == 0)
+        {
           goto end;
         }
         // 设置要读的行号
@@ -152,9 +150,8 @@ int main(void)
               if (arg0[0] != '\000')
               {
                 // 判断是否需要切换到arg1
-                if (output_to_arg1 == false)
+                if (arg1[0] == '\000')
                 {
-                  output_to_arg1 = true;
                   output = arg1;
                 }
                 strcat(output, &input);
@@ -198,7 +195,6 @@ int main(void)
         arg0[0] = '\000';
         arg1[0] = '\000';
         output = arg0;
-        output_to_arg1 = false;
         // 统计行数
         linec = 0;
         for (int i; (i = fgetc(history)) != EOF;)
@@ -208,8 +204,9 @@ int main(void)
             linec++;
           }
         }
-        //修复空文件读取
-        if(linec==0){
+        // 修复空文件读取
+        if (linec == 0)
+        {
           goto end1;
         }
         // 设置要读的行号
@@ -243,9 +240,8 @@ int main(void)
               if (arg0[0] != '\000')
               {
                 // 判断是否需要切换到arg1
-                if (output_to_arg1 == false)
+                if (arg1[0] == '\000')
                 {
-                  output_to_arg1 = true;
                   output = arg1;
                 }
                 strcat(output, &input);
@@ -269,7 +265,7 @@ int main(void)
     // 删除键
     case 127:
       // 判断是否写入arg1
-      if (output_to_arg1 != true)
+      if (arg1[0] == '\000')
       {
         if (strlen(output) > 0)
         {
@@ -296,7 +292,6 @@ int main(void)
         else
         {
           output = arg0;
-          output_to_arg1 = false;
           // 删除一个字符
           output[strlen(output) - 1] = '\000';
           // 退格并覆盖字符显示
@@ -334,7 +329,6 @@ int main(void)
       arg1[0] = '\000';
       command[0] = '\000';
       line = 0;
-      output_to_arg1 = false;
       output = arg0;
       printf("\033[1;38;2;254;228;208mConsole > \033[0m");
       break;
@@ -344,10 +338,9 @@ int main(void)
       if (arg0[0] != '\000')
       {
         // 判断是否需要切换到arg1
-        if (output_to_arg1 != true)
+        if (arg1[0] == '\000')
         {
           output = arg1;
-          output_to_arg1 = true;
           strcat(output, &input);
         }
         else

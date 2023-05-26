@@ -29,9 +29,9 @@ build:
 	@cd build&&mkdir -pv data/data/com.termux/files
 	@cd build&&cp ../src/usr data/data/com.termux/files/ -rv
 	@cd build&&cp ../src/DEBIAN . -rv
-	@printf "\033[1;38;2;254;228;208m[+] Compile moe-container.\033[0m\n"&&sleep 1s
-	@cd build&&cp ../src/moe-container . -rv&&cd moe-container&&make static&&mv -v container ../data/data/com.termux/files/usr/bin/moe-container
-	@cd build&&rm -rfv moe-container
+	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
+	@cd build&&cp ../src/ruri . -rv&&cd ruri&&make static&&mv -v container ../data/data/com.termux/files/usr/bin/ruri
+	@cd build&&rm -rfv ruri
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
 	@cd src&&make
 	@cd build&&cp ../src/container-console ./data/data/com.termux/files/usr/bin/ -v

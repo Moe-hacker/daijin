@@ -94,11 +94,11 @@ SHOW_INFO(){
   echo -e "[] $(${GETTEXT} "Author")                : Moe-hacker"
   echo -e "[] $(${GETTEXT} "License")               : APACHE-2.0"
   echo -e "[] $(${GETTEXT} "Version")               : ${TERMUX_CONTAINER_VERSION}"
-  if [[ -e $PREFIX/bin/moe-container ]];then
-    echo -e "[] $(${GETTEXT} "Moe-container Version") : $(moe-container -v|head -1|awk '{print $2}')"
-    echo -e "[] $(${GETTEXT} "Moe-container License") : MIT"
+  if [[ -e $PREFIX/bin/ruri ]];then
+    echo -e "[] $(${GETTEXT} "ruri Version") : $(ruri -v|head -1|awk '{print $2}')"
+    echo -e "[] $(${GETTEXT} "ruri License") : MIT"
   else
-    echo -e "\033[33m $(${GETTEXT} "Warning: moe-container not installed !")${COLOR}"
+    echo -e "\033[33m $(${GETTEXT} "Warning: ruri not installed !")${COLOR}"
   fi
   kernelVersion="$(uname -r)"
   kernelMajor="${kernelVersion%%.*}"
@@ -452,11 +452,11 @@ CREATE_PROOT_CONTAINER(){
   echo -e "$(${GETTEXT} "Creation done.")\n"
   return 0
 }
-#chroot容器运行，调用moe-container以提供unshare与capability移除支持
+#chroot容器运行，调用ruri以提供unshare与capability移除支持
 #同样被以root权限调用
 RUN_CHROOT_CONTAINER(){
-  if [[ ! -e $PREFIX/bin/moe-container ]];then
-    echo -e "\033[31m$(${GETTEXT} "Error: Can not find moe-container installed !")${COLOR}"
+  if [[ ! -e $PREFIX/bin/ruri ]];then
+    echo -e "\033[31m$(${GETTEXT} "Error: Can not find ruri installed !")${COLOR}"
     return 1
   fi
   CONTAINER_NAME=$1
@@ -526,8 +526,8 @@ RUN_CHROOT_CONTAINER(){
   fi
   printf "\033[0m"
   unset LD_PRELOAD
-  #调用moe-container二进制代替chroot/unshare
-  moe-container ${CONTAINER_PARAMETER} ${CONTAINER_DIR}
+  #调用ruri二进制代替chroot/unshare
+  ruri ${CONTAINER_PARAMETER} ${CONTAINER_DIR}
   return 0
 }
 #proot容器运行
@@ -722,8 +722,8 @@ CONTAINER_NEW(){
     fi
   done
   echo -e "$(${GETTEXT} "If your phone is rooted,it is recommand to run container with chroot mode.If not or you want to run cross-arch container,please choose proot.")"
-  echo -e "$(${GETTEXT} "Chroot mode will use moe-container for unshare feature and capability reduse to make the container more secure,see:\n\033[4mhttps://github.com/Moe-hacker/moe-container\033[0m${COLOR}")"
-  echo -e "$(${GETTEXT} "Before you use it,you should allow the MIT License of it:\n\033[4mhttps://github.com/Moe-hacker/moe-container/blob/main/LICENSE\033[0m${COLOR}")"
+  echo -e "$(${GETTEXT} "Chroot mode will use ruri for unshare feature and capability reduse to make the container more secure,see:\n\033[4mhttps://github.com/Moe-hacker/ruri\033[0m${COLOR}")"
+  echo -e "$(${GETTEXT} "Before you use it,you should allow the MIT License of it:\n\033[4mhttps://github.com/Moe-hacker/ruri/blob/main/LICENSE\033[0m${COLOR}")"
   echo -e "\n$(${GETTEXT} "Enter the type of this container.")"
   while :
   do
