@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: all build
 all: install-dependence update-code build
 
 install-dependence:/data/data/com.termux/files/usr/bin/pkg
