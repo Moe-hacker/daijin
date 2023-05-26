@@ -1,4 +1,5 @@
-.PHONY: all 
+.PHONY: all
+out/deb: install-dependence update-code build
 all: install-dependence update-code build
 
 install-dependence:/data/data/com.termux/files/usr/bin/pkg
@@ -23,7 +24,7 @@ update-code:/data/data/com.termux/files/usr/bin/git
 	@git submodule update --init
 	@printf "\033[1;38;2;254;228;208m[+] Copy source code.\033[0m\n"&&sleep 1s
 build:
-	@mkdir -pv out&&sleep 0.5s&& mkdir -pv out/deb 
+	@mkdir -pv out&&sleep 0.5s&& mkdir -pv out/deb
 	@cd out/deb&&mkdir -pv data/data/com.termux/files
 	@cd out/deb&&cp ../../src/usr data/data/com.termux/files/ -rv
 	@cd out/deb&&cp ../../src/DEBIAN . -rv
@@ -32,10 +33,10 @@ build:
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
 	@cd src&&make
 	@cd out&&cp ../src/container-console ./deb/data/data/com.termux/files/usr/bin/ -v
-install:out
-	install out/data/data/com.termux/files/usr/bin/* /data/data/com.termux/files/usr/bin/
-	install -d out/data/data/com.termux/files/usr/share/termux-container /data/data/com.termux/files/usr/share
-	install -d out/data/data/com.termux/files/usr/share/doc/* /data/data/com.termux/files/usr/share/doc
+install:out/deb
+	install out/deb/data/data/com.termux/files/usr/bin/* /data/data/com.termux/files/usr/bin/
+	install -d out/deb/data/data/com.termux/files/usr/share/termux-container /data/data/com.termux/files/usr/share
+	install -d out/deb/data/data/com.termux/files/usr/share/doc/* /data/data/com.termux/files/usr/share/doc
 pack-deb:out/deb
 	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
 	@cd out/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
