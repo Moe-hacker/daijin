@@ -52,8 +52,7 @@ The new version hasn't been released yet, if you want to try it, please remove t
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
 pkg install make
-make
-apt install ./termux-container.deb
+make install
 ```
 ### Usage:     
 See `container -h` and `help` in container console.

@@ -44,13 +44,12 @@
 ### 警告:      
 此版本尚未达到稳定！！！      
 ### 开始使用:      
-新版本尚未发布，若想使用请手动使用make打包。      
+新版本尚未发布，若想使用请手动make。      
 ```sh
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
 pkg install make
-make
-apt install ./termux-container.deb
+make install
 ```
 ### 用法:     
 参照 `container -h` 和container控制台的 `help` 界面。      
