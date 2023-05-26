@@ -28,8 +28,7 @@ build:out
 	@cd out&&cp ../src/usr data/data/com.termux/files/ -rv
 	@cd out&&cp ../src/DEBIAN . -rv
 	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
-	@cd out&&cp ../src/ruri . -rv&&cd ruri&&make static&&mv -v ruri ../data/data/com.termux/files/usr/bin/ruri
-	@cd out&&rm -rfv ruri
+	@cd out&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../data/data/com.termux/files/usr/bin/ruri
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
 	@cd src&&make
 	@cd out&&cp ../src/container-console ./data/data/com.termux/files/usr/bin/ -v
