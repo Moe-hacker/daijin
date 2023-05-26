@@ -1,7 +1,5 @@
-all:
-	make install-dependence
-	make update-code
-	make build
+.PHONY: all
+all: install-dependence update-code build
 install-dependence:/data/data/com.termux/files/usr/bin/pkg
 	@printf "\033[1;38;2;254;228;208m"
 	@printf "                  _________\n"
