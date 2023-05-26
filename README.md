@@ -39,6 +39,8 @@ You can read this doc in :
 Termux-container is a script that runs Linux containers on your android phone. It's safe, easy to use and well-designed.      
 ### About ruri:      
 ruri runs a linux container with unshare namespaces and dropped capabilities in your system.      
+### Why does its development seem so slow？      
+The existing chroot/unshare command didn't meet the needs of the new version termux-container, so I needed to rewrite a more powerful container implementation. [ruri v2.0](https://github.com/Moe-hacker/ruri) is coming, which will bring a more free and secure container implementation, and termux-container needs to wait for it to finish to continue development.      
 It's like `chroot` and `unshare`, but it can reduce the container's capability set for more security.       
 It's published under the MIT license, everyone is free to use it.      
 ### WARNING:      
