@@ -1,5 +1,5 @@
+O = out
 .PHONY: all
-out/deb: install-dependence update-code build
 all: install-dependence update-code build
 
 install-dependence:/data/data/com.termux/files/usr/bin/pkg
@@ -24,33 +24,41 @@ update-code:/data/data/com.termux/files/usr/bin/git
 	@git submodule update --init
 	@printf "\033[1;38;2;254;228;208m[+] Copy source code.\033[0m\n"&&sleep 1s
 build:
-	@mkdir -pv out&&sleep 0.5s&& mkdir -pv out/deb
-	@cd out/deb&&mkdir -pv data/data/com.termux/files
-	@cd out/deb&&cp ../../src/usr data/data/com.termux/files/ -rv
-	@cd out/deb&&cp ../../src/DEBIAN . -rv
+	@mkdir -pv $(O)&&sleep 0.5s&& mkdir -pv $(O)/deb
+	@cd $(O)/deb&&mkdir -pv data/data/com.termux/files
+	@cd $(O)/deb&&cp ../../src/usr data/data/com.termux/files/ -rv
+	@cd $(O)/deb&&cp ../../src/DEBIAN . -rv
 	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
-	@cd out&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
+	@cd $(O)&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
 	@cd src&&make
-	@cd out&&cp ../src/container-console ./deb/data/data/com.termux/files/usr/bin/ -v
-install:out/deb
-	install out/deb/data/data/com.termux/files/usr/bin/* /data/data/com.termux/files/usr/bin/
-	install -d out/deb/data/data/com.termux/files/usr/share/termux-container /data/data/com.termux/files/usr/share
-	install -d out/deb/data/data/com.termux/files/usr/share/doc/* /data/data/com.termux/files/usr/share/doc
-pack-deb:out/deb
+	@cd $(O)&&cp ../src/container-console ./deb/data/data/com.termux/files/usr/bin/ -v
+ifneq ($(shell test -d $(O)||echo x),)
+install: all
+else
+install:
+endif
+	install $(O)/deb/data/data/com.termux/files/usr/bin/* /data/data/com.termux/files/usr/bin/
+	install -d $(O)/deb/data/data/com.termux/files/usr/share/termux-container /data/data/com.termux/files/usr/share
+	install -d $(O)/deb/data/data/com.termux/files/usr/share/doc/* /data/data/com.termux/files/usr/share/doc
+ifneq ($(shell test -d $(O)||echo x),)
+pack-deb: all
+else
+pack-deb:
+endif
 	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
-	@cd out/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
-	@cd out/deb&&dpkg -b . ../termux-container.deb
+	@cd $(O)/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
+	@cd $(O)/deb&&dpkg -b . ../termux-container.deb
 	@printf "\033[1;38;2;254;228;208m    .^.   .^.\n"
 	@printf "    /⋀\\_ﾉ_/⋀\\ \n"
 	@printf "   /ﾉｿﾉ\\ﾉｿ丶)|\n"
 	@printf "  |ﾙﾘﾘ >   )ﾘ\n"
 	@printf "  ﾉノ㇏ Ｖ ﾉ|ﾉ\n"
 	@printf "        ⠁⠁\n"
-	@printf "\033[1;38;2;254;228;208m[*] Build done,package: ./termux-container.deb\033[0m\n"
+	@printf "\033[1;38;2;254;228;208m[*] Build done,package: $(O)/termux-container.deb\033[0m\n"
 clean:
 	@printf "\033[1;38;2;254;228;208m[+] Clean.\033[0m\n"&&sleep 1s
-	@rm -rfv out
+	@rm -rfv $(O)
 	@printf "\033[1;38;2;254;228;208m    .^.   .^.\n"
 	@printf "    /⋀\\_ﾉ_/⋀\\ \n"
 	@printf "   /ﾉｿﾉ\\ﾉｿ丶)|\n"
