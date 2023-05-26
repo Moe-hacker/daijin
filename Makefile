@@ -1,5 +1,8 @@
 .PHONY: all
 all: install-dependence update-code build
+.ONESHELL:
+SHELL := /data/data/com.termux/files/usr/bin/bash
+
 install-dependence:/data/data/com.termux/files/usr/bin/pkg
 	@printf "\033[1;38;2;254;228;208m"
 	@printf "                  _________\n"
