@@ -38,8 +38,8 @@ install:out
 	install -d out/data/data/com.termux/files/usr/share/doc/* /data/data/com.termux/files/usr/share/doc
 pack-deb:out/deb
 	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
-	@cd out&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
-	@cd out&&dpkg -b . ../termux-container.deb
+	@cd out/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
+	@cd out/deb&&dpkg -b . ../termux-container.deb
 	@printf "\033[1;38;2;254;228;208m    .^.   .^.\n"
 	@printf "    /⋀\\_ﾉ_/⋀\\ \n"
 	@printf "   /ﾉｿﾉ\\ﾉｿ丶)|\n"
