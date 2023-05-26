@@ -1,7 +1,5 @@
 .PHONY: all
 all: install-dependence update-code build
-.ONESHELL:
-SHELL := /data/data/com.termux/files/usr/bin/bash
 
 install-dependence:/data/data/com.termux/files/usr/bin/pkg
 	@printf "\033[1;38;2;254;228;208m"
@@ -43,6 +41,13 @@ pack-deb:build
 	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
 	@cd build&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
 	@cd build&&dpkg -b . ../termux-container.deb
+	@printf "\033[1;38;2;254;228;208m    .^.   .^.\n"
+	@printf "    /⋀\\_ﾉ_/⋀\\ \n"
+	@printf "   /ﾉｿﾉ\\ﾉｿ丶)|\n"
+	@printf "  |ﾙﾘﾘ >   )ﾘ\n"
+	@printf "  ﾉノ㇏ Ｖ ﾉ|ﾉ\n"
+	@printf "        ⠁⠁\n"
+	@printf "\033[1;38;2;254;228;208m[*] Build done,package: ./termux-container.deb\033[0m\n"
 clean:build
 	@printf "\033[1;38;2;254;228;208m[+] Clean.\033[0m\n"&&sleep 1s
 	@rm -rfv build
@@ -52,7 +57,7 @@ clean:build
 	@printf "  |ﾙﾘﾘ >   )ﾘ\n"
 	@printf "  ﾉノ㇏ Ｖ ﾉ|ﾉ\n"
 	@printf "        ⠁⠁\n"
-	@printf "\033[1;38;2;254;228;208m[*] Build done,package: ./termux-container.deb\033[0m\n"
+	@printf "\033[1;38;2;254;228;208m[*] Cleaned Up.\033[0m\n"
 help :
 	@echo "Makefile is not for common user here,please use released .deb file instead."
 	@echo "(>_) Moe-hacker"
