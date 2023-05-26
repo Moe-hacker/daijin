@@ -2,4 +2,5 @@ src/a.out
 src/container-console
 tmpfile
 termux-container.deb
-out/termux-container.deb
+out
+build
