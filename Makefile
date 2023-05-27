@@ -29,14 +29,14 @@ build:
 	@cd $(O)/deb&&ls data/data/com.termux/files/usr>/dev/null||cp ../../src/usr data/data/com.termux/files/ -rv
 	@cd $(O)/deb&&ls DEBIAN>/dev/null||cp ../../src/DEBIAN . -rv
 	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
-	@cd $(O)&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
+	@cd $(O)&&ls ruri>/dev/null||cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
 	@cd src&&make
 	@cd $(O)&&cp ../src/container-console ./deb/data/data/com.termux/files/usr/bin/ -v
 ifneq ($(shell test -d $(O)||echo x),)
 install: all
 else
-install:
+install:out
 endif
 	install $(O)/deb/data/data/com.termux/files/usr/bin/* /data/data/com.termux/files/usr/bin/
 	install -d $(O)/deb/data/data/com.termux/files/usr/share/termux-container /data/data/com.termux/files/usr/share
@@ -44,7 +44,7 @@ endif
 ifneq ($(shell test -d $(O)||echo x),)
 pack-deb: all
 else
-pack-deb:
+pack-deb:out/deb
 endif
 	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
 	@cd $(O)/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
