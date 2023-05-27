@@ -18,16 +18,16 @@ install-dependence:/data/data/com.termux/files/usr/bin/pkg
 	@printf " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝\n\n"
 	@printf "\033[1;38;2;254;228;208m[+] Install dependents.\033[0m\n"&&sleep 1s
 	@pkg install ndk-multilib-native-static tsu coreutils p7zip gettext tar unzip zip git wget dpkg curl nano proot axel termux-tools util-linux pv gawk whiptail clang ndk-sysroot ndk-multilib libc-client-static libcap-static binutils
-update-code:/data/data/com.termux/files/usr/bin/git
+update-code:
 	@printf "\033[1;38;2;254;228;208m[+] Update source code.\033[0m\n"&&sleep 1s
 	git pull
 	@git submodule update --init
 	@printf "\033[1;38;2;254;228;208m[+] Copy source code.\033[0m\n"&&sleep 1s
 build:
-	@ls out||mkdir -pv $(O)&&sleep 0.5s&&ls out/deb||mkdir -pv $(O)/deb
-	@cd $(O)/deb&&ls data||mkdir -pv data/data/com.termux/files
-	@cd $(O)/deb&&ls data/data/com.termux/files/usr||cp ../../src/usr data/data/com.termux/files/ -rv
-	@cd $(O)/deb&&ls DEBIAN||cp ../../src/DEBIAN . -rv
+	@ls out>/dev/null||mkdir -pv $(O)&&sleep 0.5s&&ls out/deb||mkdir -pv $(O)/deb
+	@cd $(O)/deb&&ls data>/dev/null||mkdir -pv data/data/com.termux/files
+	@cd $(O)/deb&&ls data/data/com.termux/files/usr>/dev/null||cp ../../src/usr data/data/com.termux/files/ -rv
+	@cd $(O)/deb&&ls DEBIAN>/dev/null||cp ../../src/DEBIAN . -rv
 	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
 	@cd $(O)&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
