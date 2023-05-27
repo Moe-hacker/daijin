@@ -49,6 +49,7 @@
 git clone https://github.com/Moe-hacker/termux-container
 cd termux-container
 pkg install make
+make
 make install
 ```
 ### 用法:     

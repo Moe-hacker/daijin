@@ -24,10 +24,10 @@ update-code:/data/data/com.termux/files/usr/bin/git
 	@git submodule update --init
 	@printf "\033[1;38;2;254;228;208m[+] Copy source code.\033[0m\n"&&sleep 1s
 build:
-	@mkdir -pv $(O)&&sleep 0.5s&& mkdir -pv $(O)/deb
-	@cd $(O)/deb&&mkdir -pv data/data/com.termux/files
-	@cd $(O)/deb&&cp ../../src/usr data/data/com.termux/files/ -rv
-	@cd $(O)/deb&&cp ../../src/DEBIAN . -rv
+	@ls out||mkdir -pv $(O)&&sleep 0.5s&&ls out/deb||mkdir -pv $(O)/deb
+	@cd $(O)/deb&&ls data||mkdir -pv data/data/com.termux/files
+	@cd $(O)/deb&&ls data/data/com.termux/files/usr||cp ../../src/usr data/data/com.termux/files/ -rv
+	@cd $(O)/deb&&ls DEBIAN||cp ../../src/DEBIAN . -rv
 	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
 	@cd $(O)&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
