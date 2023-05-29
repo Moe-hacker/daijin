@@ -1,8 +1,7 @@
 O = out
 .PHONY: all
-all: install-dependence update-code build
-
-install-dependence:/data/data/com.termux/files/usr/bin/pkg
+all: show-greetings install-dependence update-code build
+show-greetings:
 	@printf "\033[1;38;2;254;228;208m"
 	@printf "                  _________\n"
 	@printf "                 /        /\\ \n"
@@ -16,46 +15,84 @@ install-dependence:/data/data/com.termux/files/usr/bin/pkg
 	@printf "═╔╝╔═╝╔═║╔╔ ║ ║║ ║  ╔═╝╔═║╔═ ═╔╝╔═║╝╔═ ╔═╝╔═║\n"
 	@printf " ║ ╔═╝╔╔╝║║║║ ║ ╝ ═╝║  ║ ║║ ║ ║ ╔═║║║ ║╔═╝╔╔╝\n"
 	@printf " ╝ ══╝╝ ╝╝╝╝══╝╝ ╝  ══╝══╝╝ ╝ ╝ ╝ ╝╝╝ ╝══╝╝ ╝\n\n"
+install-dependence:
 	@printf "\033[1;38;2;254;228;208m[+] Install dependents.\033[0m\n"&&sleep 1s
-	@pkg install ndk-multilib-native-static tsu coreutils p7zip gettext tar unzip zip git wget dpkg curl nano proot axel termux-tools util-linux pv gawk whiptail clang ndk-sysroot ndk-multilib libc-client-static libcap-static binutils
-update-code:/data/data/com.termux/files/usr/bin/git
-	@printf "\033[1;38;2;254;228;208m[+] Update source code.\033[0m\n"&&sleep 1s
-	git pull
-	@git submodule update --init
-	@printf "\033[1;38;2;254;228;208m[+] Copy source code.\033[0m\n"&&sleep 1s
-build:
-	@mkdir -pv $(O)&&sleep 0.5s&& mkdir -pv $(O)/deb
-	@cd $(O)/deb&&mkdir -pv data/data/com.termux/files
-	@cd $(O)/deb&&cp ../../src/usr data/data/com.termux/files/ -rv
-	@cd $(O)/deb&&cp ../../src/DEBIAN . -rv
-	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
-	@cd $(O)&&cp ../src/ruri . -rv&&cd ruri&&make static&&cp -rv ruri ../deb/data/data/com.termux/files/usr/bin/ruri
+	@pkg install ndk-multilib-native-static tsu coreutils p7zip gettext tar unzip zip git wget dpkg curl nano proot axel termux-tools util-linux pv gawk whiptail clang ndk-sysroot ndk-multilib libc-client-static libcap-static binutils	
+$(O):
+ifneq ($(shell test -d $(O)||echo x),)
+	@mkdir -v $(O)
+endif
+DOC = $(O)/doc
+$(DOC):$(O)
+ifneq ($(shell test -d $(DOC)||echo x),)
+	@mkdir -pv $(DOC)/termux-container
+	@cp -rv doc/* $(O)/doc/termux-container/
+endif
+SHARE = $(O)/termux-container
+$(SHARE):$(O)
+ifneq ($(shell test -d $(SHARE)||echo x),)
+	@cp -rv share $(O)/termux-container
+endif
+BIN = $(O)/bin
+$(BIN):$(O)
+ifneq ($(shell test -d $(BIN)||echo x),)
+	@mkdir -v $(BIN)
+endif
+CONTAINER = $(O)/bin/container
+$(CONTAINER):$(BIN)
+ifneq ($(shell test -f $(CONTAINER)||echo x),)
+	@cp -v src/container $(O)/bin/container
+endif
+CONTAINER_CONSOLE = $(O)/bin/container-console
+$(CONTAINER_CONSOLE):$(BIN)
+ifneq ($(shell test -f $(CONTAINER_CONSOLE)||echo x),)
 	@printf "\033[1;38;2;254;228;208m[+] Compile container-console.\033[0m\n"&&sleep 1s
-	@cd src&&make
-	@cd $(O)&&cp ../src/container-console ./deb/data/data/com.termux/files/usr/bin/ -v
-ifneq ($(shell test -d $(O)||echo x),)
-install: all
-else
-install:
+	@cd src/container-console&&clang -static -ffunction-sections -fdata-sections -Wl,--gc-sections -lcap -O3 -z noexecstack -z now -fstack-protector-all -fPIE -flto container-console.c -o container-console&&strip container-console
+	@mv -v src/container-console/container-console $(O)/bin/container-console
 endif
-	install $(O)/deb/data/data/com.termux/files/usr/bin/* /data/data/com.termux/files/usr/bin/
-	install -d $(O)/deb/data/data/com.termux/files/usr/share/termux-container /data/data/com.termux/files/usr/share
-	install -d $(O)/deb/data/data/com.termux/files/usr/share/doc/* /data/data/com.termux/files/usr/share/doc
-ifneq ($(shell test -d $(O)||echo x),)
-pack-deb: all
-else
-pack-deb:
+src/ruri/ruri.c:
+	@printf "\033[1;38;2;254;228;208m[+] Update source code.\033[0m\n"&&sleep 1s
+	@git pull
+	@printf "\033[1;38;2;254;228;208m[+] Update submodule.\033[0m\n"&&sleep 1s
+	@git submodule update --init
+RURI = $(O)/bin/ruri
+$(RURI):src/ruri/ruri.c $(BIN)
+ifneq ($(shell test -f $(RURI)||echo x),)
+	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
+	@cd src/ruri&&make static
+	@mv -v src/ruri/ruri $(O)/bin/ruri
 endif
-	@printf "\033[1;38;2;254;228;208m[+] Build package.\033[0m\n"&&sleep 1s
+build:$(DOC) $(SHARE) $(CONTAINER) $(CONTAINER_CONSOLE) $(RURI)
+update-code:src/ruri/ruri.c
+install:build
+	@printf "\033[1;38;2;254;228;208m[+] Install.\033[0m\n"&&sleep 1s
+	@cp -v $(O)/bin/* /data/data/com.termux/files/usr/bin/
+	@cp -rv $(O)/termux-container /data/data/com.termux/files/usr/share/
+	@cp -rv $(O)/doc/* /data/data/com.termux/files/usr/share/doc
+DEB=$(O)/deb
+$(DEB):build
+ifneq ($(shell test -d $(DEB)||echo x),)
+	@mkdir -v $(DEB)
+	@mkdir -pv $(DEB)/data/data/com.termux/files/usr
+	@mkdir -pv $(DEB)/data/data/com.termux/files/usr/bin/
+	@mkdir -pv $(DEB)/data/data/com.termux/files/usr/share/
+	@mkdir -pv $(DEB)/data/data/com.termux/files/usr/share/doc
+	@cp -v $(O)/bin/* $(DEB)/data/data/com.termux/files/usr/bin/
+	@cp -rv $(O)/termux-container $(DEB)/data/data/com.termux/files/usr/share/
+	@cp -rv $(O)/doc/* $(DEB)/data/data/com.termux/files/usr/share/doc
+	@cp -rv dpkg-conf $(DEB)/DEBIAN
+endif
+pack-deb:$(DEB)
+	@printf "\033[1;38;2;254;228;208m[+] Build packages.\033[0m\n"&&sleep 1s
 	@cd $(O)/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
-	@cd $(O)/deb&&dpkg -b . ../termux-container.deb
+	@cd $(O)/deb&&dpkg -b . ../../termux-container.deb
 	@printf "\033[1;38;2;254;228;208m    .^.   .^.\n"
 	@printf "    /⋀\\_ﾉ_/⋀\\ \n"
 	@printf "   /ﾉｿﾉ\\ﾉｿ丶)|\n"
 	@printf "  |ﾙﾘﾘ >   )ﾘ\n"
 	@printf "  ﾉノ㇏ Ｖ ﾉ|ﾉ\n"
 	@printf "        ⠁⠁\n"
-	@printf "\033[1;38;2;254;228;208m[*] Build done,package: $(O)/termux-container.deb\033[0m\n"
+	@printf "\033[1;38;2;254;228;208m[*] Build done,package: termux-container.deb\033[0m\n"
 clean:
 	@printf "\033[1;38;2;254;228;208m[+] Clean.\033[0m\n"&&sleep 1s
 	@rm -rfv $(O)
@@ -67,5 +104,5 @@ clean:
 	@printf "        ⠁⠁\n"
 	@printf "\033[1;38;2;254;228;208m[*] Cleaned Up.\033[0m\n"
 help :
-	@echo "Makefile is not for common user here,please use released .deb file instead."
+	@echo "Makefile is not for common user, please use the released .deb files instead."
 	@echo "(>_) Moe-hacker"
