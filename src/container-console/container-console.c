@@ -3,7 +3,7 @@
 // 如果你的代码好不容易能跑起来了，就不要动它了
 #include "container-console.h"
 // container-console结束后退出，用于ctrl-c捕获
-void restart(int)
+void restart(int unused)
 {
   system("container-console");
   // 没太大必要，但是在这里加一下
@@ -15,6 +15,10 @@ void restart(int)
 }
 int main(void)
 {
+  if (geteuid() == 0)
+  {
+    fprintf(stderr, "%s\n", "\033[33mWarning: container-console should not be run with root privileges!");
+  }
   // 判断termux-container是否存在
   if (system("container -t") != 0)
   {
@@ -50,7 +54,7 @@ int main(void)
   // 行数
   unsigned int linec = 0;
   // 当前行号减1
-  int linen = 0;
+  unsigned int linen = 0;
   // 立即捕获输入，不等待回车
   system("stty -icanon");
   // 关闭输入显示
@@ -84,7 +88,7 @@ int main(void)
       // 上键
       case 'A':
         linen = 0;
-        for (int i = 0; i < (strlen(arg0) + strlen(arg1)); i++)
+        for (unsigned int i = 0; i < (strlen(arg0) + strlen(arg1)); i++)
         {
           // 退格并覆盖字符显示
           printf("\b");
@@ -174,7 +178,7 @@ int main(void)
         // 下键
       case 'B':
         linen = 0;
-        for (int i = 0; i < (strlen(arg0) + strlen(arg1)); i++)
+        for (unsigned int i = 0; i < (strlen(arg0) + strlen(arg1)); i++)
         {
           // 退格并覆盖字符显示
           printf("\b");
