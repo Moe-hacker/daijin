@@ -46,7 +46,7 @@ int main(void)
   }
   // 设置默认值
   // 用于获取输入
-  char input;
+  char input = 0;
   // 第一个参数，用于语法高亮
   char arg0[1024];
   arg0[0] = '\000';
@@ -55,10 +55,10 @@ int main(void)
   arg1[0] = '\000';
   // 最终调用的命令
   char command[2048];
-  char *output;
+  char *output = NULL;
   output = arg0;
   // 历史记录文件定义
-  FILE *history;
+  FILE *history = NULL;
   char history_file[PATH_MAX];
   char *home = getenv("HOME");
   if (!home)
@@ -87,7 +87,7 @@ int main(void)
   while (true)
   {
     // 获取一个字符
-    input = getchar();
+    input = (char)getchar();
     switch (input)
     {
     // EOF捕获，即ctrl-d
@@ -114,7 +114,7 @@ int main(void)
           printf(" ");
           printf("\b");
         }
-        history = fopen(history_file, "a+");
+        history = fopen(history_file, "a+e");
         // 回到文件头
         fseek(history, 0, SEEK_SET);
         arg0[0] = '\000';
@@ -122,7 +122,7 @@ int main(void)
         output = arg0;
         // 统计行数
         linec = 0;
-        for (int i; (i = fgetc(history)) != EOF;)
+        for (int i = 0; (i = fgetc(history)) != EOF;)
         {
           if (i == '\n')
           {
@@ -148,7 +148,7 @@ int main(void)
         fseek(history, 0, SEEK_SET);
         while (true)
         {
-          input = fgetc(history);
+          input = (char)fgetc(history);
           switch (input)
           {
           // 换行符
@@ -212,7 +212,7 @@ int main(void)
         {
           line = 1;
         }
-        history = fopen(history_file, "a+");
+        history = fopen(history_file, "a+e");
         // 回到文件头
         fseek(history, 0, SEEK_SET);
         arg0[0] = '\000';
@@ -220,7 +220,7 @@ int main(void)
         output = arg0;
         // 统计行数
         linec = 0;
-        for (int i; (i = fgetc(history)) != EOF;)
+        for (int i = 0; (i = fgetc(history)) != EOF;)
         {
           if (i == '\n')
           {
@@ -238,7 +238,7 @@ int main(void)
         fseek(history, 0, SEEK_SET);
         while (true)
         {
-          input = fgetc(history);
+          input = (char)fgetc(history);
           switch (input)
           {
           // 换行符
@@ -344,7 +344,7 @@ int main(void)
       // 执行命令
       system(command);
       // 写入记录
-      history = fopen(history_file, "a+");
+      history = fopen(history_file, "a+e");
       fprintf(history, "%s%s%s", arg0, arg1, "\n");
       fclose(history);
       // 恢复默认值
