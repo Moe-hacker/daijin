@@ -3,9 +3,6 @@
 
 -----------  
 <p align="center">
-    <img src="https://github.com/Moe-hacker/termux-container/raw/main/logo.png", title="logo"/>
-</p>
-<p align="center">
     <img src="https://stars.medv.io/Moe-hacker/termux-container.svg", title="commits" width="50%"/>
 </p>
 <p align="center">
