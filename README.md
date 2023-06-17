@@ -24,7 +24,7 @@ Run linux with chroot&unshare/proot on your Android phone,safely and easy
 
 You can read this doc in :
 
-**[<kbd> <br> 简体中文 <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)**&emsp;**[<kbd> <br> English <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README.md)**&emsp;**[<kbd> <br> Portuguese <br> </kbd>](https://github.com/AkariOficial/termux-container/blob/patch-1/README-PT.md)**
+**[<kbd> <br> 简体中文 <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README-ZH.md)**&emsp;**[<kbd> <br> English <br> </kbd>](https://github.com/Moe-hacker/termux-container/blob/main/README.md)**&emsp;**[<kbd> <br> Portuguese <br> </kbd>](https://github.com/AkariOficial/termux-container/blob/patch-1/README-PT.md)**&emsp;
 
 ### WARNING:      
 ```
