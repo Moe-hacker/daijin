@@ -1,3 +1,6 @@
 [submodule "src/ruri"]
 	path = src/ruri
 	url = https://github.com/Moe-hacker/ruri
+[submodule "src/rootfstool"]
+	path = src/rootfstool
+	url = https://github.com/Moe-hacker/rootfstool
