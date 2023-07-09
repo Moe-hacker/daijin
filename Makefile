@@ -64,7 +64,8 @@ RURI = $(O)/bin/ruri
 $(RURI):src/ruri/ruri.c $(BIN)
 ifneq ($(shell test -f $(RURI)||echo x),)
 	@printf "\033[1;38;2;254;228;208m[+] Compile ruri.\033[0m\n"&&sleep 1s
-	@cd src/ruri&&make static
+	@printf "\033[32mYou can ignore the error here.\033[0m\n"
+	@cd src/ruri&&touch .license_accepted&&make static
 	@mv -v src/ruri/ruri $(O)/bin/ruri
 endif
 build:$(DOC) $(SHARE) $(CONTAINER) $(ROOTFSTOOL) $(CONTAINER_CONSOLE) $(RURI)
