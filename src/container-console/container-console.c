@@ -20,6 +20,7 @@
 // 此文件为CONTAINER_CONSOLE函数的c语言重构
 // 此文件不会随termux官方仓库更新，应被静态编译
 // 如果你的代码好不容易能跑起来了，就不要动它了
+// 难写的代码一定要难读
 #include "container-console.h"
 // container-console结束后退出，用于ctrl-c捕获
 void restart(int unused)
@@ -68,12 +69,12 @@ int main(void)
   }
   strcat(history_file, home);
   strcat(history_file, "/.container_history");
-  // 行号
-  unsigned int line = 0;
-  // 行数
-  unsigned int linec = 0;
+  // 要读的行号
+  unsigned int line_to_read = 0;
+  // 最终为行数-行号(因为是正着读文件，行号却是倒数)
+  unsigned int total_lines = 0;
   // 当前行号减1
-  unsigned int linen = 0;
+  unsigned int line_now = 0;
   // 立即捕获输入，不等待回车
   system("stty -icanon");
   // 关闭输入显示
@@ -106,7 +107,8 @@ int main(void)
       {
       // 上键
       case 'A':
-        linen = 0;
+        // 当前行号
+        line_now = 0;
         for (unsigned int i = 0; i < (strlen(arg0) + strlen(arg1)); i++)
         {
           // 退格并覆盖字符显示
@@ -121,39 +123,41 @@ int main(void)
         arg1[0] = '\000';
         output = arg0;
         // 统计行数
-        linec = 0;
+        total_lines = 0;
         for (int i = 0; (i = fgetc(history)) != EOF;)
         {
           if (i == '\n')
           {
-            linec++;
+            total_lines++;
           }
         }
         // 修复空文件读取
-        if (linec == 0)
+        if (total_lines == 0)
         {
           goto end;
         }
         // 设置要读的行号
-        if (linec > line)
+        if (total_lines > line_to_read)
         {
-          line++;
-          linec = linec - line;
+          line_to_read++;
+          total_lines = total_lines - line_to_read;
         }
         else
         {
-          linec = 0;
+          total_lines = 0;
         }
         // 回到文件头
         fseek(history, 0, SEEK_SET);
+        // 逐字符读取历史文件
         while (true)
         {
           input = (char)fgetc(history);
           switch (input)
           {
-          // 换行符
+          // 换行符(统计行号)
           case '\n':
-            if (linen == linec)
+            // 到达要读的行
+            if (line_now == total_lines)
             {
               // 结束读取
               fclose(history);
@@ -162,13 +166,14 @@ int main(void)
             else
             {
               // 行号加一
-              linen++;
+              line_now++;
               continue;
             }
             break;
+          // 空格用于分割arg0和arg1
           case ' ':
             // 判断是否写入arg1
-            if (linen == linec)
+            if (line_now == total_lines)
             {
               if (arg0[0] != '\000')
               {
@@ -181,11 +186,12 @@ int main(void)
               }
             }
             break;
+          // 空字符，忘了干啥的了反正能跑
           case '\000':
             break;
           default:
             // 写入数据
-            if (linen == linec)
+            if (line_now == total_lines)
             {
               strcat(output, &input);
               break;
@@ -196,7 +202,8 @@ int main(void)
         break;
         // 下键
       case 'B':
-        linen = 0;
+        // 当前行号
+        line_now = 0;
         for (unsigned int i = 0; i < (strlen(arg0) + strlen(arg1)); i++)
         {
           // 退格并覆盖字符显示
@@ -204,13 +211,13 @@ int main(void)
           printf(" ");
           printf("\b");
         }
-        if (line > 1)
+        if (line_to_read > 1)
         {
-          line--;
+          line_to_read--;
         }
         else
         {
-          line = 1;
+          line_to_read = 1;
         }
         history = fopen(history_file, "a+e");
         // 回到文件头
@@ -219,21 +226,21 @@ int main(void)
         arg1[0] = '\000';
         output = arg0;
         // 统计行数
-        linec = 0;
+        total_lines = 0;
         for (int i = 0; (i = fgetc(history)) != EOF;)
         {
           if (i == '\n')
           {
-            linec++;
+            total_lines++;
           }
         }
         // 修复空文件读取
-        if (linec == 0)
+        if (total_lines == 0)
         {
           goto end1;
         }
         // 设置要读的行号
-        linec = linec - line;
+        total_lines = total_lines - line_to_read;
         // 回到文件头
         fseek(history, 0, SEEK_SET);
         while (true)
@@ -243,7 +250,7 @@ int main(void)
           {
           // 换行符
           case '\n':
-            if (linen == linec)
+            if (line_now == total_lines)
             {
               // 结束读取
               fclose(history);
@@ -252,13 +259,13 @@ int main(void)
             else
             {
               // 行号加一
-              linen++;
+              line_now++;
               continue;
             }
             break;
           case ' ':
             // 判断是否写入arg1
-            if (linen == linec)
+            if (line_now == total_lines)
             {
               if (arg0[0] != '\000')
               {
@@ -275,7 +282,7 @@ int main(void)
             break;
           default:
             // 写入数据
-            if (linen == linec)
+            if (line_now == total_lines)
             {
               strcat(output, &input);
               break;
@@ -351,7 +358,7 @@ int main(void)
       arg0[0] = '\000';
       arg1[0] = '\000';
       command[0] = '\000';
-      line = 0;
+      line_to_read = 0;
       output = arg0;
       printf("\033[1;38;2;254;228;208mConsole > \033[0m");
       break;
