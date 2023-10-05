@@ -16,6 +16,7 @@
 # But it's cool, isn't it?
 # Usage:
 # show_info
+# Load shared.sh
 source /data/data/com.termux/files/usr/share/termux-container/shell/shared.sh
 logo="\033[1;38;2;254;228;208m
          ●●●●● ●●●●● ●●●●  ●   ● ●   ● ●   ●
@@ -69,7 +70,6 @@ for i in $(ls /proc/$$/ns | grep -v for_children); do
   NS+="$i "
 done
 echo -e "[\uf013] Supported namespace   : ${NS}"
-# XXX: `su -c` will not work properly with kernelSU.
 if [[ -e /bin/magisk ]]; then
   echo -e "[\ufd23] Magisk version        : $(su -c /bin/magisk -V)"
   echo -e "[\ufc7e] SELinux               : $(sudo getenforce)"

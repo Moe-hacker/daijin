@@ -394,7 +394,7 @@ function import_rootfs() {
     if [[ ${VERSION} != "" ]] && [[ ! -e $PREFIX/var/container/${OS}-${VERSION}-${CPU_ARCH}.tar.xz ]]; then
       break
     else
-      echo -e "\033[31mError: OS version already in use !")${COLOR}"
+      echo -e "\033[31mError: OS version already in use !${COLOR}"
     fi
   done
   cp ${FILE} $PREFIX/var/container/${OS}-${VERSION}-${CPU_ARCH}.tar.xz

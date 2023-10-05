@@ -11,7 +11,7 @@ ACCEPTANCE OF TERMS OF USE
                                                                                    
 Prohibited uses:                                                                   
                                                                                    
-  • I am not willing to restrict how you can use this software, it should be your freedom, but if you want to redistribute this software, please comply with the license which you can see in the next page.                                             
+  • I am not willing to restrict how you can use this software, it should be your freedom, but if you want to redistribute this software, please comply with the license.                                             
                                                                                    
 Additional prohibited uses (only for users in People's Republic of China):         
                                                                                    

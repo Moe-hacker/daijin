@@ -26,7 +26,7 @@ function pull_rootfs() {
     CPU_ARCH=$3
   fi
   if [[ -e $PREFIX/var/container/${OS}-${VERSION}-${CPU_ARCH}.tar.xz ]]; then
-    echo -e "\033[31mError: Rootfs already exists !")${COLOR}"
+    echo -e "\033[31mError: Rootfs already exists !${COLOR}"
     return 1
   fi
   if [[ $OS == "manjaro" ]]; then

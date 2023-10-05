@@ -38,13 +38,6 @@
 function _init() {
   # Usage:
   # _init
-  for i in $(ls /data/data/com.termux/files/usr/share/termux-container/functions); do
-    source /data/data/com.termux/files/usr/share/termux-container/functions/$i
-  done
-  if [[ ! -e /data/data/com.termux/files/usr/etc/container/global.conf ]]; then
-    error "Could not find global config file!"
-  fi
-  source /data/data/com.termux/files/usr/etc/container/global.conf
   for i in capsh unshare chroot proot wget curl; do
     if ! command -v $i 2>&1 >/dev/null; then
       error "Missing dependencies: $i!"
@@ -119,7 +112,6 @@ function container_console() {
   x="${CAT8}\nBye, nya~"
   printf "$x\n"
 }
-# I think a large script should includes a main function...
 function main() {
   case $1 in
   "-h") script_help ;;
@@ -130,7 +122,9 @@ function main() {
   *) container_console_main ${@:1} ;;
   esac
 }
+# Call _init
 _init
+# Call main
 main "$@"
 #         ●●●●● ●●●●● ●●●●  ●   ● ●   ● ●   ●
 #           ●   ●     ●   ● ●● ●● ●   ●  ● ●

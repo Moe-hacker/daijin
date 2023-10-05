@@ -11,8 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# Usage:
+# help [-c/-s]
+# Load shared.sh
+source /data/data/com.termux/files/usr/share/termux-container/shell/shared.sh
 function script_help() {
+  # Usage:
+  # script_help
   col=$(($(($(stty size | awk '{print $2}'))) / 2 - 25))
   logo="\033[1;38;2;254;228;208m
 \033[${col}G         ●●●●● ●●●●● ●●●●  ●   ● ●   ● ●   ●
@@ -67,3 +72,7 @@ function console_help() {
   echo "  export [Name]              :Export a container as an image."
   echo "  info                       :Show version && system info."
 }
+case "$1" in
+"-c") console_help ;;
+"-s") script_help ;;
+esac

@@ -16,6 +16,8 @@
 # container_cp container_name:/path/in/container /path/in/host
 # container_cp /path/in/host container_name:/path/in/container
 # container_name should not include character `/`
+# Load shared.sh
+source /data/data/com.termux/files/usr/share/termux-container/shell/shared.sh
 printf "${COLOR}"
 if [[ $1 == *:/* ]]; then
   CONTAINER_NAME=$(echo $1 | cut -d ":" -f 1)
