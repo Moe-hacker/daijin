@@ -18,14 +18,14 @@
 function easy_create() {
   trap "exit" SIGINT
   WIDTH=$(($(stty size | awk '{print $2}') - 8))
-  if whiptail --title "[] RUN MODE" --yes-button "chroot" --no-button "proot" --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH; then
+  if yoshinon --title "[] RUN MODE" --yes-button "chroot" --no-button "proot" --yesno "if your phone is rooted,it is recommand to run container with chroot mode\nIf not ,please choose proot\n\nPlease choose your run mode:" 12 $WIDTH; then
     TYPE=chroot
   else
     TYPE=proot
   fi
   LIST="1 alpine 2 archlinux 3 centos 4 debian 5 fedora 6 kali 7 manjaro 8 opensuse 9 parrot 10 ubuntu"
   LIST2="alpine archlinux centos debian fedora kali manjaro opensuse parrot ubuntu"
-  NUMBER=$(whiptail --title "[] OS" --menu "Choose the OS to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(yoshinon --title "[] OS" --menu "Choose the OS to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   OS=$(echo $LIST2 | awk "{print \$$NUMBER}")
   unset LIST LIST2 NUMBER
   if [[ ${OS} != "parrot" ]] && [[ ${OS} != "manjaro" ]]; then
@@ -36,7 +36,7 @@ function easy_create() {
       LIST2+="$VERSION "
     done
     unset VERSION NUMBER
-    NUMBER=$(whiptail --title "[] VERSION" --menu "Choose the version to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+    NUMBER=$(yoshinon --title "[] VERSION" --menu "Choose the version to install:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
     VERSION=$(echo $LIST2 | awk "{print \$$NUMBER}")
   fi
   get_cpu_arch
@@ -84,10 +84,10 @@ function easy_remove() {
   fi
   unset CONTAINER NUMBER
   if [[ $LIST == "" ]]; then
-    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    yoshinon --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
     return 1
   fi
-  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to remove:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(yoshinon --title "[] CONTAINER" --menu "Choose the container to remove:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2 | awk "{print \$$NUMBER}")
   REMOVE_CONTAINER "$CONTAINER"
 }
@@ -115,10 +115,10 @@ function easy_run() {
   fi
   unset CONTAINER NUMBER
   if [[ $LIST == "" ]]; then
-    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    yoshinon --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
     return 1
   fi
-  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to run:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(yoshinon --title "[] CONTAINER" --menu "Choose the container to run:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2 | awk "{print \$$NUMBER}")
   export BE_SILENT=true
   RUN_CONTAINER $CONTAINER
@@ -147,10 +147,10 @@ function easy_backup() {
   fi
   unset CONTAINER NUMBER
   if [[ $LIST == "" ]]; then
-    whiptail --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
+    yoshinon --title "[] ERROR" --msgbox "No container created!" 7 $WIDTH
     return 1
   fi
-  NUMBER=$(whiptail --title "[] CONTAINER" --menu "Choose the container to backup:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
+  NUMBER=$(yoshinon --title "[] CONTAINER" --menu "Choose the container to backup:" 15 $WIDTH 6 $LIST 3>&1 1>&2 2>&3)
   CONTAINER=$(echo $LIST2 | awk "{print \$$NUMBER}")
   EXPORT_CONTAINER $CONTAINER
 }
@@ -162,7 +162,7 @@ function easy_restore() {
 function easy_mode() {
   trap "exit" SIGINT
   WIDTH=$(($(stty size | awk '{print $2}') - 8))
-  OPTION=$(whiptail --title "[] TERMUX-CONTAINER" --menu "Choose an operation:" 15 $WIDTH 6 1 "install" 2 "remove" 3 "run" 3>&1 1>&2 2>&3)
+  OPTION=$(yoshinon --title "[] TERMUX-CONTAINER" --menu "Choose an operation:" 15 $WIDTH 6 1 "install" 2 "remove" 3 "run" 3>&1 1>&2 2>&3)
   case $OPTION in
   1) EASY_INSTALL ;;
   2) EASY_REMOVE ;;
