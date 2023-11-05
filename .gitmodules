@@ -7,3 +7,6 @@
 [submodule "src/yoshinon"]
 	path = src/yoshinon
 	url = https://github.com/Moe-hacker/yoshinon
+[submodule "src/nekoasc"]
+	path = src/nekoasc
+	url = https://github.com/moe-hacker/nekoasc
