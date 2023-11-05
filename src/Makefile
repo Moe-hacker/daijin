@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 all :
+	[ -e nekoasc/nekoasc ]||(cd nekoasc&&make)
 	[ -e ruri/ruri ]||(cd ruri&&make static-bionic)
 	[ -e yoshinon/yoshinon ]||(cd yoshinon&&make)
 	[ -e container-console/container-console ]||(cd container-console&&make)
