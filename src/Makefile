@@ -25,3 +25,8 @@ all :
 format :
 	shfmt -i 2 -w container
 	shfmt -i 2 -w ../share/shell/*
+update :
+	cd nekoasc&&git pull git@github.com:moe-hacker/nekoasc main
+	cd rootfstool&&git pull git@github.com:moe-hacker/rootfstool main
+	cd ruri&&git pull git@github.com:moe-hacker/ruri main
+	cd yoshinon&&git pull git@github.com:moe-hacker/yoshinon main
