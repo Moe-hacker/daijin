@@ -1,4 +1,4 @@
-# It will come soon, I promise.
+# ruri is stable now, it's time to develop the new version of termux-container.
 <p align="center">
     <img src="https://github.com/Moe-hacker/termux-container/raw/main/logo.png", width="75%"/>
 </p>

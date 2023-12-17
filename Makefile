@@ -53,6 +53,7 @@ build:update-code
 	@mv -v src/container-console/container-console $(O)/bin/container-console
 	@mv -v src/ruri/ruri $(O)/bin/ruri
 	@mv -v src/yoshinon/yoshinon $(O)/bin/yoshinon
+	@mv -v src/nekoasc/nekoasc $(O)/bin/nekoasc
 update-code:
 	@printf "\033[1;38;2;254;228;208m[+] Update code.\033[0m\n"&&sleep 1s
 	@git submodule update --init
