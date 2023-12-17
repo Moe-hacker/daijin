@@ -17,11 +17,10 @@
 # limitations under the License.
 #
 all :
-	[ -e nekoasc/nekoasc ]||(cd nekoasc&&make)
+	[ -e nekoasc/nekoasc ]||(cd nekoasc&&make static-bionic)
 	[ -e ruri/ruri ]||(cd ruri&&make static-bionic)
 	[ -e yoshinon/yoshinon ]||(cd yoshinon&&make)
 	[ -e container-console/container-console ]||(cd container-console&&make)
-	sed -i "s/TERMUX_CONTAINER_COMMIT_ID=\"\"/TERMUX_CONTAINER_COMMIT_ID=\"`git log --oneline|head -1|cut -d " " -f 1`\"/" container
 format :
 	shfmt -i 2 -w container
 	shfmt -i 2 -w ../share/shell/*
