@@ -89,7 +89,7 @@ function error() {
   exit 1
 }
 # From Tmoe.
-# In fact I don't think that there are any phones with amd64 CPUS and Android system now.
+# In fact I don't think that there are any phones with amd64 CPU now.
 function get_cpu_arch() {
   # Usage:
   # get_cpu_arch

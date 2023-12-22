@@ -46,7 +46,6 @@ build:update-code
 	@cp -rv doc/* $(O)/doc/termux-container/
 	@cp -rv share $(O)/share/termux-container
 	@mkdir -pv $(O)/etc/container
-	@cp -v src/termux-container.conf $(O)/etc/container/global.conf
 	@mkdir -pv $(O)/bin/
 	@cp -v src/container $(O)/bin/container
 	@cp -v src/rootfstool/rootfstool $(O)/bin/rootfstool
@@ -63,9 +62,6 @@ install:build
 	@cp -rv $(O)/etc/* /data/data/com.termux/files/usr/etc/
 	@cp -rv $(O)/share/termux-container /data/data/com.termux/files/usr/share/
 	@cp -rv $(O)/doc/* /data/data/com.termux/files/usr/share/doc
-	@mkdir -pv /data/data/com.termux/files/home/.termux/
-	@cp -rv $(O)/share/termux-container/colors.properties /data/data/com.termux/files/home/.termux/
-	@cp -rv $(O)/share/termux-container/font.ttf /data/data/com.termux/files/home/.termux/
 pack-deb:
 	@mkdir -v $(O)/deb
 	@mkdir -pv $(O)/deb/data/data/com.termux/files/usr
@@ -78,8 +74,6 @@ pack-deb:
 	@cp -v $(O)/bin/* $(O)/deb/data/data/com.termux/files/usr/bin/
 	@cp -rv $(O)/share/termux-container $(O)/deb/data/data/com.termux/files/usr/share/
 	@cp -rv $(O)/doc/* $(O)/deb/data/data/com.termux/files/usr/share/doc
-	@cp -rv $(O)/share/termux-container/colors.properties $(O)/deb/data/data/com.termux/files/home/.termux
-	@cp -rv $(O)/share/termux-container/font.ttf $(O)/deb/data/data/com.termux/files/home/.termux
 	@cp -rv dpkg-conf $(O)/deb/DEBIAN
 	@printf "\033[1;38;2;254;228;208m[+] Build packages.\033[0m\n"&&sleep 1s
 	@cd $(O)/deb&&chmod -Rv 755 DEBIAN&&chmod -Rv 777 data/data/com.termux/files/usr/bin
@@ -107,8 +101,8 @@ gnu-dev :
 	sudo mkdir -pv /data/data/com.termux/files/usr/etc
 	sudo mkdir -pv /data/data/com.termux/files/usr/var
 	sudo mkdir -pv /data/data/com.termux/files/home
-	sudo ln -svf /usr/bin/bash /data/data/com.termux/files/usr/bin/bash
-	sudo chmod -v 777 /data/data/com.termux/files/usr/bin/bash
+	sudo ln -svf /usr/bin /data/data/com.termux/files/usr/bin
+	sudo chmod -v 777 /data/data/com.termux/files/usr/bin
 	sudo chmod -Rv 777 /data
 	cp -frav `realpath .` /data/data/com.termux/files/home/
 	printf "\033[1;38;2;254;228;208m[*] Go to /data/data/com.termux/files/home/termux-container for dev environment\n"
