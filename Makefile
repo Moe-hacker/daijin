@@ -18,8 +18,8 @@
 #
 O = out
 .PHONY: all
-all: show-greetings install-dependence update-code build
-show-greetings:
+all: show-logo install-dependence update-code build
+show-logo:
 	@printf "\033[1;38;2;254;228;208m"
 	@printf "        ●●●●● ●●●●● ●●●●  ●   ● ●   ● ●   ●\n"
 	@printf "          ●   ●     ●   ● ●● ●● ●   ●  ● ●\n"
