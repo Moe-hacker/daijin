@@ -1,0 +1,47 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Copyright 2024 moe-hacker
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+mkdir -p /data/data/com.termux/files/usr/etc/daijin
+mkdir -p /data/data/com.termux/files/usr/var/daijin
+export VERSION=0.1
+if command -v su >/dev/null; then
+  if su -c true; then
+    ROOTED=true
+  fi
+fi
+todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin main menu" 12 25 4 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "exit")
+case $todo in
+"[1]")
+  if [[ $ROOTED == "true" ]]; then
+    /data/data/com.termux/files/usr/share/daijin/create.sh -r
+  else
+    /data/data/com.termux/files/usr/share/daijin/create.sh
+  fi
+  ;;
+"[2]")
+  /data/data/com.termux/files/usr/share/daijin/start.sh
+  ;;
+"[3]")
+  /data/data/com.termux/files/usr/share/daijin/remove.sh
+  ;;
+"[4]")
+  if [[ $ROOTED == "true" ]]; then
+    /data/data/com.termux/files/usr/share/daijin/register.sh -r
+  else
+    /data/data/com.termux/files/usr/share/daijin/register.sh
+  fi
+  ;;
+"[5]") exit ;;
+esac
