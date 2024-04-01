@@ -19,6 +19,7 @@ export VERSION=0.1
 if command -v su >/dev/null; then
   if su -c true; then
     ROOTED=true
+    sudo chmod 777 /data/data/com.termux/files/usr/var/daijin/containers
   fi
 fi
 todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin main menu" 12 25 4 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "exit")

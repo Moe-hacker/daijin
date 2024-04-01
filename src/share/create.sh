@@ -73,7 +73,7 @@ function create_proot_container() {
   pv ${ROOTFS} | tar -xJf - -C ${CONTAINER_DIR}
   unset LD_PRELOAD
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
-  chmod 777 ${CONTAINER_DIR}/tmp/fixup.sh
+  cp /data/data/com.termux/files/usr/share/daijin/fixup.sh /data/data/com.termux/files/usr/tmp/
   /data/data/com.termux/files/usr/share/daijin/proot_start.sh -r ${CONTAINER_DIR} /tmp/fixup.sh 2>&1 >/dev/null
   printf "backend=\"proot\"\ncontainer_dir=\"${CONTAINER_DIR}\"\n" >/data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf
 }
