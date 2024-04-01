@@ -66,7 +66,7 @@ function run_proot_container() {
   # Extra args.
   COMMAND+=" ${EXTRA_ARGS}"
   if [[ ! $1 ]]; then
-    COMMAND+=" /bin/su - root"
+    COMMAND+=" /bin/sh"
   else
     COMMAND+=" $@"
   fi
