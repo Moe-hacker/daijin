@@ -40,7 +40,8 @@ For proot:
 You should use the proot_start.sh in src/share      
 And you should make sure src/share/proc.tar.xz is unpacked to /data/data/com.termux/files/usr/share/daijin/proc/      
 ```
-cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ./test/tmp/
+# proot_start.sh will automatically mount $TMPDIR to /tmp
+cp /data/data/com.termux/files/usr/share/daijin/fixup.sh /data/data/com.termux/files/usr/tmp
 ./proot_start.sh -r ./test /tmp/fixup.sh
 ```
 ### Start the container:
