@@ -62,7 +62,8 @@ function create_ruri_container() {
   sudo mkdir -p ${CONTAINER_DIR}
   pv ${ROOTFS} | sudo tar -xJf - -C ${CONTAINER_DIR}
   unset LD_PRELOAD
-  cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
+  sudo cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
+  sudo chmod 777 ${CONTAINER_DIR}/tmp/fixup.sh
   sudo ruri ${CONTAINER_DIR} /bin/sh /tmp/fixup.sh
   sudo ruri -D -o /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf ${CONTAINER_DIR}
   sudo chmod 777 /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf
@@ -74,6 +75,8 @@ function create_proot_container() {
   unset LD_PRELOAD
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh /data/data/com.termux/files/usr/tmp/
+  chmod 777 ${CONTAINER_DIR}/tmp/fixup.sh
+  chmod 777 /data/data/com.termux/files/usr/tmp/fixup.sh
   /data/data/com.termux/files/usr/share/daijin/proot_start.sh -r ${CONTAINER_DIR} /tmp/fixup.sh
   printf "backend=\"proot\"\ncontainer_dir=\"${CONTAINER_DIR}\"\n" >/data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf
 }
