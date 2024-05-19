@@ -42,7 +42,8 @@ chmod -R 755 build/DEBIAN
 # Compile ruri.
 cd src
 cd ruri
-make static-bionic
+./configure -s
+make
 cp ruri ../../build/data/data/com.termux/files/usr/bin/
 # Compile yoshinon.
 cd ../yoshinon
