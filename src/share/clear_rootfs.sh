@@ -20,6 +20,6 @@ echo "rootfs are downloaded to /data/data/com.termux/files/usr/var/daijin/rootfs
 echo -e "\n\n"
 echo "Press CTRL-C to cancel this script"
 echo "Or press enter to remove cached rootfs"
-echo "=>"
+read "=>"
 sudo rm -rf /data/data/com.termux/files/usr/var/daijin/rootfs/*
 rm -rf /data/data/com.termux/files/usr/var/daijin/rootfs/*
