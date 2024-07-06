@@ -22,7 +22,7 @@ if command -v su >/dev/null; then
     sudo chmod 777 /data/data/com.termux/files/usr/var/daijin/containers
   fi
 fi
-todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin main menu" 12 25 4 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "exit")
+todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "DAIJIN MAIN MENU" 18 25 5 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "clean rootfs" "[6]" "exit")
 case $todo in
 "[1]")
   if [[ $ROOTED == "true" ]]; then
@@ -44,5 +44,8 @@ case $todo in
     /data/data/com.termux/files/usr/share/daijin/register.sh
   fi
   ;;
-"[5]") exit ;;
+"[5]")
+  /data/data/com.termux/files/usr/share/daijin/clear_rootfs.sh
+  ;;
+"[6]") exit ;;
 esac
