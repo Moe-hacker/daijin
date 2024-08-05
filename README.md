@@ -2,6 +2,8 @@
 
 # Container, with enhanced security
 Daijin aims to be a more secure container manager in Termux.      
+# Get support:       
+Feel free to discuss at https://t.me/ruri_daijin_support      
 # WARNING:      
 ```
 * Your warranty is void.
