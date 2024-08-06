@@ -51,7 +51,7 @@ function pull_rootfs() {
   if [[ ! -e /data/data/com.termux/files/usr/var/daijin/rootfs/$distro-$version.tar.xz ]]; then
     cd /data/data/com.termux/files/usr/tmp
     rm rootfs.tar.xz*
-    axel -n 16 $(rootfstool u -d $distro -v $version -m $MIRROR)
+    axel -n 16 $(rootfstool u -d $distro -v $version -m $mirror)
     mv rootfs.tar.xz /data/data/com.termux/files/usr/var/daijin/rootfs/$distro-$version.tar.xz
   fi
   export ROOTFS=/data/data/com.termux/files/usr/var/daijin/rootfs/$distro-$version.tar.xz
