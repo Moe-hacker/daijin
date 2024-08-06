@@ -27,8 +27,8 @@ function pull_rootfs() {
   done
   num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a mirror" 12 25 4 $arg)
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
-  distro=$(echo $mirrorlist | cut -d " " -f $num)
-  rootfslist=$(rootfstool l -m $MIRROR | awk '{print $2}')
+  mirror=$(echo $mirrorlist | cut -d " " -f $num)
+  rootfslist=$(rootfstool l -m $mirror | awk '{print $2}')
   j=1
   arg=""
   for i in $rootfslist; do
@@ -38,7 +38,7 @@ function pull_rootfs() {
   num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a distro" 12 25 4 $arg)
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   distro=$(echo $rootfslist | cut -d " " -f $num)
-  versionlist=$(rootfstool s -d $distro -m $MIRROR | awk '{print $4}')
+  versionlist=$(rootfstool s -d $distro -m $mirror | awk '{print $4}')
   j=1
   arg=""
   for i in $versionlist; do
