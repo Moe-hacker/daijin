@@ -36,6 +36,7 @@ mkdir build/DEBIAN
 mkdir -p build/data/data/com.termux/files/usr/bin
 mkdir -p build/data/data/com.termux/files/usr/share
 mkdir -p build/data/data/com.termux/files/usr/share/daijin/proc/
+mkdir -p build/data/data/com.termux/files/usr/etc
 # Copy dpkg config file.
 cp -r dpkg-conf/* build/DEBIAN/
 chmod -R 755 build/DEBIAN
@@ -60,6 +61,8 @@ cd ../rootfstool
 cp rootfstool ../../build/data/data/com.termux/files/usr/bin/
 # Return to root dir.
 cd ../..
+# Copy rurima config file.
+cp src/rurima.conf build/data/data/com.termux/files/usr/etc/rurima.conf
 # Decompress dummy files of procfs.
 tar -xf src/share/proc.tar.xz -C build/data/data/com.termux/files/usr/share/daijin/proc/
 # Copy shared sh script.
