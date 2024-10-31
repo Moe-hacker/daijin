@@ -45,6 +45,11 @@ cd ruri
 ./configure -s
 make
 cp ruri ../../build/data/data/com.termux/files/usr/bin/
+# Compile rurima.
+cd ../rurima
+./configure -s
+make
+cp rurima ../../build/data/data/com.termux/files/usr/bin/
 # Compile yoshinon.
 cd ../yoshinon
 make
