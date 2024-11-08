@@ -21,6 +21,8 @@ function run_proot_container() {
   COMMAND+=" --link2symlink"
   COMMAND+=" --kill-on-exit"
   COMMAND+=" --sysvipc"
+  COMMAND+=" -L"
+  COMMAND+=" --ashmem-memfd"
   COMMAND+=" -0"
   COMMAND+=" -r ${CONTAINER_DIR}"
   COMMAND+=" -b /dev"
