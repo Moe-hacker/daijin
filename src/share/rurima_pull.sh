@@ -46,6 +46,7 @@ function rurima_pull_lxc() {
   version=$(echo $versionlist | cut -d " " -f $num)
   export distro=$distro
   export version=$version
+  export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$TIME
   rurima lxc pull -d $distro -v $version -s ${CONTAINER_DIR}
 }
 function docker_search() {
@@ -85,15 +86,15 @@ function docker_search_tag() {
 function rurima_pull_docker() {
   docker_search
   docker_search_tag
-  export distro=$image
+  export distro="$(echo $image | sed -e "s/\//_/g")"
   export version=$tag
+  export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$TIME
   rurima docker pull -i $image -t $tag -s ${CONTAINER_DIR}
   check_if_succeed $?
 }
 function rurima_pull_rootfs() {
   SOURCE=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the source of rootfs" 12 25 4 "[1]" "dockerhub" "[2]" "LXC")
-  TIME=$(date +%s)
-  export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$TIME
+  export TIME=$(date +%s)
   if [[ ${SOURCE} == "[1]" ]]; then
     rurima_pull_docker
   else
