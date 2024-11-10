@@ -58,6 +58,7 @@ cp yoshinon ../../build/data/data/com.termux/files/usr/bin/
 git reset --hard
 # Copy rootfstool.
 cd ../rootfstool
+termux-fix-shebang rootfstool
 cp rootfstool ../../build/data/data/com.termux/files/usr/bin/
 # Return to root dir.
 cd ../..
