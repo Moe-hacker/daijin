@@ -25,10 +25,19 @@ fi
 todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "DAIJIN MAIN MENU" 18 25 5 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "clean rootfs" "[6]" "exit")
 case $todo in
 "[1]")
-  if [[ $ROOTED == "true" ]]; then
-    /data/data/com.termux/files/usr/share/daijin/create.sh -r
+  backend=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the way to get rootfs" 12 25 4 "[1]" "rurima" "[2]" "rootfstool")
+  if [[ ${ROOTFS_TOOL} == "[2]" ]]; then
+    if [[ $ROOTED == "true" ]]; then
+      /data/data/com.termux/files/usr/share/daijin/create_rootfstool.sh -r
+    else
+      /data/data/com.termux/files/usr/share/daijin/create_rootfstool.sh
+    fi
   else
-    /data/data/com.termux/files/usr/share/daijin/create.sh
+    if [[ $ROOTED == "true" ]]; then
+      /data/data/com.termux/files/usr/share/daijin/create_rurima.sh -r
+    else
+      /data/data/com.termux/files/usr/share/daijin/create_rurima.sh
+    fi
   fi
   ;;
 "[2]")

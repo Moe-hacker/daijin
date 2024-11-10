@@ -21,7 +21,7 @@ function pull_rootfs() {
   mkdir -p /data/data/com.termux/files/usr/var/daijin/rootfs 2>&1 >/dev/null || true
   mirrorlist=$(rootfstool m)
   j=1
-  for i in $mirrorlist; do
+  for i in $(echo $mirrorlist); do
     arg+="[$j] $i "
     j=$((j + 1))
   done
@@ -31,7 +31,7 @@ function pull_rootfs() {
   rootfslist=$(rootfstool l -m $mirror | awk '{print $2}')
   j=1
   arg=""
-  for i in $rootfslist; do
+  for i in $(echo $rootfslist); do
     arg+="[$j] $i "
     j=$((j + 1))
   done
@@ -41,7 +41,7 @@ function pull_rootfs() {
   versionlist=$(rootfstool s -d $distro -m $mirror | awk '{print $4}')
   j=1
   arg=""
-  for i in $versionlist; do
+  for i in $(echo $versionlist); do
     arg+="[$j] $i "
     j=$((j + 1))
   done
@@ -54,9 +54,10 @@ function pull_rootfs() {
     axel -n 16 $(rootfstool u -d $distro -v $version -m $mirror)
     mv rootfs.tar.xz /data/data/com.termux/files/usr/var/daijin/rootfs/$distro-$version.tar.xz
   fi
+  TIME=$(date +%s)
   export ROOTFS=/data/data/com.termux/files/usr/var/daijin/rootfs/$distro-$version.tar.xz
-  export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$(date +%s)
-  export NAME=$distro-$version-$(date +%s)
+  export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$TIME
+  export NAME=$distro-$version-$TIME
 }
 function create_ruri_container() {
   sudo mkdir -p ${CONTAINER_DIR}
