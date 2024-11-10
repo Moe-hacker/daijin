@@ -10,8 +10,8 @@ Daijin aims to be a more secure container manager in Termux.
 * Your warranty is void.
 * I am not responsible for anything that may happen to your device by using this project.
 * You do it at your own risk and take the responsibility upon yourself.
+* Docker is a registered trademark of Docker, Inc. This project has no relationship with it.
 * This project has no Super Cow Powers.
-Docker is a registered trademark of Docker, Inc. This project has no relationship with it.
 ```
 # NOTICE:
 This program is not official tool of docker or dockerhub, you can report bugs here, but this program has no relation with docker.      
