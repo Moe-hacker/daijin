@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+function check_if_succeed() {
+  if [[ $1 -ne 0 ]]; then
+    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    exit 1
+  fi
+}
 chmod 777 /data/data/com.termux/files/usr/var/daijin/containers/*
 if [[ $(ls /data/data/com.termux/files/usr/var/daijin/containers/) == "" ]]; then
   echo -e "\033[31mNo container found\033[0m" >&2
@@ -23,7 +29,8 @@ for i in $(ls /data/data/com.termux/files/usr/var/daijin/containers/); do
   arg+="[$j] ${i%%.conf} "
   j=$((j + 1))
 done
-num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Choose the container" 12 33 4 $arg)
+num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Choose the container" 12 44 4 $arg)
+check_if_succeed $?
 num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
 CONFIG_FILE=/data/data/com.termux/files/usr/var/daijin/containers/$(echo $(ls /data/data/com.termux/files/usr/var/daijin/containers/) | cut -d " " -f $num)
 source ${CONFIG_FILE}

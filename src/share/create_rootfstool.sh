@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+function check_if_succeed() {
+  if [[ $1 -ne 0 ]]; then
+    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    exit 1
+  fi
+}
 function pull_rootfs() {
   # It will set the following variable(s):
   # $ROOTFS
@@ -26,6 +32,7 @@ function pull_rootfs() {
     j=$((j + 1))
   done
   num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a mirror" 12 25 4 $arg)
+  check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   mirror=$(echo $mirrorlist | cut -d " " -f $num)
   rootfslist=$(rootfstool l -m $mirror | awk '{print $2}')
@@ -36,6 +43,7 @@ function pull_rootfs() {
     j=$((j + 1))
   done
   num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a distro" 12 25 4 $arg)
+  check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   distro=$(echo $rootfslist | cut -d " " -f $num)
   versionlist=$(rootfstool s -d $distro -m $mirror | awk '{print $4}')
@@ -46,6 +54,7 @@ function pull_rootfs() {
     j=$((j + 1))
   done
   num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select the version" 12 25 4 $arg)
+  check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   version=$(echo $versionlist | cut -d " " -f $num)
   if [[ ! -e /data/data/com.termux/files/usr/var/daijin/rootfs/$distro-$version.tar.xz ]]; then
@@ -85,6 +94,7 @@ function main() {
   mkdir -p /data/data/com.termux/files/usr/var/daijin/containers/
   if [[ $1 == "-r" ]]; then
     backend=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the backend" 12 25 4 "[1]" "ruri" "[2]" "proot")
+    check_if_succeed $?
     if [[ $backend == "[1]" ]]; then
       backend=ruri
     else

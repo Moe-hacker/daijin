@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+function check_if_succeed() {
+  if [[ $1 -ne 0 ]]; then
+    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    exit 1
+  fi
+}
 mkdir -p /data/data/com.termux/files/usr/etc/daijin
 mkdir -p /data/data/com.termux/files/usr/var/daijin
 export VERSION=0.9
@@ -23,9 +29,11 @@ if command -v su >/dev/null; then
   fi
 fi
 todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "DAIJIN MAIN MENU" 18 25 5 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "clean rootfs" "[6]" "exit")
+check_if_succeed $?
 case $todo in
 "[1]")
   backend=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the way to get rootfs" 12 25 4 "[1]" "rurima" "[2]" "rootfstool")
+  check_if_succeed $?
   if [[ ${ROOTFS_TOOL} == "[2]" ]]; then
     if [[ $ROOTED == "true" ]]; then
       /data/data/com.termux/files/usr/share/daijin/create_rootfstool.sh -r

@@ -79,6 +79,7 @@ function docker_search_tag() {
     j=$((j + 1))
   done
   num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a tag" 12 25 4 $arg)
+  check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   tag=$(echo $taglist | cut -d " " -f $num)
   export tag=$tag
@@ -94,6 +95,7 @@ function rurima_pull_docker() {
 }
 function rurima_pull_rootfs() {
   SOURCE=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the source of rootfs" 12 25 4 "[1]" "dockerhub" "[2]" "LXC")
+  check_if_succeed $?
   export TIME=$(date +%s)
   if [[ ${SOURCE} == "[1]" ]]; then
     rurima_pull_docker

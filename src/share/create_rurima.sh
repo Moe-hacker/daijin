@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+function check_if_succeed() {
+  if [[ $1 -ne 0 ]]; then
+    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    exit 1
+  fi
+}
 function create_ruri_container() {
   if [[ $(whoami) != "root" ]]; then
     sudo bash /data/data/com.termux/files/usr/share/daijin/create_rurima.sh re-exec
@@ -46,6 +52,7 @@ function main() {
   fi
   if [[ $1 == "-r" ]]; then
     backend=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the backend" 12 25 4 "[1]" "ruri" "[2]" "proot")
+    check_if_succeed $?
     if [[ $backend == "[1]" ]]; then
       backend=ruri
     else
