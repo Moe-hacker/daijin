@@ -21,7 +21,7 @@ function check_if_succeed() {
 }
 mkdir -p /data/data/com.termux/files/usr/etc/daijin
 mkdir -p /data/data/com.termux/files/usr/var/daijin
-export VERSION=0.9
+export VERSION=0.99
 if command -v su >/dev/null; then
   if su -c true; then
     ROOTED=true
