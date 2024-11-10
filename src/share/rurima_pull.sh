@@ -88,6 +88,7 @@ function rurima_pull_docker() {
   export distro=$image
   export version=$tag
   rurima docker pull -i $image -t $tag -s ${CONTAINER_DIR}
+  check_if_succeed $?
 }
 function rurima_pull_rootfs() {
   SOURCE=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the source of rootfs" 12 25 4 "[1]" "dockerhub" "[2]" "LXC")
