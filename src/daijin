@@ -32,7 +32,7 @@ todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "DAIJI
 check_if_succeed $?
 case $todo in
 "[1]")
-  backend=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the way to get rootfs" 12 25 4 "[1]" "rurima" "[2]" "rootfstool")
+  ROOTFS_TOOL=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the way to get rootfs" 12 25 4 "[1]" "rurima" "[2]" "rootfstool")
   check_if_succeed $?
   if [[ ${ROOTFS_TOOL} == "[2]" ]]; then
     if [[ $ROOTED == "true" ]]; then

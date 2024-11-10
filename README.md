@@ -1,5 +1,8 @@
 <p align="center">「Suzume, doesn't love me...」</p>
 
+# Hello, rurima!!!
+With rurima, you can now run docker image in Termux, with ruri or proot!!!!!          
+Without kernel feature support for docker, even without root privilege, you can just enjoy all images from dockerhub!      
 # Container, with enhanced security
 Daijin aims to be a more secure container manager in Termux.      
 # WARNING:      
