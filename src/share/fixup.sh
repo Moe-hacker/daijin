@@ -136,9 +136,9 @@ usermod -a -G aid_inet,aid_net_raw portage 2>/dev/null
 chown root:root /bin/su
 chmod 777 /bin/su
 # Create mountpoints.
-[[ -e /dev ]] || mkdir /dev
-[[ -e /proc ]] || mkdir /proc
-[[ -e /sys ]] || mkdir /sys
+[ -e /dev ] || mkdir /dev
+[ -e /proc ] || mkdir /proc
+[ -e /sys ] || mkdir /sys
 # Fix dns problem.
 rm -f /etc/resolv.conf >>/dev/null 2>&1
 echo nameserver 8.8.8.8 >>/etc/resolv.conf
