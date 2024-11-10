@@ -18,6 +18,7 @@ function create_ruri_container() {
     sudo bash /data/data/com.termux/files/usr/share/daijin/create_rurima.sh re-exec
   fi
   source /data/data/com.termux/files/usr/share/daijin/rurima_pull.sh
+  rurima_pull_rootfs
   unset LD_PRELOAD
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
   chmod 777 ${CONTAINER_DIR}/tmp/fixup.sh
@@ -28,6 +29,7 @@ function create_ruri_container() {
 }
 function create_proot_container() {
   source /data/data/com.termux/files/usr/share/daijin/rurima_pull.sh
+  rurima_pull_rootfs
   unset LD_PRELOAD
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh /data/data/com.termux/files/usr/tmp/
