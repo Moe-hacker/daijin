@@ -47,7 +47,7 @@ function rurima_pull_lxc() {
   export distro=$distro
   export version=$version
   export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$TIME
-  rurima lxc pull -d $distro -v $version -s ${CONTAINER_DIR}
+  rurima lxc pull -o $distro -v $version -s ${CONTAINER_DIR}
 }
 function docker_search() {
   NAME=$(yoshinon --inputbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Enter the string you want to search" 12 25)
