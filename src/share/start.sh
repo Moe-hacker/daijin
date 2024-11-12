@@ -35,6 +35,7 @@ num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
 CONFIG_FILE=/data/data/com.termux/files/usr/var/daijin/containers/$(echo $(ls /data/data/com.termux/files/usr/var/daijin/containers/) | cut -d " " -f $num)
 source ${CONFIG_FILE}
 if [[ ${backend} == "ruri" ]]; then
+  sudo mount -o remount,suid /data >/dev/null 2>&1||true
   sudo LD_PRELOAD= ruri -c ${CONFIG_FILE}
 elif [[ ${backend} == "proot" ]]; then
   /data/data/com.termux/files/usr/share/daijin/proot_start.sh -r $container_dir -e "$extra_args"
