@@ -22,3 +22,6 @@ It only contain some basic functions. In fact, I just want it to be an example u
 Download the release, and apt install.         
 # Developing Guide:
 See [Develop.md](https://github.com/Moe-hacker/daijin/blob/main/Develop.md).      
+
+<p align="center">「意味をいくつ越えれば僕らは辿りつけるのかな</p>
+<p align="center">愚かさでいい醜さでいい正しさのその先で君と手を取りたい」</p>
