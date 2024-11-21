@@ -28,8 +28,8 @@ function create_ruri_container() {
   unset LD_PRELOAD
   cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
   chmod 777 ${CONTAINER_DIR}/tmp/fixup.sh
-  ruri ${CONTAINER_DIR} /bin/sh /tmp/fixup.sh
-  ruri -D -o /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf ${CONTAINER_DIR}
+  rurima r ${CONTAINER_DIR} /bin/sh /tmp/fixup.sh
+  rurima r -D -o /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf ${CONTAINER_DIR}
   chmod 777 /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf
   printf "backend=\"ruri\"\n" | tee -a /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf 2>&1 >/dev/null
 }

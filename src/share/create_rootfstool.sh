@@ -74,8 +74,8 @@ function create_ruri_container() {
   unset LD_PRELOAD
   sudo cp /data/data/com.termux/files/usr/share/daijin/fixup.sh ${CONTAINER_DIR}/tmp/
   sudo chmod 777 ${CONTAINER_DIR}/tmp/fixup.sh
-  sudo ruri ${CONTAINER_DIR} /bin/sh /tmp/fixup.sh
-  sudo ruri -D -o /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf ${CONTAINER_DIR}
+  sudo rurima r ${CONTAINER_DIR} /bin/sh /tmp/fixup.sh
+  sudo rurima r -D -o /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf ${CONTAINER_DIR}
   sudo chmod 777 /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf
   printf "backend=\"ruri\"\n" | sudo tee -a /data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf 2>&1 >/dev/null
 }

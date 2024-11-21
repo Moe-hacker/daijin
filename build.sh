@@ -40,17 +40,14 @@ mkdir -p build/data/data/com.termux/files/usr/etc
 # Copy dpkg config file.
 cp -r dpkg-conf/* build/DEBIAN/
 chmod -R 755 build/DEBIAN
-# Compile ruri.
-cd src
-cd ruri
-./configure -s
-make
-cp ruri ../../build/data/data/com.termux/files/usr/bin/
 # Compile rurima.
 cd ../rurima
+git submodule update --init
 ./configure -s
 make
 cp rurima ../../build/data/data/com.termux/files/usr/bin/
+echo "echo \"ruri is built-in in rurima now, please use \`rurima r\` instead\"" >../../build/data/data/com.termux/files/usr/bin/ruri
+chmod 777 ../../build/data/data/com.termux/files/usr/bin/ruri
 # Compile yoshinon.
 cd ../yoshinon
 make

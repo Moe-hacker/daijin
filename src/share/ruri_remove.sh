@@ -37,7 +37,7 @@ if [[ ${CONTAINER_DIR} == "" ]] || [[ ${CONTAINER_DIR} == "/" ]]; then
   exit 1
 fi
 # Umount.
-sudo ruri -U ${CONTAINER_DIR}
+sudo rurima r -U ${CONTAINER_DIR}
 # Remove.
 echo "This is the last chance to regret it"
 echo "Press CTRL-C to cancel this script"
