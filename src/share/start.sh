@@ -37,6 +37,8 @@ source ${CONFIG_FILE}
 if [[ ${backend} == "ruri" ]]; then
   sudo mount -o remount,suid /data >/dev/null 2>&1 || true
   sudo rurima r -C ${CONFIG_FILE}
+  sudo chmod 777 ${CONFIG_FILE}
+  echo "backend=\"ruri\"" >>${CONFIG_FILE}
   sudo LD_PRELOAD= rurima r -c ${CONFIG_FILE}
 elif [[ ${backend} == "proot" ]]; then
   /data/data/com.termux/files/usr/share/daijin/proot_start.sh -r $container_dir -e "$extra_args"
