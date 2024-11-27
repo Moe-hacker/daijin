@@ -20,7 +20,7 @@ function check_if_succeed() {
   fi
 }
 function rurima_pull_lxc() {
-  rootfslist=$(rurima lxc list | awk '{print $1}' | sed -e "s/\x1B//g" | sed -e "s/\[0m//g" | sed -e "s/\[33m//g" | uniq | tr '\n' ' ')
+  rootfslist=$(rurima lxc list -q | awk '{print $1}' | uniq | tr '\n' ' ')
   check_if_succeed $?
   j=1
   arg=""
@@ -32,7 +32,7 @@ function rurima_pull_lxc() {
   check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   distro=$(echo $rootfslist | cut -d " " -f $num)
-  versionlist=$(rurima lxc search -o $distro | awk '{print $3}' | sed -e "s/\x1B//g" | sed -e "s/\[0m//g" | sed -e "s/\[35m//g" | uniq)
+  versionlist=$(rurima lxc search -q -o $distro | awk '{print $3}' | uniq)
   check_if_succeed $?
   j=1
   arg=""
@@ -52,7 +52,7 @@ function rurima_pull_lxc() {
 function docker_search() {
   NAME=$(yoshinon --inputbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Enter the string you want to search" 12 25)
   check_if_succeed $?
-  imagelist=$(rurima docker search -i $NAME -q | grep -v "Description:" | awk '{print $1}' | sed -e "s/\x1B//g" | sed -e "s/\[0m//g" | sed -e "s/\[33m//g")
+  imagelist=$(rurima docker search -i $NAME -q | grep -v "Description:" | awk '{print $1}')
   imagelist+=" continue"
   j=1
   arg=""
@@ -71,7 +71,7 @@ function docker_search() {
   fi
 }
 function docker_search_tag() {
-  taglist=$(rurima docker tag -i $image -q | awk '{print $2}' | sed -e "s/\x1B//g" | sed -e "s/\[0m//g" | sed -e "s/\[36m//g")
+  taglist=$(rurima docker tag -i $image -q | awk '{print $2}')
   j=1
   arg=""
   for i in $(echo $taglist); do
