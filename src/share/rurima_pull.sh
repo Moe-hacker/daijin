@@ -58,7 +58,7 @@ function rurima_pull_lxc() {
   rurima lxc pull -o $distro -v $version -s ${CONTAINER_DIR}
 }
 function docker_search() {
-  read -p "Enter the string you want to search" NAME
+  read -p "Enter the string you want to search: " NAME
   check_if_succeed $?
   imagelist=$(rurima docker search -i $NAME -q | grep -v "Description:" | awk '{print $1}')
   imagelist+=" continue"
