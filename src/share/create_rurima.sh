@@ -64,7 +64,7 @@ function main() {
   fi
   if [[ $1 == "-r" ]]; then
     echo -e "[1] ruri \n[2] proot"
-    backend=$(select_range "choose the backend" 1 2)
+    backend=$(select_range "choose the backend: " 1 2)
     check_if_succeed $?
     if [[ $backend == "1" ]]; then
       backend=ruri

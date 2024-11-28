@@ -40,6 +40,7 @@ if command -v su >/dev/null; then
     sudo chmod 777 /data/data/com.termux/files/usr/var/daijin/containers
   fi
 fi
+clear
 echo -e "\033[32mDaijin v${VERSION}\033[0m"
 echo -e "[1] install\n[2] run\n[3] remove\n[4] register\n[5] clean rootfs\n[6] exit"
 todo=$(select_range "choose the action" 1 6)

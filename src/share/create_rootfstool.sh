@@ -43,7 +43,7 @@ function pull_rootfs() {
     echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(select_range "Select a mirror" 1 $((j - 1)))
+  num=$(select_range "Select a mirror: " 1 $((j - 1)))
   check_if_succeed $?
   mirror=$(echo $mirrorlist | cut -d " " -f $num)
   rootfslist=$(rootfstool l -m $mirror | awk '{print $2}')
@@ -52,7 +52,7 @@ function pull_rootfs() {
     echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(select_range "Select a distro" 1 $((j - 1)))
+  num=$(select_range "Select a distro: " 1 $((j - 1)))
   check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   distro=$(echo $rootfslist | cut -d " " -f $num)
@@ -62,7 +62,7 @@ function pull_rootfs() {
     echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(select_range "Select the version" 1 $((j - 1)))
+  num=$(select_range "Select the version: " 1 $((j - 1)))
   check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   version=$(echo $versionlist | cut -d " " -f $num)
@@ -103,7 +103,7 @@ function main() {
   mkdir -p /data/data/com.termux/files/usr/var/daijin/containers/
   if [[ $1 == "-r" ]]; then
     echo -e "[1] ruri\n[2] proot"
-    backend=$(select_range "choose the backend" 1 2)
+    backend=$(select_range "choose the backend: " 1 2)
     check_if_succeed $?
     if [[ $backend == "1" ]]; then
       backend=ruri

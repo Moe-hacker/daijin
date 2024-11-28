@@ -41,7 +41,7 @@ for i in $(ls /data/data/com.termux/files/usr/var/daijin/containers/); do
   echo -e "[$j] ${i%%.conf} "
   j=$((j + 1))
 done
-num=$(select_range "Choose the container" 1 $((j - 1)))
+num=$(select_range "Choose the container: " 1 $((j - 1)))
 check_if_succeed $?
 CONFIG_FILE=/data/data/com.termux/files/usr/var/daijin/containers/$(echo $(ls /data/data/com.termux/files/usr/var/daijin/containers/) | cut -d " " -f $num)
 source ${CONFIG_FILE}

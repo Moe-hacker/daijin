@@ -39,7 +39,7 @@ function rurima_pull_lxc() {
     echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(select_range "Select a distro" 1 $((j - 1)))
+  num=$(select_range "Select a distro: " 1 $((j - 1)))
   check_if_succeed $?
   distro=$(echo $rootfslist | cut -d " " -f $num)
   versionlist=$(rurima lxc search -q -o $distro | awk '{print $3}' | uniq)
@@ -49,7 +49,7 @@ function rurima_pull_lxc() {
     echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(select_range "Select the version" 1 $((j - 1)))
+  num=$(select_range "Select the version: " 1 $((j - 1)))
   check_if_succeed $?
   version=$(echo $versionlist | cut -d " " -f $num)
   export distro=$distro
@@ -67,7 +67,7 @@ function docker_search() {
     echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(select_range "Select an image, or continue search" 1 $((j - 1)))
+  num=$(select_range "Select an image, or continue search: " 1 $((j - 1)))
   check_if_succeed $?
   image=$(echo $imagelist | cut -d " " -f $num)
   if [[ $image == "continue" ]]; then
@@ -100,7 +100,7 @@ function rurima_pull_docker() {
 }
 function rurima_pull_rootfs() {
   echo -e "[1] dockerhub\n[2] LXC"
-  SOURCE=$(select_range "choose the source of rootfs" 1 2)
+  SOURCE=$(select_range "choose the source of rootfs: " 1 2)
   check_if_succeed $?
   export TIME=$(date +%s)
   if [[ ${SOURCE} == "1" ]]; then
