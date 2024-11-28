@@ -48,11 +48,6 @@ make
 cp rurima ../../build/data/data/com.termux/files/usr/bin/
 echo "echo \"ruri is built-in in rurima now, please use \`rurima r\` instead\"" >../../build/data/data/com.termux/files/usr/bin/ruri
 chmod 777 ../../build/data/data/com.termux/files/usr/bin/ruri
-# Compile yoshinon.
-cd ../yoshinon
-make
-cp yoshinon ../../build/data/data/com.termux/files/usr/bin/
-git reset --hard
 # Copy rootfstool.
 cd ../rootfstool
 termux-fix-shebang rootfstool

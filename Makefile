@@ -24,5 +24,4 @@ format:
 # Update submodule.
 update:
 	cd src/rootfstool&&git pull git@github.com:moe-hacker/rootfstool main
-	cd src/yoshinon&&git pull git@github.com:moe-hacker/yoshinon main
 	cd src/rurima&&git pull git@github.com:moe-hacker/rurima main

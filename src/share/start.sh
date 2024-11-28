@@ -15,9 +15,21 @@
 #
 function check_if_succeed() {
   if [[ $1 -ne 0 ]]; then
-    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    echo -e "\033[31mDaijin got an error\033[0m"
     exit 1
   fi
+}
+function select_range() {
+  read -p "$1" range
+  if [[ "" == $range ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  if [[ $range -lt $2 || $range -gt $3 ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  echo $range
 }
 chmod 777 /data/data/com.termux/files/usr/var/daijin/containers/*
 if [[ $(ls /data/data/com.termux/files/usr/var/daijin/containers/) == "" ]]; then
@@ -26,10 +38,10 @@ if [[ $(ls /data/data/com.termux/files/usr/var/daijin/containers/) == "" ]]; the
 fi
 j=1
 for i in $(ls /data/data/com.termux/files/usr/var/daijin/containers/); do
-  arg+="[$j] ${i%%.conf} "
+  echo -e "[$j] ${i%%.conf} "
   j=$((j + 1))
 done
-num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Choose the container" 12 44 4 $arg)
+num=$(select_range "Choose the container" 1 $((j - 1)))
 check_if_succeed $?
 num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
 CONFIG_FILE=/data/data/com.termux/files/usr/var/daijin/containers/$(echo $(ls /data/data/com.termux/files/usr/var/daijin/containers/) | cut -d " " -f $num)

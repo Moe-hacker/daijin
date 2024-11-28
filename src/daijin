@@ -15,9 +15,21 @@
 #
 function check_if_succeed() {
   if [[ $1 -ne 0 ]]; then
-    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    echo -e "\033[31mDaijin got an error\033[0m"
     exit 1
   fi
+}
+function select_range() {
+  read -p "$1" range
+  if [[ "" == $range ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  if [[ $range -lt $2 || $range -gt $3 ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  echo $range
 }
 mkdir -p /data/data/com.termux/files/usr/etc/daijin
 mkdir -p /data/data/com.termux/files/usr/var/daijin
@@ -28,11 +40,14 @@ if command -v su >/dev/null; then
     sudo chmod 777 /data/data/com.termux/files/usr/var/daijin/containers
   fi
 fi
-todo=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "DAIJIN MAIN MENU" 18 25 5 "[1]" "install" "[2]" "run" "[3]" "remove" "[4]" "register" "[5]" "clean rootfs" "[6]" "exit")
+echo -e "\033[32mDaijin v${VERSION}\033[0m"
+echo -e "[1] install\n[2] run\n[3] remove\n[4] register\n[5] clean rootfs\n[6] exit"
+todo=$(select_range "choose the action" 1 6)
 check_if_succeed $?
 case $todo in
 "[1]")
-  ROOTFS_TOOL=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the way to get rootfs" 12 25 4 "[1]" "rurima" "[2]" "rootfstool")
+  echo -e "[1] rurima\n[2] rootfstool"
+  ROOTFS_TOOL=$(select_range "choose the way to get rootfs" 1 2)
   check_if_succeed $?
   if [[ ${ROOTFS_TOOL} == "[2]" ]]; then
     if [[ $ROOTED == "true" ]]; then

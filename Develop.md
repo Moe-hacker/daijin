@@ -2,9 +2,8 @@
 ## Tools:
 [ruri](https://github.com/Moe-hacker/ruri):Lightweight, User-friendly Linux-container Implementation         
 [rurima](https://github.com/Moe-hacker/rurima):Run docker & LXC images without docker or LXC program, without kernel features support, even without root privileges!      
-[rootfstool](https://github.com/Moe-hacker/rootfstool):A tool to get linux container rootfs from Lxc-image mirrors      
-[yoshinon](https://github.com/Moe-hacker/yoshinon):A whiptail-like dialog box written with Bubble Tea      
-ruri, rurima and yoshinon are published with the MIT License, and rootfstool is Apache-2.0.      
+[rootfstool](https://github.com/Moe-hacker/rootfstool):A tool to get linux container rootfs from Lxc-image mirrors         
+ruri and rurima are published with the MIT License, and rootfstool is Apache-2.0.      
 You can use these tools to make your own container manager, it will be very easy.      
 ## Why ruri:
 ruri is a lightweight and simple container backend.      

@@ -15,34 +15,42 @@
 #
 function check_if_succeed() {
   if [[ $1 -ne 0 ]]; then
-    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    echo -e "\033[31mDaijin got an error\033[0m"
     exit 1
   fi
+}
+function select_range() {
+  read -p "$1" range
+  if [[ "" == $range ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  if [[ $range -lt $2 || $range -gt $3 ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  echo $range
 }
 function rurima_pull_lxc() {
   rootfslist=$(rurima lxc list -q | awk '{print $1}' | uniq | tr '\n' ' ')
   check_if_succeed $?
   j=1
-  arg=""
   for i in $(echo $rootfslist); do
-    arg+="[$j] $i "
+    echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a distro" 12 25 4 $arg)
+  num=$(select_range "Select a distro" 1 $((j - 1)))
   check_if_succeed $?
-  num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   distro=$(echo $rootfslist | cut -d " " -f $num)
   versionlist=$(rurima lxc search -q -o $distro | awk '{print $3}' | uniq)
   check_if_succeed $?
   j=1
-  arg=""
   for i in $(echo $versionlist); do
-    arg+="[$j] $i "
+    echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select the version" 12 25 4 $arg)
+  num=$(select_range "Select the version" 1 $((j - 1)))
   check_if_succeed $?
-  num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   version=$(echo $versionlist | cut -d " " -f $num)
   export distro=$distro
   export version=$version
@@ -50,19 +58,17 @@ function rurima_pull_lxc() {
   rurima lxc pull -o $distro -v $version -s ${CONTAINER_DIR}
 }
 function docker_search() {
-  NAME=$(yoshinon --inputbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Enter the string you want to search" 12 25)
+  read -p "Enter the string you want to search" NAME
   check_if_succeed $?
   imagelist=$(rurima docker search -i $NAME -q | grep -v "Description:" | awk '{print $1}')
   imagelist+=" continue"
   j=1
-  arg=""
   for i in $(echo $imagelist); do
-    arg+="[$j] $i "
+    echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select an image, or continue search" 12 25 4 $arg)
+  num=$(select_range "Select an image, or continue search" 1 $((j - 1)))
   check_if_succeed $?
-  num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   image=$(echo $imagelist | cut -d " " -f $num)
   if [[ $image == "continue" ]]; then
     docker_search
@@ -73,12 +79,11 @@ function docker_search() {
 function docker_search_tag() {
   taglist=$(rurima docker tag -i $image -q | awk '{print $2}')
   j=1
-  arg=""
   for i in $(echo $taglist); do
-    arg+="[$j] $i "
+    echo -e "[$j] $i "
     j=$((j + 1))
   done
-  num=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Select a tag" 12 25 4 $arg)
+  num=$(select_range "Select a tag: " 1 $((j - 1)))
   check_if_succeed $?
   num=$(echo $num | cut -d "[" -f 2 | cut -d "]" -f 1)
   tag=$(echo $taglist | cut -d " " -f $num)
@@ -94,10 +99,11 @@ function rurima_pull_docker() {
   check_if_succeed $?
 }
 function rurima_pull_rootfs() {
-  SOURCE=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the source of rootfs" 12 25 4 "[1]" "dockerhub" "[2]" "LXC")
+  echo -e "[1] dockerhub\n[2] LXC"
+  SOURCE=$(select_range "choose the source of rootfs" 1 2)
   check_if_succeed $?
   export TIME=$(date +%s)
-  if [[ ${SOURCE} == "[1]" ]]; then
+  if [[ ${SOURCE} == "0" ]]; then
     rurima_pull_docker
   else
     rurima_pull_lxc

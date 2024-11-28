@@ -15,9 +15,21 @@
 #
 function check_if_succeed() {
   if [[ $1 -ne 0 ]]; then
-    yoshinon --msgbox --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "Daijin got an error" 12 25
+    echo -e "\033[31mDaijin got an error\033[0m"
     exit 1
   fi
+}
+function select_range() {
+  read -p "$1" range
+  if [[ "" == $range ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  if [[ $range -lt $2 || $range -gt $3 ]]; then
+    echo $(select_range "$1" $2 $3)
+    return
+  fi
+  echo $range
 }
 function create_ruri_container() {
   if [[ $(whoami) != "root" ]]; then
@@ -51,7 +63,8 @@ function main() {
     exit 0
   fi
   if [[ $1 == "-r" ]]; then
-    backend=$(yoshinon --menu --cursorcolor "114;5;14" --title "DAIJIN-$VERSION" "choose the backend" 12 25 4 "[1]" "ruri" "[2]" "proot")
+    echo -e "[1] ruri \n[2] proot"
+    backend=$(select_range "choose the backend" 1 2)
     check_if_succeed $?
     if [[ $backend == "[1]" ]]; then
       backend=ruri
