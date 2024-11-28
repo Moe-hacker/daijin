@@ -49,7 +49,7 @@ case $todo in
   echo -e "[1] rurima\n[2] rootfstool"
   ROOTFS_TOOL=$(select_range "choose the way to get rootfs" 1 2)
   check_if_succeed $?
-  if [[ ${ROOTFS_TOOL} == "[2]" ]]; then
+  if [[ ${ROOTFS_TOOL} == "2" ]]; then
     if [[ $ROOTED == "true" ]]; then
       /data/data/com.termux/files/usr/share/daijin/create_rootfstool.sh -r
     else
