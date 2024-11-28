@@ -45,7 +45,7 @@ echo -e "[1] install\n[2] run\n[3] remove\n[4] register\n[5] clean rootfs\n[6] e
 todo=$(select_range "choose the action" 1 6)
 check_if_succeed $?
 case $todo in
-"[1]")
+"1")
   echo -e "[1] rurima\n[2] rootfstool"
   ROOTFS_TOOL=$(select_range "choose the way to get rootfs" 1 2)
   check_if_succeed $?
@@ -63,21 +63,21 @@ case $todo in
     fi
   fi
   ;;
-"[2]")
+"2")
   /data/data/com.termux/files/usr/share/daijin/start.sh
   ;;
-"[3]")
+"3")
   /data/data/com.termux/files/usr/share/daijin/remove.sh
   ;;
-"[4]")
+"4")
   if [[ $ROOTED == "true" ]]; then
     /data/data/com.termux/files/usr/share/daijin/register.sh -r
   else
     /data/data/com.termux/files/usr/share/daijin/register.sh
   fi
   ;;
-"[5]")
+"5")
   /data/data/com.termux/files/usr/share/daijin/clear_rootfs.sh
   ;;
-"[6]") exit ;;
+"6") exit ;;
 esac

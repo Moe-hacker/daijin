@@ -103,7 +103,7 @@ function rurima_pull_rootfs() {
   SOURCE=$(select_range "choose the source of rootfs" 1 2)
   check_if_succeed $?
   export TIME=$(date +%s)
-  if [[ ${SOURCE} == "0" ]]; then
+  if [[ ${SOURCE} == "1" ]]; then
     rurima_pull_docker
   else
     rurima_pull_lxc

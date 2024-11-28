@@ -105,7 +105,7 @@ function main() {
     echo -e "[1] ruri\n[2] proot"
     backend=$(select_range "choose the backend" 1 2)
     check_if_succeed $?
-    if [[ $backend == "[1]" ]]; then
+    if [[ $backend == "1" ]]; then
       backend=ruri
     else
       backend=proot
