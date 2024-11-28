@@ -43,12 +43,12 @@ fi
 clear
 echo -e "\033[32mDaijin v${VERSION}\033[0m"
 echo -e "[1] install\n[2] run\n[3] remove\n[4] register\n[5] clean rootfs\n[6] exit"
-todo=$(select_range "choose the action" 1 6)
+todo=$(select_range "choose the action: " 1 6)
 check_if_succeed $?
 case $todo in
 "1")
   echo -e "[1] rurima\n[2] rootfstool"
-  ROOTFS_TOOL=$(select_range "choose the way to get rootfs" 1 2)
+  ROOTFS_TOOL=$(select_range "choose the way to get rootfs: " 1 2)
   check_if_succeed $?
   if [[ ${ROOTFS_TOOL} == "2" ]]; then
     if [[ $ROOTED == "true" ]]; then
