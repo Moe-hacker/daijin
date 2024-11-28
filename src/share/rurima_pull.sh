@@ -95,7 +95,7 @@ function rurima_pull_docker() {
   export distro="$(echo $image | sed -e "s/\//_/g")"
   export version=$tag
   export CONTAINER_DIR=/data/data/com.termux/files/home/$distro-$version-$TIME
-  rurima docker pull -i $image -t $tag -s ${CONTAINER_DIR}
+  rurima docker pull -q -i $image -t $tag -s ${CONTAINER_DIR}
   check_if_succeed $?
 }
 function rurima_pull_rootfs() {
