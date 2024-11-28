@@ -41,12 +41,12 @@ mkdir -p build/data/data/com.termux/files/usr/etc
 cp -r dpkg-conf/* build/DEBIAN/
 chmod -R 755 build/DEBIAN
 # Compile rurima.
-cd ../rurima
+cd src/rurima
 git submodule update --init
 ./configure -s
 make
 cp rurima ../../build/data/data/com.termux/files/usr/bin/
-echo "echo \"ruri is built-in in rurima now, please use \`rurima r\` instead\"" >../../build/data/data/com.termux/files/usr/bin/ruri
+echo "echo -e \"\033[33mruri is built-in in rurima now, please use \033[32mrurima r\033[33m instead\033[0m\"" >../../build/data/data/com.termux/files/usr/bin/ruri
 chmod 777 ../../build/data/data/com.termux/files/usr/bin/ruri
 # Copy rootfstool.
 cd ../rootfstool

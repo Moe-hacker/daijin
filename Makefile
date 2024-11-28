@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+.PHONY: all build format update
 all: build
 # Just call build.sh.
 build:
