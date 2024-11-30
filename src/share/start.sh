@@ -38,7 +38,7 @@ if [[ $(ls /data/data/com.termux/files/usr/var/daijin/containers/) == "" ]]; the
 fi
 j=1
 for i in $(ls /data/data/com.termux/files/usr/var/daijin/containers/); do
-  echo -e "[$j] ${i%%.conf} "
+  echo -e "\033[1;38;2;254;228;208m[$j] ${i%%.conf} "
   j=$((j + 1))
 done
 num=$(select_range "Choose the container: " 1 $((j - 1)))
@@ -51,6 +51,7 @@ if [[ ${backend} == "ruri" ]]; then
   sudo rurima r -C ${CONFIG_FILE}
   sudo chmod 777 ${CONFIG_FILE}
   echo "backend=\"ruri\"" >>${CONFIG_FILE}
+  printf "\033[0m"
   sudo LD_PRELOAD= rurima r -c ${CONFIG_FILE}
 elif [[ ${backend} == "proot" ]]; then
   /data/data/com.termux/files/usr/share/daijin/proot_start.sh -r $container_dir -e "$extra_args"

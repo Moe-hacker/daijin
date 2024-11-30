@@ -22,7 +22,7 @@ if [[ ! -e $CONTAINER_DIR ]]; then
   exit 1
 fi
 if [[ $1 == -r ]]; then
-  echo -e "Choose the backend:"
+  echo -e "\033[1;38;2;254;228;208mChoose the backend:"
   read -p "[1] ruri [2] proot > " BACKEND
   if [[ $BACKEND == "1" ]]; then
     BACKEND="ruri"
@@ -44,5 +44,5 @@ else
   printf "backend=\"proot\"\ncontainer_dir=\"${CONTAINER_DIR}\"\n" >/data/data/com.termux/files/usr/var/daijin/containers/${NAME}.conf
 fi
 chmod 777 /data/data/com.termux/files/usr/var/daijin/containers/*
-echo "Registered container $NAME"
+echo "\033[1;38;2;254;228;208mRegistered container $NAME"
 printf "\033[0m"

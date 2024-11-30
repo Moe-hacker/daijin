@@ -38,7 +38,7 @@ if [[ $(ls /data/data/com.termux/files/usr/var/daijin/containers/) == "" ]]; the
 fi
 j=1
 for i in $(ls /data/data/com.termux/files/usr/var/daijin/containers/); do
-  echo -e "[$j] ${i%%.conf} "
+  echo -e "\033[1;38;2;254;228;208m[$j] ${i%%.conf} "
   j=$((j + 1))
 done
 num=$(select_range "Choose the container: " 1 $((j - 1)))

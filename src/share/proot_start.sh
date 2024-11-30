@@ -77,6 +77,7 @@ function run_proot_container() {
     COMMAND+=" $@"
   fi
   # Yes, this can exec the command.
+  printf "\033[0m"
   ${COMMAND}
 }
 function main() {

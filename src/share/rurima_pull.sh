@@ -36,7 +36,7 @@ function rurima_pull_lxc() {
   check_if_succeed $?
   j=1
   for i in $(echo $rootfslist); do
-    echo -e "[$j] $i "
+    echo -e "\033[1;38;2;254;228;208m[$j] $i "
     j=$((j + 1))
   done
   num=$(select_range "Select a distro: " 1 $((j - 1)))
@@ -46,7 +46,7 @@ function rurima_pull_lxc() {
   check_if_succeed $?
   j=1
   for i in $(echo $versionlist); do
-    echo -e "[$j] $i "
+    echo -e "\033[1;38;2;254;228;208m[$j] $i "
     j=$((j + 1))
   done
   num=$(select_range "Select the version: " 1 $((j - 1)))
@@ -64,7 +64,7 @@ function docker_search() {
   imagelist+=" continue"
   j=1
   for i in $(echo $imagelist); do
-    echo -e "[$j] $i "
+    echo -e "\033[1;38;2;254;228;208m[$j] $i "
     j=$((j + 1))
   done
   num=$(select_range "Select an image, or continue search: " 1 $((j - 1)))
@@ -80,7 +80,7 @@ function docker_search_tag() {
   taglist=$(rurima docker tag -i $image -q | awk '{print $2}')
   j=1
   for i in $(echo $taglist); do
-    echo -e "[$j] $i "
+    echo -e "\033[1;38;2;254;228;208m[$j] $i "
     j=$((j + 1))
   done
   num=$(select_range "Select a tag: " 1 $((j - 1)))
@@ -99,7 +99,7 @@ function rurima_pull_docker() {
   check_if_succeed $?
 }
 function rurima_pull_rootfs() {
-  echo -e "[1] dockerhub\n[2] LXC"
+  echo -e "\033[1;38;2;254;228;208m[1] dockerhub\n[2] LXC"
   SOURCE=$(select_range "choose the source of rootfs: " 1 2)
   check_if_succeed $?
   export TIME=$(date +%s)

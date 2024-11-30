@@ -143,4 +143,4 @@ chmod 777 /bin/su
 rm -f /etc/resolv.conf >>/dev/null 2>&1
 echo nameserver 8.8.8.8 >>/etc/resolv.conf
 echo nameserver 114.114.114.114 >>/etc/resolv.conf
-echo -e "\033[33mFor alpine linux, there might be errors, do not care"
+printf "\033[33mFor alpine linux, there might be errors, do not care\n"

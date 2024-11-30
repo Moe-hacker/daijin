@@ -63,7 +63,7 @@ function main() {
     exit 0
   fi
   if [[ $1 == "-r" ]]; then
-    echo -e "[1] ruri \n[2] proot"
+    echo -e "\033[1;38;2;254;228;208m[1] ruri \n[2] proot"
     backend=$(select_range "choose the backend: " 1 2)
     check_if_succeed $?
     if [[ $backend == "1" ]]; then
