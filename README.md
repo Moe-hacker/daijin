@@ -5,6 +5,9 @@ With rurima, you can now run docker image in Termux, with ruri or proot!!!!!
 Without kernel feature support for docker, even without root privilege, you can just enjoy all images from dockerhub!      
 # Container, with enhanced security
 Daijin aims to be a more secure container manager in Termux.      
+# Powered by ruri:
+Daijin use [ruri](https://github.com/Moe-hacker/ruri) for chroot/unshare container runtime, it's a secure and powerful but lightweight container implementation.             
+ruri is built-in in rurima now.      
 # WARNING:      
 ```
 * Your warranty is void.
